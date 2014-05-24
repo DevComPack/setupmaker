@@ -31,7 +31,6 @@ public class TypeFactory
         Web,
         Sound,
         Video,
-        Custom1,
-        Custom2
+        Custom
     }
 }

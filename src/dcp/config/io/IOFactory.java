@@ -29,7 +29,7 @@ public class IOFactory
     public static String[] webExt;// = {"html", "htm", "php", "js", "asp", "aspx", "css"};
     public static String[] soundExt;// = {"wav", "mp3", "ogg", "wma"};
     public static String[] vidExt;// = {"mp4", "mpg", "mpeg", "wmv", "avi", "mkv"};
-    public static String[] cust1Ext, cust2Ext;//User defined custom extensions
+    public static String[] custExt;//User defined custom extensions
     
     /**
      * Returns file type of a file
@@ -56,10 +56,8 @@ public class IOFactory
             return FILE_TYPE.Sound;
         else if (IOFactory.isFileType(NAME, FILE_TYPE.Video))//Video file
             return FILE_TYPE.Video;
-        else if (IOFactory.isFileType(NAME, FILE_TYPE.Custom1))//Custom extensions 1
-            return FILE_TYPE.Custom1;
-        else if (IOFactory.isFileType(NAME, FILE_TYPE.Custom2))//Custom extensions 2
-            return FILE_TYPE.Custom2;
+        else if (IOFactory.isFileType(NAME, FILE_TYPE.Custom))//Custom extension
+            return FILE_TYPE.Custom;
         else//Simple File
             return FILE_TYPE.File;
     }
@@ -98,11 +96,8 @@ public class IOFactory
         case Video:
             exts = vidExt;
             break;
-        case Custom1:
-            exts = cust1Ext;
-            break;
-        case Custom2:
-            exts = cust2Ext;
+        case Custom:
+            exts = custExt;
             break;
         case File:
             return true;
@@ -233,8 +228,7 @@ public class IOFactory
         webExt = json_ext.readStringArray("webExt");
         soundExt = json_ext.readStringArray("soundExt");
         vidExt = json_ext.readStringArray("vidExt");
-        cust1Ext = json_ext.readStringArray("cust1Ext");
-        cust2Ext = json_ext.readStringArray("cust2Ext");
+        custExt = json_ext.readStringArray("custExt");
         json_ext.close();
 
         JsonSimpleReader json_paths = new JsonSimpleReader(json_file, "paths");

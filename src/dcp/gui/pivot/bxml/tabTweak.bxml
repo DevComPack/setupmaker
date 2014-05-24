@@ -24,7 +24,7 @@
 		        <BoxPane Form.label="Application">
 		            <TextInput bxml:id="inAppName" textSize="31" prompt="Name" />
 		            <TextInput bxml:id="inAppVersion" textSize="8" prompt="Version" />
-					<PushButton bxml:id="btIncr" styles="{toolbar:'true', backgroundColor:'WHITE'}" tooltipText="Increment version number">
+					<PushButton bxml:id="btIncr" styles="{toolbar:'true', backgroundColor:'WHITE'}" tooltipText="Increment selected version part">
 						<content:ButtonData text="" icon="$icon_up" />
 					</PushButton>
 		        </BoxPane>

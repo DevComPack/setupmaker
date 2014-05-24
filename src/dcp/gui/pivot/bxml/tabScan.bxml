@@ -44,112 +44,125 @@
 		
 		<!-- Scan Options -->
 		<TablePane.Row height="130">
-			<FillPane orientation="Horizontal">
+			<TablePane styles="{horizontalSpacing:5}">
+		    	<columns>
+		    		<TablePane.Column width="4*" />
+		    		<TablePane.Column width="3*" />
+		    		<TablePane.Column width="5*" />
+		    	</columns>
+				<TablePane.Row>
 				
-				<!-- Recent scanned directories -->
-				<Border title="Recent directories" styles="{color:'#0198E1', padding:4}">
-					<TablePane bxml:id="recent_dirs" styles="{showHorizontalGridLines: true,
-				        padding:4, horizontalSpacing:1, verticalSpacing:1, horizontalGridColor:10}">
-				        <columns>
-				            <TablePane.Column width="1*"/>
-				        </columns>
-				 
-				        <!-- <TablePane.Row height="24">
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <LinkButton styles="{color:'#38ACEC'}">
-								    <content:ButtonData text="last scanned directory" icon="/dcp/gui/icons/history.png"/>
-								</LinkButton>
-				            </BoxPane>
-				        </TablePane.Row> -->
-				    </TablePane>
-				</Border>
-				
-			    <!-- Scan Mode Radio Buttons [default:Simple] -->
-			    <Border title="Scan mode" styles="{color:'#0198E1', padding:4}">
-	        		<TablePane styles="{showVerticalGridLines: true,
-				        padding:4, horizontalSpacing:10, verticalSpacing:5, verticalGridColor:10}">
-	        			<columns>
-	        				<TablePane.Column width="1*"/>
-	        				<TablePane.Column width="80"/>
-	        			</columns>
-	        			
-	        			<TablePane.Row height="20">
-			            	<RadioButton bxml:id="btRadSimple" buttonData="Simple" buttonGroup="$scanMode" />
-		        			<BoxPane styles="{verticalAlignment:'center'}">
-				            	<Checkbox bxml:id="btSelect" tooltipText="Enable/Disable selection" preferredWidth="60"
-				            		selected="false" buttonData="Select" styles="{color:'#0198E1'}" />
-				            </BoxPane>
-			            </TablePane.Row>
-			            
-			            <TablePane.Row height="20">
-				            <RadioButton bxml:id="btRadRecursiv" buttonData="Recursive" buttonGroup="$scanMode" />
-				            <BoxPane bxml:id="depthPane" orientation="horizontal" styles="{verticalAlignment:'center'}">
-				            	<Label text="Depth:" styles="{color:'#0198E1'}"/>
-					            <Spinner bxml:id="depthSpinner" spinnerData="['1', '2', '3', '4', '5', '-']"
-					            	circular="false" selectedIndex="0" styles="{sizeToContent:'true', color:'#0198E1'}" />
-							</BoxPane>
-						</TablePane.Row>
-			    	</TablePane>
-			    </Border>
-				
-				<!-- Files Scan Filters Checkbox -->
-				<Border title="Packs filters" styles="{color:'#0198E1', padding:4}">
-					<TablePane styles="{showHorizontalGridLines: true, showVerticalGridLines: true,
-				        padding:4, horizontalSpacing:10, verticalSpacing:4,
-						horizontalGridColor:10, verticalGridColor:10}">
-				        <columns>
-				            <TablePane.Column width="1*"/>
-				            <TablePane.Column width="1*"/>
-				        </columns>
-				 
-				        <TablePane.Row height="24">
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbDir" buttonData="Directories" selected="true" />
-				            </BoxPane>
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbImg" buttonData="Images" selected="true" />
-				            </BoxPane>
-				        </TablePane.Row>
-				 
-				        <TablePane.Row height="24">
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbZip" buttonData="Archives" selected="true" />
-				            </BoxPane>
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbVid" buttonData="Videos" selected="true" />
-				            </BoxPane>
-				        </TablePane.Row>
-				 
-				        <TablePane.Row height="24">
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbExe" buttonData="Executables" selected="true" />
-				            </BoxPane>
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbSound" buttonData="Sounds" selected="true" />
-				            </BoxPane>
-				        </TablePane.Row>
-				 
-				        <TablePane.Row height="24">
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbSetup" buttonData="Setups" selected="true" />
-				            </BoxPane>
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbDoc" buttonData="Documents" selected="true" />
-				            </BoxPane>
-				        </TablePane.Row>
-				 
-				        <TablePane.Row height="24">
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbCust1" buttonData="Custom 1" selected="false" tooltipText="Edit cust1Ext in settings.json file to use" />
-				            </BoxPane>
-				            <BoxPane styles="{verticalAlignment:'center'}">
-				                <Checkbox bxml:id="cbCust2" buttonData="Custom 2" selected="false" tooltipText="Edit cust2Ext in settings.json file to use" />
-				            </BoxPane>
-				        </TablePane.Row>
-				    </TablePane>
-				</Border>
-				
-			</FillPane>
+					<!-- Recent scanned directories -->
+					<Border title="Recent directories" styles="{color:'#0198E1', padding:4}">
+						<TablePane bxml:id="recent_dirs" styles="{showHorizontalGridLines: true,
+					        padding:4, horizontalSpacing:1, verticalSpacing:1, horizontalGridColor:10}">
+					        <columns>
+					            <TablePane.Column width="5*"/>
+					            <TablePane.Column width="1*"/>
+					        </columns>
+					 
+					        <!-- <TablePane.Row height="24">
+					            <BoxPane styles="{verticalAlignment:'center'}">
+					                <LinkButton styles="{color:'#38ACEC'}">
+									    <content:ButtonData text="last scanned directory" icon="/dcp/gui/icons/history.png"/>
+									</LinkButton>
+					            </BoxPane>
+					        </TablePane.Row> -->
+					    </TablePane>
+					</Border>
+					
+				    <!-- Scan Mode Radio Buttons [default:Simple] -->
+				    <Border title="Scan mode" styles="{color:'#0198E1', padding:4}">
+		        		<TablePane styles="{showVerticalGridLines: true,
+					        padding:4, horizontalSpacing:10, verticalSpacing:5, verticalGridColor:10}">
+		        			<columns>
+		        				<TablePane.Column width="1*"/>
+		        				<TablePane.Column width="80"/>
+		        			</columns>
+		        			
+		        			<TablePane.Row height="20">
+				            	<RadioButton bxml:id="btRadSimple" buttonData="Simple" buttonGroup="$scanMode" />
+			        			<BoxPane styles="{verticalAlignment:'center'}">
+					            	<Checkbox bxml:id="btSelect" tooltipText="Enable/Disable selection" preferredWidth="60"
+					            		selected="false" buttonData="Select" styles="{color:'#0198E1'}" />
+					            </BoxPane>
+				            </TablePane.Row>
+				            
+				            <TablePane.Row height="20">
+					            <RadioButton bxml:id="btRadRecursiv" buttonData="Recursive" buttonGroup="$scanMode" />
+					            <BoxPane bxml:id="depthPane" orientation="horizontal" styles="{verticalAlignment:'center'}">
+					            	<Label text="Depth:" styles="{color:'#0198E1'}"/>
+						            <Spinner bxml:id="depthSpinner" spinnerData="['1', '2', '3', '4', '5', '-']"
+						            	circular="false" selectedIndex="0" styles="{sizeToContent:'true', color:'#0198E1'}" />
+								</BoxPane>
+							</TablePane.Row>
+				    	</TablePane>
+				    </Border>
+					
+					<!-- Files Scan Filters Checkbox -->
+					<Border title="Packs filters" styles="{color:'#0198E1', padding:4}">
+						<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+							<TablePane styles="{showHorizontalGridLines: true, showVerticalGridLines: true,
+						        padding:4, horizontalSpacing:10, verticalSpacing:4,
+								horizontalGridColor:10, verticalGridColor:10}">
+						        <columns>
+						            <TablePane.Column width="1*"/>
+						            <TablePane.Column width="1*"/>
+						        </columns>
+						 
+						        <TablePane.Row height="24">
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbDir" buttonData="Directories" selected="false" />
+						            </BoxPane>
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbImg" buttonData="Images" selected="false" />
+						            </BoxPane>
+						        </TablePane.Row>
+						 
+						        <TablePane.Row height="24">
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbZip" buttonData="Archives" selected="false" />
+						            </BoxPane>
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbVid" buttonData="Videos" selected="false" />
+						            </BoxPane>
+						        </TablePane.Row>
+						 
+						        <TablePane.Row height="24">
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbExe" buttonData="Executables" selected="false" />
+						            </BoxPane>
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbSound" buttonData="Sounds" selected="false" />
+						            </BoxPane>
+						        </TablePane.Row>
+						 
+						        <TablePane.Row height="24">
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbSetup" buttonData="Setups" selected="false" />
+						            </BoxPane>
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbDoc" buttonData="Documents" selected="false" />
+						            </BoxPane>
+						        </TablePane.Row>
+						        
+						        <TablePane.Row height="24">
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						                <Checkbox bxml:id="cbCustTxt" buttonData="Custom" selected="false" tooltipText="Edit custExt in settings.json file to use">
+						                	<content:ButtonData text="Custom" />
+						                </Checkbox>
+						            </BoxPane>
+						            <BoxPane styles="{verticalAlignment:'center'}">
+						            	<Checkbox bxml:id="cbCustExpr" selected="false" tooltipText="REGEXP filtering" />
+						                <TextInput bxml:id="inCustExpr" prompt="Expression" textSize="10" tooltipText="Regular expression to filter" />
+						            </BoxPane>
+						        </TablePane.Row>
+						    </TablePane>
+			            </ScrollPane>
+					</Border>
+					
+				</TablePane.Row>
+			</TablePane>
 		</TablePane.Row>
     
 	    <!-- Packs Tree View -->

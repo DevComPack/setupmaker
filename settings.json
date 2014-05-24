@@ -1,15 +1,14 @@
 {
 	"extensions": {
 		"archiveExt": ["zip", "tar", "tar.gz"],
-		"exeExt": ["exe", "reg", "bat", "cmd", "sh", "jar"],
+		"exeExt": ["exe", "reg", "bat", "cmd", "ps1", "sh", "ksh", "jar"],
 		"setupExt": ["msi"],
-		"docExt": ["txt", "pdf", "doc", "docx", "xml", "rtf", "odt", "xls", "xlsx", "csv"],
+		"docExt": ["txt", "pdf", "doc", "docx", "xml", "rtf", "odt", "xls", "xlsx", "csv", "log"],
 		"imgExt": ["bmp", "jpg", "jpeg", "gif", "png", "ico"],
 		"webExt": ["html", "htm", "php", "js", "asp", "aspx", "css"],
 		"soundExt": ["wav", "mp3", "ogg", "wma"],
 		"vidExt": ["mp4", "mpg", "mpeg", "wmv", "avi", "mkv"],
-		"cust1Ext": [],
-		"cust2Ext": []
+		"custExt": [],
 	},
 	
 	"paths": {

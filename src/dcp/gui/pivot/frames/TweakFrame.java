@@ -14,6 +14,8 @@ import org.apache.pivot.wtk.Button;
 import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
+import org.apache.pivot.wtk.Component;
+import org.apache.pivot.wtk.ComponentMouseButtonListener;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.FillPane;
@@ -247,17 +249,61 @@ public class TweakFrame extends FillPane implements Bindable
                 setModified(true);//Modified flag*
             }
         });
+        inAppVersion.getComponentMouseButtonListeners().add(new ComponentMouseButtonListener.Adapter() {
+            @Override public boolean mouseClick(Component component, org.apache.pivot.wtk.Mouse.Button bt, int x, int y, int z)
+            {
+                if (bt == org.apache.pivot.wtk.Mouse.Button.LEFT){
+                    int insertPoint = inAppVersion.getInsertionPoint(x);
+                    String chars = inAppVersion.getText();
+                    int start=0, end=0;
+                    boolean finish = false;
+                    for(int i=0; i < chars.length(); i++) {
+                        if (!finish && i == insertPoint) {
+                            finish = true;
+                        }
+                        if (chars.charAt(i) == '.') {
+                            if (!finish)
+                                start = i+1;
+                            else {
+                                end = i;
+                                break;
+                            }
+                        }
+                    }
+                    if (end == 0)
+                        end = chars.length();
+                    inAppVersion.setSelection(start, end-start);
+                }
+                return false;
+            }
+        });
         btIncr.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
-                String[] version = inAppVersion.getText().split("\\.");
-                int number;
-                if (version.length > 1) number = Integer.parseInt(version[version.length-1]);
-                else number = Integer.parseInt(inAppVersion.getText());
-                inAppVersion.setText(inAppVersion.getText().substring(0, inAppVersion.getText().lastIndexOf(".")+1) +
-                        String.valueOf(++number) );
-                if (version.length > 1) inAppVersion.setSelection(inAppVersion.getText().lastIndexOf(".")+1, String.valueOf(number).length());
-                else inAppVersion.setSelection(0, String.valueOf(number).length());
+                if (inAppVersion.getText().matches("[.0-9]+")) {
+                    inAppVersion.requestFocus();
+                    int number;
+                    // Increment selected value
+                    if (inAppVersion.getSelectionLength() > 0 && !inAppVersion.getSelectedText().contains(".")) {
+                        number = Integer.parseInt(inAppVersion.getSelectedText());
+                        int selStart = inAppVersion.getSelectionStart(), selLength = inAppVersion.getSelectionLength();
+                        inAppVersion.setText(inAppVersion.getText().substring(0, selStart)
+                                + String.valueOf(++number)
+                                + inAppVersion.getText().substring(selStart+selLength,
+                                        inAppVersion.getCharacterCount()) );
+                        inAppVersion.setSelection(selStart, selLength);
+                    }
+                    // Increment last version value
+                    else {
+                        String[] version = inAppVersion.getText().split("[.]");
+                        if (version.length > 1) number = Integer.parseInt(version[version.length-1]);
+                        else number = Integer.parseInt(inAppVersion.getText());
+                        inAppVersion.setText(inAppVersion.getText().substring(0, inAppVersion.getText().lastIndexOf(".")+1) +
+                                String.valueOf(++number) );
+                        if (version.length > 1) inAppVersion.setSelection(inAppVersion.getText().lastIndexOf(".")+1, String.valueOf(number).length());
+                        else inAppVersion.setSelection(0, String.valueOf(number).length());
+                    }
+                }
             }
         });
         

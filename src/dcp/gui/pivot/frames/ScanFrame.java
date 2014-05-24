@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.regex.PatternSyntaxException;
 
 import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.Bindable;
@@ -124,8 +125,9 @@ public class ScanFrame extends FillPane implements Bindable
     @BXML private Checkbox cbVid;//Videos
     @BXML private Checkbox cbSound;//Sounds
     @BXML private Checkbox cbDoc;//Documents
-    @BXML private Checkbox cbCust1;//Custom filter 1
-    @BXML private Checkbox cbCust2;//Custom filter 2
+    @BXML private Checkbox cbCustTxt;//Custom set filter
+    @BXML private Checkbox cbCustExpr;//Custom Expression filter
+    @BXML private TextInput inCustExpr;//Custom REGEXP filter
     //Displays
     @BXML private static TreeView treeView;//Tree View for scanned directory
     private static List<TreeNode> treeData = new ArrayList<TreeNode>();//Tree view data
@@ -141,32 +143,38 @@ public class ScanFrame extends FillPane implements Bindable
         filter = new FilenameFilter() {//Checkbox packs filters
             @Override public boolean accept(File dir, String name)
             {
-                if (IOFactory.isFileType(name, FILE_TYPE.Archive))
-                    return cbZip.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Setup))
-                    return cbSetup.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Executable))
-                    return cbExe.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Image))
-                    return cbImg.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Video))
-                    return cbVid.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Sound))
-                    return cbSound.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Document))
-                    return cbDoc.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Custom1))
-                    return cbCust1.isSelected();
-                if (IOFactory.isFileType(name, FILE_TYPE.Custom2))
-                    return cbCust2.isSelected();
-                return true;
+                try {
+                    if (inCustExpr.getText().length() > 0 && name.matches(inCustExpr.getText()))
+                        return !cbCustExpr.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Archive))
+                        return !cbZip.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Setup))
+                        return !cbSetup.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Executable))
+                        return !cbExe.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Image))
+                        return !cbImg.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Video))
+                        return !cbVid.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Sound))
+                        return !cbSound.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Document))
+                        return !cbDoc.isSelected();
+                    if (IOFactory.isFileType(name, FILE_TYPE.Custom))
+                        return !cbCustTxt.isSelected();
+                    return true;
+                }
+                catch (PatternSyntaxException e) {
+                    cbCustExpr.setSelected(false);
+                    return true;
+                }
             }
         };
         
         ADirScan = new Action() {//Directory Scan from Filters/mode Action
             @Override public void perform(Component source) {
                 TaskDirScan scan = new TaskDirScan(singleton, inPath.getText(), treeData, filter,
-                        (String) depthSpinner.getSelectedItem(), cbDir.isSelected());
+                        (String) depthSpinner.getSelectedItem(), !cbDir.isSelected());
                 
                 int res = scan.execute();
                 if (res == 0) {
@@ -193,6 +201,17 @@ public class ScanFrame extends FillPane implements Bindable
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
         recentDirsFill(Master.appConfig.getRecentDirs());
+        
+        // Custom filters fill from settings.json file
+        if (IOFactory.custExt.length > 0) {
+            String customFilters = "(";
+            for (int i = 0; i < 2 && i < IOFactory.custExt.length; i++)
+                customFilters += IOFactory.custExt[i] + " ";
+            customFilters = "Custom " + customFilters.trim().replaceAll(" ", ", ")
+                    + (IOFactory.custExt.length > 2 ? "..)" : ")");
+            Out.print("FACTORY", "Loaded Filter: "+customFilters);
+            cbCustTxt.setButtonData(new ButtonData(customFilters));
+        }
         
         //Select button transitions
         final AppearTransition selectExpTrans = new AppearTransition(btSelect, 150, 20);
@@ -380,16 +399,23 @@ public class ScanFrame extends FillPane implements Bindable
                 Out.print("PIVOT_SCAN","Applied filter: Document");
             }
         });
-        cbCust1.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter 1
+        cbCustTxt.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter SETTINGS
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied custom filter 1");
+                Out.print("PIVOT_SCAN","Applied custom filter");
             }
         });
-        cbCust2.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter 2
+        cbCustExpr.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter REGEXP
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied custom filter 2");
+                Out.print("PIVOT_SCAN","Applied regular expression filter");
+            }
+        });
+        inCustExpr.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
+            @Override public void textChanged(TextInput textInput)
+            {
+                if (cbCustExpr.isSelected())
+                    ADirScan.perform(textInput);//Action launch
             }
         });
         
@@ -510,9 +536,11 @@ public class ScanFrame extends FillPane implements Bindable
                 removeBoxPane.add(btRemove);
                 
                 //Directory Link button
-                ButtonData btData = new ButtonData(IOFactory.imgHistory, dir.getName());
+                ButtonData btData = new ButtonData(IOFactory.imgHistory,
+                        dir.getParentFile().getName() + "/" + dir.getName());
                 final LinkButton btLink = new LinkButton(btData);//LinkButton
                 btLink.setStyles("{color:'#0198E1'}");
+                btLink.setTooltipText(dir.getAbsolutePath());
 
                 final BoxPane linkBoxPane = new BoxPane();//BoxPane
                 linkBoxPane.setOrientation(Orientation.HORIZONTAL);
@@ -523,16 +551,16 @@ public class ScanFrame extends FillPane implements Bindable
                 final FillPane fillPane = new FillPane();//FillPane
                 fillPane.setOrientation(Orientation.HORIZONTAL);
                 fillPane.add(linkBoxPane);
-                fillPane.add(removeBoxPane);
                 
                 final Row row = new Row();//TablePane.Row
                 row.setHeight("24");
                 row.add(fillPane);
+                row.add(removeBoxPane);
                 
                 recent_dirs.getRows().add(row);
                 
                 //Remove button display/hide event
-                fillPane.getComponentMouseListeners().add(new ComponentMouseListener.Adapter() {
+                removeBoxPane.getComponentMouseListeners().add(new ComponentMouseListener.Adapter() {
                     @Override public void mouseOver(Component component)
                     {
                         btRemove.setVisible(true);

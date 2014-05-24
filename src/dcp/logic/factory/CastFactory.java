@@ -78,7 +78,7 @@ public class CastFactory
                 IMG = IOFactory.imgSound;
             else if (IOFactory.isFileType(NAME, FILE_TYPE.Video))
                 IMG = IOFactory.imgVid;
-            else if (IOFactory.isFileType(NAME, FILE_TYPE.Custom1) || IOFactory.isFileType(NAME, FILE_TYPE.Custom2))
+            else if (IOFactory.isFileType(NAME, FILE_TYPE.Custom))
                 IMG = IOFactory.imgCust;
             else
                 IMG = IOFactory.imgFile;//Simple File
