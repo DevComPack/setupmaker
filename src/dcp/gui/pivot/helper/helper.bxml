@@ -46,6 +46,8 @@
 								<Paragraph>  'depth' is reached where folders are packs. </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>Custom filters can be set in 'settings.json' file. </Paragraph>
+								<Paragraph>Regular Expressions can be used to filter a file format </Paragraph>
+								<Paragraph>Example: ".*\.(exe|msi)" will filter all files with 'exe' or 'msi' extension </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>Press Next when list of files is ready.. </Paragraph>
 							</Document>
@@ -101,11 +103,14 @@
 								<Paragraph>Finally, you add some informations for your package </Paragraph>
 								<Paragraph>like the application name and version number. </Paragraph>
 								<Paragraph></Paragraph>
+								<Paragraph>You may select any part of the version and increment it as long as it is a number </Paragraph>
+								<Paragraph>By default, the increment button will add 1 to the last part. </Paragraph>
+								<Paragraph></Paragraph>
 								<Paragraph>Additionally, you can add some resources like a Readme file, License, Images, </Paragraph>
 								<Paragraph>and set the desired target path for your packs and shortcuts, and even more... </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>- A 'forced' install path can't be modified on install. </Paragraph>
-								<Paragraph>  The package will suggest a platform related install path if install path is empty. </Paragraph>
+								<Paragraph>  The package will suggest a platform-related path if install path field is empty. </Paragraph>
 								<Paragraph>- 'Langpacks' are different languages ready for installer's text. </Paragraph>
 								<Paragraph>- A 'version check' enabled installer check Windows' registry for installed version. </Paragraph>
 								<Paragraph></Paragraph>

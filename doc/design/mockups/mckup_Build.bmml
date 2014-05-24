@@ -1,0 +1,95 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="670" measuredH="513" mockupW="533" mockupH="390">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TitleWindow" x="137" y="123" w="533" h="390" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bottomheight>0</bottomheight>
+        <close>true</close>
+        <dragger>true</dragger>
+        <maximizeRestore>true</maximizeRestore>
+        <minimize>true</minimize>
+        <text>DCP%20Setup%20Maker</text>
+        <topheight>26</topheight>
+        <verticalScrollbar>false</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="137" y="147" w="533" h="366" measuredW="200" measuredH="178" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <hrefs>mckup_Scan%26bm%3Bmckup_Scan.bmml%26bm%3Bmckup_Scan.bmml%26bm%3Bmckup_Scan.bmml%2Cmckup_Set%26bm%3Bmckup_Set.bmml%26bm%3Bmckup_Set.bmml%26bm%3Bmckup_Set.bmml%2Cmckup_Tweak%26bm%3Bmckup_Tweak.bmml%26bm%3Bmckup_Tweak.bmml%26bm%3Bmckup_Tweak.bmml%2Cmckup_Build%26bm%3Bmckup_Build.bmml%26bm%3Bmckup_Build.bmml%26bm%3Bmckup_Build.bmml</hrefs>
+        <italic>false</italic>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22479%2C44%2C533%2C73%22%20href%3D%22mckup_Scan.bmml%22%20alt%3D%22mckup_Scan%22%20id%3D%221_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22479%2C71%2C533%2C100%22%20href%3D%22mckup_Set.bmml%22%20alt%3D%22mckup_Set%22%20id%3D%221_1%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22479%2C98%2C533%2C127%22%20href%3D%22mckup_Tweak.bmml%22%20alt%3D%22mckup_Tweak%22%20id%3D%221_2%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22479%2C125%2C533%2C154%22%20href%3D%22mckup_Build.bmml%22%20alt%3D%22mckup_Build%22%20id%3D%221_3%22/%3E%0A</map>
+        <position>right</position>
+        <selectedIndex>3</selectedIndex>
+        <text>Scan%0ASet%0ATweak%0ABuild</text>
+        <underline>false</underline>
+        <verticalScrollbar>false</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::TextInput" x="152" y="162" w="390" h="-1" measuredW="149" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Target%20file%20path%20to%20save</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::NumericStepper" x="358" y="193" w="-1" h="-1" measuredW="57" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>500</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::ProgressBar" x="152" y="280" w="457" h="20" measuredW="100" measuredH="20" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <indeterminate>true</indeterminate>
+        <scrollBarValue>15</scrollBarValue>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::CheckBox" x="282" y="194" w="-1" h="-1" measuredW="76" measuredH="22" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>selected</state>
+        <text>Split%20files</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Button" x="542" y="162" w="-1" h="-1" measuredW="67" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Browse</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Button" x="273" y="227" w="-1" h="-1" measuredW="69" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>16370588</color>
+        <text>Compile</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="303" y="254" w="-1" h="-1" measuredW="155" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>40463</color>
+        <text>Compile%20Result%20Message...</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::HRule" x="152" y="217" w="448" h="-1" measuredW="100" measuredH="10" zOrder="9" locked="false" isInGroup="-1"/>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::ComboBox" x="415" y="193" w="-1" h="-1" measuredW="49" measuredH="23" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>MB</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::TextArea" x="152" y="300" w="457" h="204" measuredW="200" measuredH="140" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <borderColor>16777215</borderColor>
+        <color>0</color>
+        <text>%3E%20Compiler%20OUT%20Stream%0A%3E%20ERROR%20Stream%21%0AText%20area</text>
+        <value>100</value>
+        <verticalScrollbar>true</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Button" x="350" y="227" w="-1" h="-1" measuredW="64" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>11982760</color>
+        <text>Launch</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Button" x="426" y="227" w="-1" h="-1" measuredW="61" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>10470904</color>
+        <text>Debug</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

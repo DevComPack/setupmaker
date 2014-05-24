@@ -42,6 +42,10 @@
 			</TablePane>
 		</TablePane.Row>
 		
+		<TablePane.Row>
+			<Separator styles="{color:'#0198E1'}" />
+		</TablePane.Row>
+		
 		<!-- Scan Options -->
 		<TablePane.Row height="130">
 			<TablePane styles="{horizontalSpacing:5}">
@@ -53,7 +57,7 @@
 				<TablePane.Row>
 				
 					<!-- Recent scanned directories -->
-					<Border title="Recent directories" styles="{color:'#0198E1', padding:4}">
+					<Border title="Recent directories" styles="{color:'#FFFFFF', padding:4}">
 						<TablePane bxml:id="recent_dirs" styles="{showHorizontalGridLines: true,
 					        padding:4, horizontalSpacing:1, verticalSpacing:1, horizontalGridColor:10}">
 					        <columns>
@@ -72,7 +76,7 @@
 					</Border>
 					
 				    <!-- Scan Mode Radio Buttons [default:Simple] -->
-				    <Border title="Scan mode" styles="{color:'#0198E1', padding:4}">
+				    <Border title="Scan mode" styles="{color:'#FFFFFF', padding:4}">
 		        		<TablePane styles="{showVerticalGridLines: true,
 					        padding:4, horizontalSpacing:10, verticalSpacing:5, verticalGridColor:10}">
 		        			<columns>
@@ -100,7 +104,7 @@
 				    </Border>
 					
 					<!-- Files Scan Filters Checkbox -->
-					<Border title="Packs filters" styles="{color:'#0198E1', padding:4}">
+					<Border title="Packs filters" styles="{color:'#FFFFFF', padding:4}">
 						<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
 							<TablePane styles="{showHorizontalGridLines: true, showVerticalGridLines: true,
 						        padding:4, horizontalSpacing:10, verticalSpacing:4,
@@ -178,7 +182,7 @@
 	    			<!-- Tree View -->
 					<FillPane>
 						<Border title="Packs view" styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
-							<FillPane styles="{padding:1, backgroundColor:'#0198E1'}">
+							<FillPane styles="{padding:1}">
 								<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
 									<TreeView bxml:id="treeView" selectMode="none" checkmarksEnabled="false" showMixedCheckmarkState="false" 
 										styles="{showGridLines:'true', showEmptyBranchControls:'false'}" />
