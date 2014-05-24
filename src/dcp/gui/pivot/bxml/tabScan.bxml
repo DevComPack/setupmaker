@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scan:ScanFrame bxml:id="scanFrame" orientation="Vertical"
+	xmlns:scan="dcp.gui.pivot.frames"
+	xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns="org.apache.pivot.wtk"
+    xmlns:content="org.apache.pivot.wtk.content"
+    xmlns:effects="org.apache.pivot.wtk.effects">
+    
+    <bxml:script src="../scripts/variables.js" />
+	<bxml:define>
+        <FileBrowserSheet bxml:id="fileBrowserSheet"/>
+		<ButtonGroup bxml:id="scanMode"/>
+    </bxml:define>
+    
+    <TablePane>
+    	<columns>
+    		<TablePane.Column width="1*" />
+    	</columns>
+    	
+    	<!-- Browse Directory to scan -->
+		<TablePane.Row height="-1">
+			<TablePane styles="{padding:4}">
+				<columns>
+					<TablePane.Column width="-1" />
+					<TablePane.Column width="1*" />
+					<TablePane.Column width="-1" />
+					<TablePane.Column width="-1" />
+				</columns>
+				<TablePane.Row>
+					<BoxPane styles="{verticalAlignment:'center'}">
+						<Label text="Directory to scan: " styles="{color:6}" />
+					</BoxPane>
+					<TextInput bxml:id="inPath" prompt="Path" textSize="50" />
+					<PushButton bxml:id="btRefresh" tooltipText="Refresh" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+						<content:ButtonData icon="$icon_refresh" />
+					</PushButton>
+					<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+						<content:ButtonData text="Browse" icon="$icon_browse" />
+					</PushButton>
+				</TablePane.Row>
+			</TablePane>
+		</TablePane.Row>
+		
+		<!-- Scan Options -->
+		<TablePane.Row height="130">
+			<FillPane orientation="Horizontal">
+				
+				<!-- Recent scanned directories -->
+				<Border title="Recent directories" styles="{color:'#0198E1', padding:4}">
+					<TablePane bxml:id="recent_dirs" styles="{showHorizontalGridLines: true,
+				        padding:4, horizontalSpacing:1, verticalSpacing:1, horizontalGridColor:10}">
+				        <columns>
+				            <TablePane.Column width="1*"/>
+				        </columns>
+				 
+				        <!-- <TablePane.Row height="24">
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <LinkButton styles="{color:'#38ACEC'}">
+								    <content:ButtonData text="last scanned directory" icon="/dcp/gui/icons/history.png"/>
+								</LinkButton>
+				            </BoxPane>
+				        </TablePane.Row> -->
+				    </TablePane>
+				</Border>
+				
+			    <!-- Scan Mode Radio Buttons [default:Simple] -->
+			    <Border title="Scan mode" styles="{color:'#0198E1', padding:4}">
+	        		<TablePane styles="{showVerticalGridLines: true,
+				        padding:4, horizontalSpacing:10, verticalSpacing:5, verticalGridColor:10}">
+	        			<columns>
+	        				<TablePane.Column width="1*"/>
+	        				<TablePane.Column width="80"/>
+	        			</columns>
+	        			
+	        			<TablePane.Row height="20">
+			            	<RadioButton bxml:id="btRadSimple" buttonData="Simple" buttonGroup="$scanMode" />
+		        			<BoxPane styles="{verticalAlignment:'center'}">
+				            	<Checkbox bxml:id="btSelect" tooltipText="Enable/Disable selection" preferredWidth="60"
+				            		selected="false" buttonData="Select" styles="{color:'#0198E1'}" />
+				            </BoxPane>
+			            </TablePane.Row>
+			            
+			            <TablePane.Row height="20">
+				            <RadioButton bxml:id="btRadRecursiv" buttonData="Recursive" buttonGroup="$scanMode" />
+				            <BoxPane bxml:id="depthPane" orientation="horizontal" styles="{verticalAlignment:'center'}">
+				            	<Label text="Depth:" styles="{color:'#0198E1'}"/>
+					            <Spinner bxml:id="depthSpinner" spinnerData="['1', '2', '3', '4', '5', '-']"
+					            	circular="false" selectedIndex="0" styles="{sizeToContent:'true', color:'#0198E1'}" />
+							</BoxPane>
+						</TablePane.Row>
+			    	</TablePane>
+			    </Border>
+				
+				<!-- Files Scan Filters Checkbox -->
+				<Border title="Packs filters" styles="{color:'#0198E1', padding:4}">
+					<TablePane styles="{showHorizontalGridLines: true, showVerticalGridLines: true,
+				        padding:4, horizontalSpacing:10, verticalSpacing:4,
+						horizontalGridColor:10, verticalGridColor:10}">
+				        <columns>
+				            <TablePane.Column width="1*"/>
+				            <TablePane.Column width="1*"/>
+				        </columns>
+				 
+				        <TablePane.Row height="24">
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbDir" buttonData="Directories" selected="true" />
+				            </BoxPane>
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbImg" buttonData="Images" selected="true" />
+				            </BoxPane>
+				        </TablePane.Row>
+				 
+				        <TablePane.Row height="24">
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbZip" buttonData="Archives" selected="true" />
+				            </BoxPane>
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbVid" buttonData="Videos" selected="true" />
+				            </BoxPane>
+				        </TablePane.Row>
+				 
+				        <TablePane.Row height="24">
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbExe" buttonData="Executables" selected="true" />
+				            </BoxPane>
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbSound" buttonData="Sounds" selected="true" />
+				            </BoxPane>
+				        </TablePane.Row>
+				 
+				        <TablePane.Row height="24">
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbSetup" buttonData="Setups" selected="true" />
+				            </BoxPane>
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbDoc" buttonData="Documents" selected="true" />
+				            </BoxPane>
+				        </TablePane.Row>
+				 
+				        <TablePane.Row height="24">
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbCust1" buttonData="Custom 1" selected="false" tooltipText="Edit cust1Ext in settings.json file to use" />
+				            </BoxPane>
+				            <BoxPane styles="{verticalAlignment:'center'}">
+				                <Checkbox bxml:id="cbCust2" buttonData="Custom 2" selected="false" tooltipText="Edit cust2Ext in settings.json file to use" />
+				            </BoxPane>
+				        </TablePane.Row>
+				    </TablePane>
+				</Border>
+				
+			</FillPane>
+		</TablePane.Row>
+    
+	    <!-- Packs Tree View -->
+	    <TablePane.Row height="1*">
+	    	<TablePane>
+	    		<columns>
+	    			<TablePane.Column width="1*"/>
+	    			<TablePane.Column width="-1"/>
+	    		</columns>
+	    		
+	    		<TablePane.Row height="1*">
+	    			
+	    			<!-- Tree View -->
+					<FillPane>
+						<Border title="Packs view" styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
+							<FillPane styles="{padding:1, backgroundColor:'#0198E1'}">
+								<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+									<TreeView bxml:id="treeView" selectMode="none" checkmarksEnabled="false" showMixedCheckmarkState="false" 
+										styles="{showGridLines:'true', showEmptyBranchControls:'false'}" />
+								</ScrollPane>
+							</FillPane>
+					    </Border>
+				    </FillPane>
+				    
+				    <!-- Tree View options -->
+	    			<BoxPane orientation="Vertical" styles="{padding:4}">
+						<PushButton bxml:id="btExpand" enabled="false" tooltipText="Expand all"
+							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+							<content:ButtonData icon="$icon_expand"/>
+							<buttonPressListeners>
+				                importPackage(org.apache.pivot.wtk);
+				                function buttonPressed(button) {
+				                    treeView.expandAll();
+				                }
+				            </buttonPressListeners>
+						</PushButton>
+						<PushButton bxml:id="btCollapse" enabled="false" tooltipText="Collapse all"
+							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+							<content:ButtonData icon="$icon_collapse" />
+							<buttonPressListeners>
+				                importPackage(org.apache.pivot.wtk);
+				                function buttonPressed(button) {
+				                    treeView.collapseAll();
+				                }
+				            </buttonPressListeners>
+						</PushButton>
+						<PushButton bxml:id="btSelectAll" enabled="false" tooltipText="Select all"
+							visible="true" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
+		            		<content:ButtonData icon="$icon_selectall"/>
+		            	</PushButton>
+		            	<PushButton bxml:id="btSelectNone" enabled="false" tooltipText="Clear selection"
+		            		visible="true" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
+		            		<content:ButtonData icon="$icon_selectnone"/>
+		            	</PushButton>
+					</BoxPane>
+	    		</TablePane.Row>
+	    	</TablePane>
+	    </TablePane.Row>
+    
+    </TablePane>
+	    
+</scan:ScanFrame>

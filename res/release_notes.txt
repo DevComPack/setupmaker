@@ -1,0 +1,128 @@
+1.0.3
+=====
+Bug Fixes:
+Code structure update
+BXML files changed to relative one
+Simple scan didn't update on changed selection
+
+1.0.2
+=====
++Bug fixes
++Custom user defined langpack
++Hidden pack option
++Pack Shortcut advanced options for folders and archives
++Suggestions for folder/archive inner files' paths shortcuts
++Packs source path included into save/load
++Path Validator for scanned folder path
++Scanned folder path can now be saved as default configuration
++Changing/Correcting pack paths from Scan folder path if path error
++Editing invalidated source path doesn't scan the folder
++Added DCP version number to save-file for future versions load fix
++Multiple comma separated authors can be added (emails included)
++Helper assistant text updated
++Added Tera-Bytes to split size units
++Packs panel disabled if all packs are required
++Shortcuts panel disabled if no shortcut to install
++Log line selection copies content to clipboard
++Packs can be deleted from Set tab
++Increment version number button
+
+
+1.0.1
+=====
++Bug fixes
++Fixed for Mac OS X based systems
++Apache Pivot library updated from 2.0.2 to 2.0.3
++Tweak option for automated script generation at end of setup
++Input validation for file paths
++Process panel fixed for non-windows os
++Added support for more executable file types (reg, bat, sh, jar)
++Dependency implemented for executable packs
++Packs can have two types of dependency (Group or single Pack)
++Two Custom filters added to scan for advanced users
++Platform OS option for Packs
++Selected option by default for Packs
++HTTP Web Setup builder
++SFTP connection + packs file transfer
++Directories filter enabled for Recursive Scan
++Group rename function button added
+
+0.9
+===
++Bug fixes
++JSON integration for advanced settings
++Fixed for Linux based systems (tested on Ubuntu 13.04)
++New options for Setup window size control
++Helper assistant display binded to the current step
++More detailed assistant tips
++Scroll enabled for Tweak form
++Install Path suggestions from other packs' install paths included
++Dependency options integrated for multi packs selection
++Advanced install groups managing for multiple packs selection
++Save file path display on window title and * flag for unsaved edit
++Shortcuts defined (help, load, save, save as, undo, new group validate, next, previous)
+
+0.8
+===
++Bug fixes
++GUI update
++Save/Load multiple files
++Undo all function button
++Group selection mapped to packs
++Save default settings
++Assisted adding of install groups
++Two new langpacks supported (Dutch, Spanish)
++Language packs selection in Tweak advanced options
+
+0.7
+===
++Bug fixes
++GUI update
++Code optimize
++Recent scanned directories have remove button
++License resource add in tweak
++Status Bar
++Pack Install Name update
++Pack name validator for redundant names
++About info alert dialog implemented
+
+0.6
+===
++Bug fixes
++Build process implemented with Ant scripts instead of process commands
++Application full 4 steps helper assistant at first launch
++Windows Setup execute by java class instead of bat commands
++Izpack xml file resources all grouped into a single install.xml file
++Tweak Application URL analyzed and corrected at compile, no validator
++Readme file resource at Tweak
++More control on shortcuts at Tweak
++Media files filters added to scan options
++Text inputs' width fixed depending on parent component size
++File Browsers root directory connected to other browsers
++Build export package filename binded to application name and version
++Izpack compile log messages display at compile log and debug at console
+
+0.5
+===
++Bug fixes
++GUI update
++Recent scanned directories
++Project save/load to file
++Application configuration saved to file
++One page description helper at first run
++Install mode property set to multiselected packs
++Pack display name at Groups view instead of filename
++Drag and Drop Packs to a Group
++Drag and Drop Pack name to Text inputs
++Set Packs select all/none buttons
+
+0.4
+===
++Bug fixes
++GUI Update
++Integrated Izpack standalone compiler into application
++Packs multiselection properties
++Set tab Groups import button from scan (Groups + Packs)
++Properties update (Name, Silent setup, Override, Shortcut)
++Integrated Sort tab into Set side button for Packs
++Tweak tab (Info dialog + Set install path + Logo)

@@ -1,0 +1,41 @@
+{
+	"extensions": {
+		"archiveExt": ["zip", "tar", "tar.gz"],
+		"exeExt": ["exe", "reg", "bat", "cmd", "sh", "jar"],
+		"setupExt": ["msi"],
+		"docExt": ["txt", "pdf", "doc", "docx", "xml", "rtf", "odt", "xls", "xlsx", "csv"],
+		"imgExt": ["bmp", "jpg", "jpeg", "gif", "png", "ico"],
+		"webExt": ["html", "htm", "php", "js", "asp", "aspx", "css"],
+		"soundExt": ["wav", "mp3", "ogg", "wma"],
+		"vidExt": ["mp4", "mpg", "mpeg", "wmv", "avi", "mkv"],
+		"cust1Ext": [],
+		"cust2Ext": []
+	},
+	
+	"paths": {
+		"savePath": "./saves",
+		"resPath": "./res",
+		"xmlPath": "./res/xml",
+		"langpackPath": "./res/langpacks",
+		"batPath": "./res/bat",
+		"antPath": "./res/ant",
+		"libPath": "./lib/dcp",
+		"targetPath": "./target",
+		"exeTargetDir": "tmp/"
+	},
+	
+	"files": {
+		"confFile": "./conf.dcp",
+		"defDirFile": "./res/default-dir.txt",
+		"xmlIzpackInstall": "./install.xml"
+	},
+	
+	"options": {
+		"izpackWrite": "yes",
+		"izpackCompile": "yes"
+	},
+	
+	"codes": {
+		"iso3": ["eng", "fra", "deu", "spa"]
+	}
+}

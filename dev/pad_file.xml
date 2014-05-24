@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XML_DIZ_INFO>
+	<MASTER_PAD_VERSION_INFO>
+		<MASTER_PAD_VERSION>2.01</MASTER_PAD_VERSION>
+		<MASTER_PAD_EDITOR>Simple PAD Generator 1.01 - http://www.padbuilder.com</MASTER_PAD_EDITOR>
+		<MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authorsto disseminate information to anyone interested in their software products. To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
+	</MASTER_PAD_VERSION_INFO>
+	<Company_Info>
+		<Company_Name>DCP</Company_Name>
+		<Address_1 />
+		<Address_2 />
+		<City_Town />
+		<State_Province />
+		<Zip_Postal_Code />
+		<Country>Morocco</Country>
+		<Company_WebSite_URL>http://devcompack.sourceforge.net/</Company_WebSite_URL>
+		<Contact_Info>
+			<Author_First_Name>Said</Author_First_Name>
+			<Author_Last_Name>SAID EL IMAM</Author_Last_Name>
+			<Author_Email>saidelimam@gmail.com</Author_Email>
+			<Contact_First_Name>Said</Contact_First_Name>
+			<Contact_Last_Name>SAID EL IMAM</Contact_Last_Name>
+			<Contact_Email>saidelimam@gmail.com</Contact_Email>
+		</Contact_Info>
+		<Support_Info>
+			<Sales_Email />
+			<Support_Email>jackred@users.sourceforge.net</Support_Email>
+			<General_Email>jackred@users.sourceforge.net</General_Email>
+			<Sales_Phone />
+			<Support_Phone />
+			<General_Phone />
+			<Fax_Phone />
+		</Support_Info>
+	</Company_Info>
+	<Program_Info>
+		<Program_Name>DCP Setup Maker</Program_Name>
+		<Program_Version>1.0.1</Program_Version>
+		<Program_Release_Month>10</Program_Release_Month>
+		<Program_Release_Day>29</Program_Release_Day>
+		<Program_Release_Year>2013</Program_Release_Year>
+		<Program_Cost_Dollars>0</Program_Cost_Dollars>
+		<Program_Cost_Other_Code>0</Program_Cost_Other_Code>
+		<Program_Cost_Other>0</Program_Cost_Other>
+		<Program_Type>Freeware</Program_Type>
+		<Program_Release_Status>Beta</Program_Release_Status>
+		<Program_Install_Support />
+		<Program_OS_Support>Win8 x64,Win8 x32,Win7 x64,Win7 x32,WinXP,WinVista,WinServer,Windows2000,Windows2003,Windows CE,Unix,Linux,Mac OS X,Mac OSX,Java</Program_OS_Support>
+		<Program_Language>Java</Program_Language>
+		<Program_Change_Info>1.0.1 changelog:
++Bug fixes
++Apache Pivot library updated from 2.0.2 to 2.0.3
++Tweak option for automated script generation at end of setup
++Input validation for file paths
++Process panel fixed for non-windows os
++Added support for more executable file types (reg, bat, sh, jar)
++Dependency implemented for executable packs
++Packs can have two types of dependency (Group or single Pack)
++Two Custom filters added to scan for advanced users
++Destiny OS option for Packs
++Selected option by default for Packs
++HTTP Web Setup builder
++SFTP connection + packs file transfer
++Directories filter enabled for Recursive Scan
++Group rename function button added</Program_Change_Info>
+		<Program_Specific_Category>Installation builders</Program_Specific_Category>
+		<Program_Category_Class>Installers</Program_Category_Class>
+		<Program_Categories>Developer Tools</Program_Categories>
+		<Program_System_Requirements>Java</Program_System_Requirements>
+		<Includes_JAVA_VM>N</Includes_JAVA_VM>
+		<Includes_VB_Runtime>N</Includes_VB_Runtime>
+		<Includes_DirectX>N</Includes_DirectX>
+		<File_Info>
+			<Filename_Versioned>DCPSetupMaker-1.0.1.jar</Filename_Versioned>
+			<Filename_Previous />
+			<Filename_Generic />
+			<Filename_Long>DCPSetupMaker-1.0.1.jar</Filename_Long>
+			<File_Size_Bytes>20971520</File_Size_Bytes>
+			<File_Size_K>20480</File_Size_K>
+			<File_Size_MB>20</File_Size_MB>
+		</File_Info>
+		<Expire_Info>
+			<Has_Expire_Info>N</Has_Expire_Info>
+			<Expire_Count />
+			<Expire_Based_On />
+			<Expire_Other_Info />
+			<Expire_Month />
+			<Expire_Day />
+			<Expire_Year />
+		</Expire_Info>
+	</Program_Info>
+	<Program_Descriptions>
+		<English>
+			<Keywords>izpack, install, installer, setup, installation, package, java, builder, creator, maker, deploy</Keywords>
+			<Char_Desc_45>Powerful cross-platform install builder</Char_Desc_45>
+			<Char_Desc_80>Compact application designed to create Java installers using IzPack</Char_Desc_80>
+			<Char_Desc_250>Open source application to generate Java installers, using IzPack, for a set of packages and applications.</Char_Desc_250>
+			<Char_Desc_450>Great and powerful application to generate stable and multi-platform Java installers.
+			
+Its intuitive UI and exceptional ease of use makes it very easy to build complex installers with large amounts of files. The whole process is done step by step through a wizard-like interface, filling in fields and setting up files to finally build your package.</Char_Desc_450>
+			<Char_Desc_2000>Open source application that generates Java installers, using IzPack, for a set of packages and applications as executable jar file.
+
+It is mainly about creating installers for what you need quickly and efficiently, following 3 simple steps: Scan, Set and Tweak to Build your package.
+
+1 - Scan the directory containing the files you want to include in your package.
+2 - Set the parameters for your packs, including what depends on what, what is required, what must be executed...
+3 - Tweak the final custom settings for your application to be ready.
+
+Powered by IzPack, Apache Pivot, Apache Ant, StaxMate, Woodstox, TrueZip, WinReg</Char_Desc_2000>
+		</English>
+	</Program_Descriptions>
+	<Web_Info>
+		<Application_URLs>
+			<Application_Info_URL>http://devcompack.sourceforge.net/</Application_Info_URL>
+			<Application_Order_URL>https://sourceforge.net/projects/devcompack</Application_Order_URL>
+			<Application_Screenshot_URL>http://devcompack.sourceforge.net/files/releases/1.0/screenshots/02.png</Application_Screenshot_URL>
+			<Application_Icon_URL>http://devcompack.sourceforge.net/files/img/dcp_logo.png</Application_Icon_URL>
+			<Application_XML_File_URL>http://devcompack.sourceforge.net/files/releases/pad_file.xml</Application_XML_File_URL>
+		</Application_URLs>
+		<Download_URLs>
+			<Primary_Download_URL>http://sourceforge.net/projects/devcompack/files/latest/download</Primary_Download_URL>
+			<Secondary_Download_URL>http://sourceforge.net/projects/devcompack/files/DCP%201.0/1.0.1/DCPSetupMaker-1.0.1.jar/download</Secondary_Download_URL>
+			<Additional_Download_URL_1>http://sourceforge.net/projects/devcompack/files/DCP%201.0/1.0.1/DCP-1.0.1.zip/download</Additional_Download_URL_1>
+			<Additional_Download_URL_2 />
+		</Download_URLs>
+	</Web_Info>
+	<Permissions>
+		<Distribution_Permissions />
+		<EULA />
+	</Permissions>
+</XML_DIZ_INFO>
