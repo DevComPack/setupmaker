@@ -9,13 +9,15 @@ Version increment format check + focus
 --
 + Enhancements:
 GUI update
+Assistant update
 Recent scanned directories display with parent + full path on tooltip
 Improved filtering system
 Custom filters show up in UI
 Second custom filter replaced with regexp filtering
+Packs tooltip displays full path to pack on disk
 Automated version number parts selection
 Version Increment applies to selected part or last part by default
-Assistant update
+
 
 1.0.2
 =====

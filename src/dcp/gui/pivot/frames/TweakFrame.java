@@ -250,7 +250,7 @@ public class TweakFrame extends FillPane implements Bindable
             }
         });
         inAppVersion.getComponentMouseButtonListeners().add(new ComponentMouseButtonListener.Adapter() {
-            @Override public boolean mouseClick(Component component, org.apache.pivot.wtk.Mouse.Button bt, int x, int y, int z)
+            @Override public boolean mouseClick(Component component, org.apache.pivot.wtk.Mouse.Button bt, int x, int y, int count)
             {
                 if (bt == org.apache.pivot.wtk.Mouse.Button.LEFT){
                     int insertPoint = inAppVersion.getInsertionPoint(x);
@@ -274,7 +274,7 @@ public class TweakFrame extends FillPane implements Bindable
                         end = chars.length();
                     inAppVersion.setSelection(start, end-start);
                 }
-                return false;
+                return super.mouseClick(component, bt, x, y, count);
             }
         });
         btIncr.getButtonPressListeners().add(new ButtonPressListener() {

@@ -20,6 +20,15 @@ var icon_set = "/dcp/gui/icons/set.png";
 var icon_tweak = "/dcp/gui/icons/tweak.png";
 var icon_build = "/dcp/gui/icons/build.png";
 
+var icon_archive = "/dcp/gui/icons/archive.png";
+var icon_document = "/dcp/gui/icons/document.png";
+var icon_executable = "/dcp/gui/icons/executable.png";
+var icon_file = "/dcp/gui/icons/file.png";
+var icon_image = "/dcp/gui/icons/image.png";
+var icon_setup = "/dcp/gui/icons/setup.png";
+var icon_sound = "/dcp/gui/icons/sound.png";
+var icon_video = "/dcp/gui/icons/video.png";
+
 var icon_refresh = "/dcp/gui/icons/refresh.png";
 var icon_folder = "/dcp/gui/icons/folder.png";
 var icon_browse = "/dcp/gui/icons/browse.png";

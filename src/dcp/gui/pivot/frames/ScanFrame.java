@@ -202,13 +202,14 @@ public class ScanFrame extends FillPane implements Bindable
     {
         recentDirsFill(Master.appConfig.getRecentDirs());
         
-        // Custom filters fill from settings.json file
+        // Custom filters fill from settings.json file to UI
         if (IOFactory.custExt.length > 0) {
+            final int maxExts = 3;// number of extensions to show in UI
             String customFilters = "(";
-            for (int i = 0; i < 2 && i < IOFactory.custExt.length; i++)
+            for (int i = 0; i < maxExts && i < IOFactory.custExt.length; i++)
                 customFilters += IOFactory.custExt[i] + " ";
             customFilters = "Custom " + customFilters.trim().replaceAll(" ", ", ")
-                    + (IOFactory.custExt.length > 2 ? "..)" : ")");
+                    + (IOFactory.custExt.length > maxExts ? "..)" : ")");
             Out.print("FACTORY", "Loaded Filter: "+customFilters);
             cbCustTxt.setButtonData(new ButtonData(customFilters));
         }
@@ -553,7 +554,7 @@ public class ScanFrame extends FillPane implements Bindable
                 fillPane.add(linkBoxPane);
                 
                 final Row row = new Row();//TablePane.Row
-                row.setHeight("24");
+                row.setHeight("16");
                 row.add(fillPane);
                 row.add(removeBoxPane);
                 

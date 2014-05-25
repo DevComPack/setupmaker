@@ -21,6 +21,7 @@ import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
 import org.apache.pivot.wtk.Component;
+import org.apache.pivot.wtk.ComponentMouseListener;
 import org.apache.pivot.wtk.ComponentStateListener;
 import org.apache.pivot.wtk.Dialog;
 import org.apache.pivot.wtk.DialogCloseListener;
@@ -477,6 +478,15 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
+        // Table view row listener (adds tooltip text for pack's path to tableview)
+        tableView.getComponentMouseListeners().add(new ComponentMouseListener.Adapter() {
+            @Override public boolean mouseMove(Component component, int x, int y)
+            {
+                Pack p = (Pack) tableView.getTableData().get(tableView.getRowAt(y));
+                tableView.setTooltipText(p.getPath());
+                return super.mouseMove(component, x, y);
+            }
+        });
         //Table view Sort listener (+ Update priorities of Sort tab)
         tableView.getTableViewSortListeners().add(new TableViewSortListener.Adapter() {
             @Override public void sortChanged(TableView tableView)
