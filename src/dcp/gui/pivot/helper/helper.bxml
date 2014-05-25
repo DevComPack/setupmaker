@@ -6,8 +6,6 @@
     xmlns="org.apache.pivot.wtk"
 	xmlns:content="org.apache.pivot.wtk.content">
     
-    <bxml:script src="../scripts/variables.js" />
-    
     <BoxPane styles="{verticalAlignment:'bottom'}">
         <TablePane>
             <columns>
@@ -167,7 +165,7 @@
 	                <BoxPane styles="{verticalAlignment:'center', horizontalAlignment:'right'}">
 	                    <PushButton styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}"
 	                        ButtonPressListener.buttonPressed="sheet.close()">
-	                        <content:ButtonData text="Close" icon="$icon_delete" />
+	                        <content:ButtonData text="Close" icon="/dcp/gui/icons/delete.png" />
 	                    </PushButton>
 	                </BoxPane>
 	        	</FillPane>

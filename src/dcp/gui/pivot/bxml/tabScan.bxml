@@ -5,7 +5,6 @@
 	xmlns="org.apache.pivot.wtk" xmlns:content="org.apache.pivot.wtk.content"
 	xmlns:effects="org.apache.pivot.wtk.effects">
 
-	<bxml:script src="../scripts/variables.js" />
 	<bxml:define>
 		<FileBrowserSheet bxml:id="fileBrowserSheet" />
 		<ButtonGroup bxml:id="scanMode" />
@@ -32,11 +31,11 @@
 					<TextInput bxml:id="inPath" prompt="Path" textSize="50" />
 					<PushButton bxml:id="btRefresh" tooltipText="Refresh"
 						styles="{toolbar:'true', backgroundColor:'WHITE'}">
-						<content:ButtonData icon="$icon_refresh" />
+						<content:ButtonData icon="/dcp/gui/icons/refresh.png" />
 					</PushButton>
 					<PushButton bxml:id="btBrowse"
 						styles="{toolbar:'true', backgroundColor:'WHITE'}">
-						<content:ButtonData text="Browse" icon="$icon_browse" />
+						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 					</PushButton>
 				</TablePane.Row>
 			</TablePane>
@@ -125,7 +124,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbDir" selected="false">
-													<content:ButtonData text="Directories" icon="$icon_folder" />
+													<content:ButtonData text="Directories" icon="/dcp/gui/icons/folder.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -133,7 +132,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbDoc" selected="false">
-													<content:ButtonData text="Documents" icon="$icon_document" />
+													<content:ButtonData text="Documents" icon="/dcp/gui/icons/document.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -141,7 +140,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbZip" selected="false">
-													<content:ButtonData text="Archives" icon="$icon_archive" />
+													<content:ButtonData text="Archives" icon="/dcp/gui/icons/archive.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -149,7 +148,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbExe" selected="false">
-													<content:ButtonData text="Executables" icon="$icon_executable" />
+													<content:ButtonData text="Executables" icon="/dcp/gui/icons/executable.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -157,7 +156,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbSetup" selected="false">
-													<content:ButtonData text="Setups" icon="$icon_setup" />
+													<content:ButtonData text="Setups" icon="/dcp/gui/icons/setup.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -165,7 +164,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbImg" selected="false">
-													<content:ButtonData text="Images" icon="$icon_image" />
+													<content:ButtonData text="Images" icon="/dcp/gui/icons/image.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -173,7 +172,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbVid" selected="false">
-													<content:ButtonData text="Videos" icon="$icon_video" />
+													<content:ButtonData text="Videos" icon="/dcp/gui/icons/video.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -181,7 +180,7 @@
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbSound" selected="false">
-													<content:ButtonData text="Sounds" icon="$icon_sound" />
+													<content:ButtonData text="Sounds" icon="/dcp/gui/icons/sound.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
@@ -243,7 +242,7 @@
 						<PushButton bxml:id="btExpand" enabled="false"
 							tooltipText="Expand all"
 							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-							<content:ButtonData icon="$icon_expand" />
+							<content:ButtonData icon="/dcp/gui/icons/expand.png" />
 							<buttonPressListeners>
 								importPackage(org.apache.pivot.wtk);
 								function buttonPressed(button) {
@@ -254,7 +253,7 @@
 						<PushButton bxml:id="btCollapse" enabled="false"
 							tooltipText="Collapse all"
 							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-							<content:ButtonData icon="$icon_collapse" />
+							<content:ButtonData icon="/dcp/gui/icons/collapse.png" />
 							<buttonPressListeners>
 								importPackage(org.apache.pivot.wtk);
 								function buttonPressed(button) {
@@ -265,12 +264,12 @@
 						<PushButton bxml:id="btSelectAll" enabled="false"
 							tooltipText="Select all" visible="true"
 							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
-							<content:ButtonData icon="$icon_selectall" />
+							<content:ButtonData icon="/dcp/gui/icons/selectall.png" />
 						</PushButton>
 						<PushButton bxml:id="btSelectNone" enabled="false"
 							tooltipText="Clear selection" visible="true"
 							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
-							<content:ButtonData icon="$icon_selectnone" />
+							<content:ButtonData icon="/dcp/gui/icons/selectnone.png" />
 						</PushButton>
 					</BoxPane>
 				</TablePane.Row>

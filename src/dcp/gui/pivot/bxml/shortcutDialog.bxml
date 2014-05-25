@@ -7,7 +7,6 @@
     xmlns:dialog="dcp.gui.pivot.frames"
     xmlns:model="dcp.logic.model">
     
-    <bxml:script src="../scripts/variables.js" />
     <bxml:define>
         <ButtonGroup bxml:id="shortcutType"/>
     </bxml:define>

@@ -7,7 +7,6 @@
     xmlns="org.apache.pivot.wtk"
     xmlns:content="org.apache.pivot.wtk.content">
     
-    <bxml:script src="../scripts/variables.js" />
 	<userData>
 	    <decorator>
 	        <effects:FadeDecorator opacity="0.33"/>
@@ -44,10 +43,10 @@
 		<TablePane.Row height="-1">
 			<BoxPane orientation="Horizontal" styles="{verticalAlignment:'center', horizontalAlignment:'right'}">
 				<PushButton bxml:id="btSave" tooltipText="Save data" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-					<content:ButtonData icon="$icon_save" />
+					<content:ButtonData icon="/dcp/gui/icons/save.png" />
 				</PushButton>
 				<PushButton bxml:id="btLoad" tooltipText="Load data" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-					<content:ButtonData icon="$icon_load" />
+					<content:ButtonData icon="/dcp/gui/icons/load.png" />
 				</PushButton>
 			</BoxPane>
 		</TablePane.Row>

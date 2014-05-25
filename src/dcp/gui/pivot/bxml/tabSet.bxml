@@ -7,7 +7,6 @@
     xmlns:set="dcp.gui.pivot.frames"
     xmlns:model="dcp.logic.model">
     
-    <bxml:script src="../scripts/variables.js" />
 	<bxml:define>
         <ButtonGroup bxml:id="installMode"/>
         <ButtonGroup bxml:id="installOS"/>
@@ -51,21 +50,21 @@
 												<!-- Packs buttons -->
 												<BoxPane orientation="Vertical" styles="{padding:{left:0,right:4,top:10,bottom:5}, horizontalAlignment:'center'}">
 													<PushButton bxml:id="btSelectAll" tooltipText="Select all" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-														<content:ButtonData icon="$icon_selectall"/>
+														<content:ButtonData icon="/dcp/gui/icons/selectall.png"/>
 													</PushButton>
 													<PushButton bxml:id="btSelectNone" tooltipText="Clear selection" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-														<content:ButtonData icon="$icon_selectnone"/>
+														<content:ButtonData icon="/dcp/gui/icons/selectnone.png"/>
 													</PushButton>
 													<PushButton bxml:id="btAdd" tooltipText="Add selected pack(s) to selected group"
 														styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-														<content:ButtonData icon="$icon_right" />
+														<content:ButtonData icon="/dcp/gui/icons/right.png" />
 													</PushButton>
 													<PushButton bxml:id="btSort" tooltipText="Sort packs priority" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-														<content:ButtonData icon="$icon_sort"/>
+														<content:ButtonData icon="/dcp/gui/icons/sort.png"/>
 													</PushButton>
 													<PushButton bxml:id="btDelete" tooltipText="Delete selected pack(s)"
 														styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
-														<content:ButtonData icon="$icon_delete" />
+														<content:ButtonData icon="/dcp/gui/icons/delete.png" />
 													</PushButton>
 												</BoxPane>
 												
@@ -125,10 +124,10 @@
 												<BoxPane orientation="Vertical" styles="{padding:{left:4,right:0,top:10,bottom:5}, horizontalAlignment:'center'}">
 													<PushButton bxml:id="btImport" tooltipText="Import groups from folders" enabled="false"
 														styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-														<content:ButtonData icon="$icon_import"/>
+														<content:ButtonData icon="/dcp/gui/icons/import.png"/>
 													</PushButton>
 													<PushButton bxml:id="btExpand" tooltipText="Expand all" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-														<content:ButtonData icon="$icon_expand"/>
+														<content:ButtonData icon="/dcp/gui/icons/expand.png"/>
 														<buttonPressListeners>
 											                importPackage(org.apache.pivot.wtk);
 											                function buttonPressed(button) {
@@ -137,7 +136,7 @@
 											            </buttonPressListeners>
 													</PushButton>
 													<PushButton bxml:id="btCollapse" tooltipText="Collapse all" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-														<content:ButtonData icon="$icon_collapse" />
+														<content:ButtonData icon="/dcp/gui/icons/collapse.png" />
 														<buttonPressListeners>
 											                importPackage(org.apache.pivot.wtk);
 											                function buttonPressed(button) {
@@ -147,19 +146,19 @@
 													</PushButton>
 													<PushButton bxml:id="btNew" tooltipText="Create new group"
 														styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-														<content:ButtonData icon="$icon_add" />
+														<content:ButtonData icon="/dcp/gui/icons/add.png" />
 													</PushButton>
 													<PushButton bxml:id="btRename" tooltipText="Rename selected group"
 														styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-														<content:ButtonData icon="$icon_edit" />
+														<content:ButtonData icon="/dcp/gui/icons/edit.png" />
 													</PushButton>
 													<PushButton bxml:id="btRemove" tooltipText="Remove selected group/pack"
 														styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
-														<content:ButtonData icon="$icon_delete" />
+														<content:ButtonData icon="/dcp/gui/icons/delete.png" />
 													</PushButton>
 													<PushButton bxml:id="btClear" tooltipText="Clear all groups"
 														styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
-														<content:ButtonData icon="$icon_clear" />
+														<content:ButtonData icon="/dcp/gui/icons/clear.png" />
 													</PushButton>
 												</BoxPane>
 											</TablePane.Row>
@@ -271,7 +270,7 @@
 													    	<ListButton bxml:id="lbDependency" enabled="false" repeatable="true" listSize="10" />
 															<PushButton bxml:id="btDepErase" tooltipText="Clear dependency" enabled="false"
 																styles="{toolbar:'true', backgroundColor:'WHITE'}">
-																<content:ButtonData icon="$icon_erase" />
+																<content:ButtonData icon="/dcp/gui/icons/erase.png" />
 															</PushButton>
 														</TablePane.Row>
 													</TablePane>
@@ -292,7 +291,7 @@
 															<TextInput bxml:id="inInstallGroups" prompt="ig1,ig2" enabled="false" />
 															<PushButton bxml:id="btIGErase" tooltipText="Clear install groups" enabled="false"
 																styles="{toolbar:'true', backgroundColor:'WHITE'}">
-																<content:ButtonData icon="$icon_erase" />
+																<content:ButtonData icon="/dcp/gui/icons/erase.png" />
 															</PushButton>
 														</TablePane.Row>
 													</TablePane>
@@ -341,7 +340,7 @@
 									    					<Checkbox bxml:id="cbShortcut" buttonData="Shortcut" tooltipText="A shortcut to this pack will be created"
 									    						selected="false" enabled="false" />
 															<PushButton bxml:id="btShortcutAdvanced" tooltipText="Advanced shortcut options" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}" enabled="false">
-										    					<content:ButtonData icon="$icon_setting" />
+										    					<content:ButtonData icon="/dcp/gui/icons/setting.png" />
 										    				</PushButton>
 									    				</BoxPane>
 								    				</FillPane>
@@ -375,7 +374,7 @@
 															<TextInput bxml:id="inPInstallPath" enabled="false" tooltipText="folder relative to install path" prompt="folder/" />
 															<PushButton bxml:id="btIPErase" tooltipText="Clear install path" enabled="false"
 																styles="{toolbar:'true', backgroundColor:'WHITE'}">
-																<content:ButtonData icon="$icon_erase" />
+																<content:ButtonData icon="/dcp/gui/icons/erase.png" />
 															</PushButton>
 														</TablePane.Row>
 													</TablePane>

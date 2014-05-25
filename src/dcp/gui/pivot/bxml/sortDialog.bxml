@@ -7,7 +7,6 @@
     xmlns:sort="dcp.gui.pivot.frames"
     xmlns:model="dcp.logic.model">
     
-    <bxml:script src="../scripts/variables.js" />
     <bxml:define>
         <ButtonGroup bxml:id="sortMode"/>
     </bxml:define>
@@ -30,16 +29,16 @@
 					<!-- Buttons to change priority -->
 					<BoxPane orientation="Vertical" styles="{horizontalAlignment:'center', verticalAlignment:'center'}">
 						<PushButton bxml:id="btTop" tooltipText="first" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-							<content:ButtonData icon="$icon_top" />
+							<content:ButtonData icon="/dcp/gui/icons/top.png" />
 						</PushButton>
 						<PushButton bxml:id="btUp" tooltipText="up" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-							<content:ButtonData icon="$icon_up" />
+							<content:ButtonData icon="/dcp/gui/icons/up.png" />
 						</PushButton>
 						<PushButton bxml:id="btDown" tooltipText="down" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-							<content:ButtonData icon="$icon_down" />
+							<content:ButtonData icon="/dcp/gui/icons/down.png" />
 						</PushButton>
 						<PushButton bxml:id="btBottom" tooltipText="last" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-							<content:ButtonData icon="$icon_bottom" />
+							<content:ButtonData icon="/dcp/gui/icons/bottom.png" />
 						</PushButton>
 					</BoxPane>
 					

@@ -8,9 +8,8 @@
     xmlns:bxml="http://pivot.apache.org/bxml"
 	xmlns:content="org.apache.pivot.wtk.content">
 	
-	<bxml:script src="scripts/variables.js"/>
 	<bxml:define>
-        <bxml:include bxml:id="helper" src="helper/helper.bxml"/>
+        <bxml:include bxml:id="helper" src="/dcp/gui/pivot/helper/helper.bxml"/>
         <FileBrowserSheet bxml:id="saveFileBrowserSheet"/>
         <FileBrowserSheet bxml:id="loadFileBrowserSheet"/>
 	</bxml:define>
@@ -45,42 +44,42 @@
 				            <TablePane.Filler />
 				            
 				            <PushButton bxml:id="btBack" enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="$icon_back" />
+				            	<content:ButtonData icon="/dcp/gui/icons/back.png" />
 				            </PushButton>
 				            <PushButton bxml:id="btNext" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-				            	<content:ButtonData text="Next" icon="$icon_next" />
+				            	<content:ButtonData text="Next" icon="/dcp/gui/icons/next.png" />
 				            </PushButton>
 				            
 				            <TablePane.Filler />
 				            
 				            <PushButton bxml:id="btSaveAs" tooltipText="Save as.." visible="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="$icon_saveas" />
+				            	<content:ButtonData icon="/dcp/gui/icons/saveas.png" />
 				            </PushButton>
 				            <PushButton bxml:id="btSave" tooltipText="Save" visible="true" enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="$icon_save" />
+				            	<content:ButtonData icon="/dcp/gui/icons/save.png" />
 				            </PushButton>
 				            
 				            <PushButton bxml:id="btLoad" tooltipText="Load" visible="true" enabled="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="$icon_load" />
+				            	<content:ButtonData icon="/dcp/gui/icons/load.png" />
 				            </PushButton>
 				            
 				            <PushButton bxml:id="btUndo" tooltipText="Undo all" visible="true" enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="$icon_undo" />
+				            	<content:ButtonData icon="/dcp/gui/icons/undo.png" />
 				            </PushButton>
 				            
 				            <PushButton bxml:id="btDefault" tooltipText="Save default settings" visible="true" enabled="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="$icon_default" />
+				            	<content:ButtonData icon="/dcp/gui/icons/default.png" />
 				            </PushButton>
 				            
 				        	<BoxPane styles="{horizontalAlignment:'right', verticalAlignment:'center'}">
 				            	<PushButton bxml:id="btHelp" tooltipText="Launch application helper" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-					            	<content:ButtonData icon="$icon_help" />
+					            	<content:ButtonData icon="/dcp/gui/icons/help.png" />
 					            </PushButton>
 				            </BoxPane>
 				            
 				        	<BoxPane styles="{horizontalAlignment:'right', verticalAlignment:'center'}">
 				            	<PushButton bxml:id="btInfo" tooltipText="About" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-					            	<content:ButtonData icon="$icon_info" />
+					            	<content:ButtonData icon="/dcp/gui/icons/info.png" />
 						            <buttonPressListeners>
 						                importPackage(org.apache.pivot.wtk);
 						                function buttonPressed(button) {
@@ -100,7 +99,7 @@
 				<!-- Scan Tab -->
 			    <FillPane enabled="true">
 			        <TabPane.tabData>
-			            <content:ButtonData text="1-Scan" icon="$icon_scan" />
+			            <content:ButtonData text="1-Scan" icon="/dcp/gui/icons/scan.png" />
 			        </TabPane.tabData>
 			
 			        <Border styles="{padding:2}">
@@ -111,7 +110,7 @@
 				<!-- Setting Tab -->
 			    <FillPane enabled="false">
 			        <TabPane.tabData>
-			            <content:ButtonData text="2-Set" icon="$icon_set" />
+			            <content:ButtonData text="2-Set" icon="/dcp/gui/icons/set.png" />
 			        </TabPane.tabData>
 			
 			        <Border styles="{padding:2}">
@@ -122,7 +121,7 @@
 				<!-- Tweak Tab -->
 			    <FillPane enabled="false">
 			        <TabPane.tabData>
-			            <content:ButtonData text="3-Tweak" icon="$icon_tweak" />
+			            <content:ButtonData text="3-Tweak" icon="/dcp/gui/icons/tweak.png" />
 			        </TabPane.tabData>
 			
 			        <Border styles="{padding:2}">
@@ -133,7 +132,7 @@
 				<!-- Build Tab -->
 			    <FillPane enabled="false">
 			        <TabPane.tabData>
-			            <content:ButtonData text="4-Build" icon="$icon_build" />
+			            <content:ButtonData text="4-Build" icon="/dcp/gui/icons/build.png" />
 			        </TabPane.tabData>
 			
 			        <Border styles="{padding:2}">

@@ -187,7 +187,8 @@ public class Master extends Window implements Application, Bindable
         Out.print("FACTORY", "Data loaded to memory");
         
         Locale.setDefault(Locale.ENGLISH);//Set default UI language to English
-        window = (Window) (new BXMLSerializer()).readObject(getClass().getResource("master.bxml"));
+        BXMLSerializer bxmlSerializer = new BXMLSerializer();
+        window = (Window) bxmlSerializer.readObject(getClass().getResource("master.bxml"));
         window.open(display);
         
         //Helper launch if first time

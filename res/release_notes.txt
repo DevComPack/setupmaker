@@ -1,8 +1,8 @@
 1.0.3
 =====
 * Bug Fixes:
+Fixed for Java 8
 Code structure update
-BXML file paths changed to relative one
 Simple scan didn't update on changed selection
 Filters now are enabled when selected
 Version increment format check + focus

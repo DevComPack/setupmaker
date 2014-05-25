@@ -6,7 +6,6 @@
     xmlns="org.apache.pivot.wtk"
     xmlns:content="org.apache.pivot.wtk.content">
     
-    <bxml:script src="../scripts/variables.js" />
 	<bxml:define>
         <FileBrowserSheet bxml:id="fileBrowserSheet"/>
         <FileBrowserSheet bxml:id="fBSReadme"/>
@@ -25,7 +24,7 @@
 		            <TextInput bxml:id="inAppName" textSize="31" prompt="Name" />
 		            <TextInput bxml:id="inAppVersion" textSize="8" prompt="Version" />
 					<PushButton bxml:id="btIncr" styles="{toolbar:'true', backgroundColor:'WHITE'}" tooltipText="Increment selected version part">
-						<content:ButtonData text="" icon="$icon_up" />
+						<content:ButtonData text="" icon="/dcp/gui/icons/up.png" />
 					</PushButton>
 		        </BoxPane>
 		        <BoxPane Form.label="Window Size">
@@ -48,7 +47,7 @@
 		    	<BoxPane Form.label="Path">
 					<TextInput bxml:id="installPath" prompt="Install path" textSize="50" />
 					<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-						<content:ButtonData text="Browse" icon="$icon_browse" />
+						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 					</PushButton>
 				</BoxPane>
 				<Checkbox bxml:id="cbForce" Form.label="Force" styles="{color:'#38ACEC'}"
@@ -60,25 +59,25 @@
 		        <BoxPane Form.label="Readme">
 		            <TextInput bxml:id="inReadme" prompt="Readme Path" textSize="50" />
 			    	<PushButton bxml:id="btBrowseReadme" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-			    		<content:ButtonData text="Browse" icon="$icon_browse" />
+			    		<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 			    	</PushButton>
 		        </BoxPane>
 		        <BoxPane Form.label="License">
 		            <TextInput bxml:id="inLicense" prompt="License Path" textSize="50" />
 			    	<PushButton bxml:id="btBrowseLicense" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-			    		<content:ButtonData text="Browse" icon="$icon_browse" />
+			    		<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 			    	</PushButton>
 		        </BoxPane>
 		        <BoxPane Form.label="Logo">
 		            <TextInput bxml:id="inLogo" prompt="Image Path" textSize="50" />
 			    	<PushButton bxml:id="btBrowseLogo" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-			    		<content:ButtonData text="Browse" icon="$icon_browse" />
+			    		<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 			    	</PushButton>
 		        </BoxPane>
 		        <BoxPane Form.label="Side Logo">
 		            <TextInput bxml:id="inSideLogo" prompt="Image Path" textSize="50" />
 			    	<PushButton bxml:id="btBrowseSideLogo" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-			    		<content:ButtonData text="Browse" icon="$icon_browse" />
+			    		<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 			    	</PushButton>
 		        </BoxPane>
 		    </Form.Section>
@@ -122,7 +121,7 @@
 			            	<TextInput bxml:id="inCustomLangpack" prompt="Langpack File Path" textSize="33" enabled="false"
 			            		tooltipText="path to user defined xml file for custom language" />
 					    	<PushButton bxml:id="btBrowseCustomLangpack" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-					    		<content:ButtonData text="Browse" icon="$icon_browse" />
+					    		<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 					    	</PushButton>
 					    </BoxPane>
 		   			</BoxPane>

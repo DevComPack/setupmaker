@@ -6,7 +6,6 @@
     xmlns="org.apache.pivot.wtk"
     xmlns:content="org.apache.pivot.wtk.content">
     
-    <bxml:script src="../scripts/variables.js" />
 	<bxml:define>
         <FileBrowserSheet bxml:id="fileBrowserSheet"/>
         <bxml:include bxml:id="sftpDialog" src="/dcp/gui/pivot/bxml/sftpDialog.bxml"/>
@@ -31,7 +30,7 @@
 					</BoxPane>
 					<TextInput bxml:id="outPath" prompt="Path" textSize="50" />
 					<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-						<content:ButtonData text="Browse" icon="$icon_browse" />
+						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 					</PushButton>
 				</TablePane.Row>
 		    </TablePane>
@@ -50,7 +49,7 @@
 			    	<Checkbox bxml:id="cbWeb" tooltipText="Make HTTP Web based Setup" buttonData="Web Setup" selected="false" />
 			    	<TextInput bxml:id="inWebDir" text="http://" tooltipText="Download URL" prompt="Download URL" preferredWidth="150" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
 					<PushButton bxml:id="btWebConfig" tooltipText="Transfer packs via SFTP" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}" enabled="false">
-    					<content:ButtonData icon="$icon_setting" />
+    					<content:ButtonData icon="/dcp/gui/icons/setting.png" />
     				</PushButton>
 		        </BoxPane>
 	 		</FillPane>
@@ -65,13 +64,13 @@
 			<BoxPane orientation="vertical" styles="{padding:4, horizontalAlignment:'center', verticalAlignment:'center'}">
 			    <BoxPane orientation="horizontal" styles="{padding:4, horizontalAlignment:'center', verticalAlignment:'center'}">
 			        <PushButton bxml:id="btCompile" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-    					<content:ButtonData text="Compile" icon="$icon_compile" />
+    					<content:ButtonData text="Compile" icon="/dcp/gui/icons/compile.png" />
     				</PushButton>
 			        <PushButton bxml:id="btLaunch" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-    					<content:ButtonData text="Launch" icon="$icon_launch" />
+    					<content:ButtonData text="Launch" icon="/dcp/gui/icons/start.png" />
     				</PushButton>
 			        <PushButton bxml:id="btDebug" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
-    					<content:ButtonData text="Debug" icon="$icon_debug" />
+    					<content:ButtonData text="Debug" icon="/dcp/gui/icons/debug.png" />
     				</PushButton>
 			    </BoxPane>
 			    <!-- Log Result -->
