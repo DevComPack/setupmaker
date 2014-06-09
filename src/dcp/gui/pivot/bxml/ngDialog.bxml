@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<set:NGDialog title="Add New Group" modal="true"
+<frames:NGDialog title="Add New Group" modal="true"
     xmlns:bxml="http://pivot.apache.org/bxml"
-    xmlns:set="dcp.gui.pivot.frames"
+    xmlns:frames="dcp.gui.pivot.frames"
     xmlns:effects="org.apache.pivot.wtk.effects"
     xmlns="org.apache.pivot.wtk">
     
@@ -55,4 +55,4 @@
         </TablePane.Row>
     </TablePane>
     
-</set:NGDialog>
+</frames:NGDialog>

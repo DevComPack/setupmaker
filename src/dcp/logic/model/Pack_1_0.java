@@ -2,7 +2,6 @@ package dcp.logic.model;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.regex.Pattern;
 
 import org.apache.pivot.util.concurrent.TaskExecutionException;
 import org.apache.pivot.wtk.content.TreeNode;
@@ -13,7 +12,7 @@ import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.factory.TypeFactory.PLATFORM;
 
 
-public class Pack implements Serializable
+public class Pack_1_0 implements Serializable
 {
     /**
      * Write Pack data to save file
@@ -24,7 +23,7 @@ public class Pack implements Serializable
     private Group group = null;//Pack member of this group
     private String installGroups = "";//Install Groups *
     private Group dependsOnGroup = null;//Group dependency
-    private Pack dependsOnPack = null;//Pack dependency
+    private Pack_1_0 dependsOnPack = null;//Pack dependency
     //Attributes
     private String name = "";//File Name
     private FILE_TYPE fileType = FILE_TYPE.File;//File type
@@ -37,7 +36,6 @@ public class Pack implements Serializable
     //Info
     private int priority = 0;//Pack install priority
     private String installName = "";//Pack Install Name
-    private String installVersion = "1.0.0";//Pack Install Version
     private String description = "";//Pack description
     //Booleans
     private boolean silent_install = false;//If Setup install is passive
@@ -50,40 +48,29 @@ public class Pack implements Serializable
     private String icon = "";//Icon file path
     private transient Image imgIcon = null;//Icon Image
     
-    //Functions
+    //Constructors
     public String getBaseName() {//Name without extension
         if (name.contains("."))
             return name.substring(0,name.lastIndexOf("."));
         return name;
     }
-    private String getVersionFromName() {
-        try {
-            if (Pattern.compile(".*[0-9]+([._\\-a-zA-Z][0-9]+)+.*").matcher(name).find()) {
-                String[] borders = name.split("[0-9]+([._\\-a-zA-Z][0-9]+)+[a-zA-Z]?");
-                return name.substring(borders[0].length(), name.length() - (borders.length > 1?borders[1].length():0));
-            }
-            return "1.0.0";
-        }
-        catch(IllegalStateException e) {
-            System.out.println(e);
-            return "1.0.0";
-        }
-    }
-    
-    //Constructors
-    public Pack(String NAME, Image ICON) {
-        this.name = NAME;
-        this.description = name;
-        this.installName = name;
-        this.installVersion = getVersionFromName();
+    /*private String genInstallName() {//generate install name from file base name
+        //base name begins with Uppercase + blank spaces
+        String bn = getBaseName();
+        String in = bn.substring(0, 1).toUpperCase() + bn.substring(1).replace('_', ' ');
+        return in.replace('-', ' ').trim();
+    }//*/
+    public Pack_1_0(String NAME, Image ICON) {
+        name = NAME;
+        description = name;
+        installName = name;//genInstallName();
         setIcon(ICON);
     }
-    public Pack(Pack pack) {//Copy another Pack data
+    public Pack_1_0(Pack_1_0 pack) {//Copy another Pack data
         name = pack.name;
         priority = pack.priority;
         fileType = pack.fileType;
         installName = pack.installName;
-        installVersion = pack.installVersion;
         size = pack.size;
         path = pack.path;
         group = pack.group;
@@ -104,39 +91,13 @@ public class Pack implements Serializable
         icon = pack.icon;
         imgIcon = pack.imgIcon;
     }
-    public Pack(Pack_1_0 pack) {// Update Pack from version 1.0.x
-        name = pack.getName();
-        priority = pack.getPriority();
-        fileType = pack.getFileType();
-        installName = pack.getInstallName();
-        installVersion = getVersionFromName();
-        size = pack.getSize();
-        path = pack.getPath();
-        group = pack.getGroup();
-        installType = pack.getInstallType();
-        if (pack.getInstallOs()!=null) installOs = pack.getInstallOs();
-        installPath = pack.getInstallPath();
-        shortcutPath = pack.getShortcutPath();
-        installGroups = pack.getInstallGroups();
-        description = pack.getDescription();
-        if (pack.getGroupDependency() !=null) dependsOnGroup = pack.getGroupDependency();
-        if (pack.getPackDependency() !=null) dependsOnPack = new Pack(pack.getPackDependency());
-        required = pack.isRequired();
-        selected = pack.isSelected();
-        hidden = pack.isHidden();
-        override = pack.isOverride();
-        shortcut = pack.isShortcut();
-        silent_install = pack.isSilentInstall();
-        icon = pack.getIconPath();
-        imgIcon = pack.getIcon();
-    }
     
     //Overrides
     @Override public boolean equals(Object obj)//Packs compare
     {
         if (obj==null) return false;
-        if (obj instanceof Pack) {//With a Pack model
-            Pack P = (Pack) obj;
+        if (obj instanceof Pack_1_0) {//With a Pack model
+            Pack_1_0 P = (Pack_1_0) obj;
             return this.name.toLowerCase().equals(P.getName().toLowerCase())//Name
                     && this.path.toLowerCase().equals(P.getPath().toLowerCase());//Path
         }
@@ -181,8 +142,8 @@ public class Pack implements Serializable
     
     public Group getGroupDependency() { return dependsOnGroup; }
     public void setGroupDependency(Group group) { this.dependsOnGroup = group; this.dependsOnPack = null; }
-    public Pack getPackDependency() { return dependsOnPack; }
-    public void setPackDependency(Pack pack) { this.dependsOnPack = pack; this.dependsOnGroup = null; }
+    public Pack_1_0 getPackDependency() { return dependsOnPack; }
+    public void setPackDependency(Pack_1_0 pack) { this.dependsOnPack = pack; this.dependsOnGroup = null; }
     
     
     //Getters & Setters
@@ -221,9 +182,6 @@ public class Pack implements Serializable
     //Info functions
     public String getInstallName() { return installName; }
     public void setInstallName(String installName) { this.installName = installName; }
-
-    public String getInstallVersion() { return installVersion; }
-    public void setInstallVersion(String installVersion) { this.installVersion = installVersion; }
     
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }

@@ -315,6 +315,18 @@ public class ScanFrame extends FillPane implements Bindable
                 }
             }
         });
+        btExpand.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                treeView.expandAll();
+            }
+        });
+        btCollapse.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                treeView.collapseAll();
+            }
+        });
         
         //Activate Checkmarks for tree view button listener
         btSelect.getButtonStateListeners().add(new ButtonStateListener() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ship:BuildFrame orientation="Vertical"
-	xmlns:ship="dcp.gui.pivot.frames" 
+<frames:BuildFrame orientation="Vertical"
+	xmlns:frames="dcp.gui.pivot.frames" 
 	xmlns:bxml="http://pivot.apache.org/bxml"
     xmlns="org.apache.pivot.wtk"
     xmlns:content="org.apache.pivot.wtk.content">
@@ -18,17 +18,15 @@
 		
 		<!-- Browse Area -->
 		<TablePane.Row height="-1">
-			<TablePane styles="{padding:4}">
+			<TablePane styles="{padding:4, horizontalSpacing:5}">
 				<columns>
 					<TablePane.Column width="-1" />
 					<TablePane.Column width="1*" />
 					<TablePane.Column width="-1" />
 				</columns>
 				<TablePane.Row>
-					<BoxPane styles="{verticalAlignment:'center'}">
-						<Label text="Setup export path: " styles="{color:6}" />
-					</BoxPane>
-					<TextInput bxml:id="outPath" prompt="Path" textSize="50" />
+		    		<ListButton bxml:id="lbBuild" enabled="true" repeatable="false" listSize="10" listData="['IzPack']" tooltipText="Build type" />
+					<TextInput bxml:id="outPath" prompt="Target Path" tooltipText="Target Path" textSize="50" />
 					<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
 						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 					</PushButton>
@@ -103,4 +101,4 @@
 	
 	</TablePane>
 	    
-</ship:BuildFrame>
+</frames:BuildFrame>

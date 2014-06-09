@@ -30,10 +30,10 @@
 	<classpathentry kind="lib" path="lib/izpack/nimbus.jar"/>
 	<classpathentry kind="lib" path="lib/izpack/substance.jar"/>
 	<classpathentry kind="lib" path="lib/json/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-charts-2.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-core-2.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-2.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-terra-2.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/web/jsch-0.1.50.jar"/>
+	<classpathentry kind="lib" path="lib/pivot/pivot-charts-2.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/pivot/pivot-core-2.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-2.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-terra-2.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

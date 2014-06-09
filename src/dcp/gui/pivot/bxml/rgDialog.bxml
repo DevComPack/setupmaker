@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<set:RGDialog title="Rename Group" bxml:id="rgdialog" modal="true"
+<frames:RGDialog title="Rename Group" bxml:id="rgdialog" modal="true"
     xmlns:bxml="http://pivot.apache.org/bxml"
-    xmlns:set="dcp.gui.pivot.frames"
+    xmlns:frames="dcp.gui.pivot.frames"
     xmlns:effects="org.apache.pivot.wtk.effects"
     xmlns="org.apache.pivot.wtk">
     
@@ -41,4 +41,4 @@
         
     </TablePane>
     
-</set:RGDialog>
+</frames:RGDialog>

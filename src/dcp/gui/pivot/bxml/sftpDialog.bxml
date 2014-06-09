@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<web:SftpDialog title="SFTP configuration" modal="true"
+<frames:SftpDialog title="SFTP configuration" modal="true"
     xmlns:bxml="http://pivot.apache.org/bxml"
-    xmlns:web="dcp.gui.pivot.frames"
+    xmlns:frames="dcp.gui.pivot.frames"
     xmlns:effects="org.apache.pivot.wtk.effects"
     xmlns="org.apache.pivot.wtk"
     xmlns:content="org.apache.pivot.wtk.content">
@@ -52,4 +52,4 @@
 		</TablePane.Row>
   	</TablePane>
     
-</web:SftpDialog>
+</frames:SftpDialog>

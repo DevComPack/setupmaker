@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<dialog:ShortcutDialog bxml:id="shortcutDialog" title="Pack shortcut advanced options"
+<frames:ShortcutDialog bxml:id="shortcutDialog" title="Pack shortcut advanced options"
 	xmlns:bxml="http://pivot.apache.org/bxml"
     xmlns="org.apache.pivot.wtk"
     xmlns:content="org.apache.pivot.wtk.content"
-    xmlns:dialog="dcp.gui.pivot.frames"
+    xmlns:frames="dcp.gui.pivot.frames"
     xmlns:model="dcp.logic.model">
     
     <bxml:define>
@@ -36,4 +36,4 @@
 		</TablePane>
 	</BoxPane>
 	
-</dialog:ShortcutDialog>
+</frames:ShortcutDialog>

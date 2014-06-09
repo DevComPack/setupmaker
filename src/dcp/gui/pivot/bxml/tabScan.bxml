@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<scan:ScanFrame bxml:id="scanFrame" orientation="Vertical"
-	xmlns:scan="dcp.gui.pivot.frames" xmlns:bxml="http://pivot.apache.org/bxml"
+<frames:ScanFrame bxml:id="scanFrame" orientation="Vertical"
+	xmlns:frames="dcp.gui.pivot.frames" xmlns:bxml="http://pivot.apache.org/bxml"
 	xmlns="org.apache.pivot.wtk" xmlns:content="org.apache.pivot.wtk.content"
 	xmlns:effects="org.apache.pivot.wtk.effects">
 
@@ -35,7 +35,8 @@
 					</PushButton>
 					<PushButton bxml:id="btBrowse"
 						styles="{toolbar:'true', backgroundColor:'WHITE'}">
-						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
+						<content:ButtonData text="Browse"
+							icon="/dcp/gui/icons/browse.png" />
 					</PushButton>
 				</TablePane.Row>
 			</TablePane>
@@ -45,17 +46,11 @@
 			<Separator styles="{color:'#0198E1'}" />
 		</TablePane.Row>
 
-		<!-- Packs Tree View -->
+		<!-- Packs/Options View -->
 		<TablePane.Row height="1*">
-			<TablePane>
-				<columns>
-					<TablePane.Column width="200" />
-					<TablePane.Column width="1*" />
-					<TablePane.Column width="-1" />
-				</columns>
-
-				<TablePane.Row height="1*">
-
+			<SplitPane bxml:id="hSplitPane" orientation="horizontal"
+				splitRatio="0.25">
+				<left>
 					<!-- Scan Options -->
 					<TablePane>
 						<columns>
@@ -72,7 +67,7 @@
 										<TablePane.Column width="1*" />
 										<TablePane.Column width="80" />
 									</columns>
-	
+
 									<TablePane.Row height="20">
 										<RadioButton bxml:id="btRadSimple" buttonData="Simple"
 											buttonGroup="$scanMode" />
@@ -82,7 +77,7 @@
 												styles="{color:'#0198E1'}" />
 										</BoxPane>
 									</TablePane.Row>
-	
+
 									<TablePane.Row height="20">
 										<RadioButton bxml:id="btRadRecursiv" buttonData="Recursive"
 											buttonGroup="$scanMode" />
@@ -97,7 +92,7 @@
 								</TablePane>
 							</Border>
 						</TablePane.Row>
-						
+
 						<TablePane.Row>
 							<Separator styles="{color:'#DDDDDD'}" />
 						</TablePane.Row>
@@ -107,84 +102,101 @@
 							<Border title="Packs filters" styles="{color:'#FFFFFF', padding:4}">
 								<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 									verticalScrollBarPolicy="fill_to_capacity">
-									<TablePane styles="{showHorizontalGridLines: true, padding:4, horizontalSpacing:10, horizontalGridColor:10}">
+									<TablePane
+										styles="{showHorizontalGridLines: true, padding:4, horizontalSpacing:10, horizontalGridColor:10}">
 										<columns>
 											<TablePane.Column width="1*" />
 										</columns>
-										
+
 										<TablePane.Row height="24">
-											<BoxPane styles="{verticalAlignment:'center'}">
-												<Checkbox bxml:id="cbCustExpr" selected="false"
-													tooltipText="REGEXP filtering" />
-												<TextInput bxml:id="inCustExpr" prompt="Expression"
-													textSize="10" tooltipText="Regular expression to filter" />
-											</BoxPane>
+											<TablePane styles="{horizontalSpacing:5}">
+												<columns>
+													<TablePane.Column width="-1" />
+													<TablePane.Column width="1*" />
+												</columns>
+												<TablePane.Row>
+													<BoxPane styles="{verticalAlignment:'center'}">
+														<Checkbox bxml:id="cbCustExpr" selected="false"
+															tooltipText="REGEXP filtering" />
+													</BoxPane>
+													<TextInput bxml:id="inCustExpr" prompt="Expression"
+														textSize="8" tooltipText="Regular expression to filter" />
+												</TablePane.Row>
+											</TablePane>
 										</TablePane.Row>
-	
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbDir" selected="false">
-													<content:ButtonData text="Directories" icon="/dcp/gui/icons/folder.png" />
+													<content:ButtonData text="Directories"
+														icon="/dcp/gui/icons/folder.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-										
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbDoc" selected="false">
-													<content:ButtonData text="Documents" icon="/dcp/gui/icons/document.png" />
+													<content:ButtonData text="Documents"
+														icon="/dcp/gui/icons/document.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-	
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbZip" selected="false">
-													<content:ButtonData text="Archives" icon="/dcp/gui/icons/archive.png" />
+													<content:ButtonData text="Archives"
+														icon="/dcp/gui/icons/archive.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-	
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbExe" selected="false">
-													<content:ButtonData text="Executables" icon="/dcp/gui/icons/executable.png" />
+													<content:ButtonData text="Executables"
+														icon="/dcp/gui/icons/executable.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-	
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbSetup" selected="false">
-													<content:ButtonData text="Setups" icon="/dcp/gui/icons/setup.png" />
+													<content:ButtonData text="Setups"
+														icon="/dcp/gui/icons/setup.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-										
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbImg" selected="false">
-													<content:ButtonData text="Images" icon="/dcp/gui/icons/image.png" />
+													<content:ButtonData text="Images"
+														icon="/dcp/gui/icons/image.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-										
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbVid" selected="false">
-													<content:ButtonData text="Videos" icon="/dcp/gui/icons/video.png" />
+													<content:ButtonData text="Videos"
+														icon="/dcp/gui/icons/video.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-										
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbSound" selected="false">
-													<content:ButtonData text="Sounds" icon="/dcp/gui/icons/sound.png" />
+													<content:ButtonData text="Sounds"
+														icon="/dcp/gui/icons/sound.png" />
 												</Checkbox>
 											</BoxPane>
 										</TablePane.Row>
-	
+
 										<TablePane.Row height="24">
 											<BoxPane styles="{verticalAlignment:'center'}">
 												<Checkbox bxml:id="cbCustTxt" buttonData="Custom"
@@ -197,11 +209,11 @@
 								</ScrollPane>
 							</Border>
 						</TablePane.Row>
-						
+
 						<TablePane.Row>
 							<Separator styles="{color:'#DDDDDD'}" />
 						</TablePane.Row>
-						
+
 						<!-- Recent scanned directories -->
 						<TablePane.Row height="130">
 							<Border title="Recent directories" styles="{color:'#FFFFFF', padding:4}">
@@ -212,70 +224,69 @@
 										<TablePane.Column width="5*" />
 										<TablePane.Column width="1*" />
 									</columns>
-	
+
 									<!-- <TablePane.Row height="24"> <BoxPane styles="{verticalAlignment:'center'}"> 
 										<LinkButton styles="{color:'#38ACEC'}"> <content:ButtonData text="last scanned 
 										directory" icon="/dcp/gui/icons/history.png"/> </LinkButton> </BoxPane> </TablePane.Row> -->
 								</TablePane>
 							</Border>
 						</TablePane.Row>
-						
+
 					</TablePane>
+				</left>
+				<right>
+					<TablePane>
+						<columns>
+							<TablePane.Column width="1*" />
+							<TablePane.Column width="-1" />
+						</columns>
 
-					<!-- Packs Tree View -->
-					<FillPane>
-						<Border title="Packs view"
-							styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
-							<FillPane styles="{padding:1}">
-								<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
-									verticalScrollBarPolicy="fill_to_capacity">
-									<TreeView bxml:id="treeView" selectMode="none"
-										checkmarksEnabled="false" showMixedCheckmarkState="false"
-										styles="{showGridLines:'true', showEmptyBranchControls:'false'}" />
-								</ScrollPane>
+						<TablePane.Row height="1*">
+
+							<!-- Packs Tree View -->
+							<FillPane>
+								<Border title="Packs view"
+									styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
+									<FillPane styles="{padding:1}">
+										<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
+											verticalScrollBarPolicy="fill_to_capacity">
+											<TreeView bxml:id="treeView" selectMode="multi"
+												checkmarksEnabled="false" showMixedCheckmarkState="false"
+												styles="{showGridLines:'true', showEmptyBranchControls:'false'}" />
+										</ScrollPane>
+									</FillPane>
+								</Border>
 							</FillPane>
-						</Border>
-					</FillPane>
 
-					<!-- Tree View options -->
-					<BoxPane orientation="Vertical" styles="{padding:4}">
-						<PushButton bxml:id="btExpand" enabled="false"
-							tooltipText="Expand all"
-							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-							<content:ButtonData icon="/dcp/gui/icons/expand.png" />
-							<buttonPressListeners>
-								importPackage(org.apache.pivot.wtk);
-								function buttonPressed(button) {
-								treeView.expandAll();
-								}
-							</buttonPressListeners>
-						</PushButton>
-						<PushButton bxml:id="btCollapse" enabled="false"
-							tooltipText="Collapse all"
-							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-							<content:ButtonData icon="/dcp/gui/icons/collapse.png" />
-							<buttonPressListeners>
-								importPackage(org.apache.pivot.wtk);
-								function buttonPressed(button) {
-								treeView.collapseAll();
-								}
-							</buttonPressListeners>
-						</PushButton>
-						<PushButton bxml:id="btSelectAll" enabled="false"
-							tooltipText="Select all" visible="true"
-							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
-							<content:ButtonData icon="/dcp/gui/icons/selectall.png" />
-						</PushButton>
-						<PushButton bxml:id="btSelectNone" enabled="false"
-							tooltipText="Clear selection" visible="true"
-							styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
-							<content:ButtonData icon="/dcp/gui/icons/selectnone.png" />
-						</PushButton>
-					</BoxPane>
-				</TablePane.Row>
-			</TablePane>
+							<!-- Tree View options -->
+							<BoxPane orientation="Vertical" styles="{padding:4}">
+								<PushButton bxml:id="btExpand" enabled="false"
+									tooltipText="Expand all"
+									styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+									<content:ButtonData icon="/dcp/gui/icons/expand.png" />
+								</PushButton>
+								<PushButton bxml:id="btCollapse" enabled="false"
+									tooltipText="Collapse all"
+									styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+									<content:ButtonData icon="/dcp/gui/icons/collapse.png" />
+								</PushButton>
+								<PushButton bxml:id="btSelectAll" enabled="false"
+									tooltipText="Select all" visible="true"
+									styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
+									<content:ButtonData icon="/dcp/gui/icons/selectall.png" />
+								</PushButton>
+								<PushButton bxml:id="btSelectNone" enabled="false"
+									tooltipText="Clear selection" visible="true"
+									styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0198E1'}">
+									<content:ButtonData icon="/dcp/gui/icons/selectnone.png" />
+								</PushButton>
+							</BoxPane>
+						</TablePane.Row>
+					</TablePane>
+				</right>
+			</SplitPane>
 		</TablePane.Row>
 
 	</TablePane>
 
-</scan:ScanFrame>
+</frames:ScanFrame>

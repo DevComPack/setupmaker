@@ -24,6 +24,7 @@ import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.FillPane;
 import org.apache.pivot.wtk.ImageView;
 import org.apache.pivot.wtk.Label;
+import org.apache.pivot.wtk.ListButton;
 import org.apache.pivot.wtk.ListView;
 import org.apache.pivot.wtk.ListViewItemListener;
 import org.apache.pivot.wtk.ListViewSelectionListener;
@@ -64,7 +65,8 @@ public class BuildFrame extends FillPane implements Bindable
     public static void setModified(boolean VALUE) { modified = VALUE; }
     public static boolean isModified() { return modified; }
     //Browse Area
-    @BXML FileBrowserSheet fileBrowserSheet;//File Browser
+    @BXML private ListButton lbBuild;// Build type list button
+    @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
     @BXML private PushButton btBrowse;//Browse button
     @BXML private TextInput outPath;//Path Text Input
     //Split Area
@@ -109,6 +111,7 @@ public class BuildFrame extends FillPane implements Bindable
         }
         
         //Data Binding
+        lbBuild.setSelectedItem("IzPack");// 'IzPack' build type by default
         logger.setListData(dcp.main.log.Out.getCompileLog());//Bind compile log tags to List view logger
         
         //Action Binding

@@ -119,6 +119,8 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private PushButton btDelete;//Delete selected Pack(s)
     //Group options
     @BXML private PushButton btImport;//Groups import from Recursive scan
+    @BXML private PushButton btExpand;// Expand all groups
+    @BXML private PushButton btCollapse;// Collapse all groups
     @BXML private PushButton btNew;//Add new group
     @BXML private PushButton btRename;//Rename group
     @BXML private PushButton btRemove;//Remove selected Pack from group
@@ -153,6 +155,7 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private RadioButton rbCopy;//Copy the pack to the install directory
     //Text Inputs
     @BXML private TextInput inName;//Pack install name
+    @BXML private TextInput inVersion;//Pack install version
     @BXML private TextInput inPInstallPath;//Pack's install Path directory
     @BXML private TextInput inInstallGroups;//Pack/Group's install Groups
     @BXML private LinkButton cbDepType;//Dependency type (group or pack)
@@ -376,6 +379,14 @@ public class SetFrame extends FillPane implements Bindable
                 return true;
             }
         });
+        inVersion.setValidator(new Validator() {
+            @Override public boolean isValid(String str)
+            {
+                if (str.length() > 20)
+                    return false;
+                return true;
+            }
+        });
         
         //Packs panel buttons
         btSort.getButtonPressListeners().add(new ButtonPressListener() {
@@ -401,6 +412,18 @@ public class SetFrame extends FillPane implements Bindable
         });
         
         //Groups panel buttons
+        btExpand.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                treeView.expandAll();
+            }
+        });
+        btCollapse.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                treeView.collapseAll();
+            }
+        });
         btNew.getButtonPressListeners().add(new ButtonPressListener() {//Add a new group to the tree view
             @Override public void buttonPressed(Button bt)
             {
@@ -482,8 +505,12 @@ public class SetFrame extends FillPane implements Bindable
         tableView.getComponentMouseListeners().add(new ComponentMouseListener.Adapter() {
             @Override public boolean mouseMove(Component component, int x, int y)
             {
-                Pack p = (Pack) tableView.getTableData().get(tableView.getRowAt(y));
-                tableView.setTooltipText(p.getPath());
+                int index = tableView.getRowAt(y);
+                if (index >= 0) {// if over a pack line
+                    Pack p = (Pack) tableView.getTableData().get(index);
+                    tableView.setTooltipText(p.getPath());
+                }
+                else tableView.setTooltipText("Packs");
                 return super.mouseMove(component, x, y);
             }
         });
@@ -893,6 +920,18 @@ public class SetFrame extends FillPane implements Bindable
                 super.dragExit(component);
             }
         });
+        inVersion.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
+            @Override public void textChanged(TextInput TI)
+            {
+                if (TI.isValid()) {
+                    Pack P = getSelectedPack();
+                    if (P != null && TI.isEnabled()) {
+                        String newVersion = (TI.getText().equals(""))?P.getInstallVersion():TI.getText();
+                        P.setInstallVersion(newVersion);//Change pack version
+                    }
+                }
+            }
+        });
         
         //Description text change save into pack data
         inDescription.getTextAreaContentListeners().add(new TextAreaContentListener.Adapter() {
@@ -1212,6 +1251,8 @@ public class SetFrame extends FillPane implements Bindable
         
         inName.setEnabled(false);
         inName.setText("");
+        inVersion.setEnabled(false);
+        inVersion.setText("");
         inPInstallPath.setEnabled(false);
         inPInstallPath.setText("");
 
@@ -1264,6 +1305,7 @@ public class SetFrame extends FillPane implements Bindable
         inDescription.setEnabled(true);//Set Description
         inPInstallPath.setEnabled(true);//Set Install Path
         inName.setEnabled(true);//Set Pack Name
+        inVersion.setEnabled(true);// Set pack Version
         inInstallGroups.setEnabled(true);//Set Install Groups
         lbDependency.setEnabled(true);//Set Dependency
         cbDepType.setEnabled(true);//Dependency Type
@@ -1324,6 +1366,7 @@ public class SetFrame extends FillPane implements Bindable
         inDescription.setText(pack.getDescription());
         inPInstallPath.setText(pack.getInstallPath());
         inName.setText(pack.getInstallName());
+        inVersion.setText(pack.getInstallVersion());
         inInstallGroups.setText(pack.getInstallGroups());
         
         boolean GD = isGroupDependency();

@@ -1,3 +1,20 @@
+1.1.0
+=====
+Apache Pivot update to 2.0.4
+--
+* Bug Fixes:
+Set tab listbox circular mode disabled
+Packs tooltip text correction on empty area
+Scan Packs TableView selection enabled
+Expand/Collapse buttons fix for Java 8
+--
++ Enhancements:
+Split panel on Scan tab's sidebar
+RegExp filter textinput length is now dynamic
+Pack version info
+Version extract from pack file name
+
+
 1.0.3
 =====
 * Bug Fixes:

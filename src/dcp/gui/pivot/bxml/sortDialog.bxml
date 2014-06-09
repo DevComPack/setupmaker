@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<sort:SortDialog bxml:id="sortDialog" title="Packs priorities"
+<frames:SortDialog bxml:id="sortDialog" title="Packs priorities"
 	xmlns:bxml="http://pivot.apache.org/bxml"
     xmlns="org.apache.pivot.wtk"
     xmlns:content="org.apache.pivot.wtk.content"
-    xmlns:sort="dcp.gui.pivot.frames"
+    xmlns:frames="dcp.gui.pivot.frames"
     xmlns:model="dcp.logic.model">
     
     <bxml:define>
@@ -98,4 +98,4 @@
 		
 	</TablePane>
 	    
-</sort:SortDialog>
+</frames:SortDialog>
