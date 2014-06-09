@@ -56,7 +56,8 @@ public class Pack implements Serializable
             return name.substring(0,name.lastIndexOf("."));
         return name;
     }
-    private String getVersionFromName() {
+    // extract version number from file name<
+    public static String getVersionFromName(String name) {
         try {
             if (Pattern.compile(".*[0-9]+([._\\-a-zA-Z][0-9]+)+.*").matcher(name).find()) {
                 String[] borders = name.split("[0-9]+([._\\-a-zA-Z][0-9]+)+[a-zA-Z]?");
@@ -75,7 +76,7 @@ public class Pack implements Serializable
         this.name = NAME;
         this.description = name;
         this.installName = name;
-        this.installVersion = getVersionFromName();
+        this.installVersion = getVersionFromName(name);
         setIcon(ICON);
     }
     public Pack(Pack pack) {//Copy another Pack data
@@ -103,32 +104,6 @@ public class Pack implements Serializable
         silent_install = pack.silent_install;
         icon = pack.icon;
         imgIcon = pack.imgIcon;
-    }
-    public Pack(Pack_1_0 pack) {// Update Pack from version 1.0.x
-        name = pack.getName();
-        priority = pack.getPriority();
-        fileType = pack.getFileType();
-        installName = pack.getInstallName();
-        installVersion = getVersionFromName();
-        size = pack.getSize();
-        path = pack.getPath();
-        group = pack.getGroup();
-        installType = pack.getInstallType();
-        if (pack.getInstallOs()!=null) installOs = pack.getInstallOs();
-        installPath = pack.getInstallPath();
-        shortcutPath = pack.getShortcutPath();
-        installGroups = pack.getInstallGroups();
-        description = pack.getDescription();
-        if (pack.getGroupDependency() !=null) dependsOnGroup = pack.getGroupDependency();
-        if (pack.getPackDependency() !=null) dependsOnPack = new Pack(pack.getPackDependency());
-        required = pack.isRequired();
-        selected = pack.isSelected();
-        hidden = pack.isHidden();
-        override = pack.isOverride();
-        shortcut = pack.isShortcut();
-        silent_install = pack.isSilentInstall();
-        icon = pack.getIconPath();
-        imgIcon = pack.getIcon();
     }
     
     //Overrides

@@ -52,7 +52,6 @@ import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
-import dcp.logic.model.Pack_1_0;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.model.config.AppConfig;
 import dcp.logic.model.config.SetupConfig;
@@ -580,11 +579,9 @@ public class Master extends Window implements Application, Bindable
                 packs = new ArrayList<Pack>();
                 int nPacks = is.readInt();
                 for(int i = 0; i<nPacks; i++) {
-                    Pack P;
+                    Pack P = (Pack) is.readObject();
                     if (version.startsWith("1.0"))// cast Pack model from 1.0.x version
-                        P = new Pack((Pack_1_0) is.readObject());
-                    else
-                        P = (Pack) is.readObject();
+                        CastFactory.packModelUpdate(P, "1.0");
                     P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
                     packs.add(P);
                 }
