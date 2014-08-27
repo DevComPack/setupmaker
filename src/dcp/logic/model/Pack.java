@@ -61,7 +61,10 @@ public class Pack implements Serializable
         try {
             if (Pattern.compile(".*[0-9]+([._\\-a-zA-Z][0-9]+)+.*").matcher(name).find()) {
                 String[] borders = name.split("[0-9]+([._\\-a-zA-Z][0-9]+)+[a-zA-Z]?");
-                return name.substring(borders[0].length(), name.length() - (borders.length > 1?borders[1].length():0));
+                if (borders.length > 0)
+                    return name.substring(borders[0].length(), name.length() - (borders.length > 1?borders[1].length():0));
+                else
+                    return name;
             }
             return "1.0.0";
         }

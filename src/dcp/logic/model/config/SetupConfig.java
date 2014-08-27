@@ -64,22 +64,23 @@ public class SetupConfig implements Serializable
         appName = APPNAME;
         appVersion = APPVERSION;
         Map<String, String> sysEnv = System.getenv();
-        if (OSValidator.isWindows()) {//Windows
-            authorName = sysEnv.get("USERNAME");//From env var 'USERNAME'
-            installPath = sysEnv.get("ProgramFiles") + "\\" + appName;//From env var 'ProgramFiles'
+        if (OSValidator.isWindows()) {// Windows
+            authorName = sysEnv.get("USERNAME");// From env var 'USERNAME'
+            authorEmail = authorName+"@"+sysEnv.get("USERDNSDOMAIN");// From env var 'USERDNSDOMAIN'
+            installPath = sysEnv.get("ProgramFiles") + "\\" + appName;// From env var 'ProgramFiles'
         }
-        else if (OSValidator.isUnix() || OSValidator.isMac()) {//Unix & Mac
-            authorName = sysEnv.get("USER");//From env var 'USER'
-            if (authorName==null) {
-                authorName = sysEnv.get("HOME");//From env var 'HOME'
-                if (authorName!=null && authorName.contains("/")) authorName = authorName.substring(authorName.lastIndexOf("/")+1);
+        else if (OSValidator.isUnix() || OSValidator.isMac()) {// Unix & Mac
+            authorName = sysEnv.get("USER");// From env var 'USER'
+            if (authorName == null) {
+                authorName = sysEnv.get("HOME");// From env var 'HOME'
+                if (authorName != null && authorName.contains("/")) authorName = authorName.substring(authorName.lastIndexOf("/")+1);
             }
-            installPath = sysEnv.get("HOME") + "/" + appName;//From env var 'HOME'
+            installPath = sysEnv.get("HOME") + "/" + appName;// From env var 'HOME'
         }
-        else {//Other OS
+        /*else {// Other OS
             authorName = "";
             installPath = "";
-        }
+        }*/
         authorName = authorName.toUpperCase();
     }
     public SetupConfig(SetupConfig setupConfig)
