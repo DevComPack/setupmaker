@@ -8,6 +8,7 @@
     
 	<bxml:define>
         <FileBrowserSheet bxml:id="fileBrowserSheet"/>
+		<ButtonGroup bxml:id="buildSteps"/>
         <bxml:include bxml:id="sftpDialog" src="/dcp/gui/pivot/bxml/sftpDialog.bxml"/>
     </bxml:define>
 	
@@ -26,7 +27,7 @@
 				</columns>
 				<TablePane.Row>
 		    		<ListButton bxml:id="lbBuild" enabled="true" repeatable="false" listSize="10" listData="['IzPack']" tooltipText="Build type" />
-					<TextInput bxml:id="outPath" prompt="Target Path" tooltipText="Target Path" textSize="50" />
+					<TextInput bxml:id="inTargetPath" prompt="Target Path" tooltipText="Target Path" textSize="50" />
 					<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
 						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 					</PushButton>
@@ -34,30 +35,55 @@
 		    </TablePane>
 		</TablePane.Row>
 		
-		<!-- Package options area -->
+		<!-- Build Options -->
 	    <TablePane.Row height="-1">
-	    	<FillPane orientation="Horizontal">
-		    	<BoxPane orientation="Horizontal" preferredHeight="30" styles="{verticalAlignment:'center', horizontalAlignment:'center'}">
-			    	<Checkbox bxml:id="cbSplit" tooltipText="Split Setup file into same-size parts" buttonData="Split file" selected="false" />
-			    	<TextInput bxml:id="inSize" text="100" preferredWidth="50" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
-			    	<Spinner bxml:id="sizeSpinner" preferredWidth="50" spinnerData="['MB', 'GB', 'TB']" visible="true" enabled="false"
-		           		circular="false" selectedIndex="0" styles="{sizeToContent:'true'}" />
-		        </BoxPane>
-		    	<BoxPane orientation="Horizontal" preferredHeight="30" styles="{verticalAlignment:'center', horizontalAlignment:'center'}">
-			    	<Checkbox bxml:id="cbWeb" tooltipText="Make HTTP Web based Setup" buttonData="Web Setup" selected="false" />
-			    	<TextInput bxml:id="inWebDir" text="http://" tooltipText="Download URL" prompt="Download URL" preferredWidth="150" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
-					<PushButton bxml:id="btWebConfig" tooltipText="Transfer packs via SFTP" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}" enabled="false">
-    					<content:ButtonData icon="/dcp/gui/icons/setting.png" />
-    				</PushButton>
-		        </BoxPane>
-	 		</FillPane>
-	    </TablePane.Row>
-		
+			<Accordion>
+			
+				<!-- IzPack Options -->
+		    	<FillPane orientation="Horizontal" Accordion.headerData="IzPack">
+			    	<BoxPane orientation="Horizontal" preferredHeight="30" styles="{verticalAlignment:'center', horizontalAlignment:'center'}">
+				    	<Checkbox bxml:id="cbSplit" tooltipText="Split Setup file into same-size parts" buttonData="Split file" selected="false" />
+				    	<TextInput bxml:id="inSize" text="100" preferredWidth="50" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
+				    	<Spinner bxml:id="sizeSpinner" preferredWidth="50" spinnerData="['MB', 'GB', 'TB']" visible="true" enabled="false"
+			           		circular="false" selectedIndex="0" styles="{sizeToContent:'true'}" />
+			        </BoxPane>
+			    	<BoxPane orientation="Horizontal" preferredHeight="30" styles="{verticalAlignment:'center', horizontalAlignment:'center'}">
+				    	<Checkbox bxml:id="cbWeb" tooltipText="Make HTTP Web based Setup" buttonData="Web Setup" selected="false" />
+				    	<TextInput bxml:id="inWebDir" text="http://" tooltipText="Download URL" prompt="Download URL" preferredWidth="150" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
+						<PushButton bxml:id="btWebConfig" tooltipText="Transfer packs via SFTP" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}" enabled="false">
+	    					<content:ButtonData icon="/dcp/gui/icons/setting.png" />
+	    				</PushButton>
+			        </BoxPane>
+		 		</FillPane>
+				
+				<!-- NuGet Options -->
+				<FillPane orientation="Horizontal" Accordion.headerData="Chocolatey" enabled="false">
+					<TablePane styles="{padding:4, horizontalSpacing:5}">
+						<columns>
+							<TablePane.Column width="1*" />
+							<TablePane.Column width="-1" />
+						</columns>
+						<TablePane.Row>
+							<TextInput bxml:id="inFeedSource" prompt="Feed Source URL" tooltipText="Feed Url: http://[server]:[port]/feed" textSize="20" />
+							
+							<BoxPane orientation="horizontal" styles="{horizontalAlignment:'center', verticalAlignment:'center'}">
+								<RadioButton bxml:id="rbConfig" 	buttonData="Config" 		buttonGroup="$buildSteps"  	tooltipText="Make a config install file" />
+								<RadioButton bxml:id="rbSpec" 		buttonData="Spec" 			buttonGroup="$buildSteps" 	tooltipText="Generate skeleton spec files" />
+								<RadioButton bxml:id="rbPack" 		buttonData="Pack" 			buttonGroup="$buildSteps" 	tooltipText="Package spec folder into packs" selected="true" />
+								<RadioButton bxml:id="rbPush" 		buttonData="Push" 			buttonGroup="$buildSteps" 	tooltipText="Send packages to feed" />
+							</BoxPane>
+						</TablePane.Row>
+				    </TablePane>
+			    </FillPane>
+		    
+			</Accordion>
+		</TablePane.Row>
+			
 	    <TablePane.Row height="-1">
 	    	<Separator styles="{color:'#0198E1'}" />
 	    </TablePane.Row>
-	    
-	    <!-- IzPack Compile Widgets -->
+
+	    <!-- Build Actions -->
 	    <TablePane.Row height="-1">
 			<BoxPane orientation="vertical" styles="{padding:4, horizontalAlignment:'center', verticalAlignment:'center'}">
 			    <BoxPane orientation="horizontal" styles="{padding:4, horizontalAlignment:'center', verticalAlignment:'center'}">
@@ -90,7 +116,7 @@
 		<TablePane.Row height="1*">
 			<FillPane>
 				<Border title="Log" styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
-			        <FillPane styles="{padding:1}">
+			        <FillPane styles="{padding:1, backgroundColor:'#0198E1'}">
 						<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="auto">
 							<ListView bxml:id="logger" selectMode="multi" styles="{color:'#aa5500', backgroundColor:'WHITE'}" />
 						</ScrollPane>

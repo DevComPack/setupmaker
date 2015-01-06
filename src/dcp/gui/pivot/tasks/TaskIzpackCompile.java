@@ -48,22 +48,22 @@ import dcp.main.log.Out;
 import dcp.web.sftp.JschFactory;
 
 
-public class TaskCompile extends Task<Boolean>
+public class TaskIzpackCompile extends Task<Boolean>
 {
-    private IzpackAntCompiler compiler;
-    private SetupConfig setupConfig;//Setup configuration
-    private WebConfig webConfig;//Web SFTP Configuration
+    private IzpackAntCompiler compiler = new IzpackAntCompiler();//IzPack Compiler Class
+    private SetupConfig setupConfig;// Setup configuration
+    private WebConfig webConfig;// SFTP Web Setup configuration
     private List<Pack> packs = PackFactory.getPacks();
     private List<Group> groups = GroupFactory.getGroups();
     private SMOutputElement root;
     
-    public TaskCompile(IzpackAntCompiler compiler, SetupConfig setupConfig, WebConfig webConfig) {
-        this.compiler = compiler;
+    public TaskIzpackCompile(String targetPath, SetupConfig setupConfig, WebConfig webConfig) {
+        this.compiler.setTarget(targetPath);
         this.setupConfig = setupConfig;
         this.webConfig = webConfig;
     }
     
-    //Set log component to display compile stream
+    // Set log component to display compile stream
     public void setLogger(Component LOGGER) {
         Out.setLogger(LOGGER);
     }
@@ -72,17 +72,17 @@ public class TaskCompile extends Task<Boolean>
     public Boolean execute()
     {
         try {
-            //Izpack work files prepare/generate
+            // Izpack work files prepare/generate
             if (IOFactory.izpackWrite) {
                 if (!workflow()) return false;
                 Out.newLine();
             }
             
-            //IZPACK COMPILE
+            // IZPACK COMPILE
             if (IOFactory.izpackCompile) {//IzPack compilation enabled
-                Out.print("PIVOT_BUILD", "Compiling package to " + compiler.getTarget());
+                Out.print("BUILD", "Compiling package to " + compiler.getTarget());
                 if (compiler.compile() == 0) {
-                    Out.print("IZPACK", "Compilation success.");
+                    Out.print("BUILD", "Compilation success.");
                     TrueZipCastFactory.clearArchives();
                     
                     if (webConfig.isEnabled()) {//Send pack files through SFTP
@@ -93,13 +93,13 @@ public class TaskCompile extends Task<Boolean>
                     return true;
                 }
                 else {
-                    Out.print("IZPACK", "Compilation error!");
+                    Out.print("BUILD", "Compilation error!");
                     TrueZipCastFactory.clearArchives();
                     return false;
                 }
             }
-            else {//Stop after xml data writing
-                Out.print("PIVOT_BUILD", "Data written on " + IOFactory.xmlIzpackInstall);
+            else {// Stop after xml data writing
+                Out.print("BUILD", "Data written on " + IOFactory.xmlIzpackInstall);
                 return true;
             }
             
@@ -120,16 +120,16 @@ public class TaskCompile extends Task<Boolean>
 
     private boolean workflow() throws XMLStreamException, IOException
     {
-        //Ant tasks/targets define
+        // Ant tasks/targets define
         antTargetsDefine();
         
-        //Setup config and Data analyze + corrections
+        // Setup config and Data analyze + corrections
         configAnalyze(setupConfig);
         dataAnalyze();
         
-        //Setting default install directory (res/default-dir.txt)
+        // Setting default install directory (res/default-dir.txt)
         TextWriter.writeInstallPath(setupConfig.getInstallPath());
-        if (setupConfig.isRegistryCheck()) {//write clean bat file commands
+        if (setupConfig.isRegistryCheck()) {// write clean bat file commands
             BatWriter BW = new BatWriter(IOFactory.batClean);
             BW.writeClean(setupConfig.getAppName(), setupConfig.getAppVersion());
         }
@@ -137,54 +137,54 @@ public class TaskCompile extends Task<Boolean>
         IzpackWriter IzW = new IzpackWriter(IOFactory.xmlIzpackInstall);
         root = IzW.getRoot();
 
-            if (!writeInfo())//Writing Application info
+            if (!writeInfo())// Writing Application info
                 return false;
             
-            if (!writeGuiPrefs(IzW))//Writing Gui Preferences
+            if (!writeGuiPrefs())// Writing Gui Preferences
                 return false;
             
-            if (!writeLocales())//Writing langpacks (eng & fra & deu & spa)
+            if (!writeLocales())// Writing langpacks (eng & fra & deu & spa)
                 return false;
             
-            if (!writeVariables())//Writing variables
+            if (!writeVariables())// Writing variables
                 return false;
 
-            if (!writePackaging())//Writing packaging options
+            if (!writePackaging())// Writing packaging options
                 return false;
             
-            if (!writePanels())//Writing Panels
+            if (!writePanels())// Writing Panels
                 return false;
             
-            if (!writeListeners())//Writing listeners
+            if (!writeListeners())// Writing listeners
                 return false;
             
-            if (!writeResources())//Writing resources (images/specs)
+            if (!writeResources())// Writing resources (images/specs)
                 return false;
             
-            if (!writeNatives())//Writing dll files + libraries
+            if (!writeNatives())// Writing dll files + libraries
                 return false;
             //jar / natives
             
-            //Packs/Groups
-            if (!writePacks(IOFactory.xmlProcessPanelSpec))//Writing Packs data to xml file (res/xml/PacksPanelSpec.xml)
-                return false;//If writing error
+            // Packs/Groups
+            if (!writePacks(IOFactory.xmlProcessPanelSpec))// Writing Packs data to xml file (res/xml/PacksPanelSpec.xml)
+                return false;// If writing error
         
         IzW.close();
         
         
-        if (setupConfig.isShortcuts()) {//Writing shortcuts spec
+        if (setupConfig.isShortcuts()) {// Writing shortcuts spec
             if (!writeShortcuts(IOFactory.xmlShortcutPanelSpec))
                 return false;
         }
         return true;
     }
 
-    private boolean writeGuiPrefs(IzpackWriter IzW) throws XMLStreamException
+    private boolean writeGuiPrefs() throws XMLStreamException
     {
         GuiprefsWriter GW = new GuiprefsWriter(root);
         Out.print("STAX", "Writing GUI Preferences");
-        GW.setPrefs(setupConfig);//Write Gui prefs
-        //Modifiers
+        GW.setPrefs(setupConfig);// Write Gui prefs
+        // Modifiers
         GW.addModifier("langDisplayType", "native");
         GW.addModifier("allXGap", "0");
         GW.addModifier("allYGap", "0");
@@ -218,7 +218,7 @@ public class TaskCompile extends Task<Boolean>
     
     private void configAnalyze(SetupConfig setupConfig)
     {
-        if (!setupConfig.getAppURL().equals("")) {//Si URL définie
+        if (!setupConfig.getAppURL().equals("")) {// Si URL définie
             if (!(setupConfig.getAppURL().startsWith("http://") || setupConfig.getAppURL().startsWith("https://"))) {
                 setupConfig.setAppURL("http://"+setupConfig.getAppURL());
             }
@@ -235,37 +235,37 @@ public class TaskCompile extends Task<Boolean>
         Out.print("INFO", "#packs " + packs.getLength());
         Out.print("INFO", "#groups " + groups.getLength());
         Out.newLine();
-        boolean notRequired = false;//false if all packs are required
-        boolean shortcut = false;//false if all pack don't have shortcut enabled
-        //Options Init
+        boolean notRequired = false;// false if all packs are required
+        boolean shortcut = false;// false if all pack don't have shortcut enabled
+        // Options Init
         setupConfig.setProcess(false);
         setupConfig.setInstallGroup(false);
-        //Packs' data analyze/correct
+        // Packs' data analyze/correct
         for (Pack P:PackFactory.getPacks()) {
             if (!notRequired && !(P.isRequired() || P.isHidden()))
                 notRequired = true;// one pack is not required
             if (!shortcut && P.isShortcut())
                 shortcut = true;// one pack have shortcut enabled
 
-            //Replace blanks in install name with '_'
+            // Replace blanks in install name with '_'
             if (P.getInstallName().contains(" ")) {
                 P.setInstallName(P.getInstallName().replace(' ', '_'));
             }
-            //Pack install groups correction if contains ';' instead of ','
+            // Pack install groups correction if contains ';' instead of ','
             if (P.getInstallGroups().contains(";")) {
                 P.setInstallGroups(P.getInstallGroups().replace(';', ','));
             }
             
-            //Delete , or ; at end of install groups string
+            // Delete , or ; at end of install groups string
             if (P.getInstallGroups().trim().endsWith(",")) {
                 P.setInstallGroups(P.getInstallGroups().trim().substring(0, P.getInstallGroups().trim().length()-1));
             }
-            //Flags
+            // Flags
             if (!setupConfig.isProcess() && P.getInstallType() == INSTALL_TYPE.EXECUTE) {
-                setupConfig.setProcess(true);//Activate Process panel if pack(s) to execute
+                setupConfig.setProcess(true);// Activate Process panel if pack(s) to execute
             }
             if (!setupConfig.isInstallGroup() && !P.getInstallGroups().equals("")) {
-                setupConfig.setInstallGroup(true);//Activate install groups panel display
+                setupConfig.setInstallGroup(true);// Activate install groups panel display
             }
             
             if (!new File(P.getPath()).exists()) {// packs' source file path correction
@@ -277,16 +277,16 @@ public class TaskCompile extends Task<Boolean>
             }
             
             if (P.getInstallType() == INSTALL_TYPE.EXECUTE) {
-                P.setInstallPath(IOFactory.exeTargetDir);//Set default exe copy path
+                P.setInstallPath(IOFactory.exeTargetDir);// Set default exe copy path
             }
             else if (P.getInstallType() == INSTALL_TYPE.EXTRACT) {
-                if (P.getName().toLowerCase().endsWith(".rar")) {//convert rar file to zip
+                if (P.getName().toLowerCase().endsWith(".rar")) {// convert rar file to zip
                     Out.print("INFO", "Converting rar file " + P.getName() + " to zip");
                     P.updatePack(TrueZipCastFactory.rarToZip(new File(P.getPath())));
                 }
             }
             
-            //Pack Install Path correction to standard ("folder/subfolder")
+            // Pack Install Path correction to standard ("folder/subfolder")
             if (!P.getInstallPath().equals("")) {
                 P.setInstallPath(P.getInstallPath().replace('\\', '/'));
                 if (P.getInstallPath().startsWith("/") && OSValidator.isWindows()) {
@@ -298,8 +298,8 @@ public class TaskCompile extends Task<Boolean>
             }
             
         }
-        if (!notRequired) {//if all packs are required
-            setupConfig.setPanelDisplay(false);//disable packs panel display
+        if (!notRequired) {// if all packs are required
+            setupConfig.setPanelDisplay(false);// disable packs panel display
             Out.print("STAX", "Packs panel disabled");
         }
         if (!shortcut) {// if all packs don't have shortcut enabled
@@ -320,7 +320,7 @@ public class TaskCompile extends Task<Boolean>
     {
         InfoWriter IW = new InfoWriter(root);
         Out.print("STAX", "Writing Setup Info");
-        IW.setInfo(setupConfig);//Write Setup info
+        IW.setInfo(setupConfig);// Write Setup info
         
         return true;
     }
@@ -357,7 +357,7 @@ public class TaskCompile extends Task<Boolean>
 
     private boolean writePackaging() throws XMLStreamException
     {
-        //Packaging activate
+        // Packaging activate
         if (setupConfig.isSplit()) {
             Out.print("STAX", "Setting packaging option");
             PackagingWriter PkgW = new PackagingWriter(root);
@@ -395,7 +395,7 @@ public class TaskCompile extends Task<Boolean>
         PW.writePanel("SummaryPanel");//<panel />
         PW.writePanel("InstallPanel");//<panel />
         
-        //If there's packs to execute
+        // If there's packs to execute
         if (setupConfig.isProcess())//<panel />
             PW.writePanel("ProcessPanel");
         
@@ -426,7 +426,7 @@ public class TaskCompile extends Task<Boolean>
         ResourceWriter RW = new ResourceWriter(root);
         Out.print("STAX", "Writing Resources");
         
-        //Langpacks
+        // Langpacks
         boolean done = false;
         if (setupConfig.isCustomLang()) {
             RW.addResource("packsLang.xml_"+setupConfig.getCustomLangISO(), setupConfig.getCustomLangPath());
@@ -453,21 +453,21 @@ public class TaskCompile extends Task<Boolean>
             RW.addResource("CustomLangpack.xml_eng", IOFactory.langpackPath+"/eng.xml");
         }
         
-        if (!setupConfig.getReadmePath().equals(""))//Readme file
+        if (!setupConfig.getReadmePath().equals(""))// Readme file
             RW.addResource("HTMLInfoPanel.info", setupConfig.getReadmePath());
-        if (!setupConfig.getLicensePath().equals(""))//License file
+        if (!setupConfig.getLicensePath().equals(""))// License file
             RW.addResource("HTMLLicencePanel.licence", setupConfig.getLicensePath());
         
-        //Default directory
+        // Default directory
         RW.addResource("TargetPanel.dir.windows", IOFactory.defDirFile);
-        //Panels Specs
+        // Panels Specs
         if (setupConfig.isShortcuts())//ShortcutPanelSpec
             RW.addResource("shortcutSpec.xml", IOFactory.xmlShortcutPanelSpec);
         if (setupConfig.isRegistryCheck())//RegistrySpec
             RW.addResource("RegistrySpec.xml", IOFactory.xmlRegistrySpec);
         if (setupConfig.isProcess())//ProcessPanelSpec
             RW.addResource("ProcessPanel.Spec.xml", IOFactory.xmlProcessPanelSpec);
-        //Pictures
+        // Pictures
         if (!setupConfig.getLogoPath().equals("")) {
             RW.addResource("installer.langsel.img", setupConfig.getLogoPath());
             RW.addResource("Heading.image", setupConfig.getLogoPath());
@@ -481,12 +481,12 @@ public class TaskCompile extends Task<Boolean>
     private boolean writeNatives() throws XMLStreamException
     {
         NativeWriter NW = new NativeWriter(root);
-        //Jars
+        // Jars
         if (setupConfig.isProcess()) {
             NW.addJar(IOFactory.jarExecutable);
             NW.addJar(IOFactory.jarListeners);
         }
-        //Natives
+        // Natives
         if (setupConfig.isShortcuts()) {
             NW.addNative("izpack", "ShellLink.dll");
             NW.addNative("izpack", "ShellLink_x64.dll");
@@ -502,12 +502,12 @@ public class TaskCompile extends Task<Boolean>
     private boolean writePacks(String process_spec) throws XMLStreamException, IOException
     {
         Out.print("STAX", "Data-xml writing...");
-        PackWriter PW = new PackWriter(root);//Packs writing: PacksPanelSpec.xml
+        PackWriter PW = new PackWriter(root);// Packs writing: PacksPanelSpec.xml
         
-        //Core pack: Include registry clean files if registry check enabled
+        // Core pack: Include registry clean files if registry check enabled
         PW.addCorePack(setupConfig.isRegistryCheck());
         
-        //Groups Writing
+        // Groups Writing
         for(Group G:groups) {
             Out.print("STAX", "Writing group " + G.getName());
             if (!PW.addGroup(G)) {//If error writing
@@ -515,35 +515,35 @@ public class TaskCompile extends Task<Boolean>
                 return false;
             }
         }
-        //Packs writing
+        // Packs writing
         for(Pack P:packs) {
             Out.print("STAX", "Writing pack " + P.getInstallName());
-            if (!PW.addPack(P)) {//If error writing
+            if (!PW.addPack(P)) {// If error writing
                 Out.print("STAX", "Writing error for pack " + P.getInstallName() + "!");
                 return false;
             }
         }
         
-        //Jobs Writing
-        if (setupConfig.isProcess()) {//ProcessPanelSpec.xml executables run
+        // Jobs Writing
+        if (setupConfig.isProcess()) {// ProcessPanelSpec.xml executables run
             ProcessWriter ProcessW = new ProcessWriter(process_spec);
             
             for (Pack P:packs) {
                 if (P.getInstallType() == INSTALL_TYPE.EXECUTE) {
                     Out.print("STAX", "Writing process pack job for " + P.getInstallName() + " to " + ProcessW.getTargetFile());
-                    if (P.getFileType() == FILE_TYPE.Setup) {//Setups batch writing
+                    if (P.getFileType() == FILE_TYPE.Setup) {// Setups batch writing
                         ProcessW.addClassJob(P,"com.izforge.izpack.resources.SetupExecute",
                                                 new String[] {P.getName(), P.isSilentInstall()?"true":"false", "$INSTALL_PATH/$EXE_DIR"});
                     }
                     else if (P.getFileType() == FILE_TYPE.Executable) {//Executable process writing
-                        if (P.getName().endsWith(".jar")) {//Jar executable
+                        if (P.getName().endsWith(".jar")) {// Jar executable
                             ProcessW.addClassJob(P,"com.izforge.izpack.resources.JarExecute",
                                     new String[] {P.getName(), "$INSTALL_PATH/$EXE_DIR"});
                         }
                         else if (P.getName().endsWith(".bat") || P.getName().endsWith(".sh")) {//Bat-Sh script
                             ProcessW.addScriptJob(P, "DEP=$INSTALL_PATH\\"+IOFactory.exeTargetDir);
                         }
-                        else if (P.getName().endsWith(".reg")) {//Reg script
+                        else if (P.getName().endsWith(".reg")) {// Reg script
                             ProcessW.addClassJob(P,"com.izforge.izpack.resources.RegExecute",
                                     new String[] {P.getName(), "$INSTALL_PATH/$EXE_DIR"});
                         }
@@ -553,12 +553,12 @@ public class TaskCompile extends Task<Boolean>
                 }
             }
             
-            //Passing the tmp exe dir to cleaner class to be deleted
+            // Passing the tmp exe dir to cleaner class to be deleted
             ProcessW.addCleanJob("$INSTALL_PATH/$EXE_DIR");
             
             ProcessW.close();
         }
-        else if (new File(IOFactory.xmlProcessPanelSpec).exists()) {//Suprimer fichier spec process
+        else if (new File(IOFactory.xmlProcessPanelSpec).exists()) {// Suprimer fichier spec process
             new File(IOFactory.xmlProcessPanelSpec).delete();
         }
         
@@ -572,17 +572,17 @@ public class TaskCompile extends Task<Boolean>
                                                 setupConfig.isShToDesktop());
         Out.print("STAX", "Writing Shortcuts to " + SW.getTargetFile());
 
-        if (setupConfig.isFolderShortcut())//Folder shortcut
+        if (setupConfig.isFolderShortcut())// Folder shortcut
             SW.addShortcut("$APP_NAME $APP_VER", "$INSTALL_PATH", "", "", setupConfig.isShToDesktop(), false);
 
-        if (setupConfig.isRegistryCheck())//Uninstaller
+        if (setupConfig.isRegistryCheck())// Uninstaller
             SW.addShortcut("Uninstall", "$INSTALL_PATH/Uninstaller", "/clean.bat",
                     "", false, false);
         else
             SW.addShortcut("Uninstall", "$INSTALL_PATH/Uninstaller", "/uninstaller.jar",
                     "", false, false);
 
-        if (setupConfig.isShortcuts())//If shortcuts install enabled
+        if (setupConfig.isShortcuts())// If shortcuts install enabled
         for(Pack P:packs) {
             if (P.isShortcut() && P.getInstallType() != INSTALL_TYPE.EXECUTE)
                 SW.addPackShortcut(P, false);

@@ -10,9 +10,12 @@ Expand/Collapse buttons fix for Java 8
 --
 + Enhancements:
 Split panel on Scan tab's sidebar
-RegExp filter textinput length is now dynamic
-Pack version info
+Resizable RegExp filter input size
+Pack version property
 Version extract from pack file name
+
+New compilation system based on multiple compilers
+Commandline compilation of dcp files
 
 
 1.0.3

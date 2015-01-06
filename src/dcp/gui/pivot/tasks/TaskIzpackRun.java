@@ -12,13 +12,13 @@ import dcp.config.compile.IzpackAntCompiler;
 import dcp.main.log.Out;
 
 
-public class TaskRun extends Task<Boolean>
+public class TaskIzpackRun extends Task<Boolean>
 {
-    IzpackAntCompiler compiler;
+    IzpackAntCompiler compiler = new IzpackAntCompiler();//IzPack Compiler Class
     
-    public TaskRun(IzpackAntCompiler COMPILER, Component LOGGER)
+    public TaskIzpackRun(String TargetPath, Component LOGGER)
     {
-        compiler = COMPILER;
+        compiler.setTarget(TargetPath);;
         Out.setLogger(LOGGER);
     }
     

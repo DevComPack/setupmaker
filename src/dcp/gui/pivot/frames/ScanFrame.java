@@ -108,7 +108,7 @@ public class ScanFrame extends FillPane implements Bindable
     @BXML private TablePane recent_dirs;
     //Scan Mode options
     @BXML private RadioButton btRadSimple;//Simple Scan Mode Radio Button
-    @BXML private Checkbox btSelect;//Enable/Disable Node Check State Select mode
+    @BXML private Checkbox btSelect;//Activate/Desactivate Node Check State Select mode
     @BXML private PushButton btSelectAll;//Select All button
     @BXML private PushButton btSelectNone;//Select None button
     @BXML private RadioButton btRadRecursiv;//Recursive Scan Mode Radio Button (default)
@@ -126,8 +126,8 @@ public class ScanFrame extends FillPane implements Bindable
     @BXML private Checkbox cbSound;//Sounds
     @BXML private Checkbox cbDoc;//Documents
     @BXML private Checkbox cbCustTxt;//Custom set filter
-    @BXML private Checkbox cbCustExpr;//Custom Expression filter
-    @BXML private TextInput inCustExpr;//Custom REGEXP filter
+    @BXML private Checkbox cbCustExpr;//Custom Expression filter button
+    @BXML private TextInput inCustExpr;//Custom REGEXP filter input
     //Displays
     @BXML private static TreeView treeView;//Tree View for scanned directory
     private static List<TreeNode> treeData = new ArrayList<TreeNode>();//Tree view data
@@ -412,7 +412,7 @@ public class ScanFrame extends FillPane implements Bindable
                 Out.print("PIVOT_SCAN","Applied filter: Document");
             }
         });
-        cbCustTxt.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter SETTINGS
+        cbCustTxt.getButtonPressListeners().add(new ButtonPressListener() {// Custom filter SETTINGS
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
                 Out.print("PIVOT_SCAN","Applied custom filter");

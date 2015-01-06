@@ -40,13 +40,12 @@ import org.apache.pivot.wtk.Button.State;
 import org.apache.pivot.wtk.TextInputContentListener;
 import org.apache.pivot.wtk.validation.Validator;
 
-import dcp.config.compile.IzpackAntCompiler;
 import dcp.config.io.IOFactory;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.actions.BrowseAction;
-import dcp.gui.pivot.tasks.TaskCompile;
-import dcp.gui.pivot.tasks.TaskDebug;
-import dcp.gui.pivot.tasks.TaskRun;
+import dcp.gui.pivot.tasks.TaskIzpackCompile;
+import dcp.gui.pivot.tasks.TaskIzpackDebug;
+import dcp.gui.pivot.tasks.TaskIzpackRun;
 import dcp.logic.factory.CastFactory;
 import dcp.main.log.Out;
 
@@ -57,9 +56,6 @@ public class BuildFrame extends FillPane implements Bindable
     private static BuildFrame singleton;
     public static BuildFrame getSingleton() { return singleton; }
     //------DATA
-    //Constants
-    private final static String IZPACK_HOME = "compiler/izpack";//System.getenv("IZPACK_HOME");//Izpack home directory path
-    //private final static String IZPACK_FILE = IOFactory.xmlIzpackInstall;//Izpack xml file to compile
     //Flags
     private static boolean modified = false;//True if tab processed data
     public static void setModified(boolean VALUE) { modified = VALUE; }
@@ -68,7 +64,7 @@ public class BuildFrame extends FillPane implements Bindable
     @BXML private ListButton lbBuild;// Build type list button
     @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
     @BXML private PushButton btBrowse;//Browse button
-    @BXML private TextInput outPath;//Path Text Input
+    @BXML private TextInput inTargetPath;//Path Text Input
     //Split Area
     @BXML private Checkbox cbSplit;//Split option enable/disable
     @BXML private TextInput inSize;//Split size
@@ -91,13 +87,8 @@ public class BuildFrame extends FillPane implements Bindable
     @BXML private Label failText;//Fail Log Result Display
     @BXML private ActivityIndicator waiter;//Activity Indicator to wait for compile
     
-    //Compiler
-    private IzpackAntCompiler compiler;//IzPack Compiler Class
-    
     public BuildFrame() {
         if (singleton == null) singleton = this;
-        //IzPack Compiler instantiate
-        compiler = new IzpackAntCompiler();
     }
     
     @Override
@@ -111,7 +102,7 @@ public class BuildFrame extends FillPane implements Bindable
         }
         
         //Data Binding
-        lbBuild.setSelectedItem("IzPack");// 'IzPack' build type by default
+        lbBuild.setSelectedIndex(0);// 'IzPack' build type by default
         logger.setListData(dcp.main.log.Out.getCompileLog());//Bind compile log tags to List view logger
         
         //Action Binding
@@ -122,11 +113,10 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
                 try {//Set the Input Text value to the selected file path
-                    outPath.setText(fileBrowserSheet.getSelectedFile().getCanonicalPath());
+                    inTargetPath.setText(fileBrowserSheet.getSelectedFile().getCanonicalPath());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                compiler.setTarget(outPath.getText());//Change compiler's target file
             }
         });
         
@@ -228,7 +218,7 @@ public class BuildFrame extends FillPane implements Bindable
         
         //Compile Task Launch from button btCompile
         btCompile.getButtonPressListeners().add(new ButtonPressListener() {
-            @Override public void buttonPressed(Button button) {
+            @Override public void buttonPressed(Button bt) {
                 successIcon.setVisible(false);
                 failIcon.setVisible(false);
                 successText.setVisible(false);
@@ -238,7 +228,7 @@ public class BuildFrame extends FillPane implements Bindable
                 btLaunch.setEnabled(false);
                 btDebug.setEnabled(false);
                 
-                TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {//Finished compile
+                final TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {//Finished compilation
                     @Override public void executeFailed(Task<Boolean> t) {//Failed
                         taskFinished();
                         failIcon.setVisible(true);
@@ -254,23 +244,24 @@ public class BuildFrame extends FillPane implements Bindable
                         } else executeFailed(t);//Compile Errors
                     }
                     private void taskFinished() {//Display Refresh
-                        btCompile.setEnabled(true);
-                        btLaunch.setEnabled(true);
-                        if (IZPACK_HOME != null) btDebug.setEnabled(true);
+                        displayRefresh();
+                        Out.newLine();
+                        Out.print("BUILD", "Finished.");
                         waiter.setActive(false);//Waiter hide
-                    }   
+                    }
                 };
 
-                String target_file = outPath.getText();
-                System.out.println("*"+target_file);
-                System.out.println("*"+compiler.getTarget());
-                compiler.setTarget(CastFactory.pathValidate(target_file,Master.setupConfig.getAppName(),"jar"));//Set the target package file
-                System.out.println("*"+compiler.getTarget());
+                String target_file = inTargetPath.getText();
+                System.out.println("*" + target_file);
                 dcp.main.log.Out.clearCompileLog();//Clear Saved Log
-                //Compile Task launch
-                TaskCompile compileTask = new TaskCompile(compiler, Master.setupConfig, sftpDialog.getWebConfig());
-                compileTask.setLogger(logger);//Setting log display on logger
-                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
+                
+				String buildType = lbBuild.getSelectedItem().toString();
+                if (buildType.equals("IzPack")) { // IzPack Compile Task launch
+	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar");
+	                TaskIzpackCompile compileTask = new TaskIzpackCompile(targetPath, Master.setupConfig, sftpDialog.getWebConfig());
+	                compileTask.setLogger(logger);//Setting log display on logger
+	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
+                }
             }
         });
         
@@ -287,20 +278,17 @@ public class BuildFrame extends FillPane implements Bindable
                 btDebug.setEnabled(false);
                 
                 TaskListener<Boolean> tlRun = new TaskListener<Boolean>() {//Finished Debug
-                    @Override public void executeFailed(Task<Boolean> arg0) {
-                        taskExecuted(arg0);
+                    @Override public void executeFailed(Task<Boolean> t) {
+                        taskExecuted(t);
                     }
-                    @Override public void taskExecuted(Task<Boolean> arg0) {
-                        btCompile.setEnabled(true);
-                        btLaunch.setEnabled(true);
-                        btDebug.setEnabled(true);
+                    @Override public void taskExecuted(Task<Boolean> t) {
+                        displayRefresh();
                         waiter.setActive(false);//Waiter stop
                     } };
                 
-                compiler.setTarget(CastFactory.pathValidate(outPath.getText(),Master.setupConfig.getAppName(),"jar"));//Set the target package file
                 dcp.main.log.Out.clearCompileLog();//Clear Saved log
-                new TaskRun(compiler, logger).execute(new TaskAdapter<Boolean>(tlRun));
-                Out.print("PIVOT_BUILD", "Launch generated package..");
+                new TaskIzpackRun(CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar"), logger).execute(new TaskAdapter<Boolean>(tlRun));
+                Out.print("BUILD", "Launch generated package..");
                 Out.newLine();
             }
         });
@@ -318,20 +306,18 @@ public class BuildFrame extends FillPane implements Bindable
                 btDebug.setEnabled(false);
                 
                 TaskListener<Boolean> tlDebug = new TaskListener<Boolean>() {//Finished Debug
-                    @Override public void executeFailed(Task<Boolean> arg0) {
-                        taskExecuted(arg0);
+                    @Override public void executeFailed(Task<Boolean> t) {
+                        taskExecuted(t);
                     }
-                    @Override public void taskExecuted(Task<Boolean> arg0) {
-                        btCompile.setEnabled(true);
-                        btLaunch.setEnabled(true);
-                        btDebug.setEnabled(true);
+                    @Override public void taskExecuted(Task<Boolean> t) {
+                        displayRefresh();
                         waiter.setActive(false);//Waiter stop
                     } };
                 
-                compiler.setTarget(CastFactory.pathValidate(outPath.getText(),Master.setupConfig.getAppName(),"jar"));//Set the target package file
                 dcp.main.log.Out.clearCompileLog();//Clear Saved log
-                new TaskDebug(compiler, logger).execute(new TaskAdapter<Boolean>(tlDebug));
-                Out.print("PIVOT_BUILD", "Launch generated package with TRACE mode enabled..");
+                new TaskIzpackDebug(CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar"),
+                        logger).execute(new TaskAdapter<Boolean>(tlDebug));
+                Out.print("BUILD", "Launch generated package with TRACE mode enabled..");
                 Out.newLine();
             }
         });
@@ -357,6 +343,20 @@ public class BuildFrame extends FillPane implements Bindable
         });
     }
     
+    private void displayRefresh() {
+        btCompile.setEnabled(true);
+        switch (lbBuild.getSelectedItem().toString()) {
+        case "IzPack":
+            btLaunch.setEnabled(true);
+            btDebug.setEnabled(true);
+            break;
+        case "NuGet":
+            btLaunch.setEnabled(false);
+            btDebug.setEnabled(false);
+            break;
+        }
+    }
+
     /**
      * Enable/Set Packaging option
      * @param SIZE_IN_MB
@@ -379,24 +379,23 @@ public class BuildFrame extends FillPane implements Bindable
         filename = filename.replaceAll(" ", "");
         
         //File export set
-        if (new File(IOFactory.targetPath).exists()) {//If 'target' folder exists
-            outPath.setText(new File(IOFactory.targetPath+"/"+filename).getAbsolutePath());
+        if (lbBuild.getSelectedItem().equals("IzPack")) { // IzPack
+            if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
+                inTargetPath.setText(new File(IOFactory.targetPath, filename).toString());
+            }
+            else {
+                inTargetPath.setText(new File(filename).getAbsolutePath());
+            }
+            fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getAbsoluteFile());
+            Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
         }
-        else {
-            outPath.setText(new File(filename).getAbsolutePath());
-        }
-        fileBrowserSheet.setSelectedFile(new File(outPath.getText()).getAbsoluteFile());
-        Out.print("DEBUG", "Export file set to: " + outPath.getText());
-        
-        //Data load from saved project
-        if (Master.setupConfig.isSplit()) {
-            inSize.setText(String.valueOf(Master.setupConfig.getSplitSize()/(1024*1024)));
-            sizeSpinner.setSelectedIndex(0);
-            cbSplit.setSelected(true);
-        }
-        else if (Master.setupConfig.isWeb()) {
-            inWebDir.setText(Master.setupConfig.getWebDir());
-            cbWeb.setSelected(true);
+        else if (lbBuild.getSelectedItem().equals("NuGet")) { // NuGet
+            if (new File(IOFactory.targetPath, "nuget").exists()) {// if 'target/nuget' folder exists
+                inTargetPath.setText(new File(IOFactory.targetPath, "nuget").toString());
+            }
+            else if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
+                inTargetPath.setText(IOFactory.targetPath);
+            }
         }
     }
     
