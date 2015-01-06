@@ -120,7 +120,7 @@
 															tooltipText="REGEXP filtering" />
 													</BoxPane>
 													<TextInput bxml:id="inCustExpr" prompt="Expression"
-														textSize="8" tooltipText="Regular expression to filter" />
+														textSize="8" tooltipText="Regular expression to filter (e.g. '.*\.dcp' for dcp files)" />
 												</TablePane.Row>
 											</TablePane>
 										</TablePane.Row>

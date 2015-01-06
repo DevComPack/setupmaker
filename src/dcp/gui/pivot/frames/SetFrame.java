@@ -78,7 +78,7 @@ public class SetFrame extends FillPane implements Bindable
 {
     //Singleton reference
     private static SetFrame singleton;
-    public static SetFrame getSingleton() { return singleton; }
+    public static SetFrame getSingleton() { if (singleton != null) return singleton; else return new SetFrame(); }
     private SetFacade facade;
     
     //------DATA
@@ -373,6 +373,7 @@ public class SetFrame extends FillPane implements Bindable
             @Override public boolean isValid(String str)
             {
                 assert !multi_selection;
+                if (!str.matches("[a-zA-Z._\\-0-9]+")) return false;
                 for(Pack p:getPacks())
                     if (!p.equals(getSelectedPack()) && p.getInstallName().equals(str))
                         return false;
@@ -382,7 +383,7 @@ public class SetFrame extends FillPane implements Bindable
         inVersion.setValidator(new Validator() {
             @Override public boolean isValid(String str)
             {
-                if (str.length() > 20)
+                if (str.length() > 20 || !str.matches("[0-9]+([.][0-9]+)+"))
                     return false;
                 return true;
             }
@@ -434,7 +435,7 @@ public class SetFrame extends FillPane implements Bindable
                         if (ngdialog.isValidated()) {//If pushed the OK button
                             if (!facade.newGroup(ngdialog.getText(), GroupFactory.get(ngdialog.getHierarchy())))
                                 Alert.alert("Group already created!", Window.getActiveWindow());
-                        } else Out.print("PIVOT_SET", "Dialog not Validated");
+                        } else Out.print("SET", "Dialog not Validated");
                     }
                 });
             }
@@ -484,8 +485,8 @@ public class SetFrame extends FillPane implements Bindable
                     if (pack != null) {
                         content = new LocalManifest();
                         content.putText(pack.getName());
-                        if (!multi_selection) Out.print("PIVOT_SET", "Begin Drag on pack " + pack.getName());//one pack selected
-                        else Out.print("PIVOT_SET", "Begin Drag on selected packs");//multi packs selected
+                        if (!multi_selection) Out.print("SET", "Begin Drag on pack " + pack.getName());//one pack selected
+                        else Out.print("SET", "Begin Drag on selected packs");//multi packs selected
                     }
     
                     return (content != null);
@@ -497,7 +498,7 @@ public class SetFrame extends FillPane implements Bindable
             { 
                 content = null;
                 drag_enabled = false;
-                Out.print("PIVOT_SET", "Drag end.");
+                Out.print("SET", "Drag end.");
             }
         });
         
@@ -514,6 +515,7 @@ public class SetFrame extends FillPane implements Bindable
                 return super.mouseMove(component, x, y);
             }
         });
+        
         //Table view Sort listener (+ Update priorities of Sort tab)
         tableView.getTableViewSortListeners().add(new TableViewSortListener.Adapter() {
             @Override public void sortChanged(TableView tableView)

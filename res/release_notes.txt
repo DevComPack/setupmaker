@@ -1,21 +1,22 @@
 1.1.0
 =====
-Apache Pivot update to 2.0.4
---
 * Bug Fixes:
 Set tab listbox circular mode disabled
 Packs tooltip text correction on empty area
 Scan Packs TableView selection enabled
 Expand/Collapse buttons fix for Java 8
+Fixed Data initialization and load at startup
+Tab Singletons initialize with instantiation
+Scan on enabled selection didn't update packs list
 --
 + Enhancements:
+Apache Pivot update to 2.0.4
 Split panel on Scan tab's sidebar
 Resizable RegExp filter input size
 Pack version property
 Version extract from pack file name
-
 New compilation system based on multiple compilers
-Commandline compilation of dcp files
+Command Line compilation of dcp files (one or more java parameters of dcp save file paths to compile)
 
 
 1.0.3

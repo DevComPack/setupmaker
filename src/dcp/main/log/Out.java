@@ -13,10 +13,9 @@ public class Out
     //Log
     private static List<String> log = new ArrayList<String>();//Global Log
     public static List<String> getLog() { return log; }
-    private static String[] compileLogTags = {  "IZPACK",
+    private static String[] compileLogTags = {  "IZPACK", "NUGET",
                                                 "JAR", "STAX",
-                                                "PIVOT_BUILD",
-                                                "INFO", "ERROR",
+                                                "BUILD", "INFO", "ERROR",
                                                 "REG", "IO", "SFTP"
                                               };//Tags to display on log
     
@@ -38,13 +37,20 @@ public class Out
         print("INFO", "");
     }
     
-    //Prints a string to the outputstream
+    /**
+     * Prints a string to the output stream
+     * @param text: log text
+     * @param outStream: output stream
+     */
     public static void print(String text, PrintStream outStream) {
         outStream.println(text);
     }
     
-    /*
-     * Tags = [IZPACK|JAR|PIVOT_XXX|MAIN|MODEL|REG|IO|STAX|INFO|ERROR]
+    /**
+     * print text with a tag
+     * format: [TAG] TXT
+     * @param TAG: tag name
+     * @param TXT: text to log
      */
     public static void print(String TAG, String TXT) {
         print("["+TAG.toUpperCase()+"] "+TXT, System.out);
@@ -64,7 +70,7 @@ public class Out
             @Override public void run()
             {
                 compileLog.add(MSG);
-                if (getLogger() != null) Out.logger.repaint();//Component update
+                if (getLogger() != null) getLogger().repaint();//Component update
             }
         });
     }

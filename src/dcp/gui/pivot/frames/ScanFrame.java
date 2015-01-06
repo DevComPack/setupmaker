@@ -64,7 +64,7 @@ public class ScanFrame extends FillPane implements Bindable
 {
     //Singleton reference
     private static ScanFrame singleton;
-    public static ScanFrame getSingleton() { return singleton; }
+    public static ScanFrame getSingleton() { if (singleton != null) return singleton; else return new ScanFrame(); }
     //Flags
     private boolean modified = false;//True if tab changed data
     public void setModified(boolean VALUE) { modified = VALUE; }
@@ -88,6 +88,7 @@ public class ScanFrame extends FillPane implements Bindable
     //Groups
     private static List<Group> groups = new ArrayList<Group>();//List of scanned directories
     public static void setGroups(List<Group> groups) {
+        ScanFrame.groups = null;
         ScanFrame.groups = groups;
         ScanFrame.setLoaded(true);//Loaded flag
     }
@@ -173,23 +174,24 @@ public class ScanFrame extends FillPane implements Bindable
         
         ADirScan = new Action() {//Directory Scan from Filters/mode Action
             @Override public void perform(Component source) {
+                if (btSelect.isSelected()) btSelect.press(); // * bugfix: scan on enabled selection doesn't update packs list
+                
                 TaskDirScan scan = new TaskDirScan(singleton, inPath.getText(), treeData, filter,
                         (String) depthSpinner.getSelectedItem(), !cbDir.isSelected());
-                
+ 
                 int res = scan.execute();
                 if (res == 0) {
-                    Out.print("PIVOT_SCAN", "Scanned directory: " + inPath.getText());
+                    Out.print("SCAN", "Scanned directory: " + inPath.getText());
                     //Save directory to app config recent dirs
                     Master.appConfig.addRecentDir(new File(inPath.getText()));
                     recentDirsFill(Master.appConfig.getRecentDirs());
                     if (depthSpinner.getSelectedIndex() < 5)
                         treeView.expandAll();
                     else treeView.collapseAll();
-                    if (btSelect.isSelected()) selectAll();
                     setModified(true);//Modified Flag (*)
                 }
                 else if (res == 2) {//Error: Path doesn't exist
-                    Out.print("PIVOT_SCAN", "Path error: " + inPath.getText());
+                    Out.print("SCAN", "Path error: " + inPath.getText());
                     Alert.alert("This path doesn't exist!", ScanFrame.this.getWindow());
                 }
                 
@@ -227,7 +229,7 @@ public class ScanFrame extends FillPane implements Bindable
         //Data Binding
         treeView.setTreeData(treeData);//Bind Tree view to data
         treeView.getTreeViewNodeStateListeners().add(new TreeViewNodeStateListener() {
-            @Override public void nodeCheckStateChanged(TreeView arg0, Path arg1, NodeCheckState arg2)
+            @Override public void nodeCheckStateChanged(TreeView tv, Path arg1, NodeCheckState arg2)
             {
                 setModified(true);
             }
@@ -367,61 +369,61 @@ public class ScanFrame extends FillPane implements Bindable
         cbZip.getButtonPressListeners().add(new ButtonPressListener() {//Archive
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Archive");
+                Out.print("SCAN","Applied filter: Archive");
             }
         });
         cbSetup.getButtonPressListeners().add(new ButtonPressListener() {//Setup
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Setup");
+                Out.print("SCAN","Applied filter: Setup");
             }
         });
         cbExe.getButtonPressListeners().add(new ButtonPressListener() {//Executable
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Executable");
+                Out.print("SCAN","Applied filter: Executable");
             }
         });
         cbDir.getButtonPressListeners().add(new ButtonPressListener() {//Directory
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Directory");
+                Out.print("SCAN","Applied filter: Directory");
             }
         });
         cbImg.getButtonPressListeners().add(new ButtonPressListener() {//Images
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Image");
+                Out.print("SCAN","Applied filter: Image");
             }
         });
         cbVid.getButtonPressListeners().add(new ButtonPressListener() {//Videos
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Video");
+                Out.print("SCAN","Applied filter: Video");
             }
         });
         cbSound.getButtonPressListeners().add(new ButtonPressListener() {//Sounds
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Sound");
+                Out.print("SCAN","Applied filter: Sound");
             }
         });
         cbDoc.getButtonPressListeners().add(new ButtonPressListener() {//Documents
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied filter: Document");
+                Out.print("SCAN","Applied filter: Document");
             }
         });
         cbCustTxt.getButtonPressListeners().add(new ButtonPressListener() {// Custom filter SETTINGS
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied custom filter");
+                Out.print("SCAN","Applied custom filter");
             }
         });
         cbCustExpr.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter REGEXP
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("PIVOT_SCAN","Applied regular expression filter");
+                Out.print("SCAN","Applied regular expression filter");
             }
         });
         inCustExpr.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
@@ -504,10 +506,10 @@ public class ScanFrame extends FillPane implements Bindable
 
             if (scanMode == SCAN_MODE.DEFAULT) {
                 scanMode = MODE;
-                Out.print("PIVOT_SCAN", "Scan Mode set to " + MODE);
+                Out.print("SCAN", "Scan Mode set to " + MODE);
             }
             else {
-                Out.print("PIVOT_SCAN", "Scan Mode changed from " + scanMode + " to " + MODE);
+                Out.print("SCAN", "Scan Mode changed from " + scanMode + " to " + MODE);
                 scanMode = MODE;
                 ADirScan.perform(this);//Refresh the Packs View
             }
@@ -589,7 +591,7 @@ public class ScanFrame extends FillPane implements Bindable
                     @Override public void buttonPressed(Button bt)
                     {
                         recent_dirs.getRows().remove(row);
-                        Out.print("PIVOT_SCAN", dir.getName()+" entry removed");
+                        Out.print("SCAN", dir.getName()+" entry removed");
                         Master.appConfig.removeRecentDir(dir);
                     }
                 });

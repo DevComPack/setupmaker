@@ -67,7 +67,7 @@ public class IOFactory
      * (doesn't work for folders)
      * @param file_name
      * @param file_type
-     * @return boolean
+     * @return boolean: success
      */
     public static boolean isFileType(String file_name, FILE_TYPE file_type) {
         String[] exts = null;
@@ -178,6 +178,7 @@ public class IOFactory
     public static String langpackPath;// = resPath+"/langpacks";
     public static String batPath;// = resPath+"/bat";
     public static String antPath;// = resPath+"/ant";
+    public static String psPath;// = resPath+"ps/";
     public static String libPath;// = "lib/dcp";
     public static String targetPath;// = "target";
     public static String savePath;// = "saves";
@@ -189,7 +190,8 @@ public class IOFactory
     public final static String dcpFileExt = "dcp";
     //Options
     public static boolean izpackWrite;// = true; 
-    public static boolean izpackCompile;// = true; 
+    public static boolean izpackCompile;// = true;
+    public static String apikey; // = Admin:Admin
     
     //Jar libraries
     public static String jarExecutable;// = libPath+"/dcp-executable.jar";
@@ -204,6 +206,9 @@ public class IOFactory
     public static String xmlProcessPanelSpec;// = xmlPath+"/ProcessPanelSpec.xml";
     public static String xmlShortcutPanelSpec;// = xmlPath+"/ShortcutPanelSpec.xml";
     public static String xmlRegistrySpec;// = xmlPath+"/RegistrySpec.xml";
+    // chocolatey files
+    public static String psChocolateyInstall;// = psPath+"/ChocolateyInstall.ps1"
+    public static String psChocolateyUninstall;// = psPath+"/ChocolateyUninstall.ps1"
     
     public static String saveFile = "";//"save.dcp";
     public static void setSaveFile(String canonicalPath) {
@@ -238,6 +243,7 @@ public class IOFactory
         langpackPath = json_paths.readString("langpackPath");
         batPath = json_paths.readString("batPath");
         antPath = json_paths.readString("antPath");
+        psPath = json_paths.readString("psPath");
         libPath = json_paths.readString("libPath");
         targetPath = json_paths.readString("targetPath");
         exeTargetDir = json_paths.readString("exeTargetDir");
@@ -254,6 +260,7 @@ public class IOFactory
                 json_options.readString("izpackWrite").equalsIgnoreCase("true"));
         izpackCompile = (json_options.readString("izpackCompile").equalsIgnoreCase("yes") ||
                             json_options.readString("izpackCompile").equalsIgnoreCase("true"));
+        apikey = json_options.readString("apikey");
         json_options.close();
         
         JsonSimpleReader json_codes = new JsonSimpleReader(json_file, "codes");
@@ -280,6 +287,8 @@ public class IOFactory
             xmlProcessPanelSpec = xmlPath+"/ProcessPanelSpec.xml";
             xmlShortcutPanelSpec = xmlPath+"/ShortcutPanelSpec.xml";
             xmlRegistrySpec = xmlPath+"/RegistrySpec.xml";
+            psChocolateyInstall = psPath+"/ChocolateyInstall.ps1";
+            psChocolateyUninstall = psPath+"/ChocolateyUninstall.ps1";
             
             //Images Resources
             imgFolder = Image.load(IOFactory.class.getClass().getResource(iconsPath + "folder.png"));

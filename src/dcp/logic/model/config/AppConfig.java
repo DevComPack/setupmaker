@@ -20,31 +20,37 @@ public class AppConfig implements Serializable
      */
     private static final long serialVersionUID = 1194986597451209924L;
 
-    //Enum
+    // Enum
     public static enum SCAN_MODE {//Scan mode enumeration
         DEFAULT,
         SIMPLE_SCAN,//Default
         RECURSIVE_SCAN
     }
-    //Constants
+    public static enum BUILD_MODE {//Build mode enumeration
+        DEFAULT,
+        IZPACK_BUILD,//Default
+        NUGET_BUILD
+    }
+    // Constants
     private final static int MAX_RECENT_DIRECTORIES = 5;
-    //Flag
+    // Flag
     private boolean modified = false;
     public boolean isModified() { return modified; }
     public void setModified(boolean modified) { this.modified = modified; }
-    //Attributes
+    // Attributes
     private String appName;
     private String appVersion;
-    //Data
+    // Data
     private LinkedList<File> recentDirs = new LinkedList<File>();
-    //Workspace
+    // Workspace
     private float setVerSplitPaneRatio = 0.6f;
     private float setHorSplitPaneRatio = 0.7f;
-    //Tutorial helpers
+    // Tutorial helpers
     private boolean help = true;
-    //Scan Modes
+    // Modes
     private SCAN_MODE scanMode = SCAN_MODE.SIMPLE_SCAN;
-    //Default configurations for setup
+    private BUILD_MODE buildMode = BUILD_MODE.IZPACK_BUILD;
+    // Default configurations for setup
     private SetupConfig defaultSetupConfig;
     
 
@@ -55,13 +61,13 @@ public class AppConfig implements Serializable
         this.setDefaultSetupConfig(new SetupConfig("Package", "1.0.0"));
     }
     
-    //Attributes
+    // Attributes
     public String getAppName() { return appName; }
     public void setAppName(String app_name) { this.appName = app_name; setModified(true); }
     public String getAppVersion() { return appVersion; }
     public void setAppVersion(String app_version) { this.appVersion = app_version; setModified(true); }
     
-    //Data
+    // Data
     public List<File> getRecentDirs() {
         if (recentDirs.size() > 0) {
             List<File> list = new ArrayList<File>();
@@ -92,25 +98,29 @@ public class AppConfig implements Serializable
         return recentDirs.remove(directory);
     }
     
-    //Workspace
+    // Workspace
     public float getSetVerSplitPaneRatio() { return setVerSplitPaneRatio; } 
     public void setSetVerSplitPaneRatio(float setVerSplitPaneRatio) { this.setVerSplitPaneRatio = setVerSplitPaneRatio; setModified(true); }
 
     public float getSetHorSplitPaneRatio() { return setHorSplitPaneRatio; }
     public void setSetHorSplitPaneRatio(float setHorSplitPaneRatio) { this.setHorSplitPaneRatio = setHorSplitPaneRatio; setModified(true); }
     
-    //Helpers functions
+    // Helpers functions
     public boolean isHelp() { return help; }
     public void setHelp(boolean help) { this.help = help; setModified(true); }
     
-    //Default configurations functions
+    // Default configurations functions
     public SCAN_MODE getScanMode() { return this.scanMode; }
     public void setScanMode(SCAN_MODE scanMode) { this.scanMode = scanMode; setModified(true); }
+    public BUILD_MODE getBuildMode() { return buildMode; }
+    public void setBuildMode(BUILD_MODE buildMode) { this.buildMode = buildMode; }
+    
     public SetupConfig getDefaultSetupConfig() { return defaultSetupConfig; }
     public void setDefaultSetupConfig(SetupConfig defaultSetupConfig)
     {
         this.defaultSetupConfig = defaultSetupConfig;
         setModified(true);
     }
+    
     
 }

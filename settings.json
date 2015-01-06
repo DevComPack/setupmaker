@@ -3,7 +3,7 @@
 		"archiveExt": ["zip", "tar", "tar.gz"],
 		"exeExt": ["exe", "reg", "bat", "cmd", "ps1", "sh", "ksh", "jar"],
 		"setupExt": ["msi"],
-		"docExt": ["txt", "pdf", "doc", "docx", "xml", "rtf", "odt", "xls", "xlsx", "csv", "log"],
+		"docExt": ["txt", "md", "pdf", "doc", "docx", "xml", "rtf", "odt", "xls", "xlsx", "csv", "log"],
 		"imgExt": ["bmp", "jpg", "jpeg", "gif", "png", "ico"],
 		"webExt": ["html", "htm", "php", "js", "asp", "aspx", "css"],
 		"soundExt": ["wav", "mp3", "ogg", "wma"],
@@ -18,6 +18,7 @@
 		"langpackPath": "./res/langpacks",
 		"batPath": "./res/bat",
 		"antPath": "./res/ant",
+		"psPath": "./res/ps",
 		"libPath": "./lib/dcp",
 		"targetPath": "./target",
 		"exeTargetDir": "tmp/"
@@ -31,7 +32,8 @@
 	
 	"options": {
 		"izpackWrite": "yes",
-		"izpackCompile": "yes"
+		"izpackCompile": "yes",
+		"apikey": "Admin:Admin"
 	},
 	
 	"codes": {

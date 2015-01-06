@@ -1,4 +1,4 @@
-package dcp.config.io.xml;
+package dcp.config.io.ant;
 
 import javax.xml.stream.XMLStreamException;
 

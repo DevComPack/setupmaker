@@ -7,7 +7,6 @@ import dcp.config.io.IOFactory;
 import dcp.gui.pivot.Master;
 
 
-
 public class IzpackAntCompiler {
     
     private String target_file = "";
@@ -23,8 +22,7 @@ public class IzpackAntCompiler {
      * Get target install file
      * @return
      */
-    public String getTarget()
-    {
+    public String getTarget() {
         return target_file;
     }
 

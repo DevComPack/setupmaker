@@ -25,10 +25,10 @@
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="dcp.gui.pivot.Master"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ truezip-samples-7.7.1-jar-with-dependencies.jar ant.jar staxmate-2.2.0.jar stax2-api-3.1.1.jar woodstox-core-asl-4.1.5.jar compiler.jar installer.jar jakarta-regexp-1.3.jar pivot-charts-2.0.3.jar pivot-core-2.0.3.jar pivot-wtk-2.0.3.jar pivot-wtk-terra-2.0.3.jar ant-launcher.jar ant-apache-log4j.jar ant-apache-regexp.jar ant-contrib.jar izevent.jar standalone-compiler.jar uninstaller-ext.jar uninstaller.jar bsf.jar kunststoff.jar liquidlnf.jar looks.jar metouia.jar nimbus.jar substance.jar json-simple-1.1.1.jar jsch-0.1.50.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ truezip-samples-7.7.1-jar-with-dependencies.jar ant.jar staxmate-2.2.0.jar stax2-api-3.1.1.jar woodstox-core-asl-4.1.5.jar compiler.jar installer.jar jakarta-regexp-1.3.jar ant-launcher.jar ant-apache-log4j.jar ant-apache-regexp.jar ant-contrib.jar izevent.jar standalone-compiler.jar uninstaller-ext.jar uninstaller.jar bsf.jar kunststoff.jar liquidlnf.jar looks.jar metouia.jar nimbus.jar substance.jar json-simple-1.1.1.jar jsch-0.1.50.jar pivot-charts-2.0.4.jar pivot-core-2.0.4.jar pivot-wtk-2.0.4.jar pivot-wtk-terra-2.0.4.jar"/>
             </manifest>
-            <fileset dir="${basedir}/bin"/>
             <zipfileset src="${lib}/jar-in-jar-loader.zip"/>
+            <fileset dir="${basedir}/bin"/>
             <zipfileset dir="${lib}" includes="truezip-samples-7.7.1-jar-with-dependencies.jar"/>
             <zipfileset dir="${lib}\ant" includes="ant.jar"/>
             <zipfileset dir="${lib}" includes="staxmate-2.2.0.jar"/>
@@ -37,10 +37,6 @@
             <zipfileset dir="${lib}\izpack" includes="compiler.jar"/>
             <zipfileset dir="${lib}\izpack" includes="installer.jar"/>
             <zipfileset dir="${lib}\izpack" includes="jakarta-regexp-1.3.jar"/>
-            <zipfileset dir="${lib}\pivot" includes="pivot-charts-2.0.4.jar"/>
-            <zipfileset dir="${lib}\pivot" includes="pivot-core-2.0.4.jar"/>
-            <zipfileset dir="${lib}\pivot" includes="pivot-wtk-2.0.4.jar"/>
-            <zipfileset dir="${lib}\pivot" includes="pivot-wtk-terra-2.0.4.jar"/>
             <zipfileset dir="${lib}\ant" includes="ant-launcher.jar"/>
             <zipfileset dir="${lib}\ant" includes="ant-apache-log4j.jar"/>
             <zipfileset dir="${lib}\ant" includes="ant-apache-regexp.jar"/>
@@ -58,6 +54,10 @@
             <zipfileset dir="${lib}\izpack" includes="substance.jar"/>
             <zipfileset dir="${lib}\json" includes="json-simple-1.1.1.jar"/>
             <zipfileset dir="${lib}\web" includes="jsch-0.1.50.jar"/>
+            <zipfileset dir="${lib}\pivot" includes="pivot-charts-2.0.4.jar"/>
+            <zipfileset dir="${lib}\pivot" includes="pivot-core-2.0.4.jar"/>
+            <zipfileset dir="${lib}\pivot" includes="pivot-wtk-2.0.4.jar"/>
+            <zipfileset dir="${lib}\pivot" includes="pivot-wtk-terra-2.0.4.jar"/>
         </jar>
 		<echo message="${jar_file} file created."/>
     </target>
@@ -66,7 +66,7 @@
 		<mkdir dir="${current_release}"/>
 		<zip destfile="${current_release}/DCP-${version}.zip">
 			<fileset dir="${basedir}" includes="lib/dcp/"/>
-			<fileset dir="${basedir}" includes="res/bat/ res/langpacks/ res/utils/ res/xml/"/>
+			<fileset dir="${basedir}" includes="res/bat/ res/langpacks/ res/utils/ res/ps/ res/xml/"/>
 			<zipfileset dir="${basedir}" includes="${jar_name}" fullpath="DCP-${version}.jar"/>
 			<zipfileset dir="${basedir}" includes="settings.json" fullpath="settings.json"/>
 			<zipfileset dir="${basedir}" includes="res/Readme.txt" fullpath="README"/>

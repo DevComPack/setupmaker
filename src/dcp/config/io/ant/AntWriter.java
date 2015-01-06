@@ -1,10 +1,12 @@
-package dcp.config.io.xml;
+package dcp.config.io.ant;
 
 import java.io.File;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.codehaus.staxmate.out.SMOutputElement;
+
+import dcp.config.io.xml.StaxMateWriter;
 
 
 public class AntWriter extends StaxMateWriter

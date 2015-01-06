@@ -20,9 +20,9 @@ import dcp.config.io.IOFactory;
 import dcp.config.io.OSValidator;
 import dcp.config.io.TextWriter;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
-import dcp.config.io.xml.CompileAntWriter;
-import dcp.config.io.xml.DebugAntWriter;
-import dcp.config.io.xml.RunAntWriter;
+import dcp.config.io.ant.CompileAntWriter;
+import dcp.config.io.ant.DebugAntWriter;
+import dcp.config.io.ant.RunAntWriter;
 import dcp.config.io.xml.izpack.GuiprefsWriter;
 import dcp.config.io.xml.izpack.InfoWriter;
 import dcp.config.io.xml.izpack.IzpackWriter;
@@ -85,7 +85,7 @@ public class TaskIzpackCompile extends Task<Boolean>
                     Out.print("BUILD", "Compilation success.");
                     TrueZipCastFactory.clearArchives();
                     
-                    if (webConfig.isEnabled()) {//Send pack files through SFTP
+                    if (webConfig != null && webConfig.isEnabled()) {//Send pack files through SFTP
                         Out.newLine();
                         Out.print("SFTP", "Web Setup upload process for packs begins..");
                         return webUpload();

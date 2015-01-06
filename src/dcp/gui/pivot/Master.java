@@ -18,6 +18,8 @@ import org.apache.pivot.collections.Map;
 import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.util.Filter;
 import org.apache.pivot.util.Resources;
+import org.apache.pivot.util.concurrent.Task;
+import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.Action;
 import org.apache.pivot.wtk.Application;
 import org.apache.pivot.wtk.Button;
@@ -29,6 +31,7 @@ import org.apache.pivot.wtk.Display;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.Keyboard;
+import org.apache.pivot.wtk.TaskAdapter;
 import org.apache.pivot.wtk.Keyboard.Modifier;
 import org.apache.pivot.wtk.Label;
 import org.apache.pivot.wtk.MessageType;
@@ -47,6 +50,7 @@ import dcp.gui.pivot.frames.ScanFrame;
 import dcp.gui.pivot.frames.SetFrame;
 import dcp.gui.pivot.frames.TweakFrame;
 import dcp.gui.pivot.helper.HelperFacade;
+import dcp.gui.pivot.tasks.TaskIzpackCompile;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
@@ -67,10 +71,10 @@ public class Master extends Window implements Application, Bindable
     List<Pack> packs;
     List<Group> groups;
     //Tabs
-    private ScanFrame scanFrame;
-    private SetFrame setFrame;
-    private TweakFrame tweakFrame;
-    private BuildFrame buildFrame;
+    protected ScanFrame scanFrame;
+    protected SetFrame setFrame;
+    protected TweakFrame tweakFrame;
+    protected BuildFrame buildFrame;
     //Helpers
     @BXML static public HelperFacade helper;
     //Display
@@ -120,6 +124,19 @@ public class Master extends Window implements Application, Bindable
     }
     
     public Master() {
+        IOFactory.init();//Factory memory data initialize
+        appConfig = confLoad();//Load configuration file
+        if (appConfig == null)
+        {
+            appConfig = new AppConfig(AppName, AppVersion);//Init config if not exists
+            setupConfig = new SetupConfig("Package", "1.0.0");
+        }
+        else
+        {
+            appConfig.setAppName(AppName); appConfig.setAppVersion(AppVersion);
+            setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
+        }
+        
         //Save action
         ASave = new Action() {//Project Save Action
             @Override public void perform(Component source) {
@@ -167,25 +184,13 @@ public class Master extends Window implements Application, Bindable
                 }
             }
         };
+
+        Out.print("FACTORY", "Data loaded to memory");
     }
 
     @Override public void startup(Display display, Map<String, String> properties) throws Exception//App start
     {
         Out.print("PIVOT", "Window open");
-        IOFactory.init();//Factory memory data initialize
-        appConfig = confLoad();//Load configuration file
-        if (appConfig == null)
-        {
-            appConfig = new AppConfig(AppName, AppVersion);//Init config if not exists
-            setupConfig = new SetupConfig("Package", "1.0.0");
-        }
-        else
-        {
-            appConfig.setAppName(AppName); appConfig.setAppVersion(AppVersion);
-            setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
-        }
-        Out.print("FACTORY", "Data loaded to memory");
-        
         Locale.setDefault(Locale.ENGLISH);//Set default UI language to English
         BXMLSerializer bxmlSerializer = new BXMLSerializer();
         window = (Window) bxmlSerializer.readObject(getClass().getResource("master.bxml"));
@@ -487,7 +492,7 @@ public class Master extends Window implements Application, Bindable
     /**
      * Load application configuration from file
      */
-    private AppConfig confLoad() {
+    protected AppConfig confLoad() {
         try
         {
             File f = new File(IOFactory.confFile);
@@ -516,7 +521,7 @@ public class Master extends Window implements Application, Bindable
      * Save data to file
      * [SETUP_CONFIG][GROUPS][PACKS]
      */
-    private boolean save(String saveFile) {
+    protected boolean save(String saveFile) {
         try
         {
             File f = new File(saveFile);
@@ -551,7 +556,7 @@ public class Master extends Window implements Application, Bindable
     /**
      * Load data from file
      */
-    private boolean load(String saveFile) {
+    protected boolean load(String saveFile) {
         try
         {
             File f = new File(saveFile);
@@ -563,10 +568,10 @@ public class Master extends Window implements Application, Bindable
                 ObjectInputStream is = new ObjectInputStream(in);
                 
                 String version = (String) is.readObject();
-                Out.print("INFO", "File version: "+version);
+                Out.print("DEBUG", "DCP File version: "+version);
                 
                 setupConfig = (SetupConfig) is.readObject();
-                Out.print("INFO", setupConfig.getAppName() + " " + setupConfig.getAppVersion());
+                Out.print("DEBUG", setupConfig.getAppName() + " " + setupConfig.getAppVersion());
                 
                 groups = new ArrayList<Group>();
                 int nGroups = is.readInt();
@@ -574,18 +579,21 @@ public class Master extends Window implements Application, Bindable
                     Group G = (Group) is.readObject();
                     groups.add(G);
                 }
-                if (nGroups > 0) Out.print("INFO", groups.getLength() + " groups loaded");
+                if (nGroups > 0) Out.print("DEBUG", groups.getLength() + " group(s) loaded");
                 
                 packs = new ArrayList<Pack>();
                 int nPacks = is.readInt();
                 for(int i = 0; i<nPacks; i++) {
                     Pack P = (Pack) is.readObject();
-                    if (version.startsWith("1.0"))// cast Pack model from 1.0.x version
+                    
+                    // File compatibility fix
+                    if (version.startsWith("1.0"))// cast Pack model from 1.0.x version (Chocolatey feature)
                         CastFactory.packModelUpdate(P, "1.0");
+                    
                     P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
                     packs.add(P);
                 }
-                if (nPacks > 0) Out.print("INFO", packs.getLength() + " packs loaded");
+                if (nPacks > 0) Out.print("DEBUG", packs.getLength() + " pack(s) loaded");
                 
                 is.close();
                 in.close();
@@ -600,6 +608,10 @@ public class Master extends Window implements Application, Bindable
             e.printStackTrace();
             return false;
         }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
     
@@ -609,7 +621,58 @@ public class Master extends Window implements Application, Bindable
      */
     public static void main(String[] args)
     {
-        DesktopApplicationContext.main(Master.class, args);
+        if (args.length > 0) // Command Line Function
+        {
+            Out.setLogger(null);
+            Out.print("INFO", "Command Line compiling enabled");
+            Out.print("INFO", "Loading application...");
+            Master master = new Master();
+            
+            for (String s: args) {
+                if (new File(s).exists() && s.endsWith(".dcp")) {
+                    Out.print("INFO", "Processing dcp file: " + s);
+                    System.out.println();
+                    
+                    if (!master.load(s))
+                        Out.print("ERROR", "Error loading the file! Please load it from the GUI and correct if there are some errors then reload it.");
+                    else {
+                        for (Group G:master.groups) {// Add Groups to factory
+                            GroupFactory.addGroup(G);
+                        }
+                        for(Pack P:master.packs) {// Add Packs to factory
+                            PackFactory.addPack(P);
+                        }
+                        
+                        Out.print("INFO", "File data loaded successfully.");
+                        System.out.println();
+                        
+                        Out.print("INFO", "Compiling file");
+                        final TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {//Finished compilation
+                            @Override public void executeFailed(Task<Boolean> t) {//Failed
+                                System.out.println();
+                                Out.print("ERROR", "Compiled with errors!");
+                            }
+                            @Override public void taskExecuted(Task<Boolean> t) {//Success
+                                if (t.getResult() == true) {//If no errors
+                                    System.out.println();
+                                    Out.print("INFO", "Finished compiling.");
+                                } else executeFailed(t);//Compile Errors
+                            }
+                        };
+                        
+                        // IzPack Compile Task launch
+                        TaskIzpackCompile compileTask = new TaskIzpackCompile(new File("package.jar").getAbsolutePath(), Master.setupConfig, null);
+                        compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
+                        
+                    }
+                }
+                else {
+                    Out.print("ERROR", "Filepath doesn't exist or file is incorrect! Please give a valid path to a dcp save file.");
+                }
+            }
+        }
+        else // GUI Application
+            DesktopApplicationContext.main(Master.class, args);
     }
 
 }

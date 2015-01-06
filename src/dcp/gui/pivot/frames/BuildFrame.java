@@ -54,7 +54,7 @@ public class BuildFrame extends FillPane implements Bindable
 {
     //Singleton reference
     private static BuildFrame singleton;
-    public static BuildFrame getSingleton() { return singleton; }
+    public static BuildFrame getSingleton() { if (singleton != null) return singleton; else return new BuildFrame(); }
     //------DATA
     //Flags
     private static boolean modified = false;//True if tab processed data
@@ -251,10 +251,7 @@ public class BuildFrame extends FillPane implements Bindable
                     }
                 };
 
-                String target_file = inTargetPath.getText();
-                System.out.println("*" + target_file);
                 dcp.main.log.Out.clearCompileLog();//Clear Saved Log
-                
 				String buildType = lbBuild.getSelectedItem().toString();
                 if (buildType.equals("IzPack")) { // IzPack Compile Task launch
 	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar");
