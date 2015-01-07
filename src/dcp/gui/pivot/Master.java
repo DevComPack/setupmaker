@@ -408,6 +408,7 @@ public class Master extends Window implements Application, Bindable
         tabPane.getTabPaneSelectionListeners().add(new TabPaneSelectionListener.Adapter() {
             @Override public void selectedIndexChanged(TabPane tabPane, int previousSelectedIndex)
             {
+                try {
                 switch(tabPane.getSelectedIndex()) {
                     case 0://Scan Tab
                         break;
@@ -438,13 +439,18 @@ public class Master extends Window implements Application, Bindable
                     case 3://Build Tab
                         if (tweakFrame.isModified()) {
                             tweakFrame.setModified(false);//Modified flag*
-                            buildFrame.init(setupConfig.getAppName(), setupConfig.getAppVersion());
+                            buildFrame.init(setupConfig.getAppName(), setupConfig.getAppVersion(), appConfig.getBuildMode());
                             if (!Master.this.getTitle().contains("*"))
                                 Master.this.setTitle(Master.this.getTitle().concat("*"));//modified flag in Title
                         }
                         break;
                     default:
                         break;
+                }
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
                 }
                 
                 updateStatusBar();

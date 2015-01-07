@@ -14,8 +14,11 @@ import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.util.Resources;
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.util.concurrent.TaskListener;
+import org.apache.pivot.wtk.Accordion;
 import org.apache.pivot.wtk.ActivityIndicator;
 import org.apache.pivot.wtk.Button;
+import org.apache.pivot.wtk.ButtonGroup;
+import org.apache.pivot.wtk.ButtonGroupListener;
 import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
@@ -25,12 +28,14 @@ import org.apache.pivot.wtk.FillPane;
 import org.apache.pivot.wtk.ImageView;
 import org.apache.pivot.wtk.Label;
 import org.apache.pivot.wtk.ListButton;
+import org.apache.pivot.wtk.ListButtonSelectionListener;
 import org.apache.pivot.wtk.ListView;
 import org.apache.pivot.wtk.ListViewItemListener;
 import org.apache.pivot.wtk.ListViewSelectionListener;
 import org.apache.pivot.wtk.MessageType;
 import org.apache.pivot.wtk.Prompt;
 import org.apache.pivot.wtk.PushButton;
+import org.apache.pivot.wtk.RadioButton;
 import org.apache.pivot.wtk.Span;
 import org.apache.pivot.wtk.Spinner;
 import org.apache.pivot.wtk.SpinnerSelectionListener;
@@ -46,34 +51,52 @@ import dcp.gui.pivot.actions.BrowseAction;
 import dcp.gui.pivot.tasks.TaskIzpackCompile;
 import dcp.gui.pivot.tasks.TaskIzpackDebug;
 import dcp.gui.pivot.tasks.TaskIzpackRun;
+import dcp.gui.pivot.tasks.TaskNugetCompile;
 import dcp.logic.factory.CastFactory;
+import dcp.logic.factory.TypeFactory.BUILD_MODE;
 import dcp.main.log.Out;
 
 
 public class BuildFrame extends FillPane implements Bindable
 {
-    //Singleton reference
+    // Singleton reference
     private static BuildFrame singleton;
     public static BuildFrame getSingleton() { if (singleton != null) return singleton; else return new BuildFrame(); }
     //------DATA
-    //Flags
+    // Flags
     private static boolean modified = false;//True if tab processed data
     public static void setModified(boolean VALUE) { modified = VALUE; }
     public static boolean isModified() { return modified; }
-    //Browse Area
-    @BXML private ListButton lbBuild;// Build type list button
+    // Browse Area
     @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
     @BXML private PushButton btBrowse;//Browse button
     @BXML private TextInput inTargetPath;//Path Text Input
-    //Split Area
+    // Build
+    @BXML private ListButton lbBuild;// Build type (IzPack/NuGet)
+    @BXML private Accordion accBuildOpt;// Build options Accordion
+    @BXML private FillPane accIzpack;// Izpack accordion element
+    @BXML private FillPane accNuget;// Nuget accordion element
+    // Build options (IzPack)
+        //Split Area
     @BXML private Checkbox cbSplit;//Split option enable/disable
     @BXML private TextInput inSize;//Split size
     @BXML private Spinner sizeSpinner;//Split size unit [MB|GB|GB]
-    //Web Area
+        //Web Area
     @BXML private Checkbox cbWeb;//Web Setup option enabled/disable
     @BXML private TextInput inWebDir;//Web HTTP server URL
     @BXML private SftpDialog sftpDialog;//Web SFTP Configuration dialog
     @BXML private PushButton btWebConfig;//Web SFTP Configuration dialog button
+    // Build options (NuGet)
+    @BXML private TextInput inFeedSource;// Nuget Source Feed url
+    @BXML private ButtonGroup buildSteps;// Build steps radio buttons
+        //Build Steps
+    @BXML private RadioButton rbConfig;// step 1
+    @BXML private RadioButton rbSpec;// 2
+    @BXML private RadioButton rbPack;// 3
+    @BXML private RadioButton rbPush;// 4
+        // NuGet data
+    private String feedUrl = "http://fr003573:81/nuget/local";// default feed url
+    private int stepNbr = 3;// step number (default 3)
     //Log Area
     @BXML private ListView logger;//List View for Log display
     //Compile Area
@@ -93,8 +116,6 @@ public class BuildFrame extends FillPane implements Bindable
     
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources) {
-        //Set default directory selection in File Browser (target/package.jar)
-        fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_AS);//FileBrowser Mode to File selection
         try {
             fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
         } catch (IOException e) {
@@ -102,8 +123,13 @@ public class BuildFrame extends FillPane implements Bindable
         }
         
         //Data Binding
-        lbBuild.setSelectedIndex(0);// 'IzPack' build type by default
+        lbBuild.setSelectedItem("IzPack");// 'IzPack' build type by default
         logger.setListData(dcp.main.log.Out.getCompileLog());//Bind compile log tags to List view logger
+        try { init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion(), Master.appConfig.getBuildMode()); }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        displayRefresh();
         
         //Action Binding
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
@@ -117,6 +143,46 @@ public class BuildFrame extends FillPane implements Bindable
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+        
+        // Build type option change
+        lbBuild.getListButtonSelectionListeners().add(new ListButtonSelectionListener.Adapter() {
+            @Override public void selectedItemChanged(ListButton lb, Object previousSelectedItem)
+            {
+                try
+                {
+                    init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion(),
+                            lb.getSelectedIndex() == 0?BUILD_MODE.IZPACK_BUILD:BUILD_MODE.NUGET_BUILD);
+                    displayRefresh();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+        
+        // Nuget Source text input listener
+        inFeedSource.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
+            @Override public void textChanged(TextInput TI)
+            {
+                feedUrl = TI.getText();
+            }
+        });
+        
+        // Build step changed
+        buildSteps.getButtonGroupListeners().add(new ButtonGroupListener.Adapter() {
+            @Override public void selectionChanged(ButtonGroup btGrp, Button bt)
+            {
+                if (rbConfig.isSelected())
+                    stepNbr = 1;
+                else if (rbSpec.isSelected())
+                    stepNbr = 2;
+                else if (rbPack.isSelected())
+                    stepNbr = 3;
+                else// if (rbPush.isSelected())
+                    stepNbr = 4;
             }
         });
         
@@ -253,11 +319,16 @@ public class BuildFrame extends FillPane implements Bindable
 
                 dcp.main.log.Out.clearCompileLog();//Clear Saved Log
 				String buildType = lbBuild.getSelectedItem().toString();
-                if (buildType.equals("IzPack")) { // IzPack Compile Task launch
+                if (buildType.equals("IzPack")) { // IzPack compile task
 	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar");
 	                TaskIzpackCompile compileTask = new TaskIzpackCompile(targetPath, Master.setupConfig, sftpDialog.getWebConfig());
 	                compileTask.setLogger(logger);//Setting log display on logger
 	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
+				}
+                else if (buildType.equals("NuGet")) { // NuGet compile task
+                    TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), feedUrl, stepNbr);
+                    compileTask.setLogger(logger);//Setting log display on logger
+                    compileTask.execute(new TaskAdapter<Boolean>(tlCompile));// Compile
                 }
             }
         });
@@ -340,14 +411,23 @@ public class BuildFrame extends FillPane implements Bindable
         });
     }
     
+    /**
+     * Refresh workflow based on build-type (IzPack/NuGet)
+     */
     private void displayRefresh() {
         btCompile.setEnabled(true);
         switch (lbBuild.getSelectedItem().toString()) {
         case "IzPack":
+            accBuildOpt.setSelectedIndex(0);
+            accIzpack.setEnabled(true);
+            accNuget.setEnabled(false);
             btLaunch.setEnabled(true);
             btDebug.setEnabled(true);
             break;
         case "NuGet":
+            accBuildOpt.setSelectedIndex(1);
+            accIzpack.setEnabled(false);
+            accNuget.setEnabled(true);
             btLaunch.setEnabled(false);
             btDebug.setEnabled(false);
             break;
@@ -368,32 +448,53 @@ public class BuildFrame extends FillPane implements Bindable
     }
     
     /**
-     * Build tab export path initialize
+     * Build tab data/display initialize
+     * @throws IOException 
      */
-    public void init(String AppName, String AppVersion)
+    public void init(String AppName, String AppVersion, BUILD_MODE BuildMode) throws IOException
     {
         String filename = AppName+"-"+AppVersion+".jar";
         filename = filename.replaceAll(" ", "");
         
         //File export set
-        if (lbBuild.getSelectedItem().equals("IzPack")) { // IzPack
+        switch (BuildMode)
+        {
+        case IZPACK_BUILD: // IzPack
+            lbBuild.setSelectedItem("IzPack");
+            fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_AS);//FileBrowser Mode to File selection
+            
             if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
-                inTargetPath.setText(new File(IOFactory.targetPath, filename).toString());
+                inTargetPath.setText(new File(IOFactory.targetPath, filename).getCanonicalPath());
             }
             else {
-                inTargetPath.setText(new File(filename).getAbsolutePath());
+                inTargetPath.setText(new File(filename).getCanonicalPath());
             }
-            fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getAbsoluteFile());
+            fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getCanonicalFile());
             Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
-        }
-        else if (lbBuild.getSelectedItem().equals("NuGet")) { // NuGet
-            if (new File(IOFactory.targetPath, "nuget").exists()) {// if 'target/nuget' folder exists
-                inTargetPath.setText(new File(IOFactory.targetPath, "nuget").toString());
+            break;
+        case NUGET_BUILD: // NuGet
+            lbBuild.setSelectedItem("NuGet");
+            fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);//FileBrowser Mode to Folder selection
+            inFeedSource.setText(feedUrl);// default source for debugging
+            
+            if (inTargetPath.getText().length() > 0) {
+                File target = new File(inTargetPath.getText());
+                if (!target.isDirectory())
+                    inTargetPath.setText(target.getParent());
             }
             else if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
                 inTargetPath.setText(IOFactory.targetPath);
             }
+            else {
+                inTargetPath.setText(new File(".").getCanonicalPath());
+            }
+            Out.print("DEBUG", "Export folder set to: " + inTargetPath.getText());
+            break;
+        case DEFAULT:
+        default:
+            break;
         }
+        
     }
     
 }

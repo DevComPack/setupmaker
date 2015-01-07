@@ -26,7 +26,7 @@
 					<TablePane.Column width="-1" />
 				</columns>
 				<TablePane.Row>
-		    		<ListButton bxml:id="lbBuild" enabled="true" repeatable="false" listSize="10" listData="['IzPack']" tooltipText="Builder" />
+		    		<ListButton bxml:id="lbBuild" enabled="true" repeatable="false" listSize="10" listData="['IzPack', 'NuGet']" tooltipText="Builder" />
 					<TextInput bxml:id="inTargetPath" prompt="Target Path" tooltipText="Target Path" textSize="50" />
 					<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
 						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
@@ -37,10 +37,10 @@
 		
 		<!-- Build Options -->
 	    <TablePane.Row height="-1">
-			<Accordion>
+			<Accordion bxml:id="accBuildOpt">
 			
 				<!-- IzPack Options -->
-		    	<FillPane orientation="Horizontal" Accordion.headerData="IzPack">
+		    	<FillPane bxml:id="accIzpack" orientation="Horizontal" Accordion.headerData="IzPack" enabled="false">
 			    	<BoxPane orientation="Horizontal" preferredHeight="30" styles="{verticalAlignment:'center', horizontalAlignment:'center'}">
 				    	<Checkbox bxml:id="cbSplit" tooltipText="Split Setup file into same-size parts" buttonData="Split file" selected="false" />
 				    	<TextInput bxml:id="inSize" text="100" preferredWidth="50" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
@@ -57,7 +57,7 @@
 		 		</FillPane>
 				
 				<!-- NuGet Options -->
-				<FillPane orientation="Horizontal" Accordion.headerData="Chocolatey" enabled="false">
+				<FillPane bxml:id="accNuget" orientation="Horizontal" Accordion.headerData="Chocolatey" enabled="false">
 					<TablePane styles="{padding:4, horizontalSpacing:5}">
 						<columns>
 							<TablePane.Column width="1*" />

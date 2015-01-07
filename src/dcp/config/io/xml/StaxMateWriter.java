@@ -27,7 +27,7 @@ public abstract class StaxMateWriter
         this.root = root;
     }
     
-    public void close() { out.close(); System.out.println("closed stream."); }
+    public void close() { out.close(); }
     
     public void addComment(String comment) throws XMLStreamException {
         root.addComment(comment);
