@@ -103,7 +103,7 @@ public class Master extends Window implements Application, Bindable
     
     //Constant Application Values
     public final static String AppName = "DCP Setup Maker";
-    public final static String AppVersion = "1.1.0";
+    public final static String AppVersion = "1.1.1";
     public static AppConfig appConfig;//App configuration file
     public static SetupConfig setupConfig;//Setup configuration file
     

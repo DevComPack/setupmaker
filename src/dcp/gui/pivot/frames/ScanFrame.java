@@ -49,6 +49,7 @@ import org.apache.pivot.wtk.effects.TransitionListener;
 
 import dcp.config.io.IOFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
+import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.actions.BrowseAction;
 import dcp.gui.pivot.tasks.TaskDirScan;
@@ -56,7 +57,6 @@ import dcp.gui.pivot.transitions.AppearTransition;
 import dcp.gui.pivot.validators.PathValidator;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
-import dcp.logic.model.config.AppConfig.SCAN_MODE;
 import dcp.main.log.Out;
 
 

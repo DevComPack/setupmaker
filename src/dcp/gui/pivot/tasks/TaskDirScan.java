@@ -12,9 +12,9 @@ import org.apache.pivot.wtk.content.TreeNode;
 import dcp.config.io.IOFactory;
 import dcp.gui.pivot.frames.ScanFrame;
 import dcp.logic.factory.CastFactory;
+import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
-import dcp.logic.model.config.AppConfig.SCAN_MODE;
 
 
 public class TaskDirScan extends Task<Integer>

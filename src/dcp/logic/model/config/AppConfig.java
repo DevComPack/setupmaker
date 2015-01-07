@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
 
+import dcp.logic.factory.TypeFactory.BUILD_MODE;
+import dcp.logic.factory.TypeFactory.SCAN_MODE;
+
 /**
  * DevComPack Application configuration data
  * @author SSAIDELI
@@ -20,17 +23,6 @@ public class AppConfig implements Serializable
      */
     private static final long serialVersionUID = 1194986597451209924L;
 
-    // Enum
-    public static enum SCAN_MODE {//Scan mode enumeration
-        DEFAULT,
-        SIMPLE_SCAN,//Default
-        RECURSIVE_SCAN
-    }
-    public static enum BUILD_MODE {//Build mode enumeration
-        DEFAULT,
-        IZPACK_BUILD,//Default
-        NUGET_BUILD
-    }
     // Constants
     private final static int MAX_RECENT_DIRECTORIES = 5;
     // Flag

@@ -67,10 +67,10 @@ import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.PLATFORM;
+import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
-import dcp.logic.model.config.AppConfig.SCAN_MODE;
 import dcp.main.log.Out;
 
 

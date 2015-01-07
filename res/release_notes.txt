@@ -1,3 +1,11 @@
+1.1.1
+=====
+Code cleanup
+Powershell script writer class
+Chocolatey specifications writer class
+Nuget process compiler class
+Powershell generic ressource scripts
+
 1.1.0
 =====
 * Bug Fixes:
@@ -9,14 +17,16 @@ Fixed Data initialization and load at startup
 Tab Singletons initialize with instantiation
 Scan on enabled selection didn't update packs list
 --
-+ Enhancements:
++ New features:
+Pack version property
+New compilation system based on multiple compilers
+Command Line compilation of dcp files
+--
+- Enhancements:
 Apache Pivot update to 2.0.4
 Split panel on Scan tab's sidebar
 Resizable RegExp filter input size
-Pack version property
 Version extract from pack file name
-New compilation system based on multiple compilers
-Command Line compilation of dcp files (one or more java parameters of dcp save file paths to compile)
 
 
 1.0.3
