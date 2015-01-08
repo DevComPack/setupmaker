@@ -433,10 +433,12 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public void selectedRangesChanged(ListView lv, Sequence<Span> s) // save selection to clipboard
             {
                 if (!waiter.isActive() && logger.isFocused()) { // if not compiling/running && logger selected
-                    Sequence<String> sel = (Sequence<String>) lv.getSelectedItems();
-                    String selCb = "";
-                    for (int i = 0; i < sel.getLength(); i++) {
-                        selCb += sel.get(i);
+                    @SuppressWarnings("unchecked")
+                    Sequence<String> sel = (Sequence<String>) lv.getSelectedItems(); // list of selected strings
+                    String selCb = ""; // full selection data string
+                    for (int i = 0; i < sel.getLength(); i++) { // concat selection
+                        //selCb += sel.get(i) + "\n";
+                        selCb = String.format("%s%s%n", selCb, sel.get(i)); 
                     }
                     
                     System.out.println("Copied to Clipboard: "+ selCb);

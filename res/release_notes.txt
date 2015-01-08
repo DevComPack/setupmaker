@@ -1,18 +1,19 @@
 1.1.1
 =====
-Code cleanup
-Powershell script writer class
-Chocolatey specifications writer class
-Nuget process compiler class
++ New features:
+Open target folder button on Build tab
 Powershell generic ressource scripts
-Listbutton build linked to accordion data
+Powershell script writer
+Chocolatey specifications writer
+Nuget process compiler
+--
+- Enhancements:
+Code cleanup
+Multi lines clipboard copy of selected log lines
 --
 * Bug fixes:
 Default empty target path was based on app data instead of setup data
---
-- New features
-Open target folder button on Build tab
-Multi lines clipboard copy of selected log lines
+
 
 1.1.0
 =====
