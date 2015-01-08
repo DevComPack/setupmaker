@@ -5,8 +5,14 @@ Powershell script writer class
 Chocolatey specifications writer class
 Nuget process compiler class
 Powershell generic ressource scripts
+Listbutton build linked to accordion data
+--
 * Bug fixes:
 Default empty target path was based on app data instead of setup data
+--
+- New features
+Open target folder button on Build tab
+Multi lines clipboard copy of selected log lines
 
 1.1.0
 =====

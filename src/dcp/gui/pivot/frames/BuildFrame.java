@@ -1,5 +1,6 @@
 package dcp.gui.pivot.frames;
 
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -15,6 +16,7 @@ import org.apache.pivot.util.Resources;
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.Accordion;
+import org.apache.pivot.wtk.Action;
 import org.apache.pivot.wtk.ActivityIndicator;
 import org.apache.pivot.wtk.Button;
 import org.apache.pivot.wtk.ButtonGroup;
@@ -22,6 +24,7 @@ import org.apache.pivot.wtk.ButtonGroupListener;
 import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
+import org.apache.pivot.wtk.Component;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.FillPane;
@@ -70,7 +73,9 @@ public class BuildFrame extends FillPane implements Bindable
     // Browse Area
     @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
     @BXML private PushButton btBrowse;//Browse button
+    @BXML private PushButton btOpen;//Open folder button
     @BXML private TextInput inTargetPath;//Path Text Input
+    private Action AOpenFolder;
     // Build
     @BXML private ListButton lbBuild;// Build type (IzPack/NuGet)
     @BXML private Accordion accBuildOpt;// Build options Accordion
@@ -112,6 +117,31 @@ public class BuildFrame extends FillPane implements Bindable
     
     public BuildFrame() {
         if (singleton == null) singleton = this;
+        
+        // Open target folder in explorer
+        AOpenFolder = new Action() {
+            @Override public void perform(Component c)
+            {
+                String target = inTargetPath.getText();
+                
+                if (target.length() > 0) {
+                    Desktop desktop = Desktop.getDesktop();
+                    File dirToOpen = null;
+                    try {
+                        dirToOpen = new File(target);
+                        if (dirToOpen.isFile()) // Get parent folder of file
+                            dirToOpen = dirToOpen.getParentFile();
+                        desktop.open(dirToOpen); // Open folder
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        Out.print("ERROR", "File Not Found: " + dirToOpen.getAbsolutePath());
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
     }
     
     @Override
@@ -133,6 +163,7 @@ public class BuildFrame extends FillPane implements Bindable
         
         //Action Binding
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
+        btOpen.setAction(AOpenFolder);
         
         //Target file chosen from File Chooser event
         fileBrowserSheet.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
@@ -399,11 +430,17 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         logger.getListViewSelectionListeners().add(new ListViewSelectionListener.Adapter() {
-            @Override public void selectedRangesChanged(ListView lv, Sequence<Span> s)// save selection to clipboard
+            @Override public void selectedRangesChanged(ListView lv, Sequence<Span> s) // save selection to clipboard
             {
-                if (!waiter.isActive() && logger.isFocused()) {// if not compiling/running && logger selected
-                    System.out.println("Copied to Clipboard: "+(String) lv.getSelectedItem());
-                    StringSelection selection = new StringSelection((String) lv.getSelectedItem());
+                if (!waiter.isActive() && logger.isFocused()) { // if not compiling/running && logger selected
+                    Sequence<String> sel = (Sequence<String>) lv.getSelectedItems();
+                    String selCb = "";
+                    for (int i = 0; i < sel.getLength(); i++) {
+                        selCb += sel.get(i);
+                    }
+                    
+                    System.out.println("Copied to Clipboard: "+ selCb);
+                    StringSelection selection = new StringSelection(selCb);
                     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                     clipboard.setContents(selection, selection);
                 }
