@@ -59,6 +59,11 @@
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/selectnone.png" />
 														</PushButton>
+														<PushButton bxml:id="btCheck"
+															tooltipText="Check and validate all packs data"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/dcp/gui/icons/debug.png" />
+														</PushButton>
 														<PushButton bxml:id="btAdd"
 															tooltipText="Add selected pack(s) to selected group"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">

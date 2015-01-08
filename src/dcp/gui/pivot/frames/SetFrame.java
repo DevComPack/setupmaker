@@ -48,6 +48,7 @@ import org.apache.pivot.wtk.TextArea;
 import org.apache.pivot.wtk.TextAreaContentListener;
 import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.TextInputContentListener;
+import org.apache.pivot.wtk.TextInputListener;
 import org.apache.pivot.wtk.TreeView;
 import org.apache.pivot.wtk.TreeViewNodeListener;
 import org.apache.pivot.wtk.TreeViewSelectionListener;
@@ -91,6 +92,7 @@ public class SetFrame extends FillPane implements Bindable
     private boolean multi_selection = false;//If multiple packs selected or only one
     private boolean drag_enabled = false;//If a component is being dragged
     private boolean isGroupDependency() { return ((String)cbDepType.getButtonData()).equals("Group"); }
+    private boolean unvalid = false;// True if some validator is negative
     //Packs
     private List<Pack> getPacks() { return PackFactory.getPacks(); }//Read-only Packs data
     private Pack getSelectedPack() { return (Pack) tableView.getSelectedRow(); }
@@ -112,9 +114,10 @@ public class SetFrame extends FillPane implements Bindable
     
     //Panel Buttons
     //Pack options
-    @BXML private PushButton btSort;//Packs Sorting Dialog open
     @BXML private PushButton btSelectAll;//Select all packs in table view
     @BXML private PushButton btSelectNone;//Clear pack selection in table view
+    @BXML private PushButton btCheck;//Check and validate packs data
+    @BXML private PushButton btSort;//Packs Sorting Dialog open
     @BXML private PushButton btAdd;//Add Pack to selected group
     @BXML private PushButton btDelete;//Delete selected Pack(s)
     //Group options
@@ -387,6 +390,13 @@ public class SetFrame extends FillPane implements Bindable
                 return true;
             }
         });
+        inName.getTextInputListeners().add(new TextInputListener.Adapter() {
+            @Override public void textValidChanged(TextInput ti)
+            {
+                System.out.println("inName " + ti.isValid());
+                if (!ti.isValid()) unvalid = true;
+            }
+        });
         inVersion.setValidator(new Validator() {
             @Override public boolean isValid(String str)
             {
@@ -399,20 +409,20 @@ public class SetFrame extends FillPane implements Bindable
                 return true;
             }
         });
-        
-        //Packs panel buttons
-        btSort.getButtonPressListeners().add(new ButtonPressListener() {
-            @Override public void buttonPressed(Button bt)
+        inVersion.getTextInputListeners().add(new TextInputListener.Adapter() {
+            @Override public void textValidChanged(TextInput ti)
             {
-                sortDialog.updatePriorities();//Update packs priorities from current list
-                sortDialog.open(SetFrame.this.getDisplay(), SetFrame.this.getWindow(), null);
+                System.out.println("inVersion " + ti.isValid());
+                if (!ti.isValid()) unvalid = true;
             }
         });
+        
+        //Packs panel buttons
         btSelectAll.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
                 int n = tableView.getTableData().getLength();
-                if (n>0) tableView.setSelectedRange(0, n-1);
+                if (n > 0) tableView.setSelectedRange(0, n-1);
                 tableView.requestFocus();
             }
         });
@@ -422,6 +432,24 @@ public class SetFrame extends FillPane implements Bindable
                 tableView.clearSelection();
             }
         });
+        btCheck.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                for (int i=0; i < getPacks().getLength(); i++) {
+                    tableView.setSelectedIndex(i);
+                    setPackProperties((Pack) tableView.getTableData().get(i));
+                    if (unvalid) { unvalid = false; break; } // stop if unvalid flag true
+                }
+            }
+        });
+        btSort.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                sortDialog.updatePriorities();//Update packs priorities from current list
+                sortDialog.open(SetFrame.this.getDisplay(), SetFrame.this.getWindow(), null);
+            }
+        });
+        
         
         //Groups panel buttons
         btExpand.getButtonPressListeners().add(new ButtonPressListener() {
