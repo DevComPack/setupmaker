@@ -117,10 +117,31 @@ public class Master extends Window implements Application, Bindable
             Master.this.setTitle(Master.this.getTitle().concat(" - "+IOFactory.saveFile ));
         }
         else {//Already saved on a file
-            Master.this.setTitle(Master.this.getTitle().
-                substring(0, Master.this.getTitle().indexOf('-')+2).
-                concat(IOFactory.saveFile ));
+            if (IOFactory.saveFile.length() > 0) // Save file set
+                Master.this.setTitle(Master.this.getTitle().
+                        substring(0, Master.this.getTitle().indexOf('-')+2).
+                        concat(IOFactory.saveFile));
+            else // Save file unset
+                Master.this.setTitle(Master.this.getTitle().
+                        substring(0, Master.this.getTitle().indexOf('-')-1));
         }
+    }
+
+    /**
+     * Bind data to GUI
+     */
+    protected void databind(SetupConfig setupConfig2, List<Pack> packs2, List<Group> groups2)
+    {
+        //Clear scanned path
+        scanFrame.init(setupConfig.getSrcPath());
+        //Groups binding
+        ScanFrame.setGroups(groups);//loaded flag enabled*
+        //Packs binding
+        scanFrame.setPacks(packs);//loaded flag enabled*
+        //Tab data initialize
+        setFrame.loadInit();
+        //SetupConfig binding
+        tweakFrame.dataBinding(setupConfig);
     }
     
     public Master() {
@@ -146,9 +167,9 @@ public class Master extends Window implements Application, Bindable
                     //Enable Save button
                     if (!btSave.isEnabled()) {
                         btSave.setEnabled(true);
-                        btUndo.setEnabled(true);
                         //btDefault.setEnabled(false);
                     }
+                    btUndo.setEnabled(true);
                     titleUpdate();
                 }
             } };
@@ -158,16 +179,7 @@ public class Master extends Window implements Application, Bindable
             public void perform(Component arg0)
             {
                 if (load(IOFactory.saveFile)) {
-                    //Clear scanned path
-                    scanFrame.init(setupConfig.getSrcPath());
-                    //Groups binding
-                    ScanFrame.setGroups(groups);//loaded flag enabled*
-                    //Packs binding
-                    scanFrame.setPacks(packs);//loaded flag enabled*
-                    //Tab data initialize
-                    setFrame.loadInit();
-                    //SetupConfig binding
-                    tweakFrame.dataBinding(setupConfig);
+                    databind(setupConfig, packs, groups);
                     //Go to Set tab
                     tabPane.setSelectedIndex(1);
                     for(int i=0; i<tabPane.getTabs().getLength(); i++)
@@ -180,8 +192,8 @@ public class Master extends Window implements Application, Bindable
                     //Enable Save button
                     if (!btSave.isEnabled()) {
                         btSave.setEnabled(true);
-                        btUndo.setEnabled(true);
                     }
+                    btUndo.setEnabled(true);
                     titleUpdate();
                 }
             }
@@ -386,7 +398,18 @@ public class Master extends Window implements Application, Bindable
         btUndo.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
-                ALoad.perform(bt);
+                if (Master.this.getTitle().contains("-") && Master.this.getTitle().contains("*")) // Modified save file
+                    ALoad.perform(bt);
+                else { // back to default factory setup
+                    setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
+                    packs = new ArrayList<Pack>();
+                    groups = new ArrayList<Group>();
+                    databind(setupConfig, packs, groups);
+                    IOFactory.setSaveFile("");
+                    titleUpdate();
+                    bt.setEnabled(false);
+                    Out.print("INFO", "Back to factory setup configuration");
+                }
             }
         });
         btDefault.getButtonPressListeners().add(new ButtonPressListener() {

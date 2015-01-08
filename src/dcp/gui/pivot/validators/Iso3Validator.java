@@ -2,6 +2,8 @@ package dcp.gui.pivot.validators;
 
 import org.apache.pivot.wtk.validation.Validator;
 
+import dcp.main.log.Out;
+
 
 public class Iso3Validator implements Validator
 {
@@ -12,8 +14,10 @@ public class Iso3Validator implements Validator
         if (s.equals(""))//Empty string
             return true;
         
-        if (s.length() != 3)// should be 3 characters
+        if (s.length() != 3) {// should be 3 characters
+            Out.print("WARNING", "ISO3 format incorrect: " + s);
             return false;
+        }
         
         return true;
     }

@@ -212,7 +212,7 @@ public class IOFactory
     
     public static String saveFile = "";//"save.dcp";
     public static void setSaveFile(String canonicalPath) {
-        if (!canonicalPath.endsWith("."+IOFactory.dcpFileExt)) {//add file extension if not given
+        if (canonicalPath.length() > 0 && !canonicalPath.endsWith("."+IOFactory.dcpFileExt)) {//add file extension if not given
             canonicalPath = canonicalPath.concat("."+IOFactory.dcpFileExt);
         }
         saveFile = canonicalPath;

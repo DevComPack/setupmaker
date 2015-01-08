@@ -373,18 +373,29 @@ public class SetFrame extends FillPane implements Bindable
             @Override public boolean isValid(String str)
             {
                 assert !multi_selection;
-                if (!str.matches("[a-zA-Z._\\-0-9]+")) return false;
-                for(Pack p:getPacks())
-                    if (!p.equals(getSelectedPack()) && p.getInstallName().equals(str))
+                if (str.length() > 0) {
+                    if (!str.matches("[a-zA-Z._\\-0-9]+")) {
+                        Out.print("WARNING", "Pack name format incorrect: " + str);
                         return false;
+                    }
+                    for(Pack p:getPacks())
+                        if (!p.equals(getSelectedPack()) && p.getInstallName().equals(str)) {
+                            Out.print("WARNING", "Pack name format incorrect: " + str);
+                            return false;
+                        }
+                }
                 return true;
             }
         });
         inVersion.setValidator(new Validator() {
             @Override public boolean isValid(String str)
             {
-                if (str.length() > 20 || !str.matches("[0-9]+([.][0-9]+)+"))
-                    return false;
+                if (str.length() > 0) {
+                    if (str.length() > 20 || !str.matches("[0-9]+([.][0-9]+)+")) {
+                        Out.print("WARNING", "Pack version format incorrect: " + str);
+                        return false;
+                    }
+                }
                 return true;
             }
         });
