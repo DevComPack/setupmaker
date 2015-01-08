@@ -16,7 +16,7 @@
     </bxml:define>
     
     <ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
-	    <Form styles="{fill:'false', showFlagHighlight:'false', showFlagIcons:'false', separatorColor:'#0198E1', separatorHeadingColor:'#0198E1'}">
+	    <Form styles="{fill:'false', showFlagHighlight:'false', showFlagIcons:'false', separatorColor:'#0198E1', separatorHeadingColor:'#ff5500'}">
 	    	
 	    	<!-- Application -->
 	   		<Form.Section heading="Application">

@@ -177,7 +177,6 @@ public class BuildFrame extends FillPane implements Bindable
         feedUrl = Master.appConfig.getNugFeedUrl();
         stepNbr = Master.appConfig.getNugStepNbr();
         setNugStepNbr(stepNbr);
-        lbBuild.setSelectedItem("IzPack");// 'IzPack' build type by default
         logger.setListData(dcp.main.log.Out.getCompileLog());//Bind compile log tags to List view logger
         try { init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion()); }
         catch (IOException e) {
@@ -211,9 +210,11 @@ public class BuildFrame extends FillPane implements Bindable
                     {
                         case "IzPack":
                             Master.appConfig.setBuildMode(BUILD_MODE.IZPACK_BUILD);
+                            Out.print("BUILD", "Build Mode set to IZPACK_BUILD");
                             break;
                         case "NuGet":
                             Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
+                            Out.print("BUILD", "Build Mode set to NUGET_BUILD");
                             break;
                         default: break;
                     }

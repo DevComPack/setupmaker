@@ -13,6 +13,7 @@ Multi lines clipboard copy of selected log lines
 --
 * Bug fixes:
 Default empty target path was based on app data instead of setup data
+Workspace configuration was always saved even when not modified
 
 
 1.1.0

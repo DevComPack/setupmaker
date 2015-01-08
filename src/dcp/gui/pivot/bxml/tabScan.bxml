@@ -59,7 +59,7 @@
 
 						<!-- Scan Mode Radio Buttons [default:Simple] -->
 						<TablePane.Row height="80">
-							<Border title="Scan mode" styles="{color:'#FFFFFF', padding:4}">
+							<Border title="Scan mode" styles="{color:'#FFFFFF', titleColor:'#ff5500', padding:4}">
 								<TablePane
 									styles="{showVerticalGridLines: true,
 						        padding:4, horizontalSpacing:10, verticalSpacing:5, verticalGridColor:10}">
@@ -99,7 +99,7 @@
 
 						<!-- Files Scan Filters Checkbox -->
 						<TablePane.Row height="1*">
-							<Border title="Packs filters" styles="{color:'#FFFFFF', padding:4}">
+							<Border title="Packs filters" styles="{color:'#FFFFFF', titleColor:'#ff5500', padding:4}">
 								<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 									verticalScrollBarPolicy="fill_to_capacity">
 									<TablePane
@@ -216,7 +216,7 @@
 
 						<!-- Recent scanned directories -->
 						<TablePane.Row height="130">
-							<Border title="Recent directories" styles="{color:'#FFFFFF', padding:4}">
+							<Border title="Recent directories" styles="{color:'#FFFFFF', titleColor:'#ff5500', padding:4}">
 								<TablePane bxml:id="recent_dirs"
 									styles="{showHorizontalGridLines: true, horizontalGridColor:10,
 						        padding:4, horizontalSpacing:1, verticalSpacing:1}">
@@ -246,7 +246,7 @@
 							<!-- Packs Tree View -->
 							<FillPane>
 								<Border title="Packs view"
-									styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
+									styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
 									<FillPane styles="{padding:1}">
 										<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 											verticalScrollBarPolicy="fill_to_capacity">

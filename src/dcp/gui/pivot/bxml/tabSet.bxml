@@ -35,7 +35,7 @@
 
 							<!-- Drag & Drop Area -->
 							<TablePane.Row height="1*">
-								<Border styles="{color:'#FFFFFF', padding:4}">
+								<Border styles="{color:'#FFFFFF', titleColor:'#ff5500', padding:4}">
 									<!-- Packs/Groups area -->
 									<SplitPane bxml:id="hSplitPane" orientation="horizontal"
 										splitRatio="0.7">
@@ -77,7 +77,7 @@
 													<!-- Packs View -->
 													<FillPane>
 														<Border title="Packs"
-															styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
+															styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
 															<FillPane styles="{padding:1}">
 																<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 																	verticalScrollBarPolicy="fill_to_capacity">
@@ -124,7 +124,7 @@
 													<!-- Groups View -->
 													<FillPane>
 														<Border title="Groups"
-															styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
+															styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
 															<FillPane styles="{padding:1}">
 																<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 																	verticalScrollBarPolicy="fill_to_capacity">
@@ -184,7 +184,7 @@
 				<bottom>
 					<FillPane>
 						<Border bxml:id="propertiesPane" title="Properties"
-							styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
+							styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
 							<TablePane
 								styles="{showVerticalGridLines: true, horizontalSpacing:10, verticalGridColor:10}">
 								<columns>
