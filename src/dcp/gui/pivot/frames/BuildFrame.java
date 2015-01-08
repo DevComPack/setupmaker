@@ -100,8 +100,8 @@ public class BuildFrame extends FillPane implements Bindable
     @BXML private RadioButton rbPack;// 3
     @BXML private RadioButton rbPush;// 4
         // NuGet data
-    private String feedUrl = "http://fr003573:81/nuget/local";// default feed url
-    private int stepNbr = 3;// step number (default 3)
+    private String feedUrl;// default feed url
+    private int stepNbr;// step number (default 3)
     //Log Area
     @BXML private ListView logger;//List View for Log display
     //Compile Area
@@ -144,6 +144,18 @@ public class BuildFrame extends FillPane implements Bindable
         };
     }
     
+    // Display refresh for Nuget step number
+    private void setNugStepNbr(int stepNbr) {
+        if (stepNbr == 1)
+            rbConfig.setSelected(true);
+        else if (stepNbr == 2)
+            rbSpec.setSelected(true);
+        else if (stepNbr == 3)
+            rbPack.setSelected(true);
+        else// if (stepNbr = 4)
+            rbPush.setSelected(true);
+    }
+    
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources) {
         try {
@@ -153,9 +165,21 @@ public class BuildFrame extends FillPane implements Bindable
         }
         
         //Data Binding
+        switch(Master.appConfig.getBuildMode()) {
+        case IZPACK_BUILD:
+            lbBuild.setSelectedItem("IzPack");
+            break;
+        case NUGET_BUILD:
+            lbBuild.setSelectedItem("NuGet");
+            break;
+        case DEFAULT: default: break;
+        }
+        feedUrl = Master.appConfig.getNugFeedUrl();
+        stepNbr = Master.appConfig.getNugStepNbr();
+        setNugStepNbr(stepNbr);
         lbBuild.setSelectedItem("IzPack");// 'IzPack' build type by default
         logger.setListData(dcp.main.log.Out.getCompileLog());//Bind compile log tags to List view logger
-        try { init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion(), Master.appConfig.getBuildMode()); }
+        try { init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion()); }
         catch (IOException e) {
             e.printStackTrace();
         }
@@ -183,8 +207,17 @@ public class BuildFrame extends FillPane implements Bindable
             {
                 try
                 {
-                    init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion(),
-                            lb.getSelectedIndex() == 0?BUILD_MODE.IZPACK_BUILD:BUILD_MODE.NUGET_BUILD);
+                    switch ((String) lbBuild.getSelectedItem()) // Save default workspace
+                    {
+                        case "IzPack":
+                            Master.appConfig.setBuildMode(BUILD_MODE.IZPACK_BUILD);
+                            break;
+                        case "NuGet":
+                            Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
+                            break;
+                        default: break;
+                    }
+                    init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion());
                     displayRefresh();
                 }
                 catch (IOException e)
@@ -199,6 +232,7 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 feedUrl = TI.getText();
+                Master.appConfig.setNugFeedUrl(feedUrl); // Save default workspace
             }
         });
         
@@ -214,6 +248,8 @@ public class BuildFrame extends FillPane implements Bindable
                     stepNbr = 3;
                 else// if (rbPush.isSelected())
                     stepNbr = 4;
+                
+                Master.appConfig.setNugStepNbr(stepNbr); // Save default workspace
             }
         });
         
@@ -490,16 +526,15 @@ public class BuildFrame extends FillPane implements Bindable
      * Build tab data/display initialize
      * @throws IOException 
      */
-    public void init(String AppName, String AppVersion, BUILD_MODE BuildMode) throws IOException
+    public void init(String AppName, String AppVersion) throws IOException
     {
         String filename = AppName+"-"+AppVersion+".jar";
         filename = filename.replaceAll(" ", "");
         
         //File export set
-        switch (BuildMode)
+        switch ((String) lbBuild.getSelectedItem())
         {
-        case IZPACK_BUILD: // IzPack
-            lbBuild.setSelectedItem("IzPack");
+        case "IzPack": // IzPack
             fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_AS);//FileBrowser Mode to File selection
             
             if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
@@ -511,8 +546,7 @@ public class BuildFrame extends FillPane implements Bindable
             fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getCanonicalFile());
             Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
             break;
-        case NUGET_BUILD: // NuGet
-            lbBuild.setSelectedItem("NuGet");
+        case "NuGet": // NuGet
             fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);//FileBrowser Mode to Folder selection
             inFeedSource.setText(feedUrl);// default source for debugging
             
@@ -529,9 +563,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
             Out.print("DEBUG", "Export folder set to: " + inTargetPath.getText());
             break;
-        case DEFAULT:
-        default:
-            break;
+        default: break;
         }
         
     }

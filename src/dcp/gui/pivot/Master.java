@@ -133,7 +133,9 @@ public class Master extends Window implements Application, Bindable
         }
         else
         {
-            appConfig.setAppName(AppName); appConfig.setAppVersion(AppVersion);
+            //appConfig.setAppName(AppName); appConfig.setAppVersion(AppVersion);
+            if (!appConfig.getAppVersion().equals(AppVersion)) // Warning if conf.dcp file is old 
+                Out.print("WARNING", "Configuration file conf.dcp contains data of an old version: " + appConfig.getAppVersion());
             setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
         }
         
@@ -439,7 +441,7 @@ public class Master extends Window implements Application, Bindable
                     case 3://Build Tab
                         if (tweakFrame.isModified()) {
                             tweakFrame.setModified(false);//Modified flag*
-                            buildFrame.init(setupConfig.getAppName(), setupConfig.getAppVersion(), appConfig.getBuildMode());
+                            buildFrame.init(setupConfig.getAppName(), setupConfig.getAppVersion());
                             if (!Master.this.getTitle().contains("*"))
                                 Master.this.setTitle(Master.this.getTitle().concat("*"));//modified flag in Title
                         }

@@ -64,18 +64,17 @@
 				<FillPane bxml:id="accNuget" orientation="Horizontal" Accordion.headerData="Chocolatey" enabled="false">
 					<TablePane styles="{padding:4, horizontalSpacing:5}">
 						<columns>
-							<TablePane.Column width="1*" />
 							<TablePane.Column width="-1" />
+							<TablePane.Column width="1*" />
 						</columns>
 						<TablePane.Row>
-							<TextInput bxml:id="inFeedSource" prompt="Feed Source URL" tooltipText="Feed Url: http://[server]:[port]/feed" textSize="20" />
-							
 							<BoxPane orientation="horizontal" styles="{horizontalAlignment:'center', verticalAlignment:'center'}">
 								<RadioButton bxml:id="rbConfig" 	buttonData="Config" 		buttonGroup="$buildSteps"  	tooltipText="Make a config install file" />
 								<RadioButton bxml:id="rbSpec" 		buttonData="Spec" 			buttonGroup="$buildSteps" 	tooltipText="Generate skeleton spec files" />
-								<RadioButton bxml:id="rbPack" 		buttonData="Pack" 			buttonGroup="$buildSteps" 	tooltipText="Package spec folder into packs" selected="true" />
-								<RadioButton bxml:id="rbPush" 		buttonData="Push" 			buttonGroup="$buildSteps" 	tooltipText="Send packages to feed" />
+								<RadioButton bxml:id="rbPack" 		buttonData="Pack" 			buttonGroup="$buildSteps" 	tooltipText="Package spec folder into packs" />
+								<RadioButton bxml:id="rbPush" 		buttonData="Push to feed:" 	buttonGroup="$buildSteps" 	tooltipText="Send packages to feed" />
 							</BoxPane>
+							<TextInput bxml:id="inFeedSource" prompt="Feed Source URL" tooltipText="Feed Url: http://[server]:[port]/feed" textSize="20" />
 						</TablePane.Row>
 				    </TablePane>
 			    </FillPane>

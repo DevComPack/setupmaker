@@ -28,7 +28,7 @@ public class AppConfig implements Serializable
     // Flag
     private boolean modified = false;
     public boolean isModified() { return modified; }
-    public void setModified(boolean modified) { this.modified = modified; }
+    public void setModified(boolean modified) { System.out.println("workspace modified"); this.modified = modified; }
     // Attributes
     private String appName;
     private String appVersion;
@@ -42,15 +42,18 @@ public class AppConfig implements Serializable
     // Modes
     private SCAN_MODE scanMode = SCAN_MODE.SIMPLE_SCAN;
     private BUILD_MODE buildMode = BUILD_MODE.IZPACK_BUILD;
+    // Nuget options
+    private String nugFeedUrl = "http://";// default feed url
+    private int nugStepNbr = 3;// step number (default 3)
     // Default configurations for setup
     private SetupConfig defaultSetupConfig;
     
 
     public AppConfig(String app_name, String app_version)
     {
-        this.setAppName(app_name);
-        this.setAppVersion(app_version);
-        this.setDefaultSetupConfig(new SetupConfig("Package", "1.0.0"));
+        this.appName = app_name;
+        this.appVersion = app_version;
+        this.defaultSetupConfig = new SetupConfig("Package", "1.0.0");
     }
     
     // Attributes
@@ -87,6 +90,7 @@ public class AppConfig implements Serializable
     }
     public boolean removeRecentDir(File directory) {
         assert !directory.getName().equals("");
+        setModified(true);
         return recentDirs.remove(directory);
     }
     
@@ -105,7 +109,13 @@ public class AppConfig implements Serializable
     public SCAN_MODE getScanMode() { return this.scanMode; }
     public void setScanMode(SCAN_MODE scanMode) { this.scanMode = scanMode; setModified(true); }
     public BUILD_MODE getBuildMode() { return buildMode; }
-    public void setBuildMode(BUILD_MODE buildMode) { this.buildMode = buildMode; }
+    public void setBuildMode(BUILD_MODE buildMode) { this.buildMode = buildMode;  setModified(true); }
+    
+    // Nuget options
+    public String getNugFeedUrl() { return nugFeedUrl; }
+    public void setNugFeedUrl(String feedUrl) { this.nugFeedUrl = feedUrl;  setModified(true); }
+    public int getNugStepNbr() { return nugStepNbr; }
+    public void setNugStepNbr(int stepNbr) { this.nugStepNbr = stepNbr;  setModified(true); }
     
     public SetupConfig getDefaultSetupConfig() { return defaultSetupConfig; }
     public void setDefaultSetupConfig(SetupConfig defaultSetupConfig)
