@@ -50,7 +50,7 @@ body {
 
 a {
   font-weight: bold;
-  color: #d5000d;
+  color: #FFAA00;
 }
 
 header {
@@ -62,7 +62,7 @@ header h1 {
   font-size: 48px;
   font-weight: bold;
   line-height: 1.2;
-  color: #303030;
+  color: #0033ff;
   letter-spacing: -1px;
 }
 
@@ -139,30 +139,30 @@ h2 {
   margin-bottom: 8px;
   font-size: 22px;
   font-weight: bold;
-  color: #303030;
+  color: #0033ff;
 }
 
 h3 {
   margin-bottom: 8px;
   font-size: 18px;
   font-weight: bold;
-  color: #d5000d;
+  color: #0033ff;
 }
 
 h4 {
   font-size: 16px;
   font-weight: bold;
-  color: #303030;
+  color: #0033ff;
 }
 
 h5 {
   font-size: 1em;
-  color: #303030;
+  color: #0033ff;
 }
 
 h6 {
   font-size: .8em;
-  color: #303030;
+  color: #0033ff;
 }
 
 p {
