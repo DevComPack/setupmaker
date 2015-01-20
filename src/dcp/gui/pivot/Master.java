@@ -647,7 +647,7 @@ public class Master extends Window implements Application, Bindable
     }
     
     /**
-     * Launch the Pivot application
+     * Launch the Pivot application [ GUI/Command mode ]
      * @param args
      */
     public static void main(String[] args)
