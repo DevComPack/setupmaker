@@ -17,7 +17,11 @@ import org.apache.pivot.wtk.PushButton;
 import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.Window;
 
-
+/**
+ * New Group Dialog
+ * @author ssaideli
+ *
+ */
 public class NGDialog extends Dialog implements Bindable
 {
     private boolean validated = false;

@@ -9,7 +9,11 @@ import org.apache.pivot.util.Resources;
 import org.apache.pivot.wtk.Dialog;
 import org.apache.pivot.wtk.TextInput;
 
-
+/**
+ * Rename Group Dialog
+ * @author ssaideli
+ *
+ */
 public class RGDialog extends Dialog implements Bindable
 {
     //Components

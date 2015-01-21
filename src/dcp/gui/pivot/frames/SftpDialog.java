@@ -26,7 +26,11 @@ import org.apache.pivot.wtk.Button.State;
 import dcp.logic.model.config.WebConfig;
 import dcp.main.log.Out;
 
-
+/**
+ * SFTP Dialog
+ * @author ssaideli
+ *
+ */
 public class SftpDialog extends Dialog implements Bindable
 {
     @BXML private Checkbox cbEnable;
@@ -106,11 +110,11 @@ public class SftpDialog extends Dialog implements Bindable
                 if (tmp != null) {
                     webConfig = tmp;
                     webConfig.setEnabled(cbEnable.isSelected());
-                    inHost.setText(webConfig.getHost());
-                    inUser.setText(webConfig.getUser());
-                    inPass.setText(webConfig.getPass());
-                    inRemDir.setText(webConfig.getRemoteDir());
-                    inPath.setText(webConfig.getPath());
+                    if (webConfig.getHost() != null) inHost.setText(webConfig.getHost());
+                    if (webConfig.getUser() != null) inUser.setText(webConfig.getUser());
+                    if (webConfig.getPass() != null) inPass.setText(webConfig.getPass());
+                    if (webConfig.getRemoteDir() != null) inRemDir.setText(webConfig.getRemoteDir());
+                    if (webConfig.getPath() != null) inPath.setText(webConfig.getPath());
                 }
             }
         });

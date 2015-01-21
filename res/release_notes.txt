@@ -24,6 +24,7 @@ Default empty target path was based on app data instead of setup data
 Workspace configuration was always saved even when not modified
 Save file extension correction on empty path
 Pack install name validation was displaying a wrong debug message
+SFTP data load generated exception on empty data
 
 
 1.1.0
