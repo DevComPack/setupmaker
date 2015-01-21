@@ -12,6 +12,7 @@ Powershell generic ressource scripts
 Powershell script writer
 Chocolatey specifications writer
 Nuget process compiler
+Conditions xml writer for IzPack
 --
 - Enhancements:
 Code cleanup

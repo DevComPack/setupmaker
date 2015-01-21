@@ -194,8 +194,9 @@ public class IOFactory
     public static String apikey; // = Admin:Admin
     
     //Jar libraries
-    public static String jarExecutable;// = libPath+"/dcp-executable.jar";
-    public static String jarListeners;// = libPath+"/dcp-listeners.jar";
+    //public static String jarExecutable;// = libPath+"/dcp-executable.jar";
+    //public static String jarListeners;// = libPath+"/dcp-listeners.jar";
+    public static String jarResources;// = libPath+"/dcp-resources.jar";
     //Ant build files
     public static String xmlIzpackAntBuild;// = antPath+"/izpack-target.xml";
     public static String xmlRunAntBuild;// = antPath+"/run-target.xml";
@@ -278,8 +279,9 @@ public class IOFactory
             
             //Import file extensions from settings.json
             loadSettings(IOFactory.jsonSettings);
-            jarExecutable = libPath+"/dcp-executable.jar";
-            jarListeners = libPath+"/dcp-listeners.jar";
+            //jarExecutable = libPath+"/dcp-executable.jar";
+            //jarListeners = libPath+"/dcp-listeners.jar";
+            jarResources = libPath+"/dcp-resources.jar";
             xmlIzpackAntBuild = antPath+"/izpack-target.xml";
             xmlRunAntBuild = antPath+"/run-target.xml";
             xmlDebugAntBuild = antPath+"/debug-target.xml";

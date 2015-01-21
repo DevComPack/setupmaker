@@ -483,8 +483,9 @@ public class TaskIzpackCompile extends Task<Boolean>
         NativeWriter NW = new NativeWriter(root);
         // Jars
         if (setupConfig.isProcess()) {
-            NW.addJar(IOFactory.jarExecutable);
-            NW.addJar(IOFactory.jarListeners);
+            //NW.addJar(IOFactory.jarExecutable);
+            //NW.addJar(IOFactory.jarListeners);
+            NW.addJar(IOFactory.jarResources);
         }
         // Natives
         if (setupConfig.isShortcuts()) {
