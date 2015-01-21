@@ -47,19 +47,24 @@ public class PackFactory
     }
     
     //Add a pack
-    public static void addPack(Pack P) {
-        PackFactory.packs.add(P);
+    public static boolean addPack(Pack P) {
+        packs.add(P);
         System.out.println("Pack added: " + P.getName());
+        return true;
     }
     
     //Removes a pack
-    public static void removePack(Pack PACK) {
-        packs.remove(PACK);
+    public static boolean removePack(Pack pack) {
+        packs.remove(pack);
+        System.out.println("Pack deleted: " + pack.getName());
+        return true;
     }
     
     //Clear all packs
-    public static void clear() {
+    public static boolean clear() {
         packs.clear();
+        System.out.println("All Packs cleared.");
+        return true;
     }
     
 }

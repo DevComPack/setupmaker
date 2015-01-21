@@ -17,10 +17,10 @@ public class GroupFactory
     public static Group get(String[] PATH) {
         return get(CastFactory.pathToString(PATH));
     }
-    public static Group get(String PATH) {
-        if (PATH==null) return null;
+    public static Group get(String path) {
+        if (path==null) return null;
         for(Group G:groups)
-            if (G.getPath().equalsIgnoreCase(PATH))
+            if (G.getPath().equalsIgnoreCase(path))
                 return G;
         return null;
     }

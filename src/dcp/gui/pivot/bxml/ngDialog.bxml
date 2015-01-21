@@ -42,7 +42,7 @@
         <!-- Hierarchy Group checkbox -->
         <TablePane.Row>
         	<BoxPane orientation="Horizontal" styles="{padding:4, horizontalAlignment:'center'}">
-        		<Checkbox bxml:id="cbHierarchiy" buttonData="create under" selected="false" enabled="false" />
+        		<Checkbox bxml:id="cbHierarchy" buttonData="create under" selected="false" enabled="false" />
         		<Label bxml:id="labParentGroup" text="" styles="{color:'#ff5500'}" />
         	</BoxPane>
         </TablePane.Row>

@@ -18,32 +18,28 @@ import dcp.main.log.Out;
 
 public class SetFacade
 {
-    private List<TreeBranch> treeData;
-    private java.util.Map<Group, TreeBranch> branches;//Get branch mapped to a group
+    // DATA
+    private List<TreeBranch> treeData; // Groups UI collection
+    private java.util.Map<Group, TreeBranch> branches; // Treeview Branch mapped to Group
+    private List<Pack> packs = PackFactory.getPacks(); // Packs
     
-    private List<Pack> packs = PackFactory.getPacks();
-    
-    
+    /**
+     * Facade Constructor
+     * @param treeData: TreeView data
+     */
     public SetFacade(List<TreeBranch> treeData)
     {
         this.treeData = treeData;
         branches = new TreeMap<Group, TreeBranch>();
     }
-    
-    /**
-     * Get Group of a branch
-     * @param branch to cast
-     * @return Group
-     */
-    public Group getGroup(TreeBranch branch) {
-        return GroupFactory.get(CastFactory.nodeToPath(branch));
-    }
+
     /**
      * Get Pack of a node
      * @param node to cast
      * @return Pack
      */
-    public Pack getPack(TreeNode node) {
+    public Pack getPack(TreeNode node)
+    {
         for(Pack P:packs) {
             if (P.getGroup() != null && P.equals(node))
                 return P;
@@ -52,12 +48,75 @@ public class SetFacade
     }
     
     /**
+     * Create a new Pack model
+     * @return pack created
+     */
+    public boolean newPack(Pack pack)
+    {
+        // Data update
+        if (!PackFactory.addPack(pack))
+            return false;
+        // TreeView update
+        if (pack.getGroup() != null)
+            addNodeToBranch(pack);
+        
+        return true;
+    }
+    
+    /**
+     * Check if name is unique or already given to another pack
+     * @param pack name
+     * @return pack name is unique
+     */
+    public boolean validatePack(String name)
+    {
+        int i = 0;
+        for(Pack p:packs) {
+            if (p.getInstallName().equals(name)) i++;
+        }
+        if (i > 1) return false;
+        return true;
+    }
+    
+    /**
+     * Delete a pack from memory
+     * @param pack to delete
+     */
+    public boolean deletePack(Pack pack)
+    {
+        if (pack.getGroup() != null)
+            return false;
+        return PackFactory.removePack(pack);
+    }
+    
+    /**
+     * Clear all packs from memory
+     */
+    public void clearPacks()
+    {
+        PackFactory.clear();
+    }
+    
+    ////=====================================================================================
+
+    /**
+     * Get Group of a branch
+     * @param branch to cast
+     * @return Group
+     */
+    public Group getGroup(TreeBranch branch) {
+        return GroupFactory.get(CastFactory.nodeToPath(branch));
+    }
+    
+    /**
      * Add a new group under an existing group or at TreeView root
      * @param name of new group
      * @param parent of new group
      */
-    public boolean newGroup(String name, Group parent)
+    public boolean newGroup(String name, String path)
     {
+        Group parent = GroupFactory.get(path);
+        
         if (parent != null) {
             Group group = new Group(name, parent);
             if (GroupFactory.addGroup(group)) {
@@ -82,6 +141,11 @@ public class SetFacade
             }
             else return false;
         }
+    }
+    public boolean newGroup(Group group)
+    {
+        Group parent = group.getParent();
+        return newGroup(group.getName(), (parent != null)? parent.getPath():"");
     }
     
     /**
@@ -142,6 +206,15 @@ public class SetFacade
     }
     
     /**
+     * Clear groups from memory and treeView data
+     */
+    public void clearGroups()
+    {
+        GroupFactory.clear();
+        treeData.clear();
+    }
+    
+    /**
      * Clear nodes from TreeView
      */
     public void clearTreeView()
@@ -149,6 +222,30 @@ public class SetFacade
         while (treeData.getLength() > 0) {
             removeNode(treeData.get(0));
         }
+    }
+    
+    ////=====================================================================================
+    
+    // add a pack's node to its group's branch in treeView data
+    private void addNodeToBranch(Pack pack)
+    {
+        assert pack != null && pack.getGroup() != null;
+        Group group = pack.getGroup();
+        
+        TreeNode node = CastFactory.packToNode(pack);//Create Pack Node
+        TreeBranch branch = branches.get(group);//Get Group branch
+        
+        //If pack is a folder (bugfix)
+        if (pack.getFileType() == FILE_TYPE.Folder)// && pack.getInstallType()==INSTALL_TYPE.COPY)
+            for(TreeNode n:branch)//Check if a group is already created with same name
+                if (n instanceof TreeBranch && n.getText().equalsIgnoreCase(node.getText())) {
+                    GroupFactory.removeGroup(getGroup((TreeBranch) n));//Remove model
+                    branch.remove(n);//Remove group branch to overwrite it with folder Pack
+                    break;
+                }
+        
+        branch.add(node);// Add node to branch
+        Out.print("MODEL", "Pack '" + pack.getName() + "' added to Group: " + group.getPath());
     }
     
     /**
@@ -167,24 +264,35 @@ public class SetFacade
             }
             else {
                 pack.setGroup(group);//Link Pack with Group
-                TreeNode node = CastFactory.packToNode(pack);//Create Pack Node
-                TreeBranch branch = branches.get(group);//Get Group branch
-                //If pack is a folder
-                if (pack.getFileType() == FILE_TYPE.Folder)// && pack.getInstallType()==INSTALL_TYPE.COPY)
-                    for(TreeNode n:branch)//Check if a group is already created with same name
-                        if (n instanceof TreeBranch && n.getText().equalsIgnoreCase(node.getText())) {
-                            GroupFactory.removeGroup(getGroup((TreeBranch) n));//Remove model
-                            branch.remove(n);//Remove group branch to overwrite it with folder Pack
-                            break;
-                        }
-                branch.add(node);//Add node to TreeView
-                Out.print("MODEL", "Pack '" + pack.getName() + "' added to Group: " + group.getPath());
+                addNodeToBranch(pack);
                 return 0;
             }
         }
         else {//If Pack already has Group
             return 1;
         }
+    }
+    
+    /**
+     * Get a suggestion for a path based on other install paths and groups
+     * @param text: suggestion's prefix
+     * @return complete suggestion
+     */
+    public String getInstallPathSuggestion(String text)
+    {
+        for(Group G:GroupFactory.getGroups()) {//Suggestions from Group paths
+            if (G.getPath().toLowerCase().startsWith(text)) {
+                return G.getPath();
+            }
+        }
+        //Suggestions from already attributed install paths to Packs
+        for(Pack P:PackFactory.getPacks()) {
+            if (P.getInstallPath().toLowerCase().startsWith(text)) {
+                return P.getInstallPath();
+            }
+        }
+        
+        return "";
     }
     
 }

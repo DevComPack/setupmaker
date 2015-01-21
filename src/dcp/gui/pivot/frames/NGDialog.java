@@ -23,7 +23,7 @@ public class NGDialog extends Dialog implements Bindable
     private boolean validated = false;
     //Components
     @BXML private TextInput inGroupName;//Text input for new group name
-    @BXML private Checkbox cbHierarchiy;//Hierarchy Group creation
+    @BXML private Checkbox cbHierarchy;//Hierarchy Group creation
     @BXML private Label labParentGroup;//Group Name label
     @BXML private PushButton btGroupAdd;//Dialog Group Name confirm
     //Actions
@@ -55,15 +55,15 @@ public class NGDialog extends Dialog implements Bindable
     
     public void setHierarchy(boolean ENABLE, String PATH)//Set if hierarchy is possible (checkbox)
     {
-        cbHierarchiy.setSelected(ENABLE);
-        cbHierarchiy.setVisible(ENABLE);
-        cbHierarchiy.setEnabled(ENABLE);
+        cbHierarchy.setSelected(ENABLE);
+        cbHierarchy.setVisible(ENABLE);
+        cbHierarchy.setEnabled(ENABLE);
         labParentGroup.setVisible(ENABLE);
         labParentGroup.setText(PATH);
     }
     public String getHierarchy()//If hierarchy checkbox selected (return parent name)
     {
-        if (cbHierarchiy.isEnabled() && cbHierarchiy.isSelected())
+        if (cbHierarchy.isEnabled() && cbHierarchy.isSelected())
             return labParentGroup.getText();
         else
             return null;

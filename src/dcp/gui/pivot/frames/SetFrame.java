@@ -94,7 +94,7 @@ public class SetFrame extends FillPane implements Bindable
     private boolean isGroupDependency() { return ((String)cbDepType.getButtonData()).equals("Group"); }
     private boolean unvalid = false;// True if some validator is negative
     //Packs
-    private List<Pack> getPacks() { return PackFactory.getPacks(); }//Read-only Packs data
+    //private List<Pack> getPacks() { return PackFactory.getPacks(); }//Read-only Packs data
     private Pack getSelectedPack() { return (Pack) tableView.getSelectedRow(); }
     @SuppressWarnings("unchecked")
     private Sequence<Pack> getSelectedPacks() { return (Sequence<Pack>) tableView.getSelectedRows(); }
@@ -184,22 +184,16 @@ public class SetFrame extends FillPane implements Bindable
             @Override public void perform(Component source)
             {
                 //Groups Import
-                GroupFactory.clear(); treeData.clear();
-                for(Group G:ScanFrame.getGroups())//Fill Data from Scan groups
-                    facade.newGroup(G.getName(), G.getParent());
+                facade.clearGroups();
+                for(Group G:ScanFrame.getGroups())// Fill Data from Scan folders
+                    facade.newGroup(G);
+                
                 //Packs Import
-                PackFactory.clear();
-                for(Pack P:ScanFrame.getPacks()) {
-                    PackFactory.addPack(P);
-                    if (P.getGroup() != null) {
-                        Group G = P.getGroup();
-                        P.setGroup(null);
-                        if (facade.addPackToGroup(P, G) == 0)
-                            if (!multi_selection) setPackProperties(P);
-                    }
-                }
+                facade.clearPacks();
+                for(Pack P:ScanFrame.getPacks())// Fill Data from Scan files
+                    facade.newPack(P);
+                
                 treeView.expandAll();//Expand branches
-                //tableView.setSort("icon", SortDirection.ASCENDING); tableView.clearSort();//Sort by pack type
             }
         };
         
@@ -252,12 +246,10 @@ public class SetFrame extends FillPane implements Bindable
         
         ADeletePacks = new Action() {//Delete all selected packs
             private boolean removePack(Pack pack) {
-                System.out.println("Pack deleted: "+pack.getName());
-                if (pack.getGroup() != null) {
+                if (facade.deletePack(pack) == false) {
                     Alert.alert("Pack "+pack.getName()+" is within a group. Remove it first.", SetFrame.this.getWindow());
                     return false;
                 }
-                getPacks().remove(pack);
                 return true;
             }
             
@@ -347,7 +339,7 @@ public class SetFrame extends FillPane implements Bindable
         hSplitPane.setSplitRatio(Master.appConfig.getSetHorSplitPaneRatio());
         
         //Data Binding
-        tableView.setTableData(getPacks());//Bind table view to packs
+        tableView.setTableData(PackFactory.getPacks());//Bind table view to packs
         treeView.setTreeData(treeData);//Bind root to tree view
         dependencyFill(isGroupDependency());//Bind Groups data to List Button for dependency
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy to none
@@ -381,11 +373,10 @@ public class SetFrame extends FillPane implements Bindable
                         Out.print("WARNING", "Pack name format incorrect: " + str);
                         return false;
                     }
-                    for(Pack p:getPacks())
-                        if (!p.equals(getSelectedPack()) && p.getInstallName().equals(str)) {
-                            Out.print("WARNING", "Pack name format incorrect: " + str);
-                            return false;
-                        }
+                    if (!facade.validatePack(str)) {
+                        Out.print("WARNING", "Pack name already used: " + str);
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -435,7 +426,9 @@ public class SetFrame extends FillPane implements Bindable
         btCheck.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
-                for (int i=0; i < getPacks().getLength(); i++) {
+                @SuppressWarnings("unchecked")
+                List<Pack> data = (List<Pack>) tableView.getTableData();
+                for (int i=0; i < data.getLength(); i++) {
                     tableView.setSelectedIndex(i);
                     setPackProperties((Pack) tableView.getTableData().get(i));
                     if (unvalid) { unvalid = false; break; } // stop if unvalid flag true
@@ -471,8 +464,8 @@ public class SetFrame extends FillPane implements Bindable
                 ngdialog.open(SetFrame.this.getDisplay(), SetFrame.this.getWindow(), new DialogCloseListener() {
                     @Override public void dialogClosed(Dialog dialog, boolean modal)
                     {
-                        if (ngdialog.isValidated()) {//If pushed the OK button
-                            if (!facade.newGroup(ngdialog.getText(), GroupFactory.get(ngdialog.getHierarchy())))
+                        if (ngdialog.isValidated()) {// If pushed the OK button
+                            if (!facade.newGroup(ngdialog.getText(), ngdialog.getHierarchy()))
                                 Alert.alert("Group already created!", Window.getActiveWindow());
                         } else Out.print("SET", "Dialog not Validated");
                     }
@@ -1020,27 +1013,9 @@ public class SetFrame extends FillPane implements Bindable
             @Override public void textInserted(TextInput textInput, int index, int count)
             {
                 String text = textInput.getText().toLowerCase();
-                boolean found = false;
-                String suggestion = "";
+                String suggestion = facade.getInstallPathSuggestion(text);
                 
-                for(Group G:GroupFactory.getGroups()) {//Suggestions from Group paths
-                    if (G.getPath().toLowerCase().startsWith(text)) {
-                        found = true;
-                        suggestion = G.getPath();
-                        break;
-                    }
-                }
-                if (!found) {//Suggestions from already attributed install paths to Packs
-                    for(Pack P:getPacks()) {
-                        if (P.getInstallPath().toLowerCase().startsWith(text)) {
-                            found = true;
-                            suggestion = P.getInstallPath();
-                            break;
-                        }
-                    }
-                }
-                
-                if (found) {
+                if (suggestion.length() > 0) {
                     int selectionStart = text.length();
                     int selectionLength = suggestion.length() - selectionStart;
                     
@@ -1226,7 +1201,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         }
         else {//From Packs
-            lbDependency.setListData(getPacks());//Data binding
+            lbDependency.setListData(PackFactory.getPacks());//Data binding
             if (!multi_selection) {//one pack selected
                 lbDependency.setDisabledItemFilter(new Filter<Pack>() {
                     @Override public boolean include(Pack pack)//Groups to filter (disable)
@@ -1617,26 +1592,26 @@ public class SetFrame extends FillPane implements Bindable
      */
     public void scanInit() {
         System.out.println("scan init");
-        nullProperties();//Initialize properties values
+        nullProperties(); // Initialize properties values
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
         
-        GroupFactory.clear();//Group Model Data clear
-        treeData.clear();//TreeView Data clear
+        facade.clearGroups(); // Clear all groups
+        treeData.clear(); // TreeView Data clear
         if (ScanFrame.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {//If Recursive Scan, Folders > Groups
-            btImport.setEnabled(true);//Enable import button
+            btImport.setEnabled(true); // Enable import button
         }
         else {
-            btImport.setEnabled(false);//Disable import button
+            btImport.setEnabled(false); // Disable import button
         }
         
-        PackFactory.clear();//Clear all packs
-        for(Pack P:ScanFrame.getPacks()) {//Add Packs one by one
+        facade.clearPacks(); // Clear all packs
+        for(Pack P:ScanFrame.getPacks()) { // Add Packs one by one
             Pack pack = new Pack(P);
             pack.setGroup(null);
-            PackFactory.addPack(pack);
+            facade.newPack(pack);
         }
         
-        setModified(true);//Modified flag
+        setModified(true); // Modified flag
     }
 
     /**
@@ -1644,12 +1619,12 @@ public class SetFrame extends FillPane implements Bindable
      */
     public void loadInit() {
         System.out.println("load init");
-        nullProperties();//Initialize properties values
-        ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
+        nullProperties(); // Initialize properties values
+        ngdialog.setHierarchy(false, ""); // Initialize NewGroup Hierarchy
         
         ADataImport.perform(this);
         
-        setModified(true);//Modified flag
+        setModified(true); // Modified flag
     }
 
 }

@@ -34,12 +34,18 @@ public class Group implements Comparable<Group>, Serializable
     //Constructors
     public Group() {
     }
-    public Group(String NAME) {
-        this.name = NAME;
+    public Group(String name) {
+        this.name = name;
     }
-    public Group(String NAME, Group PARENT) {
-        this.name = NAME;
-        setParent(PARENT);
+    public Group(String name, Group parent) {
+        this.name = name;
+        setParent(parent);
+    }
+    public Group(Group group) {
+        this.name = group.getName();
+        setParent(group.getParent());
+        setDescription(group.getDescription());
+        setInstallGroups(group.getInstallGroups());
     }
     
     //Getters & Setters
