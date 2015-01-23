@@ -23,7 +23,7 @@ import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.TextInputContentListener;
 import org.apache.pivot.wtk.Button.State;
 
-import dcp.logic.model.config.WebConfig;
+import dcp.logic.model.config.build.WebConfig;
 import dcp.main.log.Out;
 
 /**

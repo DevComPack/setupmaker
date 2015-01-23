@@ -4,20 +4,20 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-import dcp.logic.factory.TypeFactory.BUILD_MODE;
+import dcp.logic.model.config.build.IzpackConfig;
+import dcp.main.log.Out;
 
 
 public class BuildFacade
 {
-    private BUILD_MODE mode;
+    private IzpackConfig izpackConf; // IzPack build configuration
     
     /**
      * Build Tab Facade Constructor
      * @param mode: Default Build mode
      */
-    public BuildFacade(BUILD_MODE mode)
+    public BuildFacade()
     {
-        this.setBuildMode(mode);
     }
     
     /**
@@ -37,11 +37,12 @@ public class BuildFacade
         
         Desktop desktop = Desktop.getDesktop();
         desktop.open(folder); // Open folder
+        Out.print("DEBUG", "Open desktop folder at " + folder.getAbsolutePath());
         return true;
     }
 
     // Getters/Setters
-    public BUILD_MODE getBuildMode() { return mode; }
-    public void setBuildMode(BUILD_MODE mode) { this.mode = mode; }
+    public IzpackConfig getIzpackConfig() { return izpackConf; }
+    public void setIzpackConfig(IzpackConfig izpackConf) { this.izpackConf = izpackConf; }
 
 }

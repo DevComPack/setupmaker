@@ -1,4 +1,4 @@
-package dcp.logic.model.config;
+package dcp.logic.model.config.build;
 
 import java.io.Serializable;
 

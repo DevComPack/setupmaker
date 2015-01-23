@@ -10,6 +10,7 @@ import org.apache.pivot.collections.List;
 
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
+import dcp.logic.model.config.build.IzpackConfig;
 
 /**
  * DevComPack Application configuration data
@@ -43,6 +44,8 @@ public class AppConfig implements Serializable
     // Modes
     private SCAN_MODE scanMode = SCAN_MODE.SIMPLE_SCAN;
     private BUILD_MODE buildMode = BUILD_MODE.IZPACK_BUILD;
+    // Configurations
+    private IzpackConfig izpackConf;
     // Nuget options
     private String nugFeedUrl = "http://";// default feed url
     private int nugStepNbr = 3;// step number (default 3)
@@ -54,6 +57,7 @@ public class AppConfig implements Serializable
     {
         this.appName = app_name;
         this.appVersion = app_version;
+        this.izpackConf = new IzpackConfig();
         this.defaultSetupConfig = new SetupConfig("Package", "1.0.0");
     }
     
@@ -95,7 +99,7 @@ public class AppConfig implements Serializable
         return recentDirs.remove(directory);
     }
     
-    // Workspace
+    // Workspace methods
     public float getScanHorSplitPaneRatio() { return scanHorSplitPaneRatio; } 
     public void setScanHorSplitPaneRatio(float scanHorSplitPaneRatio) { this.scanHorSplitPaneRatio = scanHorSplitPaneRatio; setModified(true); }
     
@@ -105,17 +109,21 @@ public class AppConfig implements Serializable
     public float getSetHorSplitPaneRatio() { return setHorSplitPaneRatio; }
     public void setSetHorSplitPaneRatio(float setHorSplitPaneRatio) { this.setHorSplitPaneRatio = setHorSplitPaneRatio; setModified(true); }
     
-    // Helpers functions
+    // Helpers methods
     public boolean isHelp() { return help; }
     public void setHelp(boolean help) { this.help = help; setModified(true); }
     
-    // Default configurations functions
+    // Default configurations methods
     public SCAN_MODE getScanMode() { return this.scanMode; }
     public void setScanMode(SCAN_MODE scanMode) { this.scanMode = scanMode; setModified(true); }
     public BUILD_MODE getBuildMode() { return buildMode; }
     public void setBuildMode(BUILD_MODE buildMode) { this.buildMode = buildMode;  setModified(true); }
     
-    // Nuget options
+    // Configurations methods
+    public IzpackConfig getIzpackConfig() { return izpackConf; }
+    public void setIzpackConfig(IzpackConfig izpackConf) { this.izpackConf = izpackConf; }
+    
+    // Nuget options methods
     public String getNugFeedUrl() { return nugFeedUrl; }
     public void setNugFeedUrl(String feedUrl) { this.nugFeedUrl = feedUrl;  setModified(true); }
     public int getNugStepNbr() { return nugStepNbr; }

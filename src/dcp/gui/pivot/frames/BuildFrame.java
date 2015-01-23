@@ -153,30 +153,25 @@ public class BuildFrame extends FillPane implements Bindable
     
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources) {
-        facade = new BuildFacade(BUILD_MODE.DEFAULT);
+        facade = new BuildFacade();
         
-        try {
-            fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        //Data Binding
+        // Data Binding
         try
         {
+            fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
             logger.setListData(dcp.main.log.Out.getCompileLog());// Bind compile log tags to List view logger
-            init();
-            displayRefresh();
+            init(); // build mode workspace
+            //displayRefresh(); // build buttons workspace
         }
         catch (IOException e) {
             e.printStackTrace();
         }
         
-        //Action Binding
+        // Action Binding
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
         btOpen.setAction(AOpenFolder);
         
-        //Target file chosen from File Chooser event
+        // Target file chosen from File Chooser event
         fileBrowserSheet.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
             @Override public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
@@ -205,7 +200,7 @@ public class BuildFrame extends FillPane implements Bindable
                         setBuildMode(BUILD_MODE.NUGET_BUILD);
                     }
                     Out.print("BUILD", "Build Mode set to " + build);
-                    displayRefresh();
+                    //displayRefresh();
                 }
                 catch (IOException e)
                 {
@@ -239,11 +234,12 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Split option activate checkbox listener
+        // Split option activate checkbox listener
         cbSplit.getButtonStateListeners().add(new ButtonStateListener() {
             @Override public void stateChanged(Button bt, State st)
             {
-                if (bt.isSelected()) {//Activated Split
+                if (bt.isSelected()) {// Enabled Split
+                    facade.getIzpackConfig().setSplit(true);
                     inSize.setEnabled(true);
                     sizeSpinner.setEnabled(true);
                     setSplit(Integer.parseInt(inSize.getText()) *
@@ -251,7 +247,8 @@ public class BuildFrame extends FillPane implements Bindable
                                 ((String) sizeSpinner.getSelectedItem()).equals("GB")?1024:1) );//Enable Packaging
                     cbWeb.setSelected(false);
                 }
-                else {//Desactivated Split
+                else {// Disabled Split
+                    facade.getIzpackConfig().setSplit(false);
                     sizeSpinner.setEnabled(false);
                     inSize.setEnabled(false);
                     setSplit(0);
@@ -259,17 +256,19 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Web setup otion checkbox listener
+        // Web setup otion checkbox listener
         cbWeb.getButtonStateListeners().add(new ButtonStateListener() {
             @Override public void stateChanged(Button bt, State st)
             {
                 if (bt.isSelected()) {//Activated Web setup
+                    facade.getIzpackConfig().setWebSetup(true);
                     inWebDir.setEnabled(true);
                     btWebConfig.setEnabled(true);
                     Master.setupConfig.setWeb(true);
                     cbSplit.setSelected(false);
                 }
                 else {//Desactivated Web Setup
+                    facade.getIzpackConfig().setWebSetup(false);
                     inWebDir.setEnabled(false);
                     btWebConfig.setEnabled(false);
                     sftpDialog.disable();
@@ -278,7 +277,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Set inSize text input filter for numbers only
+        // Set inSize text input filter for numbers only
         inSize.setValidator(new Validator() {
             @Override public boolean isValid(String size)
             {
@@ -291,7 +290,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Textinput constraints content listener
+        // TextInput constraints content listener
         inSize.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput textInput)
             {
@@ -304,7 +303,7 @@ public class BuildFrame extends FillPane implements Bindable
                         (((String) sizeSpinner.getSelectedItem()).equals("GB")?1024:1) );//Enable Packaging
             }
         });
-        //Update Packaging option size
+        // Update Packaging option size
         sizeSpinner.getSpinnerSelectionListeners().add(new SpinnerSelectionListener.Adapter() {
             @Override public void selectedItemChanged(Spinner spinner, Object obj)
             {
@@ -313,7 +312,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Web URL directory update
+        // Web URL directory update
         inWebDir.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput ti)
             {
@@ -327,7 +326,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //SFTP Configuration Dialog
+        // SFTP Configuration Dialog
         btWebConfig.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -335,7 +334,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Compile Task Launch from button btCompile
+        // Compile Task Launch from button btCompile
         btCompile.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt) {
                 successIcon.setVisible(false);
@@ -386,7 +385,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Launch the install button
+        // Launch the install button
         btLaunch.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button button) {
                 successIcon.setVisible(false);
@@ -414,7 +413,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Debug with trace mode the install button
+        // Debug with trace mode the install button
         btDebug.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button button) {
                 successIcon.setVisible(false);
@@ -443,7 +442,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         });
         
-        //Logger list view automatic scroll to last element
+        // Logger list view automatic scroll to last element
         logger.getListViewItemListeners().add(new ListViewItemListener.Adapter() {
             @Override
             public void itemInserted(ListView arg0, int arg1)
@@ -477,21 +476,20 @@ public class BuildFrame extends FillPane implements Bindable
      */
     private void displayRefresh() {
         btCompile.setEnabled(true);
-        switch (lbBuild.getSelectedItem().toString()) {
-        case "IzPack":
-            accBuildOpt.setSelectedIndex(0);
-            accIzpack.setEnabled(true);
-            accNuget.setEnabled(false);
+        String mode = lbBuild.getSelectedItem().toString();
+        if (mode.equals(BUILD_MODE.IZPACK_BUILD.toString())) {
+            //accBuildOpt.setSelectedIndex(0);
+            //accIzpack.setEnabled(true);
+            //accNuget.setEnabled(false);
             btLaunch.setEnabled(true);
             btDebug.setEnabled(true);
-            break;
-        case "NuGet":
-            accBuildOpt.setSelectedIndex(1);
-            accIzpack.setEnabled(false);
-            accNuget.setEnabled(true);
+        }
+        else if (mode.equals(BUILD_MODE.NUGET_BUILD.toString())) {
+            //accBuildOpt.setSelectedIndex(1);
+            //accIzpack.setEnabled(false);
+            //accNuget.setEnabled(true);
             btLaunch.setEnabled(false);
             btDebug.setEnabled(false);
-            break;
         }
     }
     
@@ -503,7 +501,6 @@ public class BuildFrame extends FillPane implements Bindable
     private void setBuildMode(BUILD_MODE mode) throws IOException
     {
         assert mode != BUILD_MODE.DEFAULT;
-        facade.setBuildMode(mode);
         
         String filename = Master.setupConfig.getAppName() + "-" + Master.setupConfig.getAppVersion() + ".jar";
         filename = filename.replaceAll(" ", "");
@@ -511,6 +508,10 @@ public class BuildFrame extends FillPane implements Bindable
         switch (mode)
         {
         case IZPACK_BUILD: // IzPack
+            accBuildOpt.setSelectedIndex(0);
+            accIzpack.setEnabled(true);
+            accNuget.setEnabled(false);
+            
             fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_AS);//FileBrowser Mode to File selection
             
             if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
@@ -523,7 +524,10 @@ public class BuildFrame extends FillPane implements Bindable
             Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
             break;
         case NUGET_BUILD: // NuGet
-            facade.setBuildMode(BUILD_MODE.NUGET_BUILD);
+            accBuildOpt.setSelectedIndex(1);
+            accIzpack.setEnabled(false);
+            accNuget.setEnabled(true);
+            
             fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);//FileBrowser Mode to Folder selection
             
             if (inTargetPath.getText().length() > 0) {
@@ -562,6 +566,8 @@ public class BuildFrame extends FillPane implements Bindable
      */
     public void init() throws IOException
     {
+        facade.setIzpackConfig(Master.appConfig.getIzpackConfig());
+        
         lbBuild.setSelectedItem(Master.appConfig.getBuildMode().toString());
         stepNbr = Master.appConfig.getNugStepNbr();
         setNugStepNbr(stepNbr);

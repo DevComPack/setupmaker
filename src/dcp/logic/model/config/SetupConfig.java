@@ -51,6 +51,8 @@ public class SetupConfig implements Serializable
     //Panels display
     private boolean process = false;//If has an executable with an execute intall mode
     private boolean installGroup = false;//Has install groups affected to a pack or more
+    
+    
     //Packaging option
     private boolean split = false;//Packaging option
     private int splitSize;//Split packs size

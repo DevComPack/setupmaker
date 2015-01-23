@@ -51,6 +51,11 @@
 													<!-- Packs buttons -->
 													<BoxPane orientation="Vertical"
 														styles="{padding:{left:0,right:4,top:10,bottom:5}, horizontalAlignment:'center'}">
+														<PushButton bxml:id="btCheck"
+															tooltipText="Check and validate all packs data"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/dcp/gui/icons/debug.png" />
+														</PushButton>
 														<PushButton bxml:id="btSelectAll" tooltipText="Select all"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/selectall.png" />
@@ -58,11 +63,6 @@
 														<PushButton bxml:id="btSelectNone" tooltipText="Clear selection"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/selectnone.png" />
-														</PushButton>
-														<PushButton bxml:id="btCheck"
-															tooltipText="Check and validate all packs data"
-															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-															<content:ButtonData icon="/dcp/gui/icons/debug.png" />
 														</PushButton>
 														<PushButton bxml:id="btAdd"
 															tooltipText="Add selected pack(s) to selected group"

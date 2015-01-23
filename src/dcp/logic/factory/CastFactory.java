@@ -212,6 +212,8 @@ public class CastFactory
         case "1.0":
             P.setInstallVersion(Pack.getVersionFromName(P.getName()));
             break;
+        case "1.1":
+            break;
         }
     }
     

@@ -45,7 +45,7 @@ import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.model.config.SetupConfig;
-import dcp.logic.model.config.WebConfig;
+import dcp.logic.model.config.build.WebConfig;
 import dcp.main.log.Out;
 import dcp.web.sftp.JschFactory;
 
