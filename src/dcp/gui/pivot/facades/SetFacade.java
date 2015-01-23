@@ -24,7 +24,7 @@ public class SetFacade
     private List<Pack> packs = PackFactory.getPacks(); // Packs
     
     /**
-     * Facade Constructor
+     * Set Tab Facade Constructor
      * @param treeData: TreeView data
      */
     public SetFacade(List<TreeBranch> treeData)

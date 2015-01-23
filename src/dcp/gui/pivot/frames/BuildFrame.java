@@ -51,6 +51,7 @@ import org.apache.pivot.wtk.validation.Validator;
 import dcp.config.io.IOFactory;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.actions.BrowseAction;
+import dcp.gui.pivot.facades.BuildFacade;
 import dcp.gui.pivot.tasks.TaskIzpackCompile;
 import dcp.gui.pivot.tasks.TaskIzpackDebug;
 import dcp.gui.pivot.tasks.TaskIzpackRun;
@@ -66,6 +67,7 @@ public class BuildFrame extends FillPane implements Bindable
     private static BuildFrame singleton;
     public static BuildFrame getSingleton() { if (singleton != null) return singleton; else return new BuildFrame(); }
     //------DATA
+    private BuildFacade facade;
     // Flags
     private static boolean modified = false;//True if tab processed data
     public static void setModified(boolean VALUE) { modified = VALUE; }
@@ -158,6 +160,8 @@ public class BuildFrame extends FillPane implements Bindable
     
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources) {
+        facade = new BuildFacade(BUILD_MODE.DEFAULT);//*
+        
         try {
             fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
         } catch (IOException e) {
@@ -165,15 +169,7 @@ public class BuildFrame extends FillPane implements Bindable
         }
         
         //Data Binding
-        switch(Master.appConfig.getBuildMode()) {
-        case IZPACK_BUILD:
-            lbBuild.setSelectedItem("IzPack");
-            break;
-        case NUGET_BUILD:
-            lbBuild.setSelectedItem("NuGet");
-            break;
-        case DEFAULT: default: break;
-        }
+        lbBuild.setSelectedItem(Master.appConfig.getBuildMode().toString());
         feedUrl = Master.appConfig.getNugFeedUrl();
         stepNbr = Master.appConfig.getNugStepNbr();
         setNugStepNbr(stepNbr);
@@ -387,13 +383,13 @@ public class BuildFrame extends FillPane implements Bindable
 
                 dcp.main.log.Out.clearCompileLog();//Clear Saved Log
 				String buildType = lbBuild.getSelectedItem().toString();
-                if (buildType.equals("IzPack")) { // IzPack compile task
+                if (buildType.equals(BUILD_MODE.IZPACK_BUILD.toString())) { // IzPack compile task
 	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar");
 	                TaskIzpackCompile compileTask = new TaskIzpackCompile(targetPath, Master.setupConfig, sftpDialog.getWebConfig());
 	                compileTask.setLogger(logger);//Setting log display on logger
 	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
 				}
-                else if (buildType.equals("NuGet")) { // NuGet compile task
+                else if (buildType.equals(BUILD_MODE.NUGET_BUILD.toString())) { // NuGet compile task
                     TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), feedUrl, stepNbr);
                     compileTask.setLogger(logger);//Setting log display on logger
                     compileTask.execute(new TaskAdapter<Boolean>(tlCompile));// Compile
@@ -533,9 +529,8 @@ public class BuildFrame extends FillPane implements Bindable
         filename = filename.replaceAll(" ", "");
         
         //File export set
-        switch ((String) lbBuild.getSelectedItem())
+        if (BUILD_MODE.IZPACK_BUILD.toString().equals((String) lbBuild.getSelectedItem())) // IzPack
         {
-        case "IzPack": // IzPack
             fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_AS);//FileBrowser Mode to File selection
             
             if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
@@ -546,8 +541,9 @@ public class BuildFrame extends FillPane implements Bindable
             }
             fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getCanonicalFile());
             Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
-            break;
-        case "NuGet": // NuGet
+        }
+        else if (BUILD_MODE.NUGET_BUILD.toString().equals((String) lbBuild.getSelectedItem())) // NuGet
+        {
             fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);//FileBrowser Mode to Folder selection
             inFeedSource.setText(feedUrl);// default source for debugging
             
@@ -563,8 +559,6 @@ public class BuildFrame extends FillPane implements Bindable
                 inTargetPath.setText(new File(".").getCanonicalPath());
             }
             Out.print("DEBUG", "Export folder set to: " + inTargetPath.getText());
-            break;
-        default: break;
         }
         
     }

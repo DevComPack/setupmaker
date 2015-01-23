@@ -19,6 +19,23 @@ public class TypeFactory
         MAC
     }
     
+    // Pack IzPack Conditions (condition id on IzPack spec)
+    public enum CONDITION {
+        ARCH32("arch32"),
+        ARCH64("arch64");
+        
+        private String _value;
+        private CONDITION(String value)
+        {
+            _value = value;
+        }
+        @Override
+        public String toString()
+        {
+            return this._value;
+        }
+    }
+    
     // File Type
     public static enum FILE_TYPE {
         File,
@@ -43,8 +60,19 @@ public class TypeFactory
     
     // Build mode enumeration
     public static enum BUILD_MODE {
-        DEFAULT,
-        IZPACK_BUILD,//Default
-        NUGET_BUILD
+        DEFAULT("IzPack"),
+        IZPACK_BUILD("IzPack"),//Default
+        NUGET_BUILD("NuGet");
+        
+        private String _value;
+        private BUILD_MODE(String value)
+        {
+            _value = value;
+        }
+        @Override
+        public String toString()
+        {
+            return this._value;
+        }
     }
 }

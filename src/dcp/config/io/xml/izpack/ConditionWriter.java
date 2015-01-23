@@ -11,17 +11,18 @@ public class ConditionWriter extends StaxMateWriter
 {
     private SMOutputElement condRoot;
 
-    public ConditionWriter(String xml_file)
+    public ConditionWriter(String xml_file) throws XMLStreamException
     {
         super(xml_file);
-        root = out.setRoot("conditions");//<xfragment>
+        root = out.setRoot("xfragment");//<xfragment>
+        root = root.addElement("conditions");//<conditions>
         condRoot = root;
     }
     
     public ConditionWriter(SMOutputElement root) throws XMLStreamException {
         super(root);
         header();
-        condRoot = root;
+        condRoot = root.addElement("conditions");
     }
     
     public void header() throws XMLStreamException
@@ -43,18 +44,18 @@ public class ConditionWriter extends StaxMateWriter
            </condition>
      *  </conditions>
      */
-    public boolean addCondition(String className, String field) throws XMLStreamException {
+    public boolean addCondition(String id, String className, String field) throws XMLStreamException {
         SMOutputElement condition = condRoot.addElement("condition");//<condition
         condition.addAttribute("type", "java");
-        condition.addAttribute("id", "platform32");
+        condition.addAttribute("id", id);
         
         SMOutputElement xJava = condition.addElement("java");//<java>
         xJava.addElementWithCharacters(null, "class", className);//<class></class>
         xJava.addElementWithCharacters(null, "field", field);//<field></field>
         
-        SMOutputElement xReturnvalue = condition.addElementWithCharacters(null, "returnvalue", "true");//<returnvalue>
+        SMOutputElement xReturnvalue = condition.addElement("returnvalue");//<returnvalue>
         xReturnvalue.addAttribute("type", "boolean");
-        
+        xReturnvalue.addCharacters("true");
         
         //</conditions>
         

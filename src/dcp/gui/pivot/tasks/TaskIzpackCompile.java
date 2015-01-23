@@ -23,6 +23,7 @@ import dcp.logic.factory.TypeFactory.FILE_TYPE;
 import dcp.config.io.ant.CompileAntWriter;
 import dcp.config.io.ant.DebugAntWriter;
 import dcp.config.io.ant.RunAntWriter;
+import dcp.config.io.xml.izpack.ConditionWriter;
 import dcp.config.io.xml.izpack.GuiprefsWriter;
 import dcp.config.io.xml.izpack.InfoWriter;
 import dcp.config.io.xml.izpack.IzpackWriter;
@@ -39,6 +40,7 @@ import dcp.config.io.xml.izpack.VariableWriter;
 import dcp.config.io.zip.TrueZipCastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
+import dcp.logic.factory.TypeFactory;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
@@ -164,6 +166,9 @@ public class TaskIzpackCompile extends Task<Boolean>
             if (!writeNatives())// Writing dll files + libraries
                 return false;
             //jar / natives
+            
+            if (!writeConditions())// Writing conditions
+                return false;
             
             // Packs/Groups
             if (!writePacks(IOFactory.xmlProcessPanelSpec))// Writing Packs data to xml file (res/xml/PacksPanelSpec.xml)
@@ -482,11 +487,11 @@ public class TaskIzpackCompile extends Task<Boolean>
     {
         NativeWriter NW = new NativeWriter(root);
         // Jars
-        if (setupConfig.isProcess()) {
+        NW.addJar(IOFactory.jarResources);
+        /*if (setupConfig.isProcess()) {
             //NW.addJar(IOFactory.jarExecutable);
             //NW.addJar(IOFactory.jarListeners);
-            NW.addJar(IOFactory.jarResources);
-        }
+        }*/
         // Natives
         if (setupConfig.isShortcuts()) {
             NW.addNative("izpack", "ShellLink.dll");
@@ -498,6 +503,18 @@ public class TaskIzpackCompile extends Task<Boolean>
         }
         
         return true;
+    }
+
+    private boolean writeConditions() throws XMLStreamException
+    {
+        Out.print("STAX", "Declaring pack conditions");
+        Out.newLine();
+        
+        ConditionWriter CondW = new ConditionWriter(root);
+        if (CondW.addCondition(TypeFactory.CONDITION.ARCH32.toString(), "com.izforge.izpack.resources.SystemCheck", "x32"))
+        if (CondW.addCondition(TypeFactory.CONDITION.ARCH64.toString(), "com.izforge.izpack.resources.SystemCheck", "x64"))
+            return true;
+        return false;
     }
     
     private boolean writePacks(String process_spec) throws XMLStreamException, IOException
