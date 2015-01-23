@@ -33,6 +33,8 @@ import org.apache.pivot.wtk.PushButton;
 import org.apache.pivot.wtk.RadioButton;
 import org.apache.pivot.wtk.Spinner;
 import org.apache.pivot.wtk.SpinnerSelectionListener;
+import org.apache.pivot.wtk.SplitPane;
+import org.apache.pivot.wtk.SplitPaneListener;
 import org.apache.pivot.wtk.TablePane;
 import org.apache.pivot.wtk.TextInputContentListener;
 import org.apache.pivot.wtk.TreeViewNodeStateListener;
@@ -106,6 +108,7 @@ public class ScanFrame extends FillPane implements Bindable
     @BXML private PushButton btRefresh;//Refresh button
     @BXML private PushButton btBrowse;//Browse button
     //Recent Directories options
+    @BXML private SplitPane hSplitPane;
     @BXML private TablePane recent_dirs;
     //Scan Mode options
     @BXML private RadioButton btRadSimple;//Simple Scan Mode Radio Button
@@ -203,6 +206,7 @@ public class ScanFrame extends FillPane implements Bindable
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
         recentDirsFill(Master.appConfig.getRecentDirs());
+        hSplitPane.setSplitRatio(Master.appConfig.getScanHorSplitPaneRatio());
         
         // Custom filters fill from settings.json file to UI
         if (IOFactory.custExt.length > 0) {
@@ -264,6 +268,14 @@ public class ScanFrame extends FillPane implements Bindable
                         Out.print("INFO", "Updated folder path for packs to: "+ScanFrame.this.inPath.getText());
                     }
                 }
+            }
+        });
+        
+        // update workspace scan horizontal splitpane ratio
+        hSplitPane.getSplitPaneListeners().add(new SplitPaneListener.Adapter() {
+            @Override public void splitRatioChanged(SplitPane sp, float ratio)
+            {
+                Master.appConfig.setScanHorSplitPaneRatio(sp.getSplitRatio());
             }
         });
         

@@ -28,13 +28,14 @@ public class AppConfig implements Serializable
     // Flag
     private boolean modified = false;
     public boolean isModified() { return modified; }
-    public void setModified(boolean modified) { System.out.println("workspace modified"); this.modified = modified; }
+    public void setModified(boolean modified) { /*System.out.println("workspace modified");*/ this.modified = modified; }
     // Attributes
     private String appName;
     private String appVersion;
     // Data
     private LinkedList<File> recentDirs = new LinkedList<File>();
     // Workspace
+    private float scanHorSplitPaneRatio = 0.25f;
     private float setVerSplitPaneRatio = 0.6f;
     private float setHorSplitPaneRatio = 0.7f;
     // Tutorial helpers
@@ -95,6 +96,9 @@ public class AppConfig implements Serializable
     }
     
     // Workspace
+    public float getScanHorSplitPaneRatio() { return scanHorSplitPaneRatio; } 
+    public void setScanHorSplitPaneRatio(float scanHorSplitPaneRatio) { this.scanHorSplitPaneRatio = scanHorSplitPaneRatio; setModified(true); }
+    
     public float getSetVerSplitPaneRatio() { return setVerSplitPaneRatio; } 
     public void setSetVerSplitPaneRatio(float setVerSplitPaneRatio) { this.setVerSplitPaneRatio = setVerSplitPaneRatio; setModified(true); }
 

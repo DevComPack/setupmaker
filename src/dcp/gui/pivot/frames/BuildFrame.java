@@ -1,6 +1,5 @@
 package dcp.gui.pivot.frames;
 
-import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -102,7 +101,6 @@ public class BuildFrame extends FillPane implements Bindable
     @BXML private RadioButton rbPack;// 3
     @BXML private RadioButton rbPush;// 4
         // NuGet data
-    private String feedUrl;// default feed url
     private int stepNbr;// step number (default 3)
     //Log Area
     @BXML private ListView logger;//List View for Log display
@@ -127,18 +125,13 @@ public class BuildFrame extends FillPane implements Bindable
                 String target = inTargetPath.getText();
                 
                 if (target.length() > 0) {
-                    Desktop desktop = Desktop.getDesktop();
-                    File dirToOpen = null;
-                    try {
-                        dirToOpen = new File(target);
-                        if (dirToOpen.isFile()) // Get parent folder of file
-                            dirToOpen = dirToOpen.getParentFile();
-                        desktop.open(dirToOpen); // Open folder
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                        Out.print("ERROR", "File Not Found: " + dirToOpen.getAbsolutePath());
+                    try
+                    {
+                        facade.openFolder(target);
                     }
-                    catch (IOException e) {
+                    catch (IOException e)
+                    {
+                        Out.print("ERROR", "File Not Found: " + target);
                         e.printStackTrace();
                     }
                 }
@@ -160,7 +153,7 @@ public class BuildFrame extends FillPane implements Bindable
     
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources) {
-        facade = new BuildFacade(BUILD_MODE.DEFAULT);//*
+        facade = new BuildFacade(BUILD_MODE.DEFAULT);
         
         try {
             fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
@@ -169,16 +162,15 @@ public class BuildFrame extends FillPane implements Bindable
         }
         
         //Data Binding
-        lbBuild.setSelectedItem(Master.appConfig.getBuildMode().toString());
-        feedUrl = Master.appConfig.getNugFeedUrl();
-        stepNbr = Master.appConfig.getNugStepNbr();
-        setNugStepNbr(stepNbr);
-        logger.setListData(dcp.main.log.Out.getCompileLog());//Bind compile log tags to List view logger
-        try { init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion()); }
+        try
+        {
+            logger.setListData(dcp.main.log.Out.getCompileLog());// Bind compile log tags to List view logger
+            init();
+            displayRefresh();
+        }
         catch (IOException e) {
             e.printStackTrace();
         }
-        displayRefresh();
         
         //Action Binding
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
@@ -202,19 +194,17 @@ public class BuildFrame extends FillPane implements Bindable
             {
                 try
                 {
-                    switch ((String) lbBuild.getSelectedItem()) // Save default workspace
-                    {
-                        case "IzPack":
-                            Master.appConfig.setBuildMode(BUILD_MODE.IZPACK_BUILD);
-                            Out.print("BUILD", "Build Mode set to IZPACK_BUILD");
-                            break;
-                        case "NuGet":
-                            Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
-                            Out.print("BUILD", "Build Mode set to NUGET_BUILD");
-                            break;
-                        default: break;
+                    // Save default workspace
+                    String build = (String) lbBuild.getSelectedItem();
+                    if (BUILD_MODE.IZPACK_BUILD.toString().equals(build)) { // IzPack
+                        Master.appConfig.setBuildMode(BUILD_MODE.IZPACK_BUILD);
+                        setBuildMode(BUILD_MODE.IZPACK_BUILD);
                     }
-                    init(Master.setupConfig.getAppName(), Master.setupConfig.getAppVersion());
+                    else if (BUILD_MODE.NUGET_BUILD.toString().equals(build)) { // NuGet
+                        Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
+                        setBuildMode(BUILD_MODE.NUGET_BUILD);
+                    }
+                    Out.print("BUILD", "Build Mode set to " + build);
                     displayRefresh();
                 }
                 catch (IOException e)
@@ -228,8 +218,7 @@ public class BuildFrame extends FillPane implements Bindable
         inFeedSource.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
-                feedUrl = TI.getText();
-                Master.appConfig.setNugFeedUrl(feedUrl); // Save default workspace
+                Master.appConfig.setNugFeedUrl(TI.getText()); // Save default workspace
             }
         });
         
@@ -390,7 +379,7 @@ public class BuildFrame extends FillPane implements Bindable
 	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
 				}
                 else if (buildType.equals(BUILD_MODE.NUGET_BUILD.toString())) { // NuGet compile task
-                    TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), feedUrl, stepNbr);
+                    TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), Master.appConfig.getNugFeedUrl(), stepNbr);
                     compileTask.setLogger(logger);//Setting log display on logger
                     compileTask.execute(new TaskAdapter<Boolean>(tlCompile));// Compile
                 }
@@ -505,6 +494,54 @@ public class BuildFrame extends FillPane implements Bindable
             break;
         }
     }
+    
+    /**
+     * Change Build tab workspace for new Build Mode
+     * @param mode to change to
+     * @throws IOException 
+     */
+    private void setBuildMode(BUILD_MODE mode) throws IOException
+    {
+        assert mode != BUILD_MODE.DEFAULT;
+        facade.setBuildMode(mode);
+        
+        String filename = Master.setupConfig.getAppName() + "-" + Master.setupConfig.getAppVersion() + ".jar";
+        filename = filename.replaceAll(" ", "");
+        
+        switch (mode)
+        {
+        case IZPACK_BUILD: // IzPack
+            fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_AS);//FileBrowser Mode to File selection
+            
+            if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
+                inTargetPath.setText(new File(IOFactory.targetPath, filename).getCanonicalPath());
+            }
+            else {
+                inTargetPath.setText(new File(filename).getCanonicalPath());
+            }
+            fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getCanonicalFile());
+            Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
+            break;
+        case NUGET_BUILD: // NuGet
+            facade.setBuildMode(BUILD_MODE.NUGET_BUILD);
+            fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);//FileBrowser Mode to Folder selection
+            
+            if (inTargetPath.getText().length() > 0) {
+                File target = new File(inTargetPath.getText());
+                if (!target.isDirectory())
+                    inTargetPath.setText(target.getParent());
+            }
+            else if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
+                inTargetPath.setText(IOFactory.targetPath);
+            }
+            else {
+                inTargetPath.setText(new File(".").getCanonicalPath());
+            }
+            Out.print("DEBUG", "Export folder set to: " + inTargetPath.getText());
+            break;
+        default: break;
+        }
+    }
 
     /**
      * Enable/Set Packaging option
@@ -523,44 +560,14 @@ public class BuildFrame extends FillPane implements Bindable
      * Build tab data/display initialize
      * @throws IOException 
      */
-    public void init(String AppName, String AppVersion) throws IOException
+    public void init() throws IOException
     {
-        String filename = AppName+"-"+AppVersion+".jar";
-        filename = filename.replaceAll(" ", "");
+        lbBuild.setSelectedItem(Master.appConfig.getBuildMode().toString());
+        stepNbr = Master.appConfig.getNugStepNbr();
+        setNugStepNbr(stepNbr);
+        inFeedSource.setText(Master.appConfig.getNugFeedUrl());// default source for debugging
         
-        //File export set
-        if (BUILD_MODE.IZPACK_BUILD.toString().equals((String) lbBuild.getSelectedItem())) // IzPack
-        {
-            fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_AS);//FileBrowser Mode to File selection
-            
-            if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
-                inTargetPath.setText(new File(IOFactory.targetPath, filename).getCanonicalPath());
-            }
-            else {
-                inTargetPath.setText(new File(filename).getCanonicalPath());
-            }
-            fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getCanonicalFile());
-            Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
-        }
-        else if (BUILD_MODE.NUGET_BUILD.toString().equals((String) lbBuild.getSelectedItem())) // NuGet
-        {
-            fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);//FileBrowser Mode to Folder selection
-            inFeedSource.setText(feedUrl);// default source for debugging
-            
-            if (inTargetPath.getText().length() > 0) {
-                File target = new File(inTargetPath.getText());
-                if (!target.isDirectory())
-                    inTargetPath.setText(target.getParent());
-            }
-            else if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
-                inTargetPath.setText(IOFactory.targetPath);
-            }
-            else {
-                inTargetPath.setText(new File(".").getCanonicalPath());
-            }
-            Out.print("DEBUG", "Export folder set to: " + inTargetPath.getText());
-        }
-        
+        setBuildMode(Master.appConfig.getBuildMode());// Export path set
     }
     
 }

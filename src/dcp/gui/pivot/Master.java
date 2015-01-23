@@ -130,18 +130,27 @@ public class Master extends Window implements Application, Bindable
     /**
      * Bind data to GUI
      */
-    protected void databind(SetupConfig setupConfig2, List<Pack> packs2, List<Group> groups2)
+    protected void databind()
     {
-        //Clear scanned path
-        scanFrame.init(setupConfig.getSrcPath());
-        //Groups binding
-        ScanFrame.setGroups(groups);//loaded flag enabled*
-        //Packs binding
-        scanFrame.setPacks(packs);//loaded flag enabled*
-        //Tab data initialize
-        setFrame.loadInit();
-        //SetupConfig binding
-        tweakFrame.dataBinding(setupConfig);
+        try
+        {
+            //Clear scanned path
+            scanFrame.init(setupConfig.getSrcPath());
+            //Groups binding
+            ScanFrame.setGroups(groups);//loaded flag enabled*
+            //Packs binding
+            scanFrame.setPacks(packs);//loaded flag enabled*
+            //Tab data initialize
+            setFrame.loadInit();
+            //SetupConfig binding
+            tweakFrame.dataBinding(setupConfig);
+            //AppConfig binding
+            buildFrame.init();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public Master() {
@@ -179,7 +188,7 @@ public class Master extends Window implements Application, Bindable
             public void perform(Component arg0)
             {
                 if (load(IOFactory.saveFile)) {
-                    databind(setupConfig, packs, groups);
+                    databind();
                     //Go to Set tab
                     tabPane.setSelectedIndex(1);
                     for(int i=0; i<tabPane.getTabs().getLength(); i++)
@@ -404,7 +413,7 @@ public class Master extends Window implements Application, Bindable
                     setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
                     packs = new ArrayList<Pack>();
                     groups = new ArrayList<Group>();
-                    databind(setupConfig, packs, groups);
+                    databind();
                     IOFactory.setSaveFile("");
                     titleUpdate();
                     bt.setEnabled(false);
@@ -464,7 +473,7 @@ public class Master extends Window implements Application, Bindable
                     case 3://Build Tab
                         if (tweakFrame.isModified()) {
                             tweakFrame.setModified(false);//Modified flag*
-                            buildFrame.init(setupConfig.getAppName(), setupConfig.getAppVersion());
+                            buildFrame.init();
                             if (!Master.this.getTitle().contains("*"))
                                 Master.this.setTitle(Master.this.getTitle().concat("*"));//modified flag in Title
                         }
