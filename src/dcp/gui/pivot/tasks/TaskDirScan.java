@@ -117,11 +117,12 @@ public class TaskDirScan extends Task<Integer>
                 scanFrame.setModified(true);//Flag Modified
                 
                 TreeBranch treeBranch = new TreeBranch(dir.getName());
+                SCAN_MODE scanMode = ScanFrame.getSingleton().facade.getScanMode();
                 
-                if (ScanFrame.getScanMode() == SCAN_MODE.SIMPLE_SCAN) {//Simple Scan
+                if (scanMode == SCAN_MODE.SIMPLE_SCAN) {//Simple Scan
                     simpleScan(dir);
                 }
-                else if (ScanFrame.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {//Recursive Scan
+                else if (scanMode == SCAN_MODE.RECURSIVE_SCAN) {//Recursive Scan
                     String DEPTH = depthValue;
                     if (DEPTH.equals("-"))//Infinite depth
                         recursivScan(dir, treeBranch, null, INFINITE_DEPTH);

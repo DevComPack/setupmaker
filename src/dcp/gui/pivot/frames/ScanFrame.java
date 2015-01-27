@@ -54,6 +54,7 @@ import dcp.logic.factory.TypeFactory.FILE_TYPE;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.actions.BrowseAction;
+import dcp.gui.pivot.facades.ScanFacade;
 import dcp.gui.pivot.tasks.TaskDirScan;
 import dcp.gui.pivot.transitions.AppearTransition;
 import dcp.gui.pivot.validators.PathValidator;
@@ -67,6 +68,8 @@ public class ScanFrame extends FillPane implements Bindable
     //Singleton reference
     private static ScanFrame singleton;
     public static ScanFrame getSingleton() { assert (singleton != null); return singleton; }
+    //------DATA
+    public ScanFacade facade;
     //Flags
     private boolean modified = false;//True if tab changed data
     public void setModified(boolean VALUE) { modified = VALUE; }
@@ -97,9 +100,6 @@ public class ScanFrame extends FillPane implements Bindable
     public static List<Group> getGroups() {//Read-only Groups data
         return groups;
     }
-    //Scan Modes
-    private static SCAN_MODE scanMode = SCAN_MODE.DEFAULT;
-    public static SCAN_MODE getScanMode() { return scanMode; }//Returns selected Scan Mode
     
     //Browse Area
     @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
@@ -206,6 +206,7 @@ public class ScanFrame extends FillPane implements Bindable
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
+        facade = new ScanFacade();
         recentDirsFill(Master.appConfig.getRecentDirs());
         hSplitPane.setSplitRatio(Master.appConfig.getScanHorSplitPaneRatio());
         
@@ -292,7 +293,7 @@ public class ScanFrame extends FillPane implements Bindable
         btRadSimple.getButtonStateListeners().add(new ButtonStateListener() {
             @Override public void stateChanged(Button bt, State st)
             {
-                if (getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
+                if (facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
                     setScanMode(SCAN_MODE.SIMPLE_SCAN);
                     btSelect.setVisible(true);
                     btSelect.setSelected(false);
@@ -313,7 +314,7 @@ public class ScanFrame extends FillPane implements Bindable
         btRadRecursiv.getButtonStateListeners().add(new ButtonStateListener() {
             @Override public void stateChanged(Button bt, State st)
             {
-                if (getScanMode() == SCAN_MODE.SIMPLE_SCAN) {
+                if (facade.getScanMode() == SCAN_MODE.SIMPLE_SCAN) {
                     setScanMode(SCAN_MODE.RECURSIVE_SCAN);
                     btCollapse.setEnabled(true);
                     btExpand.setEnabled(true);
@@ -505,25 +506,26 @@ public class ScanFrame extends FillPane implements Bindable
     
     /**
      * Changes the Mode of Scan [SIMPLE|RECURSIVE]
-     * @param MODE
+     * @param new_mode
      */
-    private void setScanMode(SCAN_MODE MODE)
+    private void setScanMode(SCAN_MODE new_mode)
     {
-        if (scanMode != MODE &&
-            (MODE == SCAN_MODE.RECURSIVE_SCAN || MODE == SCAN_MODE.SIMPLE_SCAN) ) {
+        SCAN_MODE mode = facade.getScanMode();
+        if (mode != new_mode &&
+            (new_mode == SCAN_MODE.RECURSIVE_SCAN || new_mode == SCAN_MODE.SIMPLE_SCAN) ) {
             
             //Directory Filter Checkbox value change
-            if (MODE == SCAN_MODE.RECURSIVE_SCAN) {//Recursive Scan
+            if (new_mode == SCAN_MODE.RECURSIVE_SCAN) {//Recursive Scan
                 treeView.setCheckmarksEnabled(false);//Checkstate disable
             }
 
-            if (scanMode == SCAN_MODE.DEFAULT) {
-                scanMode = MODE;
-                Out.print("SCAN", "Scan Mode set to " + MODE);
+            if (mode == SCAN_MODE.DEFAULT) {
+                facade.setScanMode(new_mode);
+                Out.print("SCAN", "Scan Mode set to " + new_mode);
             }
             else {
-                Out.print("SCAN", "Scan Mode changed from " + scanMode + " to " + MODE);
-                scanMode = MODE;
+                Out.print("SCAN", "Scan Mode changed from " + mode + " to " + new_mode);
+                facade.setScanMode(new_mode);
                 ADirScan.perform(this);//Refresh the Packs View
             }
         }

@@ -15,7 +15,6 @@ import org.apache.pivot.util.Resources;
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.Accordion;
-import org.apache.pivot.wtk.Action;
 import org.apache.pivot.wtk.ActivityIndicator;
 import org.apache.pivot.wtk.Button;
 import org.apache.pivot.wtk.ButtonGroup;
@@ -23,7 +22,6 @@ import org.apache.pivot.wtk.ButtonGroupListener;
 import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
-import org.apache.pivot.wtk.Component;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.FillPane;
@@ -66,17 +64,17 @@ public class BuildFrame extends FillPane implements Bindable
     private static BuildFrame singleton;
     public static BuildFrame getSingleton() { assert (singleton != null); return singleton; }
     //------DATA
-    private BuildFacade facade;
+    public BuildFacade facade;
     // Flags
-    private static boolean modified = false;//True if tab processed data
+    private static boolean modified = false;// True if tab processed data
     public static void setModified(boolean VALUE) { modified = VALUE; }
     public static boolean isModified() { return modified; }
     // Browse Area
-    @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
-    @BXML private PushButton btBrowse;//Browse button
-    @BXML private PushButton btOpen;//Open folder button
-    @BXML private TextInput inTargetPath;//Path Text Input
-    private Action AOpenFolder;
+    @BXML private FileBrowserSheet fileBrowserSheet;// File Browser
+    @BXML private PushButton btBrowse;// Browse button
+    //@BXML private PushButton btOpen;// Open folder button
+    @BXML private TextInput inTargetPath;// Path Text Input
+    //private Action AOpenFolder;
     // Build
     @BXML private ListButton lbBuild;// Build type (IzPack/NuGet)
     @BXML private Accordion accBuildOpt;// Build options Accordion
@@ -119,7 +117,7 @@ public class BuildFrame extends FillPane implements Bindable
         assert (singleton == null);
         singleton = this;
         
-        // Open target folder in explorer
+        /*/ Open target folder in explorer
         AOpenFolder = new Action() {
             @Override public void perform(Component c)
             {
@@ -137,7 +135,7 @@ public class BuildFrame extends FillPane implements Bindable
                     }
                 }
             }
-        };
+        };*/
     }
     
     // Display refresh for Nuget step number
@@ -171,7 +169,7 @@ public class BuildFrame extends FillPane implements Bindable
         
         // Action Binding
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
-        btOpen.setAction(AOpenFolder);
+        //btOpen.setAction(AOpenFolder);
         
         // Target file chosen from File Chooser event
         fileBrowserSheet.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
@@ -192,16 +190,18 @@ public class BuildFrame extends FillPane implements Bindable
                 try
                 {
                     // Save default workspace
-                    String build = (String) lbBuild.getSelectedItem();
+                    String build = lbBuild.getSelectedItem().toString();
                     if (BUILD_MODE.IZPACK_BUILD.toString().equals(build)) { // IzPack
-                        Master.appConfig.setBuildMode(BUILD_MODE.IZPACK_BUILD);
+                        //Master.appConfig.setBuildMode(BUILD_MODE.IZPACK_BUILD);
+                        facade.setBuildMode(BUILD_MODE.IZPACK_BUILD);
                         setBuildMode(BUILD_MODE.IZPACK_BUILD);
                     }
                     else if (BUILD_MODE.NUGET_BUILD.toString().equals(build)) { // NuGet
-                        Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
+                        //Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
+                        facade.setBuildMode(BUILD_MODE.NUGET_BUILD);
                         setBuildMode(BUILD_MODE.NUGET_BUILD);
                     }
-                    Out.print("BUILD", "Build Mode set to " + build);
+                    Out.print("DEBUG", "Build Mode set to " + build);
                     //displayRefresh();
                 }
                 catch (IOException e)
@@ -372,14 +372,13 @@ public class BuildFrame extends FillPane implements Bindable
                 };
 
                 dcp.main.log.Out.clearCompileLog();//Clear Saved Log
-				String buildType = lbBuild.getSelectedItem().toString();
-                if (buildType.equals(BUILD_MODE.IZPACK_BUILD.toString())) { // IzPack compile task
+                if (facade.getBuildMode().equals(BUILD_MODE.IZPACK_BUILD)) { // IzPack compile task
 	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar");
 	                TaskIzpackCompile compileTask = new TaskIzpackCompile(targetPath, Master.setupConfig, sftpDialog.getWebConfig());
 	                compileTask.setLogger(logger);//Setting log display on logger
 	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
 				}
-                else if (buildType.equals(BUILD_MODE.NUGET_BUILD.toString())) { // NuGet compile task
+                else if (facade.getBuildMode().equals(BUILD_MODE.NUGET_BUILD)) { // NuGet compile task
                     TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), facade.getNugFeedUrl(), stepNbr);
                     compileTask.setLogger(logger);//Setting log display on logger
                     compileTask.execute(new TaskAdapter<Boolean>(tlCompile));// Compile
@@ -478,15 +477,14 @@ public class BuildFrame extends FillPane implements Bindable
      */
     private void displayRefresh() {
         btCompile.setEnabled(true);
-        String mode = lbBuild.getSelectedItem().toString();
-        if (mode.equals(BUILD_MODE.IZPACK_BUILD.toString())) {
+        if (facade.getBuildMode().equals(BUILD_MODE.IZPACK_BUILD)) {
             //accBuildOpt.setSelectedIndex(0);
             //accIzpack.setEnabled(true);
             //accNuget.setEnabled(false);
             btLaunch.setEnabled(true);
             btDebug.setEnabled(true);
         }
-        else if (mode.equals(BUILD_MODE.NUGET_BUILD.toString())) {
+        else if (facade.getBuildMode().equals(BUILD_MODE.NUGET_BUILD)) {
             //accBuildOpt.setSelectedIndex(1);
             //accIzpack.setEnabled(false);
             //accNuget.setEnabled(true);

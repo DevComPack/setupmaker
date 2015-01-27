@@ -438,10 +438,10 @@ public class Master extends Window implements Application, Bindable
                 appConfig.setDefaultSetupConfig(new SetupConfig(setupConfig));
                 appConfig.setDefaultIzpackConfig(new IzpackConfig(izpackConf));
                 appConfig.setDefaultNugetConfig(new NugetConfig(nugetConf));
-                appConfig.setScanMode(ScanFrame.getScanMode());
-                //appConfig.setBuildMode(null);
+                appConfig.setScanMode(scanFrame.facade.getScanMode());
+                appConfig.setBuildMode(buildFrame.facade.getBuildMode());
                 Out.print("INFO", "Default Workspace data saved.");
-                Prompt.prompt(MessageType.INFO, "User data saved as default.", getWindow());
+                Prompt.prompt(MessageType.INFO, "Workspace data saved as default.", getWindow());
             }
         });
         btHelp.getButtonPressListeners().add(new ButtonPressListener() {

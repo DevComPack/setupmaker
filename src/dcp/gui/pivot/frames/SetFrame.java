@@ -1598,7 +1598,7 @@ public class SetFrame extends FillPane implements Bindable
         
         facade.clearGroups(); // Clear all groups
         treeData.clear(); // TreeView Data clear
-        if (ScanFrame.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {//If Recursive Scan, Folders > Groups
+        if (ScanFrame.getSingleton().facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {//If Recursive Scan, Folders > Groups
             btImport.setEnabled(true); // Enable import button
         }
         else {

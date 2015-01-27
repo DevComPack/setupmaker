@@ -14,7 +14,7 @@ import dcp.logic.model.config.build.IzpackConfig;
 import dcp.logic.model.config.build.NugetConfig;
 
 /**
- * DevComPack Application configuration data
+ * DevComPack Application workspace configuration data
  * @author SSAIDELI
  *
  */

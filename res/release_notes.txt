@@ -3,13 +3,13 @@
 +Packr implementation (_https://github.com/libgdx/packr)
 +Pack architecture property
 +Packs data Check feature
++Open target folder button on Build tab
 -Code rewrite
 
 1.1.1
 =====
 + New features:
 Nuget/Chocolatey process compiler
-Open target folder button on Build tab
 Conditions support for IzPack
 --
 - Enhancements:
@@ -18,8 +18,8 @@ Validators debugging warnings
 Multi lines clipboard copy of selected log lines
 Back to factory setup data on undo with no modifications
 Merge of dcp libs to one library
-Add scan horizontal split panel to Workspace saved data
-Default configurations for build mode added to workspace
+Add scan horizontal split panel to Workspace auto-saved data
+Build mode and default build configurations added to workspace data
 --
 * Bug fixes:
 Default empty target path was based on app data instead of setup data
@@ -28,6 +28,7 @@ Save file extension correction on empty path
 Pack install name validation was displaying a wrong debug message
 SFTP data load generated exception on empty data
 Workspace data was saved with edit flag on
+Frames Singletons were not used as intended
 
 
 1.1.0

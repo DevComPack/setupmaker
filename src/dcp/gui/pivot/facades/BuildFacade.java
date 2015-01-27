@@ -5,15 +5,13 @@ import java.io.File;
 import java.io.IOException;
 
 import dcp.gui.pivot.Master;
+import dcp.logic.factory.TypeFactory.BUILD_MODE;
 import dcp.main.log.Out;
 
 
 public class BuildFacade
 {
-    /*
-    private IzpackConfig izpackConf; // IzPack build configuration
-    private NugetConfig nugetConf; // NuGet build configuration
-    */
+    private BUILD_MODE mode = BUILD_MODE.DEFAULT;
     
     /**
      * Build Tab Facade Constructor
@@ -21,10 +19,6 @@ public class BuildFacade
     public BuildFacade()
     {
     }
-    /*
-    public IzpackConfig getIzpackConfig() { return izpackConf; }
-    public NugetConfig getNugetConfig() { return nugetConf; }
-    */
     
     /**
      * Open target folder in system explorer
@@ -45,6 +39,16 @@ public class BuildFacade
         desktop.open(folder); // Open folder
         Out.print("DEBUG", "Open desktop folder at " + folder.getAbsolutePath());
         return true;
+    }
+    
+
+    public BUILD_MODE getBuildMode()
+    {
+        return mode;
+    }
+    public void setBuildMode(BUILD_MODE mode)
+    {
+        this.mode = mode;
     }
 
     /// ************************************************************************************************ IZPACK
