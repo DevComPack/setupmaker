@@ -6,10 +6,11 @@ import java.io.Serializable;
 public class IzpackConfig implements Serializable
 {
     /**
-     * Generated serial for file save
+     * class written to workspace file: conf.dcp
+     * from AppConfig class
      */
     private static final long serialVersionUID = 1550797914797285496L;
-    
+
     // Packaging Split option
     private boolean split = false;//Split option
     private int splitSize;//Split size
@@ -21,7 +22,15 @@ public class IzpackConfig implements Serializable
     public IzpackConfig()
     {
     }
-
+    public IzpackConfig(IzpackConfig izpackConf)
+    {
+        this.split = izpackConf.split;
+        this.splitSize = izpackConf.splitSize;
+        this.webSetup = izpackConf.webSetup;
+        this.webUrl = izpackConf.webUrl;
+        this.webConfig = izpackConf.webConfig;
+    }
+    
     public boolean isSplit() { return split; }
     public void setSplit(boolean split) { this.split = split; }
 

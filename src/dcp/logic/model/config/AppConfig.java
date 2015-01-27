@@ -11,6 +11,7 @@ import org.apache.pivot.collections.List;
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.logic.model.config.build.IzpackConfig;
+import dcp.logic.model.config.build.NugetConfig;
 
 /**
  * DevComPack Application configuration data
@@ -20,16 +21,18 @@ import dcp.logic.model.config.build.IzpackConfig;
 public class AppConfig implements Serializable
 {
     /**
-     * class written to save file: conf.dcp
+     * class written to workspace file: conf.dcp
      */
     private static final long serialVersionUID = 1194986597451209924L;
 
     // Constants
     private final static int MAX_RECENT_DIRECTORIES = 5;
     // Flag
-    private boolean modified = false;
+    transient private boolean modified = false;
     public boolean isModified() { return modified; }
-    public void setModified(boolean modified) { /*System.out.println("workspace modified");*/ this.modified = modified; }
+    public void setModified(boolean modified) { this.modified = modified; }
+    // Assistant flag
+    private boolean help = true;
     // Attributes
     private String appName;
     private String appVersion;
@@ -39,26 +42,22 @@ public class AppConfig implements Serializable
     private float scanHorSplitPaneRatio = 0.25f;
     private float setVerSplitPaneRatio = 0.6f;
     private float setHorSplitPaneRatio = 0.7f;
-    // Tutorial helpers
-    private boolean help = true;
     // Modes
     private SCAN_MODE scanMode = SCAN_MODE.SIMPLE_SCAN;
     private BUILD_MODE buildMode = BUILD_MODE.IZPACK_BUILD;
-    // Configurations
-    private IzpackConfig izpackConf;
-    // Nuget options
-    private String nugFeedUrl = "http://";// default feed url
-    private int nugStepNbr = 3;// step number (default 3)
-    // Default configurations for setup
+    // Default Configurations
     private SetupConfig defaultSetupConfig;
+    private IzpackConfig defaultIzpackConf;
+    private NugetConfig defaultNugetConf;
     
 
     public AppConfig(String app_name, String app_version)
     {
         this.appName = app_name;
         this.appVersion = app_version;
-        this.izpackConf = new IzpackConfig();
         this.defaultSetupConfig = new SetupConfig("Package", "1.0.0");
+        this.defaultIzpackConf = new IzpackConfig();
+        this.defaultNugetConf = new NugetConfig();
     }
     
     // Attributes
@@ -119,15 +118,20 @@ public class AppConfig implements Serializable
     public BUILD_MODE getBuildMode() { return buildMode; }
     public void setBuildMode(BUILD_MODE buildMode) { this.buildMode = buildMode;  setModified(true); }
     
-    // Configurations methods
-    public IzpackConfig getIzpackConfig() { return izpackConf; }
-    public void setIzpackConfig(IzpackConfig izpackConf) { this.izpackConf = izpackConf; }
+    // Default Configurations methods
+    public IzpackConfig getDefaultIzpackConfig() { return defaultIzpackConf; }
+    public void setDefaultIzpackConfig(IzpackConfig izpackConf)
+    {
+        this.defaultIzpackConf = izpackConf;
+        setModified(true);
+    }
     
-    // Nuget options methods
-    public String getNugFeedUrl() { return nugFeedUrl; }
-    public void setNugFeedUrl(String feedUrl) { this.nugFeedUrl = feedUrl;  setModified(true); }
-    public int getNugStepNbr() { return nugStepNbr; }
-    public void setNugStepNbr(int stepNbr) { this.nugStepNbr = stepNbr;  setModified(true); }
+    public NugetConfig getDefaultNugetConfig() { return defaultNugetConf; }
+    public void setDefaultNugetConfig(NugetConfig nugetConf)
+    {
+        this.defaultNugetConf = nugetConf;
+        setModified(true);
+    }
     
     public SetupConfig getDefaultSetupConfig() { return defaultSetupConfig; }
     public void setDefaultSetupConfig(SetupConfig defaultSetupConfig)

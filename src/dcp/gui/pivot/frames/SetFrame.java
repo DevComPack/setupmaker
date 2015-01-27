@@ -79,7 +79,7 @@ public class SetFrame extends FillPane implements Bindable
 {
     //Singleton reference
     private static SetFrame singleton;
-    public static SetFrame getSingleton() { if (singleton != null) return singleton; else return new SetFrame(); }
+    public static SetFrame getSingleton() { assert (singleton != null); return singleton; }
     private SetFacade facade;
     
     //------DATA
@@ -92,7 +92,7 @@ public class SetFrame extends FillPane implements Bindable
     private boolean multi_selection = false;//If multiple packs selected or only one
     private boolean drag_enabled = false;//If a component is being dragged
     private boolean isGroupDependency() { return ((String)cbDepType.getButtonData()).equals("Group"); }
-    private boolean unvalid = false;// True if some validator is negative
+    //private boolean unvalid = false;// True if some validator is negative
     //Packs
     //private List<Pack> getPacks() { return PackFactory.getPacks(); }//Read-only Packs data
     private Pack getSelectedPack() { return (Pack) tableView.getSelectedRow(); }
@@ -116,7 +116,7 @@ public class SetFrame extends FillPane implements Bindable
     //Pack options
     @BXML private PushButton btSelectAll;//Select all packs in table view
     @BXML private PushButton btSelectNone;//Clear pack selection in table view
-    @BXML private PushButton btCheck;//Check and validate packs data
+    //@BXML private PushButton btCheck;//Check and validate packs data
     @BXML private PushButton btSort;//Packs Sorting Dialog open
     @BXML private PushButton btAdd;//Add Pack to selected group
     @BXML private PushButton btDelete;//Delete selected Pack(s)
@@ -178,7 +178,8 @@ public class SetFrame extends FillPane implements Bindable
     //=========================================
     public SetFrame()//Constructor
     {
-        if (singleton == null) singleton = this;
+        assert (singleton == null);
+        singleton = this;
         
         ADataImport = new Action() {//Import groups from recursive scan
             @Override public void perform(Component source)
@@ -385,7 +386,7 @@ public class SetFrame extends FillPane implements Bindable
             @Override public void textValidChanged(TextInput ti)
             {
                 System.out.println("inName " + ti.isValid());
-                if (!ti.isValid()) unvalid = true;
+                //if (!ti.isValid()) unvalid = true;
             }
         });
         inVersion.setValidator(new Validator() {
@@ -404,7 +405,7 @@ public class SetFrame extends FillPane implements Bindable
             @Override public void textValidChanged(TextInput ti)
             {
                 System.out.println("inVersion " + ti.isValid());
-                if (!ti.isValid()) unvalid = true;
+                //if (!ti.isValid()) unvalid = true;
             }
         });
         
@@ -423,7 +424,7 @@ public class SetFrame extends FillPane implements Bindable
                 tableView.clearSelection();
             }
         });
-        btCheck.getButtonPressListeners().add(new ButtonPressListener() {
+        /*btCheck.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
                 @SuppressWarnings("unchecked")
@@ -434,7 +435,7 @@ public class SetFrame extends FillPane implements Bindable
                     if (unvalid) { unvalid = false; break; } // stop if unvalid flag true
                 }
             }
-        });
+        });*/
         btSort.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {

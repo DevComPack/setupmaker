@@ -64,7 +64,7 @@ public class BuildFrame extends FillPane implements Bindable
 {
     // Singleton reference
     private static BuildFrame singleton;
-    public static BuildFrame getSingleton() { if (singleton != null) return singleton; else return new BuildFrame(); }
+    public static BuildFrame getSingleton() { assert (singleton != null); return singleton; }
     //------DATA
     private BuildFacade facade;
     // Flags
@@ -116,7 +116,8 @@ public class BuildFrame extends FillPane implements Bindable
     @BXML private ActivityIndicator waiter;//Activity Indicator to wait for compile
     
     public BuildFrame() {
-        if (singleton == null) singleton = this;
+        assert (singleton == null);
+        singleton = this;
         
         // Open target folder in explorer
         AOpenFolder = new Action() {
@@ -127,7 +128,7 @@ public class BuildFrame extends FillPane implements Bindable
                 if (target.length() > 0) {
                     try
                     {
-                        facade.openFolder(target);
+                        BuildFrame.this.facade.openFolder(target);
                     }
                     catch (IOException e)
                     {
@@ -152,7 +153,8 @@ public class BuildFrame extends FillPane implements Bindable
     }
     
     @Override
-    public void initialize(Map<String, Object> namespace, URL location, Resources resources) {
+    public void initialize(Map<String, Object> namespace, URL location, Resources resources)
+    {
         facade = new BuildFacade();
         
         // Data Binding
@@ -213,7 +215,7 @@ public class BuildFrame extends FillPane implements Bindable
         inFeedSource.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
-                Master.appConfig.setNugFeedUrl(TI.getText()); // Save default workspace
+                facade.setNugFeedUrl(TI.getText()); // Save default workspace
             }
         });
         
@@ -230,7 +232,7 @@ public class BuildFrame extends FillPane implements Bindable
                 else// if (rbPush.isSelected())
                     stepNbr = 4;
                 
-                Master.appConfig.setNugStepNbr(stepNbr); // Save default workspace
+                facade.setNugStepNbr(stepNbr); // Save default workspace
             }
         });
         
@@ -239,7 +241,7 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public void stateChanged(Button bt, State st)
             {
                 if (bt.isSelected()) {// Enabled Split
-                    facade.getIzpackConfig().setSplit(true);
+                    facade.setIzSplit(true);
                     inSize.setEnabled(true);
                     sizeSpinner.setEnabled(true);
                     setSplit(Integer.parseInt(inSize.getText()) *
@@ -248,7 +250,7 @@ public class BuildFrame extends FillPane implements Bindable
                     cbWeb.setSelected(false);
                 }
                 else {// Disabled Split
-                    facade.getIzpackConfig().setSplit(false);
+                    facade.setIzSplit(false);
                     sizeSpinner.setEnabled(false);
                     inSize.setEnabled(false);
                     setSplit(0);
@@ -261,14 +263,14 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public void stateChanged(Button bt, State st)
             {
                 if (bt.isSelected()) {//Activated Web setup
-                    facade.getIzpackConfig().setWebSetup(true);
+                    facade.setIzWebSetup(true);
                     inWebDir.setEnabled(true);
                     btWebConfig.setEnabled(true);
                     Master.setupConfig.setWeb(true);
                     cbSplit.setSelected(false);
                 }
                 else {//Desactivated Web Setup
-                    facade.getIzpackConfig().setWebSetup(false);
+                    facade.setIzWebSetup(false);
                     inWebDir.setEnabled(false);
                     btWebConfig.setEnabled(false);
                     sftpDialog.disable();
@@ -378,7 +380,7 @@ public class BuildFrame extends FillPane implements Bindable
 	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
 				}
                 else if (buildType.equals(BUILD_MODE.NUGET_BUILD.toString())) { // NuGet compile task
-                    TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), Master.appConfig.getNugFeedUrl(), stepNbr);
+                    TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), facade.getNugFeedUrl(), stepNbr);
                     compileTask.setLogger(logger);//Setting log display on logger
                     compileTask.execute(new TaskAdapter<Boolean>(tlCompile));// Compile
                 }
@@ -521,7 +523,7 @@ public class BuildFrame extends FillPane implements Bindable
                 inTargetPath.setText(new File(filename).getCanonicalPath());
             }
             fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getCanonicalFile());
-            Out.print("DEBUG", "Export file set to: " + inTargetPath.getText());
+            Out.print("DEBUG", "Export path set to file: " + inTargetPath.getText());
             break;
         case NUGET_BUILD: // NuGet
             accBuildOpt.setSelectedIndex(1);
@@ -541,7 +543,7 @@ public class BuildFrame extends FillPane implements Bindable
             else {
                 inTargetPath.setText(new File(".").getCanonicalPath());
             }
-            Out.print("DEBUG", "Export folder set to: " + inTargetPath.getText());
+            Out.print("DEBUG", "Export path set to folder: " + inTargetPath.getText());
             break;
         default: break;
         }
@@ -566,12 +568,10 @@ public class BuildFrame extends FillPane implements Bindable
      */
     public void init() throws IOException
     {
-        facade.setIzpackConfig(Master.appConfig.getIzpackConfig());
-        
         lbBuild.setSelectedItem(Master.appConfig.getBuildMode().toString());
-        stepNbr = Master.appConfig.getNugStepNbr();
+        stepNbr = facade.getNugStepNbr();
         setNugStepNbr(stepNbr);
-        inFeedSource.setText(Master.appConfig.getNugFeedUrl());// default source for debugging
+        inFeedSource.setText(facade.getNugFeedUrl());// default source for debugging
         
         setBuildMode(Master.appConfig.getBuildMode());// Export path set
     }

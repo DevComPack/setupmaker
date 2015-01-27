@@ -39,7 +39,7 @@ public class TweakFrame extends FillPane implements Bindable
 {
     //Singleton reference
     private static TweakFrame singleton;
-    public static TweakFrame getSingleton() { if (singleton != null) return singleton; else return new TweakFrame(); }
+    public static TweakFrame getSingleton() { assert (singleton != null); return singleton; }
 
     //Flags
     private boolean modified = false;//True if tab processed data
@@ -100,7 +100,8 @@ public class TweakFrame extends FillPane implements Bindable
     
     public TweakFrame()
     {
-        if (singleton == null) singleton = this;
+        assert (singleton == null);
+        singleton = this;
     }
 
     @Override

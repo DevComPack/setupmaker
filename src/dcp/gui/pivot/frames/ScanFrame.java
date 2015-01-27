@@ -66,7 +66,7 @@ public class ScanFrame extends FillPane implements Bindable
 {
     //Singleton reference
     private static ScanFrame singleton;
-    public static ScanFrame getSingleton() { if (singleton != null) return singleton; else return new ScanFrame(); }
+    public static ScanFrame getSingleton() { assert (singleton != null); return singleton; }
     //Flags
     private boolean modified = false;//True if tab changed data
     public void setModified(boolean VALUE) { modified = VALUE; }
@@ -142,7 +142,8 @@ public class ScanFrame extends FillPane implements Bindable
     //========================
     
     public ScanFrame() {//Constructor
-        if (singleton == null) singleton = this;
+        assert (singleton == null);
+        singleton = this;
         
         filter = new FilenameFilter() {//Checkbox packs filters
             @Override public boolean accept(File dir, String name)

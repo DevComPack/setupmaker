@@ -51,11 +51,11 @@
 													<!-- Packs buttons -->
 													<BoxPane orientation="Vertical"
 														styles="{padding:{left:0,right:4,top:10,bottom:5}, horizontalAlignment:'center'}">
-														<PushButton bxml:id="btCheck"
+														<!-- <PushButton bxml:id="btCheck"
 															tooltipText="Check and validate all packs data"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
 															<content:ButtonData icon="/dcp/gui/icons/debug.png" />
-														</PushButton>
+														</PushButton> -->
 														<PushButton bxml:id="btSelectAll" tooltipText="Select all"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/selectall.png" />

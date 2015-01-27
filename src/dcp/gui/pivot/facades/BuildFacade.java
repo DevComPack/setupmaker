@@ -4,21 +4,27 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-import dcp.logic.model.config.build.IzpackConfig;
+import dcp.gui.pivot.Master;
 import dcp.main.log.Out;
 
 
 public class BuildFacade
 {
+    /*
     private IzpackConfig izpackConf; // IzPack build configuration
+    private NugetConfig nugetConf; // NuGet build configuration
+    */
     
     /**
      * Build Tab Facade Constructor
-     * @param mode: Default Build mode
      */
     public BuildFacade()
     {
     }
+    /*
+    public IzpackConfig getIzpackConfig() { return izpackConf; }
+    public NugetConfig getNugetConfig() { return nugetConf; }
+    */
     
     /**
      * Open target folder in system explorer
@@ -41,8 +47,35 @@ public class BuildFacade
         return true;
     }
 
-    // Getters/Setters
-    public IzpackConfig getIzpackConfig() { return izpackConf; }
-    public void setIzpackConfig(IzpackConfig izpackConf) { this.izpackConf = izpackConf; }
+    /// ************************************************************************************************ IZPACK
+
+    public void setIzSplit(boolean enable)
+    {
+        Master.izpackConf.setSplit(enable);
+    }
+    public void setIzWebSetup(boolean enable)
+    {
+        Master.izpackConf.setWebSetup(enable);
+    }
+    
+    /// ************************************************************************************************ NUGET
+
+    public int getNugStepNbr()
+    {
+        return Master.nugetConf.getStepNbr();
+    }
+    public void setNugStepNbr(int stepNbr)
+    {
+        Master.nugetConf.setStepNbr(stepNbr);
+    }
+
+    public String getNugFeedUrl()
+    {
+        return Master.nugetConf.getFeedUrl();
+    }
+    public void setNugFeedUrl(String feed)
+    {
+        Master.nugetConf.setFeedUrl(feed);
+    }
 
 }

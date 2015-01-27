@@ -59,34 +59,36 @@ import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.model.config.AppConfig;
 import dcp.logic.model.config.SetupConfig;
+import dcp.logic.model.config.build.IzpackConfig;
+import dcp.logic.model.config.build.NugetConfig;
 import dcp.main.log.Out;
 
 
 public class Master extends Window implements Application, Bindable
 {
 
-    private Window window;//Main application window
+    private Window window;// Main application window
     
-    //Data loaded from saved file
+    // Data (loaded from saved file)
     List<Pack> packs;
     List<Group> groups;
-    //Tabs
+    // UI Tabs
     protected ScanFrame scanFrame;
     protected SetFrame setFrame;
     protected TweakFrame tweakFrame;
     protected BuildFrame buildFrame;
-    //Helpers
+    // Helpers
     @BXML static public HelperFacade helper;
-    //Display
+    // Display
     @BXML private Label info;
     @BXML private TabPane tabPane;
     @BXML private Label statusBarStep;
     @BXML private Label statusBarNPacks;
     @BXML private Label statusBarNGroups;
-    //Browser
+    // Browsers
     @BXML private FileBrowserSheet saveFileBrowserSheet;//File Browser
     @BXML private FileBrowserSheet loadFileBrowserSheet;//File Browser
-    //Buttons
+    // Buttons
     @BXML private PushButton btBack;
     @BXML private PushButton btNext;
     @BXML private PushButton btSaveAs;
@@ -104,8 +106,10 @@ public class Master extends Window implements Application, Bindable
     //Constant Application Values
     public final static String AppName = "DCP Setup Maker";
     public final static String AppVersion = "1.1.1";
-    public static AppConfig appConfig;//App configuration file
-    public static SetupConfig setupConfig;//Setup configuration file
+    public static AppConfig appConfig;// App configuration file
+    public static SetupConfig setupConfig;// Setup configuration file
+    public static IzpackConfig izpackConf; // IzPack build configuration
+    public static NugetConfig nugetConf; // NuGet build configuration
     
     /**
      * Update title with save file and edit flag '*'
@@ -154,12 +158,14 @@ public class Master extends Window implements Application, Bindable
     }
     
     public Master() {
-        IOFactory.init();//Factory memory data initialize
-        appConfig = confLoad();//Load configuration file
+        IOFactory.init();// Factory memory data initialize
+        appConfig = confLoad();// Load configuration file
         if (appConfig == null)
         {
-            appConfig = new AppConfig(AppName, AppVersion);//Init config if not exists
+            appConfig = new AppConfig(AppName, AppVersion);// Init config if not exists
             setupConfig = new SetupConfig("Package", "1.0.0");
+            izpackConf = new IzpackConfig();
+            nugetConf = new NugetConfig();
         }
         else
         {
@@ -167,13 +173,15 @@ public class Master extends Window implements Application, Bindable
             if (!appConfig.getAppVersion().equals(AppVersion)) // Warning if conf.dcp file is old 
                 Out.print("WARNING", "Configuration file conf.dcp contains data of an old version: " + appConfig.getAppVersion());
             setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
+            izpackConf = new IzpackConfig(appConfig.getDefaultIzpackConfig());
+            nugetConf = new NugetConfig(appConfig.getDefaultNugetConfig());
         }
         
         //Save action
-        ASave = new Action() {//Project Save Action
+        ASave = new Action() {// Project Save Action
             @Override public void perform(Component source) {
                 if (save(IOFactory.saveFile)) {
-                    //Enable Save button
+                    // Enable Save button
                     if (!btSave.isEnabled()) {
                         btSave.setEnabled(true);
                         //btDefault.setEnabled(false);
@@ -183,22 +191,22 @@ public class Master extends Window implements Application, Bindable
                 }
             } };
         //Load Action
-        ALoad = new Action() {//Project Load Action
+        ALoad = new Action() {// Project Load Action
             @Override
             public void perform(Component arg0)
             {
                 if (load(IOFactory.saveFile)) {
                     databind();
-                    //Go to Set tab
+                    // Go to Set tab
                     tabPane.setSelectedIndex(1);
                     for(int i=0; i<tabPane.getTabs().getLength(); i++)
                         tabPane.getTabs().get(i).setEnabled(false);
                     tabPane.getTabs().get(1).setEnabled(true);
-                    if (tabPane.getSelectedIndex() == 1)//If already on Set tab
-                        ScanFrame.setLoaded(false);//Disable scan loaded flag*
+                    if (tabPane.getSelectedIndex() == 1)// If already on Set tab
+                        ScanFrame.setLoaded(false);// Disable scan loaded flag*
                     btBack.setEnabled(true);
                     btNext.setEnabled(true);
-                    //Enable Save button
+                    // Enable Save button
                     if (!btSave.isEnabled()) {
                         btSave.setEnabled(true);
                     }
@@ -211,15 +219,15 @@ public class Master extends Window implements Application, Bindable
         Out.print("FACTORY", "Data loaded to memory");
     }
 
-    @Override public void startup(Display display, Map<String, String> properties) throws Exception//App start
+    @Override public void startup(Display display, Map<String, String> properties) throws Exception// App start
     {
         Out.print("PIVOT", "Window open");
-        Locale.setDefault(Locale.ENGLISH);//Set default UI language to English
+        Locale.setDefault(Locale.ENGLISH);// Set default UI language to English
         BXMLSerializer bxmlSerializer = new BXMLSerializer();
         window = (Window) bxmlSerializer.readObject(getClass().getResource("master.bxml"));
         window.open(display);
         
-        //Helper launch if first time
+        // Helper launch if first time
         if (appConfig.isHelp()) {
             helper.open(window);
             appConfig.setHelp(false);
@@ -230,8 +238,11 @@ public class Master extends Window implements Application, Bindable
     {
         if (window != null) {
             window.close();
-            if (appConfig.isModified()) confSave(appConfig);//Save configuration if modified
-            Out.print("PIVOT", "Window closed.");
+            if (appConfig.isModified()) { // Save configuration if modified
+                confSave(appConfig);
+                Out.print("INFO", "Workspace saved");
+            }
+            Out.print("PIVOT", "BYE");
         }
         return false;
     }
@@ -239,8 +250,14 @@ public class Master extends Window implements Application, Bindable
     @Override public void resume() throws Exception { }
     @Override public void suspend() throws Exception { }
 
-    @Override public void initialize(Map<String, Object> arg0, URL arg1, Resources arg2)
+    @Override public void initialize(Map<String, Object> args, URL url, Resources res)
     {
+        //Tabs singletons init
+        scanFrame = ScanFrame.getSingleton();
+        setFrame = SetFrame.getSingleton();
+        tweakFrame = TweakFrame.getSingleton();
+        buildFrame = BuildFrame.getSingleton();
+        
         //Shortcuts define
         this.getComponentKeyListeners().add(new ComponentKeyListener.Adapter() {
             @Override
@@ -287,12 +304,6 @@ public class Master extends Window implements Application, Bindable
                 return false;
             }
         });
-        
-        //Tabs singletons init
-        scanFrame = ScanFrame.getSingleton();
-        setFrame = SetFrame.getSingleton();
-        tweakFrame = TweakFrame.getSingleton();
-        buildFrame = BuildFrame.getSingleton();
         
         //Version display
         //info.setText(AppName + " " + AppVersion + " ");
@@ -425,8 +436,11 @@ public class Master extends Window implements Application, Bindable
             @Override public void buttonPressed(Button bt)
             {
                 appConfig.setDefaultSetupConfig(new SetupConfig(setupConfig));
+                appConfig.setDefaultIzpackConfig(new IzpackConfig(izpackConf));
+                appConfig.setDefaultNugetConfig(new NugetConfig(nugetConf));
                 appConfig.setScanMode(ScanFrame.getScanMode());
-                Out.print("INFO", "Default User data saved.");
+                //appConfig.setBuildMode(null);
+                Out.print("INFO", "Default Workspace data saved.");
                 Prompt.prompt(MessageType.INFO, "User data saved as default.", getWindow());
             }
         });
