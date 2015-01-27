@@ -5,16 +5,33 @@ import java.io.Serializable;
 
 public class WebConfig implements Serializable
 {
+    /**
+     * web configuration saved on the web.dcp file
+     */
     private static final long serialVersionUID = 1439240538763028358L;
 
-    private boolean enabled = false;
+    transient private boolean enabled = false; // if web mode is enabled
     
-    private String host;
-    private String user;
-    private String pass;
-    private String remoteDir;
-    private String path;
-
+    private String host = "";
+    private String user = "";
+    private String pass = "";
+    private String remoteDir = "";
+    private String path = "";
+    
+    
+    public WebConfig()
+    {
+    }
+    public WebConfig(WebConfig webConfig)
+    {
+        this.host = webConfig.host;
+        this.user = webConfig.user;
+        this.pass = webConfig.pass;
+        this.remoteDir = webConfig.remoteDir;
+        this.path = webConfig.path;
+    }
+    
+    
     public boolean isEnabled()
     {
         return enabled;

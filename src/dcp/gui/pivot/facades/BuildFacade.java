@@ -55,31 +55,46 @@ public class BuildFacade
 
     public void setIzSplit(boolean enable)
     {
-        Master.izpackConf.setSplit(enable);
+        Master.facade.izpackConf.setSplit(enable);
     }
     public void setIzWebSetup(boolean enable)
     {
-        Master.izpackConf.setWebSetup(enable);
+        Master.facade.izpackConf.setWebSetup(enable);
+    }
+    
+    /**
+     * Enable/Set Packaging option
+     * @param SIZE_IN_MB
+     */
+    public void setIzSplitSize(int size, String unit)
+    {
+        int SIZE_IN_MB = size * (unit.equals("TB")?1024*1024 : (unit.equals("GB")?1024 : 1));
+        
+        if (SIZE_IN_MB == 0) Master.facade.setupConfig.setSplit(false);
+        else {
+            Master.facade.setupConfig.setSplit(true);
+            Master.facade.setupConfig.setSplitSize(SIZE_IN_MB);
+        }
     }
     
     /// ************************************************************************************************ NUGET
 
     public int getNugStepNbr()
     {
-        return Master.nugetConf.getStepNbr();
+        return Master.facade.nugetConf.getStepNbr();
     }
     public void setNugStepNbr(int stepNbr)
     {
-        Master.nugetConf.setStepNbr(stepNbr);
+        Master.facade.nugetConf.setStepNbr(stepNbr);
     }
 
     public String getNugFeedUrl()
     {
-        return Master.nugetConf.getFeedUrl();
+        return Master.facade.nugetConf.getFeedUrl();
     }
     public void setNugFeedUrl(String feed)
     {
-        Master.nugetConf.setFeedUrl(feed);
+        Master.facade.nugetConf.setFeedUrl(feed);
     }
 
 }

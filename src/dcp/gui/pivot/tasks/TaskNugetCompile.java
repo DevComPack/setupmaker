@@ -35,7 +35,7 @@ public class TaskNugetCompile extends Task<Boolean>
     private int stepNbr;// step nbr (1.Config - 2.Spec - 3.Pack - 4.Push)
     
     private List<Pack> packs = PackFactory.getPacks();
-    private SetupConfig setupConfig = Master.setupConfig;
+    private SetupConfig setupConfig = Master.facade.setupConfig;
     
     public TaskNugetCompile(String targetPath, String feedUrl, int stepNbr) {
         this.compiler.setTarget(targetPath);

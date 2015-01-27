@@ -46,7 +46,7 @@ public class TweakFrame extends FillPane implements Bindable
     public void setModified(boolean VALUE) { modified = VALUE; }
     public boolean isModified() { return modified; }
     //Configuration
-    private SetupConfig setupConfig = Master.setupConfig;
+    private SetupConfig setupConfig = Master.facade.setupConfig;
     //---Components
     //Application
     @BXML private TextInput inAppName;

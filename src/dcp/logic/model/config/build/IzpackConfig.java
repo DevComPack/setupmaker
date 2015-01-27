@@ -13,14 +13,15 @@ public class IzpackConfig implements Serializable
 
     // Packaging Split option
     private boolean split = false;//Split option
-    private int splitSize;//Split size
+    private int splitSize = 0;//Split size
     // Web Area
     private boolean webSetup = false;//Web Setup option
-    private String webUrl;//Web HTTP server URL
+    private String webUrl = "";//Web HTTP server URL
     private WebConfig webConfig;// SFTP Web config
 
     public IzpackConfig()
     {
+        this.webConfig = new WebConfig();
     }
     public IzpackConfig(IzpackConfig izpackConf)
     {
@@ -28,7 +29,7 @@ public class IzpackConfig implements Serializable
         this.splitSize = izpackConf.splitSize;
         this.webSetup = izpackConf.webSetup;
         this.webUrl = izpackConf.webUrl;
-        this.webConfig = izpackConf.webConfig;
+        this.webConfig = new WebConfig(izpackConf.webConfig);
     }
     
     public boolean isSplit() { return split; }

@@ -13,11 +13,13 @@ import dcp.main.log.Out;
 
 public class TaskIzpackDebug extends Task<Boolean>
 {
-    IzpackAntCompiler compiler = new IzpackAntCompiler();//IzPack Compiler Class
+    private IzpackAntCompiler compiler = new IzpackAntCompiler();//IzPack Compiler Class
+    private String appName;
     
-    public TaskIzpackDebug(String TargetPath, Component LOGGER) {
+    public TaskIzpackDebug(String TargetPath, Component LOGGER, String appName) {
         compiler.setTarget(TargetPath);
         Out.setLogger(LOGGER);
+        this.appName = appName;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class TaskIzpackDebug extends Task<Boolean>
     {
         try
         {
-            if (compiler.debug() == 0) {
+            if (compiler.debug(appName) == 0) {
                 Out.print("IZPACK", "Install success.");
             }
             else Out.print("IZPACK", "Install aborted!");

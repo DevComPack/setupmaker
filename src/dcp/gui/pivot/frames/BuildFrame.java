@@ -55,6 +55,8 @@ import dcp.gui.pivot.tasks.TaskIzpackRun;
 import dcp.gui.pivot.tasks.TaskNugetCompile;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
+import dcp.logic.model.config.AppConfig;
+import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
 
 
@@ -63,8 +65,10 @@ public class BuildFrame extends FillPane implements Bindable
     // Singleton reference
     private static BuildFrame singleton;
     public static BuildFrame getSingleton() { assert (singleton != null); return singleton; }
-    //------DATA
     public BuildFacade facade;
+    //Configuration
+    private SetupConfig setupConfig = Master.facade.setupConfig;
+    
     // Flags
     private static boolean modified = false;// True if tab processed data
     public static void setModified(boolean VALUE) { modified = VALUE; }
@@ -138,18 +142,6 @@ public class BuildFrame extends FillPane implements Bindable
         };*/
     }
     
-    // Display refresh for Nuget step number
-    private void setNugStepNbr(int stepNbr) {
-        if (stepNbr == 1)
-            rbConfig.setSelected(true);
-        else if (stepNbr == 2)
-            rbSpec.setSelected(true);
-        else if (stepNbr == 3)
-            rbPack.setSelected(true);
-        else// if (stepNbr = 4)
-            rbPush.setSelected(true);
-    }
-    
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
@@ -193,12 +185,10 @@ public class BuildFrame extends FillPane implements Bindable
                     String build = lbBuild.getSelectedItem().toString();
                     if (BUILD_MODE.IZPACK_BUILD.toString().equals(build)) { // IzPack
                         //Master.appConfig.setBuildMode(BUILD_MODE.IZPACK_BUILD);
-                        facade.setBuildMode(BUILD_MODE.IZPACK_BUILD);
                         setBuildMode(BUILD_MODE.IZPACK_BUILD);
                     }
                     else if (BUILD_MODE.NUGET_BUILD.toString().equals(build)) { // NuGet
                         //Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
-                        facade.setBuildMode(BUILD_MODE.NUGET_BUILD);
                         setBuildMode(BUILD_MODE.NUGET_BUILD);
                     }
                     Out.print("DEBUG", "Build Mode set to " + build);
@@ -240,21 +230,8 @@ public class BuildFrame extends FillPane implements Bindable
         cbSplit.getButtonStateListeners().add(new ButtonStateListener() {
             @Override public void stateChanged(Button bt, State st)
             {
-                if (bt.isSelected()) {// Enabled Split
-                    facade.setIzSplit(true);
-                    inSize.setEnabled(true);
-                    sizeSpinner.setEnabled(true);
-                    setSplit(Integer.parseInt(inSize.getText()) *
-                            (((String) sizeSpinner.getSelectedItem()).equals("TB")?1024*1024:
-                                ((String) sizeSpinner.getSelectedItem()).equals("GB")?1024:1) );//Enable Packaging
-                    cbWeb.setSelected(false);
-                }
-                else {// Disabled Split
-                    facade.setIzSplit(false);
-                    sizeSpinner.setEnabled(false);
-                    inSize.setEnabled(false);
-                    setSplit(0);
-                }
+                if (bt.isSelected()) setSplit();
+                else unsetSplit();
             }
         });
         
@@ -262,20 +239,8 @@ public class BuildFrame extends FillPane implements Bindable
         cbWeb.getButtonStateListeners().add(new ButtonStateListener() {
             @Override public void stateChanged(Button bt, State st)
             {
-                if (bt.isSelected()) {//Activated Web setup
-                    facade.setIzWebSetup(true);
-                    inWebDir.setEnabled(true);
-                    btWebConfig.setEnabled(true);
-                    Master.setupConfig.setWeb(true);
-                    cbSplit.setSelected(false);
-                }
-                else {//Desactivated Web Setup
-                    facade.setIzWebSetup(false);
-                    inWebDir.setEnabled(false);
-                    btWebConfig.setEnabled(false);
-                    sftpDialog.disable();
-                    Master.setupConfig.setWeb(false);
-                }
+                if (bt.isSelected()) setWeb();
+                else unsetWeb();
             }
         });
         
@@ -284,11 +249,11 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public boolean isValid(String size)
             {
                 try {
-                    if (size.equals("")) return true;//If empty
+                    if (size.equals("")) return true;// If empty
                     Integer.parseInt(size);
                 }
-                catch(NumberFormatException e) { return false; }//If not number
-                return true;//Validated
+                catch(NumberFormatException e) { return false; }// If not number
+                return true;// Validated
             }
         });
         
@@ -296,21 +261,17 @@ public class BuildFrame extends FillPane implements Bindable
         inSize.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput textInput)
             {
-                if (textInput.getText().equals(""))//Put 0 if no value
+                if (textInput.getText().equals(""))// Put 0 if no value
                     textInput.setText("0");
-                /*else if (textInput.getText().startsWith("0")) {//delete first 0
-                    textInput.setText(textInput.getText().substring(1));
-                }*/
-                setSplit(Integer.parseInt(textInput.getText()) *
-                        (((String) sizeSpinner.getSelectedItem()).equals("GB")?1024:1) );//Enable Packaging
+                // Enable Packaging
+                facade.setIzSplitSize(Integer.parseInt(textInput.getText()), sizeSpinner.getSelectedItem().toString());
             }
         });
         // Update Packaging option size
         sizeSpinner.getSpinnerSelectionListeners().add(new SpinnerSelectionListener.Adapter() {
             @Override public void selectedItemChanged(Spinner spinner, Object obj)
             {
-                setSplit(Integer.parseInt(inSize.getText()) *
-                        (((String) spinner.getSelectedItem()).equals("GB")?1024:1) );//Enable Packaging
+                facade.setIzSplitSize(Integer.parseInt(inSize.getText()), spinner.getSelectedItem().toString());
             }
         });
         
@@ -319,10 +280,10 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput ti)
             {
                 if (ti.isEnabled()) {
-                    if (ti.getText().length() == 0) Master.setupConfig.setWeb(false);
+                    if (ti.getText().length() == 0) setupConfig.setWeb(false);
                     else {
-                        Master.setupConfig.setWeb(true);
-                        Master.setupConfig.setWebDir(ti.getText());
+                        setupConfig.setWeb(true);
+                        setupConfig.setWebDir(ti.getText());
                     }
                 }
             }
@@ -373,8 +334,8 @@ public class BuildFrame extends FillPane implements Bindable
 
                 dcp.main.log.Out.clearCompileLog();//Clear Saved Log
                 if (facade.getBuildMode().equals(BUILD_MODE.IZPACK_BUILD)) { // IzPack compile task
-	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar");
-	                TaskIzpackCompile compileTask = new TaskIzpackCompile(targetPath, Master.setupConfig, sftpDialog.getWebConfig());
+	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(), setupConfig.getAppName(),"jar");
+	                TaskIzpackCompile compileTask = new TaskIzpackCompile(targetPath, setupConfig, sftpDialog.getWebConfig());
 	                compileTask.setLogger(logger);//Setting log display on logger
 	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
 				}
@@ -408,7 +369,8 @@ public class BuildFrame extends FillPane implements Bindable
                     } };
                 
                 dcp.main.log.Out.clearCompileLog();//Clear Saved log
-                new TaskIzpackRun(CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar"), logger).execute(new TaskAdapter<Boolean>(tlRun));
+                new TaskIzpackRun(CastFactory.pathValidate(inTargetPath.getText(), setupConfig.getAppName(),"jar"), logger, setupConfig.getAppName())
+                    .execute(new TaskAdapter<Boolean>(tlRun));
                 Out.print("BUILD", "Launch generated package..");
                 Out.newLine();
             }
@@ -436,8 +398,8 @@ public class BuildFrame extends FillPane implements Bindable
                     } };
                 
                 dcp.main.log.Out.clearCompileLog();//Clear Saved log
-                new TaskIzpackDebug(CastFactory.pathValidate(inTargetPath.getText(),Master.setupConfig.getAppName(),"jar"),
-                        logger).execute(new TaskAdapter<Boolean>(tlDebug));
+                new TaskIzpackDebug(CastFactory.pathValidate(inTargetPath.getText(), setupConfig.getAppName(),"jar"), logger, setupConfig.getAppName())
+                    .execute(new TaskAdapter<Boolean>(tlDebug));
                 Out.print("BUILD", "Launch generated package with TRACE mode enabled..");
                 Out.newLine();
             }
@@ -472,9 +434,19 @@ public class BuildFrame extends FillPane implements Bindable
         });
     }
     
-    /**
-     * Refresh workflow based on build-type (IzPack/NuGet)
-     */
+    // Display refresh for Nuget step number
+    private void setNugStepNbr(int stepNbr) {
+        if (stepNbr == 1)
+            rbConfig.setSelected(true);
+        else if (stepNbr == 2)
+            rbSpec.setSelected(true);
+        else if (stepNbr == 3)
+            rbPack.setSelected(true);
+        else// if (stepNbr = 4)
+            rbPush.setSelected(true);
+    }
+    
+    // Refresh workflow based on build-type (IzPack/NuGet)
     private void displayRefresh() {
         btCompile.setEnabled(true);
         if (facade.getBuildMode().equals(BUILD_MODE.IZPACK_BUILD)) {
@@ -501,8 +473,9 @@ public class BuildFrame extends FillPane implements Bindable
     private void setBuildMode(BUILD_MODE mode) throws IOException
     {
         assert mode != BUILD_MODE.DEFAULT;
+        facade.setBuildMode(mode);
         
-        String filename = Master.setupConfig.getAppName() + "-" + Master.setupConfig.getAppVersion() + ".jar";
+        String filename = setupConfig.getAppName() + "-" + setupConfig.getAppVersion() + ".jar";
         filename = filename.replaceAll(" ", "");
         
         switch (mode)
@@ -548,16 +521,40 @@ public class BuildFrame extends FillPane implements Bindable
     }
 
     /**
-     * Enable/Set Packaging option
-     * @param SIZE_IN_MB
+     * Enable/Set IzPack option
      */
-    private void setSplit(int SIZE_IN_MB)
+    private void setSplit()
     {
-        if (SIZE_IN_MB == 0) Master.setupConfig.setSplit(false);
-        else {
-            Master.setupConfig.setSplit(true);
-            Master.setupConfig.setSplitSize(SIZE_IN_MB);
-        }
+        facade.setIzSplit(true);
+        facade.setIzSplitSize(Integer.parseInt(inSize.getText()), sizeSpinner.getSelectedItem().toString());//Enable Packaging
+        inSize.setEnabled(true);
+        sizeSpinner.setEnabled(true);
+        cbWeb.setSelected(false);
+        unsetWeb();
+    }
+    private void setWeb()
+    {
+        facade.setIzWebSetup(true);
+        inWebDir.setEnabled(true);
+        btWebConfig.setEnabled(true);
+        setupConfig.setWeb(true);
+        cbSplit.setSelected(false);
+        unsetSplit();
+    }
+    private void unsetSplit()
+    {
+        facade.setIzSplit(false);
+        facade.setIzSplitSize(0, "");
+        sizeSpinner.setEnabled(false);
+        inSize.setEnabled(false);
+    }
+    private void unsetWeb()
+    {
+        facade.setIzWebSetup(false);
+        inWebDir.setEnabled(false);
+        btWebConfig.setEnabled(false);
+        sftpDialog.disable();
+        setupConfig.setWeb(false);
     }
     
     /**
@@ -566,12 +563,24 @@ public class BuildFrame extends FillPane implements Bindable
      */
     public void init() throws IOException
     {
-        lbBuild.setSelectedItem(Master.appConfig.getBuildMode().toString());
+        AppConfig appConfig = Master.facade.appConfig;
+        
+        lbBuild.setSelectedItem(appConfig.getBuildMode().toString());
+        setBuildMode(appConfig.getBuildMode());
+        
+        // IzPack bindings
+        cbSplit.setSelected(appConfig.getDefaultIzpackConfig().isSplit());
+        cbWeb.setSelected(appConfig.getDefaultIzpackConfig().isWebSetup());
+        if (cbSplit.isSelected()) setSplit();
+        else if (cbWeb.isSelected()) setWeb();
+        inWebDir.setText(appConfig.getDefaultIzpackConfig().getWebUrl());
+        
+        // NuGet bindings
         stepNbr = facade.getNugStepNbr();
         setNugStepNbr(stepNbr);
         inFeedSource.setText(facade.getNugFeedUrl());// default source for debugging
         
-        setBuildMode(Master.appConfig.getBuildMode());// Export path set
+        setBuildMode(Master.facade.appConfig.getBuildMode());// Export path set
     }
     
 }

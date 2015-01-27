@@ -60,6 +60,7 @@ import dcp.gui.pivot.transitions.AppearTransition;
 import dcp.gui.pivot.validators.PathValidator;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
+import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
 
 
@@ -68,8 +69,10 @@ public class ScanFrame extends FillPane implements Bindable
     //Singleton reference
     private static ScanFrame singleton;
     public static ScanFrame getSingleton() { assert (singleton != null); return singleton; }
-    //------DATA
     public ScanFacade facade;
+    //Configuration
+    private SetupConfig setupConfig = Master.facade.setupConfig;
+    
     //Flags
     private boolean modified = false;//True if tab changed data
     public void setModified(boolean VALUE) { modified = VALUE; }
@@ -185,17 +188,17 @@ public class ScanFrame extends FillPane implements Bindable
  
                 int res = scan.execute();
                 if (res == 0) {
-                    Out.print("SCAN", "Scanned directory: " + inPath.getText());
+                    Out.print("DEBUG", "Scanned directory: " + inPath.getText());
                     //Save directory to app config recent dirs
-                    Master.appConfig.addRecentDir(new File(inPath.getText()));
-                    recentDirsFill(Master.appConfig.getRecentDirs());
+                    Master.facade.appConfig.addRecentDir(new File(inPath.getText()));
+                    recentDirsFill(Master.facade.appConfig.getRecentDirs());
                     if (depthSpinner.getSelectedIndex() < 5)
                         treeView.expandAll();
                     else treeView.collapseAll();
                     setModified(true);//Modified Flag (*)
                 }
                 else if (res == 2) {//Error: Path doesn't exist
-                    Out.print("SCAN", "Path error: " + inPath.getText());
+                    Out.print("DEBUG", "Path error: " + inPath.getText());
                     Alert.alert("This path doesn't exist!", ScanFrame.this.getWindow());
                 }
                 
@@ -207,8 +210,8 @@ public class ScanFrame extends FillPane implements Bindable
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
         facade = new ScanFacade();
-        recentDirsFill(Master.appConfig.getRecentDirs());
-        hSplitPane.setSplitRatio(Master.appConfig.getScanHorSplitPaneRatio());
+        recentDirsFill(Master.facade.appConfig.getRecentDirs());
+        hSplitPane.setSplitRatio(Master.facade.appConfig.getScanHorSplitPaneRatio());
         
         // Custom filters fill from settings.json file to UI
         if (IOFactory.custExt.length > 0) {
@@ -277,7 +280,7 @@ public class ScanFrame extends FillPane implements Bindable
         hSplitPane.getSplitPaneListeners().add(new SplitPaneListener.Adapter() {
             @Override public void splitRatioChanged(SplitPane sp, float ratio)
             {
-                Master.appConfig.setScanHorSplitPaneRatio(sp.getSplitRatio());
+                Master.facade.appConfig.setScanHorSplitPaneRatio(sp.getSplitRatio());
             }
         });
         
@@ -285,7 +288,7 @@ public class ScanFrame extends FillPane implements Bindable
         inPath.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
-                Master.setupConfig.setSrcPath(TI.getText());
+                setupConfig.setSrcPath(TI.getText());
             }
         });
         
@@ -383,61 +386,61 @@ public class ScanFrame extends FillPane implements Bindable
         cbZip.getButtonPressListeners().add(new ButtonPressListener() {//Archive
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Archive");
+                Out.print("DEBUG","Applied filter: Archive");
             }
         });
         cbSetup.getButtonPressListeners().add(new ButtonPressListener() {//Setup
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Setup");
+                Out.print("DEBUG","Applied filter: Setup");
             }
         });
         cbExe.getButtonPressListeners().add(new ButtonPressListener() {//Executable
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Executable");
+                Out.print("DEBUG","Applied filter: Executable");
             }
         });
         cbDir.getButtonPressListeners().add(new ButtonPressListener() {//Directory
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Directory");
+                Out.print("DEBUG","Applied filter: Directory");
             }
         });
         cbImg.getButtonPressListeners().add(new ButtonPressListener() {//Images
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Image");
+                Out.print("DEBUG","Applied filter: Image");
             }
         });
         cbVid.getButtonPressListeners().add(new ButtonPressListener() {//Videos
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Video");
+                Out.print("DEBUG","Applied filter: Video");
             }
         });
         cbSound.getButtonPressListeners().add(new ButtonPressListener() {//Sounds
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Sound");
+                Out.print("DEBUG","Applied filter: Sound");
             }
         });
         cbDoc.getButtonPressListeners().add(new ButtonPressListener() {//Documents
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied filter: Document");
+                Out.print("DEBUG","Applied filter: Document");
             }
         });
         cbCustTxt.getButtonPressListeners().add(new ButtonPressListener() {// Custom filter SETTINGS
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied custom filter");
+                Out.print("DEBUG","Applied custom filter");
             }
         });
         cbCustExpr.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter REGEXP
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("SCAN","Applied regular expression filter");
+                Out.print("DEBUG","Applied regular expression filter");
             }
         });
         inCustExpr.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
@@ -449,7 +452,7 @@ public class ScanFrame extends FillPane implements Bindable
         });
         
         //Default Scan Mode loaded
-        if (Master.appConfig.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
+        if (Master.facade.appConfig.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
             setScanMode(SCAN_MODE.RECURSIVE_SCAN);
             btRadRecursiv.setSelected(true);
             btCollapse.setEnabled(true);
@@ -521,10 +524,10 @@ public class ScanFrame extends FillPane implements Bindable
 
             if (mode == SCAN_MODE.DEFAULT) {
                 facade.setScanMode(new_mode);
-                Out.print("SCAN", "Scan Mode set to " + new_mode);
+                Out.print("DEBUG", "Scan Mode set to " + new_mode);
             }
             else {
-                Out.print("SCAN", "Scan Mode changed from " + mode + " to " + new_mode);
+                Out.print("DEBUG", "Scan Mode changed from " + mode + " to " + new_mode);
                 facade.setScanMode(new_mode);
                 ADirScan.perform(this);//Refresh the Packs View
             }
@@ -606,8 +609,8 @@ public class ScanFrame extends FillPane implements Bindable
                     @Override public void buttonPressed(Button bt)
                     {
                         recent_dirs.getRows().remove(row);
-                        Out.print("SCAN", dir.getName()+" entry removed");
-                        Master.appConfig.removeRecentDir(dir);
+                        Out.print("DEBUG", dir.getName()+" entry removed");
+                        Master.facade.appConfig.removeRecentDir(dir);
                     }
                 });
                 

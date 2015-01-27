@@ -80,7 +80,7 @@ public class SetFrame extends FillPane implements Bindable
     //Singleton reference
     private static SetFrame singleton;
     public static SetFrame getSingleton() { assert (singleton != null); return singleton; }
-    private SetFacade facade;
+    public SetFacade facade;
     
     //------DATA
     //Constants
@@ -336,8 +336,8 @@ public class SetFrame extends FillPane implements Bindable
         facade = new SetFacade(treeData);
         
         //Workspace set
-        vSplitPane.setSplitRatio(Master.appConfig.getSetVerSplitPaneRatio());
-        hSplitPane.setSplitRatio(Master.appConfig.getSetHorSplitPaneRatio());
+        vSplitPane.setSplitRatio(Master.facade.appConfig.getSetVerSplitPaneRatio());
+        hSplitPane.setSplitRatio(Master.facade.appConfig.getSetHorSplitPaneRatio());
         
         //Data Binding
         tableView.setTableData(PackFactory.getPacks());//Bind table view to packs
@@ -354,13 +354,13 @@ public class SetFrame extends FillPane implements Bindable
         vSplitPane.getSplitPaneListeners().add(new SplitPaneListener.Adapter() {
             @Override public void splitRatioChanged(SplitPane sp, float ratio)
             {
-                Master.appConfig.setSetVerSplitPaneRatio(sp.getSplitRatio());
+                Master.facade.appConfig.setSetVerSplitPaneRatio(sp.getSplitRatio());
             }
         });
         hSplitPane.getSplitPaneListeners().add(new SplitPaneListener.Adapter() {
             @Override public void splitRatioChanged(SplitPane sp, float ratio)
             {
-                Master.appConfig.setSetHorSplitPaneRatio(sp.getSplitRatio());
+                Master.facade.appConfig.setSetHorSplitPaneRatio(sp.getSplitRatio());
             }
         });
         

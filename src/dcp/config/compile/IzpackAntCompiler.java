@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import dcp.config.io.IOFactory;
-import dcp.gui.pivot.Master;
 
 
 public class IzpackAntCompiler {
@@ -55,8 +54,8 @@ public class IzpackAntCompiler {
      * Run IzPack generated package using Ant Task defined target with Trace mode enabled
      * @return int
      */
-    private int antDebug() {
-        AntCompiler comp = new AntCompiler(IOFactory.xmlDebugAntBuild, Master.setupConfig.getAppName());
+    private int antDebug(String appName) {
+        AntCompiler comp = new AntCompiler(IOFactory.xmlDebugAntBuild, appName);
         
         comp.runTarget("debug");
         return 0;
@@ -67,16 +66,16 @@ public class IzpackAntCompiler {
      * @throws IOException
      * @throws InterruptedException
      */
-    public int debug() throws IOException, InterruptedException {
-        return antDebug();
+    public int debug(String appName) throws IOException, InterruptedException {
+        return antDebug(appName);
 	}
     
     /**
      * Run IzPack generated package using Ant Task defined target
      * @return int
      */
-    private int antRun() {
-        AntCompiler comp = new AntCompiler(IOFactory.xmlRunAntBuild, Master.setupConfig.getAppName());
+    private int antRun(String appName) {
+        AntCompiler comp = new AntCompiler(IOFactory.xmlRunAntBuild, appName);
         
         comp.runTarget("run");
         return 0;
@@ -90,8 +89,8 @@ public class IzpackAntCompiler {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public int run() throws IOException, InterruptedException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        return antRun();
+    public int run(String appName) throws IOException, InterruptedException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        return antRun(appName);
     }
     
 }

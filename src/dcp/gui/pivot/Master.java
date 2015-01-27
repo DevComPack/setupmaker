@@ -1,19 +1,13 @@
 package dcp.gui.pivot;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.Locale;
 
 import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.BXMLSerializer;
 import org.apache.pivot.beans.Bindable;
-import org.apache.pivot.collections.ArrayList;
-import org.apache.pivot.collections.List;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.util.Filter;
@@ -43,40 +37,27 @@ import org.apache.pivot.wtk.Window;
 import org.apache.pivot.wtk.Keyboard.KeyLocation;
 
 import dcp.config.io.IOFactory;
-import dcp.logic.factory.TypeFactory.FILE_TYPE;
 import dcp.gui.pivot.actions.BrowseAction;
-import dcp.gui.pivot.frames.BuildFrame;
 import dcp.gui.pivot.frames.ScanFrame;
-import dcp.gui.pivot.frames.SetFrame;
-import dcp.gui.pivot.frames.TweakFrame;
 import dcp.gui.pivot.helper.HelperFacade;
 import dcp.gui.pivot.tasks.TaskIzpackCompile;
-import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
-import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
-import dcp.logic.model.config.AppConfig;
-import dcp.logic.model.config.SetupConfig;
-import dcp.logic.model.config.build.IzpackConfig;
-import dcp.logic.model.config.build.NugetConfig;
 import dcp.main.log.Out;
 
 
 public class Master extends Window implements Application, Bindable
 {
-
-    private Window window;// Main application window
+    // Constant Application Values
+    public final static String AppName = "DCP Setup Maker";
+    public final static String AppVersion = "1.1.1";
     
-    // Data (loaded from saved file)
-    List<Pack> packs;
-    List<Group> groups;
-    // UI Tabs
-    protected ScanFrame scanFrame;
-    protected SetFrame setFrame;
-    protected TweakFrame tweakFrame;
-    protected BuildFrame buildFrame;
+    // Class Data
+    private Window window;// Main application window
+    public static Facade facade;// Application data facade
+    
     // Helpers
     @BXML static public HelperFacade helper;
     // Display
@@ -103,14 +84,6 @@ public class Master extends Window implements Application, Bindable
     private Action ASave;//Save project on file
     private Action ALoad;//Load project from file
     
-    //Constant Application Values
-    public final static String AppName = "DCP Setup Maker";
-    public final static String AppVersion = "1.1.1";
-    public static AppConfig appConfig;// App configuration file
-    public static SetupConfig setupConfig;// Setup configuration file
-    public static IzpackConfig izpackConf; // IzPack build configuration
-    public static NugetConfig nugetConf; // NuGet build configuration
-    
     /**
      * Update title with save file and edit flag '*'
      */
@@ -130,57 +103,15 @@ public class Master extends Window implements Application, Bindable
                         substring(0, Master.this.getTitle().indexOf('-')-1));
         }
     }
-
-    /**
-     * Bind data to GUI
-     */
-    protected void databind()
-    {
-        try
-        {
-            //Clear scanned path
-            scanFrame.init(setupConfig.getSrcPath());
-            //Groups binding
-            ScanFrame.setGroups(groups);//loaded flag enabled*
-            //Packs binding
-            scanFrame.setPacks(packs);//loaded flag enabled*
-            //Tab data initialize
-            setFrame.loadInit();
-            //SetupConfig binding
-            tweakFrame.dataBinding(setupConfig);
-            //AppConfig binding
-            buildFrame.init();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
     
     public Master() {
         IOFactory.init();// Factory memory data initialize
-        appConfig = confLoad();// Load configuration file
-        if (appConfig == null)
-        {
-            appConfig = new AppConfig(AppName, AppVersion);// Init config if not exists
-            setupConfig = new SetupConfig("Package", "1.0.0");
-            izpackConf = new IzpackConfig();
-            nugetConf = new NugetConfig();
-        }
-        else
-        {
-            //appConfig.setAppName(AppName); appConfig.setAppVersion(AppVersion);
-            if (!appConfig.getAppVersion().equals(AppVersion)) // Warning if conf.dcp file is old 
-                Out.print("WARNING", "Configuration file conf.dcp contains data of an old version: " + appConfig.getAppVersion());
-            setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
-            izpackConf = new IzpackConfig(appConfig.getDefaultIzpackConfig());
-            nugetConf = new NugetConfig(appConfig.getDefaultNugetConfig());
-        }
+        facade = new Facade(this, AppName, AppVersion);
         
         //Save action
         ASave = new Action() {// Project Save Action
             @Override public void perform(Component source) {
-                if (save(IOFactory.saveFile)) {
+                if (facade.save(IOFactory.saveFile)) {
                     // Enable Save button
                     if (!btSave.isEnabled()) {
                         btSave.setEnabled(true);
@@ -195,8 +126,8 @@ public class Master extends Window implements Application, Bindable
             @Override
             public void perform(Component arg0)
             {
-                if (load(IOFactory.saveFile)) {
-                    databind();
+                if (facade.load(IOFactory.saveFile)) {
+                    facade.databind();
                     // Go to Set tab
                     tabPane.setSelectedIndex(1);
                     for(int i=0; i<tabPane.getTabs().getLength(); i++)
@@ -228,9 +159,9 @@ public class Master extends Window implements Application, Bindable
         window.open(display);
         
         // Helper launch if first time
-        if (appConfig.isHelp()) {
+        if (facade.appConfig.isHelp()) {
             helper.open(window);
-            appConfig.setHelp(false);
+            facade.appConfig.setHelp(false);
         }
     }
 
@@ -238,8 +169,8 @@ public class Master extends Window implements Application, Bindable
     {
         if (window != null) {
             window.close();
-            if (appConfig.isModified()) { // Save configuration if modified
-                confSave(appConfig);
+            if (facade.appConfig.isModified()) { // Save configuration if modified
+                facade.confSave();
                 Out.print("INFO", "Workspace saved");
             }
             Out.print("PIVOT", "BYE");
@@ -252,13 +183,9 @@ public class Master extends Window implements Application, Bindable
 
     @Override public void initialize(Map<String, Object> args, URL url, Resources res)
     {
-        //Tabs singletons init
-        scanFrame = ScanFrame.getSingleton();
-        setFrame = SetFrame.getSingleton();
-        tweakFrame = TweakFrame.getSingleton();
-        buildFrame = BuildFrame.getSingleton();
+        facade.init();// Tabs singletons init
         
-        //Shortcuts define
+        //Shortcuts definition
         this.getComponentKeyListeners().add(new ComponentKeyListener.Adapter() {
             @Override
             public boolean keyPressed(Component component, int keyCode, KeyLocation keyLocation)
@@ -421,11 +348,7 @@ public class Master extends Window implements Application, Bindable
                 if (Master.this.getTitle().contains("-") && Master.this.getTitle().contains("*")) // Modified save file
                     ALoad.perform(bt);
                 else { // back to default factory setup
-                    setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
-                    packs = new ArrayList<Pack>();
-                    groups = new ArrayList<Group>();
-                    databind();
-                    IOFactory.setSaveFile("");
+                    facade.factoryReset();
                     titleUpdate();
                     bt.setEnabled(false);
                     Out.print("INFO", "Back to factory setup configuration");
@@ -435,11 +358,7 @@ public class Master extends Window implements Application, Bindable
         btDefault.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
-                appConfig.setDefaultSetupConfig(new SetupConfig(setupConfig));
-                appConfig.setDefaultIzpackConfig(new IzpackConfig(izpackConf));
-                appConfig.setDefaultNugetConfig(new NugetConfig(nugetConf));
-                appConfig.setScanMode(scanFrame.facade.getScanMode());
-                appConfig.setBuildMode(buildFrame.facade.getBuildMode());
+                facade.saveDefault();
                 Out.print("INFO", "Default Workspace data saved.");
                 Prompt.prompt(MessageType.INFO, "Workspace data saved as default.", getWindow());
             }
@@ -457,47 +376,9 @@ public class Master extends Window implements Application, Bindable
             @Override public void selectedIndexChanged(TabPane tabPane, int previousSelectedIndex)
             {
                 try {
-                switch(tabPane.getSelectedIndex()) {
-                    case 0://Scan Tab
-                        break;
-                    case 1://Set Tab
-                        if (scanFrame.isModified() && !ScanFrame.isLoaded()) {//If Scanned directory
-                            scanFrame.setModified(false);
-                            setFrame.scanInit();//Data export to Set tab
-                            if (!Master.this.getTitle().contains("*"))
-                                Master.this.setTitle(Master.this.getTitle().concat("*"));//modified flag in Title
-                        }
-                        else ScanFrame.setLoaded(false);//Disable scan loaded flag*
-                        break;
-                    case 2://Tweak Tab
-                        if (setFrame.isModified()) {
-                            setFrame.setModified(false);//Modified flag*
-                            boolean found = false;
-                            for(Pack p:PackFactory.getPacks())
-                                if (p.isShortcut() && p.getInstallType() != INSTALL_TYPE.EXECUTE) {
-                                    found = true;
-                                    break;
-                                }
-                            tweakFrame.setPackShortcuts(found);
-                            tweakFrame.setModified(true);
-                            if (!Master.this.getTitle().contains("*"))
-                                Master.this.setTitle(Master.this.getTitle().concat("*"));//modified flag in Title
-                        }
-                        break;
-                    case 3://Build Tab
-                        if (tweakFrame.isModified()) {
-                            tweakFrame.setModified(false);//Modified flag*
-                            buildFrame.init();
-                            if (!Master.this.getTitle().contains("*"))
-                                Master.this.setTitle(Master.this.getTitle().concat("*"));//modified flag in Title
-                        }
-                        break;
-                    default:
-                        break;
+                    facade.setOpenTab(tabPane.getSelectedIndex());
                 }
-                }
-                catch (IOException e)
-                {
+                catch (IOException e) {
                     e.printStackTrace();
                 }
                 
@@ -520,154 +401,6 @@ public class Master extends Window implements Application, Bindable
         statusBarNGroups.setText(String.valueOf(GroupFactory.getGroups().getLength()));
     }
 
-    /**
-     * Save current application configuration
-     */
-    private void confSave(AppConfig appConfig) {
-        try
-        {
-            File f = new File(IOFactory.confFile);
-            f.createNewFile();
-            FileOutputStream out = new FileOutputStream(f);
-            ObjectOutputStream os = new ObjectOutputStream(out);
-            
-            os.writeObject(appConfig);
-            
-            os.close();
-            out.close();
-            Out.print("INFO", appConfig.getAppName() + " " + appConfig.getAppVersion() +
-                      " configuration saved to " + IOFactory.confFile);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Load application configuration from file
-     */
-    protected AppConfig confLoad() {
-        try
-        {
-            File f = new File(IOFactory.confFile);
-            if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream is = new ObjectInputStream(in);
-                
-                AppConfig appConfig = (AppConfig) is.readObject();
-                
-                is.close();
-                in.close();
-                
-                return appConfig;
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    /**
-     * Save data to file
-     * [SETUP_CONFIG][GROUPS][PACKS]
-     */
-    protected boolean save(String saveFile) {
-        try
-        {
-            File f = new File(saveFile);
-            if (!f.exists()) f.createNewFile();//create file if not exists
-            FileOutputStream out = new FileOutputStream(f);
-            ObjectOutputStream os = new ObjectOutputStream(out);
-            
-            os.writeObject(Master.AppVersion);
-            
-            os.writeObject(setupConfig);
-            
-            os.writeInt(GroupFactory.getGroups().getLength());
-            for(Group g:GroupFactory.getGroups())
-                os.writeObject(g);
-            
-            os.writeInt(PackFactory.getPacks().getLength());
-            for(Pack p:PackFactory.getPacks())
-                os.writeObject(p);
-            
-            os.close();
-            out.close();
-            Out.print("INFO", setupConfig.getAppName() + " " + setupConfig.getAppVersion() +
-                      " data saved to " + f.getAbsolutePath());
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-    
-    /**
-     * Load data from file
-     */
-    protected boolean load(String saveFile) {
-        try
-        {
-            File f = new File(saveFile);
-            if (!f.exists()) {//If save file not exists
-                return false;//error
-            }
-            else {//File exists
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream is = new ObjectInputStream(in);
-                
-                String version = (String) is.readObject();
-                Out.print("DEBUG", "DCP File version: "+version);
-                
-                setupConfig = (SetupConfig) is.readObject();
-                Out.print("DEBUG", setupConfig.getAppName() + " " + setupConfig.getAppVersion());
-                
-                groups = new ArrayList<Group>();
-                int nGroups = is.readInt();
-                for(int i = 0; i<nGroups; i++) {
-                    Group G = (Group) is.readObject();
-                    groups.add(G);
-                }
-                if (nGroups > 0) Out.print("DEBUG", groups.getLength() + " group(s) loaded");
-                
-                packs = new ArrayList<Pack>();
-                int nPacks = is.readInt();
-                for(int i = 0; i<nPacks; i++) {
-                    Pack P = (Pack) is.readObject();
-                    
-                    // File compatibility fix
-                    if (version.startsWith("1.0"))// cast Pack model from 1.0.x version (Chocolatey feature)
-                        CastFactory.packModelUpdate(P, "1.0");
-                    
-                    P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
-                    packs.add(P);
-                }
-                if (nPacks > 0) Out.print("DEBUG", packs.getLength() + " pack(s) loaded");
-                
-                is.close();
-                in.close();
-                Out.print("INFO", "Data loaded from file "+IOFactory.saveFile);
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-        catch (NullPointerException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
     
     /**
      * Launch the Pivot application [ GUI/Command mode ]
@@ -680,20 +413,20 @@ public class Master extends Window implements Application, Bindable
             Out.setLogger(null);
             Out.print("INFO", "Command Line compiling enabled");
             Out.print("INFO", "Loading application...");
-            Master master = new Master();
+            new Master();
             
             for (String s: args) {
                 if (new File(s).exists() && s.endsWith(".dcp")) {
                     Out.print("INFO", "Processing dcp file: " + s);
                     System.out.println();
                     
-                    if (!master.load(s))
+                    if (!Master.facade.load(s)) // load error
                         Out.print("ERROR", "Error loading the file! Please load it from the GUI and correct if there are some errors then reload it.");
-                    else {
-                        for (Group G:master.groups) {// Add Groups to factory
+                    else { // load success
+                        for (Group G:Master.facade.groups) {// Add Groups to factory
                             GroupFactory.addGroup(G);
                         }
-                        for(Pack P:master.packs) {// Add Packs to factory
+                        for(Pack P:Master.facade.packs) {// Add Packs to factory
                             PackFactory.addPack(P);
                         }
                         
@@ -715,7 +448,7 @@ public class Master extends Window implements Application, Bindable
                         };
                         
                         // IzPack Compile Task launch
-                        TaskIzpackCompile compileTask = new TaskIzpackCompile(new File("package.jar").getAbsolutePath(), Master.setupConfig, null);
+                        TaskIzpackCompile compileTask = new TaskIzpackCompile(new File("package.jar").getAbsolutePath(), Master.facade.setupConfig, null);
                         compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
                         
                     }
