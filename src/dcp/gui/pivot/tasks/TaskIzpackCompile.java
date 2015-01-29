@@ -45,6 +45,7 @@ import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.model.config.SetupConfig;
+import dcp.logic.model.config.build.IzpackConfig;
 import dcp.logic.model.config.build.WebConfig;
 import dcp.main.log.Out;
 import dcp.web.sftp.JschFactory;
@@ -54,15 +55,17 @@ public class TaskIzpackCompile extends Task<Boolean>
 {
     private IzpackAntCompiler compiler = new IzpackAntCompiler();//IzPack Compiler Class
     private SetupConfig setupConfig;// Setup configuration
-    private WebConfig webConfig;// SFTP Web Setup configuration
+    //private WebConfig webConfig;// SFTP Web Setup configuration
+    private IzpackConfig izpackConf;// IzPack configuration
     private List<Pack> packs = PackFactory.getPacks();
     private List<Group> groups = GroupFactory.getGroups();
     private SMOutputElement root;
     
-    public TaskIzpackCompile(String targetPath, SetupConfig setupConfig, WebConfig webConfig) {
+    public TaskIzpackCompile(String targetPath, SetupConfig setupConfig, IzpackConfig izpackConf) {
         this.compiler.setTarget(targetPath);
         this.setupConfig = setupConfig;
-        this.webConfig = webConfig;
+        //this.webConfig = izpackConfig.getWebConfig();
+        this.izpackConf = izpackConf;
     }
     
     // Set log component to display compile stream
@@ -87,7 +90,7 @@ public class TaskIzpackCompile extends Task<Boolean>
                     Out.print("BUILD", "Compilation success.");
                     TrueZipCastFactory.clearArchives();
                     
-                    if (webConfig != null && webConfig.isEnabled()) {//Send pack files through SFTP
+                    if (izpackConf.getWebConfig() != null && izpackConf.getWebConfig().isEnabled()) {//Send pack files through SFTP
                         Out.newLine();
                         Out.print("SFTP", "Web Setup upload process for packs begins..");
                         return webUpload();
@@ -209,7 +212,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     {
         CompileAntWriter CW = new CompileAntWriter(IOFactory.xmlIzpackAntBuild);
         CW.writeStandaloneTask("IZPACK");
-        CW.writeIzpackTarget(IOFactory.xmlIzpackInstall, compiler.getTarget(), setupConfig.isWeb());
+        CW.writeIzpackTarget(IOFactory.xmlIzpackInstall, compiler.getTarget(), izpackConf.isWebSetup());
         CW.close();
         
         RunAntWriter RW = new RunAntWriter(IOFactory.xmlRunAntBuild);
@@ -313,7 +316,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         }
         if (setupConfig.isForcePath())
             Out.print("STAX", "Install path panel disabled");
-        if (setupConfig.isSplit())
+        if (izpackConf.isSplit())
             Out.print("STAX", "Packaging option enabled");
         if (setupConfig.isInstallGroup())
             Out.print("STAX", "Install Group panel enabled");
@@ -325,7 +328,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     {
         InfoWriter IW = new InfoWriter(root);
         Out.print("STAX", "Writing Setup Info");
-        IW.setInfo(setupConfig);// Write Setup info
+        IW.setInfo(setupConfig, izpackConf);// Write Setup info
         
         return true;
     }
@@ -363,10 +366,10 @@ public class TaskIzpackCompile extends Task<Boolean>
     private boolean writePackaging() throws XMLStreamException
     {
         // Packaging activate
-        if (setupConfig.isSplit()) {
+        if (izpackConf.isSplit()) {
             Out.print("STAX", "Setting packaging option");
             PackagingWriter PkgW = new PackagingWriter(root);
-            PkgW.setPackaging(setupConfig.getSplitSize());
+            PkgW.setPackaging(izpackConf.getSplitSize());
         }
         Out.newLine();
         return true;
@@ -617,6 +620,8 @@ public class TaskIzpackCompile extends Task<Boolean>
     private boolean webUpload()
     {
         JschFactory sftp = null;
+        WebConfig webConfig = izpackConf.getWebConfig();
+        
         try {
             sftp = new JschFactory(webConfig.getHost(), webConfig.getUser(), webConfig.getPass(), webConfig.getRemoteDir());
             Out.print("SFTP", "SFTP Connection initiated");
@@ -662,6 +667,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         finally {
             sftp.disconnect();
         }
+        
         Out.print("SFTP", "All packs uploaded to "+webConfig.getPath());
         return true;
     }

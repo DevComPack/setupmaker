@@ -132,7 +132,7 @@
 								<Paragraph>For developers who want more possibilities, they can edit the settings.json </Paragraph>
 								<Paragraph>file to just generate the IzPack files, edit them, then compile. </Paragraph>
 								<Paragraph></Paragraph>
-								<Paragraph>If you loaded a project that is not yours, or not generated from this machine, </Paragraph>
+								<Paragraph>If you load a project not yours, or not created from this machine, </Paragraph>
 								<Paragraph>you should go back to 'Scan' step and edit the path with the correct new </Paragraph>
 								<Paragraph>source folder path containing all of the packs (with the same hierarchy), </Paragraph>
 								<Paragraph>then compile so packs' paths are corrected and save. </Paragraph>

@@ -1,10 +1,19 @@
 package dcp.gui.pivot.facades;
 
 import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.pivot.collections.Sequence;
+import org.apache.pivot.util.concurrent.TaskListener;
+import org.apache.pivot.wtk.TaskAdapter;
+
 import dcp.gui.pivot.Master;
+import dcp.gui.pivot.tasks.TaskIzpackCompile;
+import dcp.gui.pivot.tasks.TaskNugetCompile;
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
 import dcp.main.log.Out;
 
@@ -50,6 +59,21 @@ public class BuildFacade
     {
         this.mode = mode;
     }
+    
+    public void copyToClipboard(Sequence<String> data)
+    {
+        if (data.getLength() > 0) {
+            String selCb = ""; // full selection data string
+            for (int i = 0; i < data.getLength(); i++) { // concat selection with line ends
+                selCb = String.format("%s%s%n", selCb, data.get(i));//selCb += sel.get(i) + "\n"; 
+            }
+            
+            Out.print("DEBUG", "Copied to Clipboard: "+ selCb);
+            StringSelection selection = new StringSelection(selCb);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, selection);
+        }
+    }
 
     /// ************************************************************************************************ IZPACK
 
@@ -70,11 +94,19 @@ public class BuildFacade
     {
         int SIZE_IN_MB = size * (unit.equals("TB")?1024*1024 : (unit.equals("GB")?1024 : 1));
         
-        if (SIZE_IN_MB == 0) Master.facade.setupConfig.setSplit(false);
+        if (SIZE_IN_MB == 0) Master.facade.izpackConf.setSplit(false);
         else {
-            Master.facade.setupConfig.setSplit(true);
-            Master.facade.setupConfig.setSplitSize(SIZE_IN_MB);
+            Master.facade.izpackConf.setSplit(true);
+            Master.facade.izpackConf.setSplitSize(SIZE_IN_MB);
         }
+    }
+    /**
+     * Set Websetup path
+     * @param url: web directory
+     */
+    public void setIzWebUrl(String url)
+    {
+        Master.facade.izpackConf.setWebUrl(url);
     }
     
     /// ************************************************************************************************ NUGET
@@ -95,6 +127,22 @@ public class BuildFacade
     public void setNugFeedUrl(String feed)
     {
         Master.facade.nugetConf.setFeedUrl(feed);
+    }
+
+    /// ************************************************************************************************ BUILD
+    
+    public void build(String target, TaskListener<Boolean> tlCompile)
+    {
+        if (mode.equals(BUILD_MODE.IZPACK_BUILD)) { // IzPack compile task
+            TaskIzpackCompile compileTask = new TaskIzpackCompile(target, Master.facade.setupConfig, Master.facade.izpackConf);
+            compileTask.setLogger(Out.getLogger());//Setting log display on logger
+            compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
+        }
+        else if (mode.equals(BUILD_MODE.NUGET_BUILD)) { // NuGet compile task
+            TaskNugetCompile compileTask = new TaskNugetCompile(target, getNugFeedUrl(), getNugStepNbr());
+            compileTask.setLogger(Out.getLogger());//Setting log display on logger
+            compileTask.execute(new TaskAdapter<Boolean>(tlCompile));// Compile
+        }
     }
 
 }

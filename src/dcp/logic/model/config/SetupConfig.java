@@ -121,11 +121,14 @@ public class SetupConfig implements Serializable
         
         process = setupConfig.process;
         installGroup = setupConfig.installGroup;
+        
+        //*
         split = setupConfig.split;
         splitSize = setupConfig.splitSize;
 
         web = setupConfig.web;
         webDir = setupConfig.webDir;
+        //*/
     }
     
     //Application
@@ -204,6 +207,7 @@ public class SetupConfig implements Serializable
     public boolean isInstallGroup() { return installGroup; }
     public void setInstallGroup(boolean installGroup) { this.installGroup = installGroup; }
     
+    //*
     //Packaging option
     public boolean isSplit() { return split; }
     public void setSplit(boolean enable) { this.split = enable; }
@@ -215,5 +219,6 @@ public class SetupConfig implements Serializable
     public void setWeb(boolean enable) { this.web = enable; }
     public String getWebDir() { return webDir; }
     public void setWebDir(String url) { webDir = url; }
+    //*/
     
 }

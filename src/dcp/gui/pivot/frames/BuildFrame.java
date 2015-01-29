@@ -1,8 +1,5 @@
 package dcp.gui.pivot.frames;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +12,7 @@ import org.apache.pivot.util.Resources;
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.Accordion;
+import org.apache.pivot.wtk.Action;
 import org.apache.pivot.wtk.ActivityIndicator;
 import org.apache.pivot.wtk.Button;
 import org.apache.pivot.wtk.ButtonGroup;
@@ -22,6 +20,7 @@ import org.apache.pivot.wtk.ButtonGroupListener;
 import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
+import org.apache.pivot.wtk.Component;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.FillPane;
@@ -31,12 +30,12 @@ import org.apache.pivot.wtk.ListButton;
 import org.apache.pivot.wtk.ListButtonSelectionListener;
 import org.apache.pivot.wtk.ListView;
 import org.apache.pivot.wtk.ListViewItemListener;
-import org.apache.pivot.wtk.ListViewSelectionListener;
+import org.apache.pivot.wtk.Menu;
+import org.apache.pivot.wtk.MenuHandler;
 import org.apache.pivot.wtk.MessageType;
 import org.apache.pivot.wtk.Prompt;
 import org.apache.pivot.wtk.PushButton;
 import org.apache.pivot.wtk.RadioButton;
-import org.apache.pivot.wtk.Span;
 import org.apache.pivot.wtk.Spinner;
 import org.apache.pivot.wtk.SpinnerSelectionListener;
 import org.apache.pivot.wtk.TaskAdapter;
@@ -49,10 +48,8 @@ import dcp.config.io.IOFactory;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.actions.BrowseAction;
 import dcp.gui.pivot.facades.BuildFacade;
-import dcp.gui.pivot.tasks.TaskIzpackCompile;
 import dcp.gui.pivot.tasks.TaskIzpackDebug;
 import dcp.gui.pivot.tasks.TaskIzpackRun;
-import dcp.gui.pivot.tasks.TaskNugetCompile;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
 import dcp.logic.model.config.AppConfig;
@@ -116,10 +113,33 @@ public class BuildFrame extends FillPane implements Bindable
     @BXML private ImageView failIcon;//Result Fail Icon image
     @BXML private Label failText;//Fail Log Result Display
     @BXML private ActivityIndicator waiter;//Activity Indicator to wait for compile
+    // Menus
+    private MenuHandler menuHandler;
     
     public BuildFrame() {
         assert (singleton == null);
         singleton = this;
+        
+        // logger copy context menu
+        menuHandler = new MenuHandler.Adapter() {
+            @Override
+            public boolean configureContextMenu(Component component, Menu menu, int x, int y)
+            {
+                Menu.Section menuSection = new Menu.Section();
+                menu.getSections().add(menuSection);
+
+                Menu.Item copy = new Menu.Item("copy to clipboard");
+                copy.setAction(new Action() {
+                    @SuppressWarnings("unchecked")
+                    @Override public void perform(Component source) {
+                        facade.copyToClipboard((Sequence<String>) logger.getSelectedItems()); // list of selected strings
+                    }
+                });
+
+                menuSection.add(copy);
+                return false;
+            }
+        };
         
         /*/ Open target folder in explorer
         AOpenFolder = new Action() {
@@ -152,6 +172,7 @@ public class BuildFrame extends FillPane implements Bindable
         {
             fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
             logger.setListData(dcp.main.log.Out.getCompileLog());// Bind compile log tags to List view logger
+            logger.setMenuHandler(menuHandler);
             init(); // build mode workspace
             //displayRefresh(); // build buttons workspace
         }
@@ -280,10 +301,10 @@ public class BuildFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput ti)
             {
                 if (ti.isEnabled()) {
-                    if (ti.getText().length() == 0) setupConfig.setWeb(false);
+                    if (ti.getText().length() == 0) facade.setIzWebSetup(false);
                     else {
-                        setupConfig.setWeb(true);
-                        setupConfig.setWebDir(ti.getText());
+                        facade.setIzWebSetup(true);
+                        facade.setIzWebUrl(ti.getText());
                     }
                 }
             }
@@ -333,17 +354,11 @@ public class BuildFrame extends FillPane implements Bindable
                 };
 
                 dcp.main.log.Out.clearCompileLog();//Clear Saved Log
-                if (facade.getBuildMode().equals(BUILD_MODE.IZPACK_BUILD)) { // IzPack compile task
-	                String targetPath = CastFactory.pathValidate(inTargetPath.getText(), setupConfig.getAppName(),"jar");
-	                TaskIzpackCompile compileTask = new TaskIzpackCompile(targetPath, setupConfig, sftpDialog.getWebConfig());
-	                compileTask.setLogger(logger);//Setting log display on logger
-	                compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
-				}
-                else if (facade.getBuildMode().equals(BUILD_MODE.NUGET_BUILD)) { // NuGet compile task
-                    TaskNugetCompile compileTask = new TaskNugetCompile(inTargetPath.getText(), facade.getNugFeedUrl(), stepNbr);
-                    compileTask.setLogger(logger);//Setting log display on logger
-                    compileTask.execute(new TaskAdapter<Boolean>(tlCompile));// Compile
-                }
+                String targetPath;
+                if (facade.getBuildMode().equals(BUILD_MODE.IZPACK_BUILD))
+                    targetPath = CastFactory.pathValidate(inTargetPath.getText(), setupConfig.getAppName(),"jar");
+                else targetPath = inTargetPath.getText();
+                facade.build(targetPath, tlCompile);
             }
         });
         
@@ -411,25 +426,6 @@ public class BuildFrame extends FillPane implements Bindable
             public void itemInserted(ListView arg0, int arg1)
             {
                 logger.setSelectedIndex(logger.getListData().getLength()-1);
-            }
-        });
-        logger.getListViewSelectionListeners().add(new ListViewSelectionListener.Adapter() {
-            @Override public void selectedRangesChanged(ListView lv, Sequence<Span> s) // save selection to clipboard
-            {
-                if (!waiter.isActive() && logger.isFocused()) { // if not compiling/running && logger selected
-                    @SuppressWarnings("unchecked")
-                    Sequence<String> sel = (Sequence<String>) lv.getSelectedItems(); // list of selected strings
-                    String selCb = ""; // full selection data string
-                    for (int i = 0; i < sel.getLength(); i++) { // concat selection
-                        //selCb += sel.get(i) + "\n";
-                        selCb = String.format("%s%s%n", selCb, sel.get(i)); 
-                    }
-                    
-                    System.out.println("Copied to Clipboard: "+ selCb);
-                    StringSelection selection = new StringSelection(selCb);
-                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(selection, selection);
-                }
             }
         });
     }
@@ -537,14 +533,14 @@ public class BuildFrame extends FillPane implements Bindable
         facade.setIzWebSetup(true);
         inWebDir.setEnabled(true);
         btWebConfig.setEnabled(true);
-        setupConfig.setWeb(true);
+        facade.setIzWebSetup(true);
+        facade.setIzWebUrl(inWebDir.getText());
         cbSplit.setSelected(false);
         unsetSplit();
     }
     private void unsetSplit()
     {
         facade.setIzSplit(false);
-        facade.setIzSplitSize(0, "");
         sizeSpinner.setEnabled(false);
         inSize.setEnabled(false);
     }
@@ -554,7 +550,7 @@ public class BuildFrame extends FillPane implements Bindable
         inWebDir.setEnabled(false);
         btWebConfig.setEnabled(false);
         sftpDialog.disable();
-        setupConfig.setWeb(false);
+        facade.setIzWebSetup(false);
     }
     
     /**

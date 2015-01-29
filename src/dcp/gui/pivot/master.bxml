@@ -83,7 +83,7 @@
 						            <buttonPressListeners>
 						                importPackage(org.apache.pivot.wtk);
 						                function buttonPressed(button) {
-						                    Alert.alert(MessageType.INFO, "DCP Setup Maker is developed by Said SAID EL IMAM, and powered by IzPack 4.3.5", master);
+						                    Alert.alert(MessageType.INFO, "DCP Setup Maker is developed by Said SAID EL IMAM, and powered by IzPack 4.3.5 and NuGet. http://devcompack.sourceforge.net/ ", master);
 						                }
 						            </buttonPressListeners>
 					            </PushButton>

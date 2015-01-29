@@ -36,7 +36,7 @@ public class IzpackConfig implements Serializable
     public void setSplit(boolean split) { this.split = split; }
 
     public int getSplitSize() { return splitSize; }
-    public void setSplitSize(int splitSize) { this.splitSize = splitSize; }
+    public void setSplitSize(int splitSizeInMB) { this.splitSize = splitSizeInMB * (1024*1024); }
 
     public boolean isWebSetup() { return webSetup; }
     public void setWebSetup(boolean webSetup) { this.webSetup = webSetup; }

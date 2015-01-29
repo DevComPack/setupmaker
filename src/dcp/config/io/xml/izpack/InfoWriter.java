@@ -6,10 +6,12 @@ import javax.xml.stream.XMLStreamException;
 
 
 
+
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import dcp.config.io.xml.StaxMateWriter;
 import dcp.logic.model.config.SetupConfig;
+import dcp.logic.model.config.build.IzpackConfig;
 
 
 public class InfoWriter extends StaxMateWriter
@@ -37,7 +39,7 @@ public class InfoWriter extends StaxMateWriter
     }
     
     //Setup File Info
-    public void setInfo(SetupConfig setupConfig) throws XMLStreamException
+    public void setInfo(SetupConfig setupConfig, IzpackConfig izpackConfig) throws XMLStreamException
     {
         SMOutputElement x_info = infoRoot.addElement("info");//<info>
         
@@ -61,8 +63,8 @@ public class InfoWriter extends StaxMateWriter
         if (!setupConfig.getAppURL().equals(""))
             x_info.addElementWithCharacters(null, "url", setupConfig.getAppURL());//<appurl></>
         
-        if (setupConfig.isWeb())
-            x_info.addElementWithCharacters(null, "webdir", setupConfig.getWebDir());//<webdir></>
+        if (izpackConfig.isWebSetup())
+            x_info.addElementWithCharacters(null, "webdir", izpackConfig.getWebUrl());//<webdir></>
         
         //root.addElement("pack200");//<pack200 />
         
