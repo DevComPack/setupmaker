@@ -107,7 +107,7 @@ public class TweakFrame extends FillPane implements Bindable
     @Override
     public void initialize(Map<String, Object> args, URL url, Resources res)
     {
-        dataBinding(setupConfig);
+        init(setupConfig);
         
         //Text inputs validators
         inAppName.setValidator(new NameValidator());//Name Validators
@@ -572,7 +572,7 @@ public class TweakFrame extends FillPane implements Bindable
      * Bind components with data
      * @param setupConfig
      */
-    public void dataBinding(SetupConfig setupConfig)
+    public void init(SetupConfig setupConfig)
     {
         //Application
         inAppName.setText(setupConfig.getAppName());
@@ -616,7 +616,7 @@ public class TweakFrame extends FillPane implements Bindable
      * Enable shortcuts for packs if a pack is configured for a shortcut
      * @param enable
      */
-    public void setPackShortcuts(boolean enable)
+    public void update(boolean enable)
     {
         cbShortcuts.setEnabled(enable);
         cbShortcuts.setSelected(enable);

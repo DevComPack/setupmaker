@@ -127,7 +127,7 @@ public class Master extends Window implements Application, Bindable
             public void perform(Component arg0)
             {
                 if (facade.load(IOFactory.saveFile)) {
-                    facade.databind();
+                    facade.fullInit();
                     // Go to Set tab
                     tabPane.setSelectedIndex(1);
                     for(int i=0; i<tabPane.getTabs().getLength(); i++)

@@ -110,7 +110,7 @@ public class Facade
                             found = true;
                             break;
                         }
-                    tweakFrame.setPackShortcuts(found);
+                    tweakFrame.update(found);
                     tweakFrame.setModified(true);
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
@@ -119,7 +119,7 @@ public class Facade
             case 3://Build Tab
                 if (tweakFrame.isModified()) {
                     tweakFrame.setModified(false);//Modified flag*
-                    buildFrame.init();
+                    buildFrame.update();
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
                 }
@@ -132,7 +132,7 @@ public class Facade
     /**
      * Bind data to GUI
      */
-    public void databind()
+    public void fullInit()
     {
         try
         {
@@ -145,7 +145,7 @@ public class Facade
             //Tab data initialize
             setFrame.loadInit();
             //SetupConfig binding
-            tweakFrame.dataBinding(setupConfig);
+            tweakFrame.init(setupConfig);
             //AppConfig binding
             buildFrame.init();
         }
@@ -326,7 +326,7 @@ public class Facade
         setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
         packs = new ArrayList<Pack>();
         groups = new ArrayList<Group>();
-        databind();
+        fullInit();
         IOFactory.setSaveFile("");
     }
 

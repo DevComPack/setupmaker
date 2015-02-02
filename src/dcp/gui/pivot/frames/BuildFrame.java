@@ -575,8 +575,38 @@ public class BuildFrame extends FillPane implements Bindable
         stepNbr = facade.getNugStepNbr();
         setNugStepNbr(stepNbr);
         inFeedSource.setText(facade.getNugFeedUrl());// default source for debugging
+    }
+    
+    // Export path set
+    public void update() throws IOException
+    {
+        String filename = setupConfig.getAppName() + "-" + setupConfig.getAppVersion() + ".jar";
+        filename = filename.replaceAll(" ", "");
         
-        setBuildMode(Master.facade.appConfig.getBuildMode());// Export path set
+        String bm = lbBuild.getSelectedItem().toString();
+        if (bm.equals(BUILD_MODE.IZPACK_BUILD.toString()))
+        {
+            if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
+                inTargetPath.setText(new File(IOFactory.targetPath, filename).getCanonicalPath());
+            }
+            else {
+                inTargetPath.setText(new File(filename).getCanonicalPath());
+            }
+        }
+        else if (bm.equals(BUILD_MODE.NUGET_BUILD.toString()))
+        {
+            if (inTargetPath.getText().length() > 0) {
+                File target = new File(inTargetPath.getText());
+                if (!target.isDirectory())
+                    inTargetPath.setText(target.getParent());
+            }
+            else if (new File(IOFactory.targetPath).exists()) {// If 'target' folder exists
+                inTargetPath.setText(IOFactory.targetPath);
+            }
+            else {
+                inTargetPath.setText(new File(".").getCanonicalPath());
+            }
+        }
     }
     
 }
