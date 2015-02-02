@@ -22,6 +22,7 @@ Merge of dcp libs to one library
 Add scan horizontal split panel to Workspace auto-saved data
 Build mode and default build configurations added to workspace data
 Build logs copy to clipboard from context menu
+Apache Commons IO for file copy operations
 --
 * Bug fixes:
 Default empty target path was based on app data instead of setup data

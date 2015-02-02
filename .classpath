@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="lib/pivot/pivot-core-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-terra-2.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

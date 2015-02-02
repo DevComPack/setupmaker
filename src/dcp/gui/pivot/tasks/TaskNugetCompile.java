@@ -7,6 +7,7 @@ import java.nio.file.Files;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.pivot.collections.List;
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.wtk.Component;
@@ -130,11 +131,11 @@ public class TaskNugetCompile extends Task<Boolean>
             SW.writeMetadata(pack);
             SW.close();
             
-            // powershell files generate
-            //Files.copy(new File(IOFactory.psChocolateyInstall).toPath(), install.toPath()); // install script
+            // powershell ps files templating
+            // install script
             InstW.fillFrom(setupConfig.getInstallPath(), pack);
             InstW.writeTo(install);
-            //Files.copy(new File(IOFactory.psChocolateyUninstall).toPath(), uninstall.toPath()); // uninstall script
+            // uninstall script
             UninstW.fillFrom(setupConfig.getInstallPath(), pack);
             UninstW.writeTo(uninstall);
             
@@ -150,6 +151,19 @@ public class TaskNugetCompile extends Task<Boolean>
         }
         
         return true;
+    }
+    
+    // Copy file/folder content to target path
+    private void copy(File srcFile, File targetFile) throws IOException {
+        assert srcFile.exists();
+        
+        if (srcFile.isDirectory()) {
+            FileUtils.copyDirectory(srcFile, targetFile);
+        }
+        else {
+            FileUtils.copyFile(srcFile, targetFile);
+            //Files.copy(srcFile.toPath(), targetFile.toPath());
+        }
     }
     
     /**
@@ -168,21 +182,24 @@ public class TaskNugetCompile extends Task<Boolean>
         case COPY:
             copyFolder = new File(repo.toString(), "copy");
             copyFolder.mkdir();
-            Files.copy(new File(p.getPath()).toPath(), new File(copyFolder, p.getName()).toPath());
+            //Files.copy(new File(p.getPath()).toPath(), new File(copyFolder, p.getName()).toPath());
+            copy(new File(p.getPath()), new File(copyFolder, p.getName()));
             Out.print("DEBUG", "copy "+ p.getPath() + " to " + new File(copyFolder, p.getName()).toString());
             break;
             
         case EXTRACT:
             extrFolder = new File(repo.toString(), "extr");
             extrFolder.mkdir();
-            Files.copy(new File(p.getPath()).toPath(), new File(extrFolder, p.getName()).toPath());
+            //Files.copy(new File(p.getPath()).toPath(), new File(extrFolder, p.getName()).toPath());
+            copy(new File(p.getPath()), new File(extrFolder, p.getName()));
             Out.print("DEBUG", "copy "+ p.getPath() + " to " + new File(extrFolder, p.getName()).toString());
             break;
             
         case EXECUTE:
             execFolder = new File(repo.toString(), "exec");
             execFolder.mkdir();
-            Files.copy(new File(p.getPath()).toPath(), new File(execFolder, p.getName()).toPath());
+            //Files.copy(new File(p.getPath()).toPath(), new File(execFolder, p.getName()).toPath());
+            copy(new File(p.getPath()), new File(execFolder, p.getName()));
             
             if (p.getFileType() == FILE_TYPE.Executable) // create new empty file flag to ignore batch redirection to executable
                 new File(execFolder, p.getName()+".ignore").createNewFile();

@@ -127,6 +127,7 @@ public class IOFactory
         return false;
     }
     
+    
     //Cached icons
     private static final String iconsPath = "/dcp/gui/icons/";
     public static Image imgFolder;//Folder icon
