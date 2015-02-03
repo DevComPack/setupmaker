@@ -31,6 +31,9 @@ import dcp.gui.pivot.validators.IntValidator;
 import dcp.gui.pivot.validators.Iso3Validator;
 import dcp.gui.pivot.validators.NameValidator;
 import dcp.gui.pivot.validators.PathValidator;
+import dcp.logic.factory.PackFactory;
+import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
+import dcp.logic.model.Pack;
 import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
 
@@ -616,10 +619,19 @@ public class TweakFrame extends FillPane implements Bindable
      * Enable shortcuts for packs if a pack is configured for a shortcut
      * @param enable
      */
-    public void update(boolean enable)
+    public void update()
     {
-        cbShortcuts.setEnabled(enable);
-        cbShortcuts.setSelected(enable);
+        boolean found = false;
+        for(Pack p:PackFactory.getPacks())
+            if (p.isShortcut() && p.getInstallType() != INSTALL_TYPE.EXECUTE) {
+                found = true;
+                break;
+            }
+        
+        if (cbShortcuts.isEnabled() != found) {
+            cbShortcuts.setEnabled(found);
+            cbShortcuts.setSelected(found);
+        }
     }
 
 }

@@ -20,7 +20,6 @@ import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
-import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.model.config.AppConfig;
@@ -104,13 +103,7 @@ public class Facade
             case 2://Tweak Tab
                 if (setFrame.isModified()) {
                     setFrame.setModified(false);//Modified flag*
-                    boolean found = false;
-                    for(Pack p:PackFactory.getPacks())
-                        if (p.isShortcut() && p.getInstallType() != INSTALL_TYPE.EXECUTE) {
-                            found = true;
-                            break;
-                        }
-                    tweakFrame.update(found);
+                    tweakFrame.update();
                     tweakFrame.setModified(true);
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
