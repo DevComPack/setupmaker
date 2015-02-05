@@ -5,6 +5,7 @@
 +Packs data Check feature
 +Open target folder button on Build tab
 +Tweak file options (icon, exe..)
++Scan mode change Start(Scan/Load)
 -Code rewrite
 
 1.1.1
@@ -23,6 +24,7 @@ Add scan horizontal split panel to Workspace auto-saved data
 Build mode and default build configurations added to workspace data
 Build logs copy to clipboard from context menu
 Apache Commons IO for file copy operations
+CommandLine build includes app name and version in package file
 --
 * Bug fixes:
 Default empty target path was based on app data instead of setup data

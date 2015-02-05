@@ -12,8 +12,6 @@ import org.apache.pivot.collections.Map;
 import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.util.Filter;
 import org.apache.pivot.util.Resources;
-import org.apache.pivot.util.concurrent.Task;
-import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.Action;
 import org.apache.pivot.wtk.Application;
 import org.apache.pivot.wtk.Button;
@@ -25,7 +23,6 @@ import org.apache.pivot.wtk.Display;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.Keyboard;
-import org.apache.pivot.wtk.TaskAdapter;
 import org.apache.pivot.wtk.Keyboard.Modifier;
 import org.apache.pivot.wtk.Label;
 import org.apache.pivot.wtk.MessageType;
@@ -40,11 +37,8 @@ import dcp.config.io.IOFactory;
 import dcp.gui.pivot.actions.BrowseAction;
 import dcp.gui.pivot.frames.ScanFrame;
 import dcp.gui.pivot.helper.HelperFacade;
-import dcp.gui.pivot.tasks.TaskIzpackCompile;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
-import dcp.logic.model.Group;
-import dcp.logic.model.Pack;
 import dcp.main.log.Out;
 
 
@@ -127,7 +121,7 @@ public class Master extends Window implements Application, Bindable
             public void perform(Component arg0)
             {
                 if (facade.load(IOFactory.saveFile)) {
-                    facade.fullInit();
+                    facade.tabsInit(true);
                     // Go to Set tab
                     tabPane.setSelectedIndex(1);
                     for(int i=0; i<tabPane.getTabs().getLength(); i++)
@@ -183,7 +177,8 @@ public class Master extends Window implements Application, Bindable
 
     @Override public void initialize(Map<String, Object> args, URL url, Resources res)
     {
-        facade.init();// Tabs singletons init
+        facade.framesInit();// Tabs singletons init
+        facade.tabsInit(false);// Tabs display init
         
         //Shortcuts definition
         this.getComponentKeyListeners().add(new ComponentKeyListener.Adapter() {
@@ -194,9 +189,9 @@ public class Master extends Window implements Application, Bindable
                 case Keyboard.KeyCode.F1://[F1] - Help
                     if (btHelp.isEnabled()) btHelp.press();
                     return true;
-                default:
-                    break;
+                default: break;
                 }
+                
                 if (Keyboard.isPressed(Modifier.CTRL)) {//CTRL + [keycode]
                     switch(keyCode) {
                     case Keyboard.KeyCode.O://[ctrl+O] - load project
@@ -228,6 +223,7 @@ public class Master extends Window implements Application, Bindable
                         break;
                     }
                 }
+                
                 return false;
             }
         });
@@ -420,38 +416,7 @@ public class Master extends Window implements Application, Bindable
                     Out.print("INFO", "Processing dcp file: " + s);
                     System.out.println();
                     
-                    if (!Master.facade.load(s)) // load error
-                        Out.print("ERROR", "Error loading the file! Please load it from the GUI and correct if there are some errors then reload it.");
-                    else { // load success
-                        for (Group G:Master.facade.groups) {// Add Groups to factory
-                            GroupFactory.addGroup(G);
-                        }
-                        for(Pack P:Master.facade.packs) {// Add Packs to factory
-                            PackFactory.addPack(P);
-                        }
-                        
-                        Out.print("INFO", "File data loaded successfully.");
-                        System.out.println();
-                        
-                        Out.print("INFO", "Compiling file");
-                        final TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {//Finished compilation
-                            @Override public void executeFailed(Task<Boolean> t) {//Failed
-                                System.out.println();
-                                Out.print("ERROR", "Compiled with errors!");
-                            }
-                            @Override public void taskExecuted(Task<Boolean> t) {//Success
-                                if (t.getResult() == true) {//If no errors
-                                    System.out.println();
-                                    Out.print("INFO", "Finished compiling.");
-                                } else executeFailed(t);//Compile Errors
-                            }
-                        };
-                        
-                        // IzPack Compile Task launch
-                        TaskIzpackCompile compileTask = new TaskIzpackCompile(new File("package.jar").getAbsolutePath(), Master.facade.setupConfig, null);
-                        compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
-                        
-                    }
+                    Master.facade.process(s);// compile save file with izpack
                 }
                 else {
                     Out.print("ERROR", "Filepath doesn't exist or file is incorrect! Please give a valid path to a dcp save file.");

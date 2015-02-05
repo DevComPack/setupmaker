@@ -65,6 +65,7 @@ public class BuildFrame extends FillPane implements Bindable
     public BuildFacade facade;
     //Configuration
     private SetupConfig setupConfig = Master.facade.setupConfig;
+    //private AppConfig appConfig = Master.facade.appConfig;
     
     // Flags
     private static boolean modified = false;// True if tab processed data
@@ -173,7 +174,7 @@ public class BuildFrame extends FillPane implements Bindable
             fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
             logger.setListData(dcp.main.log.Out.getCompileLog());// Bind compile log tags to List view logger
             logger.setMenuHandler(menuHandler);
-            init(); // build mode workspace
+            //init(); // build mode workspace
             //displayRefresh(); // build buttons workspace
         }
         catch (IOException e) {
@@ -557,10 +558,8 @@ public class BuildFrame extends FillPane implements Bindable
      * Build tab data/display initialize
      * @throws IOException 
      */
-    public void init() throws IOException
+    public void init(AppConfig appConfig, SetupConfig setupConfig) throws IOException
     {
-        AppConfig appConfig = Master.facade.appConfig;
-        
         lbBuild.setSelectedItem(appConfig.getBuildMode().toString());
         setBuildMode(appConfig.getBuildMode());
         
@@ -575,6 +574,9 @@ public class BuildFrame extends FillPane implements Bindable
         stepNbr = facade.getNugStepNbr();
         setNugStepNbr(stepNbr);
         inFeedSource.setText(facade.getNugFeedUrl());// default source for debugging
+        
+        //this.appConfig = appConfig;
+        this.setupConfig = setupConfig;
     }
     
     // Export path set

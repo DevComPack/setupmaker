@@ -60,6 +60,7 @@ import dcp.gui.pivot.transitions.AppearTransition;
 import dcp.gui.pivot.validators.PathValidator;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
+import dcp.logic.model.config.AppConfig;
 import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
 
@@ -71,6 +72,7 @@ public class ScanFrame extends FillPane implements Bindable
     public static ScanFrame getSingleton() { assert (singleton != null); return singleton; }
     public ScanFacade facade;
     //Configuration
+    private AppConfig appConfig = Master.facade.appConfig;
     private SetupConfig setupConfig = Master.facade.setupConfig;
     
     //Flags
@@ -95,7 +97,7 @@ public class ScanFrame extends FillPane implements Bindable
     }
     //Groups
     private static List<Group> groups = new ArrayList<Group>();//List of scanned directories
-    public static void setGroups(List<Group> groups) {
+    public void setGroups(List<Group> groups) {
         ScanFrame.groups = null;
         ScanFrame.groups = groups;
         ScanFrame.setLoaded(true);//Loaded flag
@@ -190,8 +192,8 @@ public class ScanFrame extends FillPane implements Bindable
                 if (res == 0) {
                     Out.print("DEBUG", "Scanned directory: " + inPath.getText());
                     //Save directory to app config recent dirs
-                    Master.facade.appConfig.addRecentDir(new File(inPath.getText()));
-                    recentDirsFill(Master.facade.appConfig.getRecentDirs());
+                    appConfig.addRecentDir(new File(inPath.getText()));
+                    recentDirsFill(appConfig.getRecentDirs());
                     if (depthSpinner.getSelectedIndex() < 5)
                         treeView.expandAll();
                     else treeView.collapseAll();
@@ -210,8 +212,8 @@ public class ScanFrame extends FillPane implements Bindable
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
         facade = new ScanFacade();
-        recentDirsFill(Master.facade.appConfig.getRecentDirs());
-        hSplitPane.setSplitRatio(Master.facade.appConfig.getScanHorSplitPaneRatio());
+        recentDirsFill(appConfig.getRecentDirs());
+        hSplitPane.setSplitRatio(appConfig.getScanHorSplitPaneRatio());
         
         // Custom filters fill from settings.json file to UI
         if (IOFactory.custExt.length > 0) {
@@ -280,7 +282,7 @@ public class ScanFrame extends FillPane implements Bindable
         hSplitPane.getSplitPaneListeners().add(new SplitPaneListener.Adapter() {
             @Override public void splitRatioChanged(SplitPane sp, float ratio)
             {
-                Master.facade.appConfig.setScanHorSplitPaneRatio(sp.getSplitRatio());
+                appConfig.setScanHorSplitPaneRatio(sp.getSplitRatio());
             }
         });
         
@@ -288,7 +290,8 @@ public class ScanFrame extends FillPane implements Bindable
         inPath.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
-                setupConfig.setSrcPath(TI.getText());
+                if (TI.isValid())// path exists
+                    setupConfig.setSrcPath(TI.getText());
             }
         });
         
@@ -452,7 +455,7 @@ public class ScanFrame extends FillPane implements Bindable
         });
         
         //Default Scan Mode loaded
-        if (Master.facade.appConfig.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
+        if (appConfig.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
             setScanMode(SCAN_MODE.RECURSIVE_SCAN);
             btRadRecursiv.setSelected(true);
             btCollapse.setEnabled(true);
@@ -610,7 +613,7 @@ public class ScanFrame extends FillPane implements Bindable
                     {
                         recent_dirs.getRows().remove(row);
                         Out.print("DEBUG", dir.getName()+" entry removed");
-                        Master.facade.appConfig.removeRecentDir(dir);
+                        appConfig.removeRecentDir(dir);
                     }
                 });
                 
@@ -635,12 +638,16 @@ public class ScanFrame extends FillPane implements Bindable
     
     /**
      * clear scanned directory path
+     * @param setupConfig 
      */
-    public void init(String srcPath) {
-        inPath.setText(srcPath);
+    public void init(AppConfig appConfig, SetupConfig setupConfig) {
+        inPath.setText(setupConfig.getSrcPath());
         treeData.clear();
         groups.clear();
         packs.clear();
+        
+        this.appConfig = appConfig;
+        this.setupConfig = setupConfig;
     }
     
 }

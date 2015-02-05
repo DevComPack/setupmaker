@@ -9,6 +9,9 @@ import java.io.ObjectOutputStream;
 
 import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
+import org.apache.pivot.util.concurrent.Task;
+import org.apache.pivot.util.concurrent.TaskListener;
+import org.apache.pivot.wtk.TaskAdapter;
 import org.apache.pivot.wtk.Window;
 
 import dcp.config.io.IOFactory;
@@ -16,6 +19,7 @@ import dcp.gui.pivot.frames.BuildFrame;
 import dcp.gui.pivot.frames.ScanFrame;
 import dcp.gui.pivot.frames.SetFrame;
 import dcp.gui.pivot.frames.TweakFrame;
+import dcp.gui.pivot.tasks.TaskIzpackCompile;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
@@ -73,12 +77,84 @@ public class Facade
     /**
      * Initialize frames from instantiated singletons
      */
-    public void init()
+    public void framesInit()
     {
         scanFrame = ScanFrame.getSingleton();
         setFrame = SetFrame.getSingleton();
         tweakFrame = TweakFrame.getSingleton();
         buildFrame = BuildFrame.getSingleton();
+    }
+
+    /**
+     * Bind data to GUI
+     * @param load: init Scan and Set for load mode
+     */
+    public void tabsInit(boolean load)
+    {
+        try
+        {
+            //Clear scanned path
+            scanFrame.init(appConfig, setupConfig);
+            
+            if (load) {
+                //Groups binding
+                scanFrame.setGroups(groups);//loaded flag enabled*
+                //Packs binding
+                scanFrame.setPacks(packs);//loaded flag enabled*
+                //Tab data initialize
+                setFrame.loadInit();
+            }
+            
+            //SetupConfig binding
+            tweakFrame.init(setupConfig);
+            //AppConfig binding
+            buildFrame.init(appConfig, setupConfig);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Process a save file given from commandline
+     * Compile it using IzPack
+     * @param saveFile: dcp file
+     */
+    public void process(String saveFile)
+    {
+        if (!load(saveFile)) // load error
+            Out.print("ERROR", "Error loading the file! Please load it from the GUI and correct if there are some errors then reload it.");
+        else { // load success
+            for (Group G:groups) {// Add Groups to factory
+                GroupFactory.addGroup(G);
+            }
+            for(Pack P:packs) {// Add Packs to factory
+                PackFactory.addPack(P);
+            }
+            
+            Out.print("INFO", "File data loaded successfully.");
+            System.out.println();
+            
+            final TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {//Finished compilation
+                @Override public void executeFailed(Task<Boolean> t) {//Failed
+                    System.out.println();
+                    Out.print("ERROR", "Compiled with errors!");
+                }
+                @Override public void taskExecuted(Task<Boolean> t) {//Success
+                    if (t.getResult() == true) {//If no errors
+                        System.out.println();
+                        Out.print("INFO", "Finished compiling.");
+                    } else executeFailed(t);//Compile Errors
+                }
+            };
+            
+            // IzPack Compile Task launch
+            String filename = setupConfig.getAppName().replaceAll(" ", "") + "-" + setupConfig.getAppVersion() + ".jar";
+            Out.print("INFO", "Compiling file " + filename);
+            TaskIzpackCompile compileTask = new TaskIzpackCompile(new File(filename).getAbsolutePath(), setupConfig, izpackConf);
+            compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
+        }
     }
     
     /**
@@ -119,32 +195,6 @@ public class Facade
                 break;
             default:
                 break;
-        }
-    }
-
-    /**
-     * Bind data to GUI
-     */
-    public void fullInit()
-    {
-        try
-        {
-            //Clear scanned path
-            scanFrame.init(setupConfig.getSrcPath());
-            //Groups binding
-            ScanFrame.setGroups(groups);//loaded flag enabled*
-            //Packs binding
-            scanFrame.setPacks(packs);//loaded flag enabled*
-            //Tab data initialize
-            setFrame.loadInit();
-            //SetupConfig binding
-            tweakFrame.init(setupConfig);
-            //AppConfig binding
-            buildFrame.init();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
         }
     }
     
@@ -319,7 +369,7 @@ public class Facade
         setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
         packs = new ArrayList<Pack>();
         groups = new ArrayList<Group>();
-        fullInit();
+        tabsInit(true);
         IOFactory.setSaveFile("");
     }
 

@@ -43,13 +43,13 @@ public class TweakFrame extends FillPane implements Bindable
     //Singleton reference
     private static TweakFrame singleton;
     public static TweakFrame getSingleton() { assert (singleton != null); return singleton; }
+    //Configuration
+    private SetupConfig setupConfig = Master.facade.setupConfig;
 
     //Flags
     private boolean modified = false;//True if tab processed data
     public void setModified(boolean VALUE) { modified = VALUE; }
     public boolean isModified() { return modified; }
-    //Configuration
-    private SetupConfig setupConfig = Master.facade.setupConfig;
     //---Components
     //Application
     @BXML private TextInput inAppName;
@@ -110,7 +110,7 @@ public class TweakFrame extends FillPane implements Bindable
     @Override
     public void initialize(Map<String, Object> args, URL url, Resources res)
     {
-        init(setupConfig);
+        //init(setupConfig);
         
         //Text inputs validators
         inAppName.setValidator(new NameValidator());//Name Validators
