@@ -179,7 +179,8 @@ public class SetFacade
     public void removeNode(TreeNode node)
     {
         assert node != null;
-        if (node instanceof TreeBranch)//Group
+        
+        if (node instanceof TreeBranch)// Group
         {
             TreeBranch branch = (TreeBranch) node;
             Group group = getGroup(branch);
@@ -193,7 +194,7 @@ public class SetFacade
             else treeData.remove(branch);
             Out.print("MODEL", "Group removed: " + path);
         }
-        else//Pack
+        else if (node instanceof TreeNode)// Pack
         {
             TreeBranch branch = node.getParent();
             String name = getGroup(branch).getName();

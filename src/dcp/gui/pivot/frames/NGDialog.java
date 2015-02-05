@@ -38,7 +38,8 @@ public class NGDialog extends Dialog implements Bindable
         AGroupAdd = new Action() {
             @Override public void perform(Component source)
             {
-                validated = true;
+                if (inGroupName.getText().length() > 0)
+                    validated = true;
                 NGDialog.this.close();
             } };
     }

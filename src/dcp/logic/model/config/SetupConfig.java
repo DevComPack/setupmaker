@@ -31,7 +31,7 @@ public class SetupConfig implements Serializable
     private String sideLogoPath="";//Side Logo Path
     //Langpacks
     private boolean lp_eng = true;
-    private boolean lp_fra = true;
+    private boolean lp_fra = false;
     private boolean lp_deu = false;
     private boolean lp_spa = false;
     private boolean lp_cus = false;
