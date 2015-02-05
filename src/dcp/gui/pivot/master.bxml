@@ -58,8 +58,7 @@
 				            <PushButton bxml:id="btSave" tooltipText="Save" visible="true" enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
 				            	<content:ButtonData icon="/dcp/gui/icons/save.png" />
 				            </PushButton>
-				            
-				            <PushButton bxml:id="btLoad" tooltipText="Load" visible="true" enabled="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+							<PushButton bxml:id="btLoad" tooltipText="Load" visible="true" enabled="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
 				            	<content:ButtonData icon="/dcp/gui/icons/load.png" />
 				            </PushButton>
 				            

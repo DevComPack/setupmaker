@@ -8,6 +8,7 @@
 *Bugfixes:
 Empty Group creation was possible
 Group treeview node delete button returned exception when none selected
+Panels display flag wasn't initialized
 
 +Packr/JARtoEXE implementation (_https://github.com/libgdx/packr)
 +Tweak file options (icon, exe..)

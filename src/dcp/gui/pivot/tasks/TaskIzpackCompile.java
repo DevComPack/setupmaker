@@ -53,18 +53,27 @@ import dcp.web.sftp.JschFactory;
 
 public class TaskIzpackCompile extends Task<Boolean>
 {
+    // Compiler Configuration
     private IzpackAntCompiler compiler = new IzpackAntCompiler();//IzPack Compiler Class
     private SetupConfig setupConfig;// Setup configuration
-    //private WebConfig webConfig;// SFTP Web Setup configuration
     private IzpackConfig izpackConf;// IzPack configuration
+    
+    // Models Data
     private List<Pack> packs = PackFactory.getPacks();
     private List<Group> groups = GroupFactory.getGroups();
+
+    // XML Root Element
     private SMOutputElement root;
+    
+    // Panels display flags
+    private boolean isPackPanel = true;// Disable pack panel display if all packs required
+    private boolean isProcessPanel = false;// If has an executable with an execute intall mode
+    private boolean isInstallGroup = false;// Has install groups affected to one or more packs
+    private boolean isArchCondition = false;// Has conditions affected to one or more packs
     
     public TaskIzpackCompile(String targetPath, SetupConfig setupConfig, IzpackConfig izpackConf) {
         this.compiler.setTarget(targetPath);
         this.setupConfig = setupConfig;
-        //this.webConfig = izpackConfig.getWebConfig();
         this.izpackConf = izpackConf;
     }
     
@@ -243,11 +252,16 @@ public class TaskIzpackCompile extends Task<Boolean>
         Out.print("INFO", "#packs " + packs.getLength());
         Out.print("INFO", "#groups " + groups.getLength());
         Out.newLine();
+        
         boolean notRequired = false;// false if all packs are required
         boolean shortcut = false;// false if all pack don't have shortcut enabled
-        // Options Init
-        setupConfig.setProcess(false);
-        setupConfig.setInstallGroup(false);
+        
+        // Panel Options Init
+        isPackPanel = true;
+        isProcessPanel = false;
+        isInstallGroup = false;
+        isArchCondition = false;
+        
         // Packs' data analyze/correct
         for (Pack P:PackFactory.getPacks()) {
             if (!notRequired && !(P.isRequired() || P.isHidden()))
@@ -268,12 +282,16 @@ public class TaskIzpackCompile extends Task<Boolean>
             if (P.getInstallGroups().trim().endsWith(",")) {
                 P.setInstallGroups(P.getInstallGroups().trim().substring(0, P.getInstallGroups().trim().length()-1));
             }
+            
             // Flags
-            if (!setupConfig.isProcess() && P.getInstallType() == INSTALL_TYPE.EXECUTE) {
-                setupConfig.setProcess(true);// Activate Process panel if pack(s) to execute
+            if (!isProcessPanel && P.getInstallType() == INSTALL_TYPE.EXECUTE) {
+                isProcessPanel = true;// Activate Process panel if pack(s) to execute
             }
-            if (!setupConfig.isInstallGroup() && !P.getInstallGroups().equals("")) {
-                setupConfig.setInstallGroup(true);// Activate install groups panel display
+            if (!isInstallGroup && !P.getInstallGroups().equals("")) {
+                isInstallGroup = true;// Activate install groups panel display
+            }
+            if (!isArchCondition && P.getArch() > 0) {
+                isArchCondition = true;// Activate conditions if pack(s) related to arch
             }
             
             if (!new File(P.getPath()).exists()) {// packs' source file path correction
@@ -306,8 +324,9 @@ public class TaskIzpackCompile extends Task<Boolean>
             }
             
         }
+        
         if (!notRequired) {// if all packs are required
-            setupConfig.setPanelDisplay(false);// disable packs panel display
+            isPackPanel = false;// disable packs panel display
             Out.print("STAX", "Packs panel disabled");
         }
         if (!shortcut) {// if all packs don't have shortcut enabled
@@ -318,7 +337,8 @@ public class TaskIzpackCompile extends Task<Boolean>
             Out.print("STAX", "Install path panel disabled");
         if (izpackConf.isSplit())
             Out.print("STAX", "Packaging option enabled");
-        if (setupConfig.isInstallGroup())
+        
+        if (isInstallGroup)
             Out.print("STAX", "Install Group panel enabled");
         
         Out.newLine();
@@ -357,7 +377,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         
         VW.addVariable("InstallerFrame.logfilePath", "$INSTALL_PATH/Uninstaller/install.log");
         VW.addVariable("DesktopShortcutCheckboxEnabled", "true");
-        if (setupConfig.isProcess())
+        if (isProcessPanel)
             VW.addVariable("EXE_DIR", IOFactory.exeTargetDir);
         
         return true;
@@ -389,10 +409,10 @@ public class TaskIzpackCompile extends Task<Boolean>
         if (!setupConfig.getLicensePath().equals(""))//<panel classname="HTMLLicencePanel"/>
             PW.writePanel("HTMLLicencePanel");
         
-        if (setupConfig.isInstallGroup())//<panel />
+        if (isInstallGroup)//<panel />
             PW.writePanel("InstallationGroupPanel");
         
-        if (setupConfig.isPanelDisplay())//<panel />
+        if (isPackPanel)//<panel />
             PW.writePanel("TreePacksPanel");
         
         if (setupConfig.isForcePath())//<panel />
@@ -404,7 +424,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         PW.writePanel("InstallPanel");//<panel />
         
         // If there's packs to execute
-        if (setupConfig.isProcess())//<panel />
+        if (isProcessPanel)//<panel />
             PW.writePanel("ProcessPanel");
         
         if (setupConfig.isShortcuts() || setupConfig.isFolderShortcut())//<panel />
@@ -473,7 +493,7 @@ public class TaskIzpackCompile extends Task<Boolean>
             RW.addResource("shortcutSpec.xml", IOFactory.xmlShortcutPanelSpec);
         if (setupConfig.isRegistryCheck())//RegistrySpec
             RW.addResource("RegistrySpec.xml", IOFactory.xmlRegistrySpec);
-        if (setupConfig.isProcess())//ProcessPanelSpec
+        if (isProcessPanel)//ProcessPanelSpec
             RW.addResource("ProcessPanel.Spec.xml", IOFactory.xmlProcessPanelSpec);
         // Pictures
         if (!setupConfig.getLogoPath().equals("")) {
@@ -514,9 +534,13 @@ public class TaskIzpackCompile extends Task<Boolean>
         Out.newLine();
         
         ConditionWriter CondW = new ConditionWriter(root);
-        if (CondW.addCondition(TypeFactory.CONDITION.ARCH32.toString(), "com.izforge.izpack.resources.SystemCheck", "x32"))
-        if (CondW.addCondition(TypeFactory.CONDITION.ARCH64.toString(), "com.izforge.izpack.resources.SystemCheck", "x64"))
-            return true;
+        if (isArchCondition) {
+            if (CondW.addCondition(TypeFactory.CONDITION.ARCH32.toString(), "com.izforge.izpack.resources.SystemCheck", "x32"))
+            if (CondW.addCondition(TypeFactory.CONDITION.ARCH64.toString(), "com.izforge.izpack.resources.SystemCheck", "x64"))
+                return true;
+        }
+        else return true;
+        
         return false;
     }
     
@@ -546,7 +570,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         }
         
         // Jobs Writing
-        if (setupConfig.isProcess()) {// ProcessPanelSpec.xml executables run
+        if (isProcessPanel) {// ProcessPanelSpec.xml executables run
             ProcessWriter ProcessW = new ProcessWriter(process_spec);
             
             for (Pack P:packs) {

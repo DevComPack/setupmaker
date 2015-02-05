@@ -42,23 +42,11 @@ public class SetupConfig implements Serializable
     private boolean forcePath = false;//Whether to force an install path or not
     private boolean registryCheck = false;//Activate registry check for installed version
     private boolean scriptGen = false;//Activate script generation at end of Setup
-    private boolean panelDisplay = true;//Disable pack panel display if all packs required
     //Shortcuts
     private boolean shortcuts = true;//Activate shortcuts creation
     private boolean folderShortcut = false;//Make a shortcut for global install path
     private boolean shToStartMenu = true;//Install shortcuts to start menu
     private boolean shToDesktop = false;//Install shortcuts to desktop
-    //Panels display
-    private boolean process = false;//If has an executable with an execute intall mode
-    private boolean installGroup = false;//Has install groups affected to a pack or more
-    
-    
-    //Packaging option
-    private boolean split = false;//Packaging option
-    private int splitSize;//Split packs size
-    //Web setup
-    private boolean web = false;//Web setup
-    private String webDir = "";//Web directory url containing packs
 
     
     public SetupConfig(String APPNAME, String APPVERSION)
@@ -118,17 +106,6 @@ public class SetupConfig implements Serializable
         folderShortcut = setupConfig.folderShortcut;
         shToStartMenu = setupConfig.shToStartMenu;
         shToDesktop = setupConfig.shToDesktop;
-        
-        process = setupConfig.process;
-        installGroup = setupConfig.installGroup;
-        
-        //*
-        split = setupConfig.split;
-        splitSize = setupConfig.splitSize;
-
-        web = setupConfig.web;
-        webDir = setupConfig.webDir;
-        //*/
     }
     
     //Application
@@ -188,8 +165,6 @@ public class SetupConfig implements Serializable
     public void setRegistryCheck(boolean registryCheck) { this.registryCheck = registryCheck; }
     public boolean isScriptGen() { return scriptGen; }
     public void setScriptGen(boolean scriptGen) { this.scriptGen = scriptGen; }
-    public boolean isPanelDisplay() { return panelDisplay; }
-    public void setPanelDisplay(boolean panelDisplay) { this.panelDisplay = panelDisplay; }
     
     //Shortcuts
     public boolean isShortcuts() { return shortcuts; }
@@ -200,25 +175,5 @@ public class SetupConfig implements Serializable
     public void setShToStartMenu(boolean shToStartMenu) { this.shToStartMenu = shToStartMenu; }
     public boolean isShToDesktop() { return shToDesktop; }
     public void setShToDesktop(boolean shToDesktop) { this.shToDesktop = shToDesktop; }
-    
-    //Panels display
-    public boolean isProcess() { return process; }
-    public void setProcess(boolean process) { this.process = process; }
-    public boolean isInstallGroup() { return installGroup; }
-    public void setInstallGroup(boolean installGroup) { this.installGroup = installGroup; }
-    
-    //*
-    //Packaging option
-    public boolean isSplit() { return split; }
-    public void setSplit(boolean enable) { this.split = enable; }
-    public int getSplitSize() { return splitSize; }//Returns in Bytes
-    public void setSplitSize(int SIZE_IN_MB) { splitSize = SIZE_IN_MB * (1024*1024); }//Save in Bytes
-    
-    //Web Setup
-    public boolean isWeb() { return web; }
-    public void setWeb(boolean enable) { this.web = enable; }
-    public String getWebDir() { return webDir; }
-    public void setWebDir(String url) { webDir = url; }
-    //*/
     
 }
