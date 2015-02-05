@@ -74,6 +74,7 @@
 								<Paragraph>- A Pack may depend on a Group of packs, so that it won't be installed </Paragraph>
 								<Paragraph>  unless all packs of the dependent group are selected. </Paragraph>
 								<Paragraph>- A required pack can't be disabled on install. </Paragraph>
+								<Paragraph>- The arch (32/64) is checked at the running JVM, not the OS. </Paragraph>
 								<Paragraph>- A shortcut can be enabled for a pack or more to access it directly; </Paragraph>
 								<Paragraph>  advanced shortcut options are available to access a specific file </Paragraph>
 								<Paragraph>  inside a folder or extracted archive. </Paragraph>

@@ -1,12 +1,14 @@
 1.2.0
 =====
-+Packr/JARtoEXE implementation (_https://github.com/libgdx/packr)
-+Pack architecture property
-+Packs data Check feature
+-Code rewrite
 +Open target folder button on Build tab
++Packs data Check feature
++Pack install architecture property
+
++Packr/JARtoEXE implementation (_https://github.com/libgdx/packr)
 +Tweak file options (icon, exe..)
 +Scan mode change Start(Scan/Load)
--Code rewrite
+
 
 1.1.1
 =====

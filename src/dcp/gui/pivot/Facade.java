@@ -320,8 +320,10 @@ public class Facade
                     Pack P = (Pack) is.readObject();
                     
                     // File compatibility fix
-                    if (version.startsWith("1.0"))// cast Pack model from 1.0.x version (Chocolatey feature)
+                    if (version.startsWith("1.0"))// cast Pack model from 1.0.x (Chocolatey feature)
                         CastFactory.packModelUpdate(P, "1.0");
+                    else if (version.startsWith("1.0"))// cast Pack model from 1.1.x (architecture)
+                        CastFactory.packModelUpdate(P, "1.1");
                     
                     P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
                     packs.add(P);

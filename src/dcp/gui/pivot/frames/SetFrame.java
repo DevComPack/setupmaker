@@ -48,7 +48,6 @@ import org.apache.pivot.wtk.TextArea;
 import org.apache.pivot.wtk.TextAreaContentListener;
 import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.TextInputContentListener;
-import org.apache.pivot.wtk.TextInputListener;
 import org.apache.pivot.wtk.TreeView;
 import org.apache.pivot.wtk.TreeViewNodeListener;
 import org.apache.pivot.wtk.TreeViewSelectionListener;
@@ -92,9 +91,8 @@ public class SetFrame extends FillPane implements Bindable
     private boolean multi_selection = false;//If multiple packs selected or only one
     private boolean drag_enabled = false;//If a component is being dragged
     private boolean isGroupDependency() { return ((String)cbDepType.getButtonData()).equals("Group"); }
-    //private boolean unvalid = false;// True if some validator is negative
+    private boolean unvalid = false;// True if some validator is negative
     //Packs
-    //private List<Pack> getPacks() { return PackFactory.getPacks(); }//Read-only Packs data
     private Pack getSelectedPack() { return (Pack) tableView.getSelectedRow(); }
     @SuppressWarnings("unchecked")
     private Sequence<Pack> getSelectedPacks() { return (Sequence<Pack>) tableView.getSelectedRows(); }
@@ -116,7 +114,7 @@ public class SetFrame extends FillPane implements Bindable
     //Pack options
     @BXML private PushButton btSelectAll;//Select all packs in table view
     @BXML private PushButton btSelectNone;//Clear pack selection in table view
-    //@BXML private PushButton btCheck;//Check and validate packs data
+    @BXML private PushButton btCheck;//Check and validate packs data
     @BXML private PushButton btSort;//Packs Sorting Dialog open
     @BXML private PushButton btAdd;//Add Pack to selected group
     @BXML private PushButton btDelete;//Delete selected Pack(s)
@@ -152,6 +150,9 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private RadioButton rbOsWin;//OS install platform
     @BXML private RadioButton rbOsLin;//OS install platform
     @BXML private RadioButton rbOsMac;//OS install platform
+    @BXML private RadioButton rbArchAll;//arch platform
+    @BXML private RadioButton rbArch32;//arch platform
+    @BXML private RadioButton rbArch64;//arch platform
     @BXML private RadioButton rbExecute;//Execute the pack executable
     @BXML private Checkbox cbSilent;//Execute msi setup with passive par
     @BXML private RadioButton rbExtract;//Extract the pack archive
@@ -168,12 +169,13 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private PushButton btIPErase;//Install Path remove
     @BXML private TextArea inDescription;//Pack/Group's description
     //Actions
-    private Action ADataImport;//Import groups from recursive scan
-    private Action AAddToGroup;//Add pack to group Action
-    private Action ARemove;//Remove Group/Pack from tree view Action
-    private Action ADeletePacks;//Delete selected packs
-    private Action ASetInstallType;//Changes the default install type of a pack Action
-    private Action ASetInstallOS;//Changes the destiny install OS of a pack Action
+    private Action ADataImport;// Import groups from recursive scan
+    private Action AAddToGroup;// Add pack to group Action
+    private Action ARemove;// Remove Group/Pack from tree view Action
+    private Action ADeletePacks;// Delete selected packs
+    private Action ASetInstallType;// Changes the default install type of a pack Action
+    private Action ASetInstallOS;// Changes the destiny install OS of a pack Action
+    private Action ASetArch;// Changes the destiny install architecture
     
     //=========================================
     public SetFrame()//Constructor
@@ -181,7 +183,7 @@ public class SetFrame extends FillPane implements Bindable
         assert (singleton == null);
         singleton = this;
         
-        ADataImport = new Action() {//Import groups from recursive scan
+        ADataImport = new Action() {// Import groups from recursive scan
             @Override public void perform(Component source)
             {
                 //Groups Import
@@ -198,7 +200,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         };
         
-        AAddToGroup = new Action() {//Pack add to Group Button Action
+        AAddToGroup = new Action() {// Pack add to Group Button Action
             @Override public void perform(Component source)
             {
                 boolean added = false;
@@ -234,7 +236,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         };
         
-        ARemove = new Action() {//Remove TreeView Group/Pack button Action
+        ARemove = new Action() {// Remove TreeView Group/Pack button Action
             @Override public void perform(Component source)
             {
                 facade.removeNode((TreeNode) treeView.getSelectedNode());
@@ -245,7 +247,7 @@ public class SetFrame extends FillPane implements Bindable
             }//perform()
         };
         
-        ADeletePacks = new Action() {//Delete all selected packs
+        ADeletePacks = new Action() {// Delete all selected packs
             private boolean removePack(Pack pack) {
                 if (facade.deletePack(pack) == false) {
                     Alert.alert("Pack "+pack.getName()+" is within a group. Remove it first.", SetFrame.this.getWindow());
@@ -268,7 +270,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         };
         
-        ASetInstallType = new Action() {//Install Type Radio buttons Action
+        ASetInstallType = new Action() {// Install Type Radio buttons Action
           @Override public void perform(Component source)
           {
               INSTALL_TYPE IT = INSTALL_TYPE.DEFAULT;
@@ -298,7 +300,7 @@ public class SetFrame extends FillPane implements Bindable
           }
         };
         
-        ASetInstallOS = new Action() {//Install OS Radio buttons Action
+        ASetInstallOS = new Action() {// Install OS Radio buttons Action
           @Override public void perform(Component source)
           {
               PLATFORM OS = PLATFORM.ALL;
@@ -328,6 +330,32 @@ public class SetFrame extends FillPane implements Bindable
                   }
               }
           }
+        };
+        
+        ASetArch = new Action() {// Install Architecture (32/64)
+            @Override public void perform(Component source)
+            {
+                int ARCH = 0;
+                if (rbArch32.isSelected()) ARCH = 32;
+                else if (rbArch64.isSelected()) ARCH = 64;
+                
+                if (multi_selection) {//multi packs selected
+                    Sequence<Pack> list = getSelectedPacks();
+                    if (list!=null) {
+                        for(int i = 0; i < list.getLength(); i++) {
+                            list.get(i).setArch(ARCH);
+                        }
+                        setModified(true);//Modified flag
+                    }
+                }
+                else {//1 pack selected
+                    Pack p = getSelectedPack();
+                    if (p != null) {
+                        p.setArch(ARCH);
+                        setModified(true);//Modified flag
+                    }
+                }
+            }
         };
     }
     
@@ -372,21 +400,16 @@ public class SetFrame extends FillPane implements Bindable
                 if (str.length() > 0) {
                     if (!str.matches("[a-zA-Z._\\-0-9]+")) {
                         Out.print("WARNING", "Pack name format incorrect: " + str);
+                        unvalid = true;
                         return false;
                     }
                     if (!facade.validatePack(str)) {
                         Out.print("WARNING", "Pack name already used: " + str);
+                        unvalid = true;
                         return false;
                     }
                 }
                 return true;
-            }
-        });
-        inName.getTextInputListeners().add(new TextInputListener.Adapter() {
-            @Override public void textValidChanged(TextInput ti)
-            {
-                System.out.println("inName " + ti.isValid());
-                //if (!ti.isValid()) unvalid = true;
             }
         });
         inVersion.setValidator(new Validator() {
@@ -395,21 +418,28 @@ public class SetFrame extends FillPane implements Bindable
                 if (str.length() > 0) {
                     if (str.length() > 20 || !str.matches("[0-9]+([.][0-9]+)+")) {
                         Out.print("WARNING", "Pack version format incorrect: " + str);
+                        unvalid = true;
                         return false;
                     }
                 }
                 return true;
             }
         });
-        inVersion.getTextInputListeners().add(new TextInputListener.Adapter() {
-            @Override public void textValidChanged(TextInput ti)
-            {
-                System.out.println("inVersion " + ti.isValid());
-                //if (!ti.isValid()) unvalid = true;
-            }
-        });
         
         //Packs panel buttons
+        btCheck.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                unvalid = false;
+                @SuppressWarnings("unchecked")
+                List<Pack> data = (List<Pack>) tableView.getTableData();
+                for (int i=0; i < data.getLength(); i++) {
+                    tableView.setSelectedIndex(i);
+                    setPackProperties((Pack) tableView.getTableData().get(i));
+                    if (unvalid) { unvalid = false; break; } // stop if unvalid flag true
+                }
+            }
+        });
         btSelectAll.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -424,18 +454,6 @@ public class SetFrame extends FillPane implements Bindable
                 tableView.clearSelection();
             }
         });
-        /*btCheck.getButtonPressListeners().add(new ButtonPressListener() {
-            @Override public void buttonPressed(Button bt)
-            {
-                @SuppressWarnings("unchecked")
-                List<Pack> data = (List<Pack>) tableView.getTableData();
-                for (int i=0; i < data.getLength(); i++) {
-                    tableView.setSelectedIndex(i);
-                    setPackProperties((Pack) tableView.getTableData().get(i));
-                    if (unvalid) { unvalid = false; break; } // stop if unvalid flag true
-                }
-            }
-        });*/
         btSort.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -874,46 +892,65 @@ public class SetFrame extends FillPane implements Bindable
         });
         
         //Radio buttons press events
-        rbOsAll.getButtonPressListeners().add(new ButtonPressListener() {//All OS
+        rbOsAll.getButtonPressListeners().add(new ButtonPressListener() {// All OS
             @Override public void buttonPressed(Button bt)
             {
                 if (bt.isSelected()) ASetInstallOS.perform(bt);
             }
         });
-        rbOsWin.getButtonPressListeners().add(new ButtonPressListener() {//Windows OS
+        rbOsWin.getButtonPressListeners().add(new ButtonPressListener() {// Windows OS
             @Override public void buttonPressed(Button bt)
             {
                 if (bt.isSelected()) ASetInstallOS.perform(bt);
             }
         });
-        rbOsLin.getButtonPressListeners().add(new ButtonPressListener() {//Linux OS
+        rbOsLin.getButtonPressListeners().add(new ButtonPressListener() {// Linux OS
             @Override public void buttonPressed(Button bt)
             {
                 if (bt.isSelected()) ASetInstallOS.perform(bt);
             }
         });
-        rbOsMac.getButtonPressListeners().add(new ButtonPressListener() {//Mac OS
+        rbOsMac.getButtonPressListeners().add(new ButtonPressListener() {// Mac OS
             @Override public void buttonPressed(Button bt)
             {
                 if (bt.isSelected()) ASetInstallOS.perform(bt);
+            }
+        });
+
+        rbArchAll.getButtonPressListeners().add(new ButtonPressListener() {// Arch All
+            @Override public void buttonPressed(Button bt)
+            {
+                if (bt.isSelected()) ASetArch.perform(bt);
+            }
+        });
+        rbArch32.getButtonPressListeners().add(new ButtonPressListener() {// Arch 32
+            @Override public void buttonPressed(Button bt)
+            {
+                if (bt.isSelected()) ASetArch.perform(bt);
+            }
+        });
+        rbArch64.getButtonPressListeners().add(new ButtonPressListener() {// Arch 64
+            @Override public void buttonPressed(Button bt)
+            {
+                if (bt.isSelected()) ASetArch.perform(bt);
             }
         });
         
-        rbCopy.getButtonPressListeners().add(new ButtonPressListener() {//Copy
+        rbCopy.getButtonPressListeners().add(new ButtonPressListener() {// Copy
             @Override public void buttonPressed(Button bt)
             {
                 if (bt.isSelected()) ASetInstallType.perform(bt);
                 btShortcutAdvanced.setEnabled(getSelectedPack().getFileType()!=FILE_TYPE.Archive);
             }
         });
-        rbExtract.getButtonPressListeners().add(new ButtonPressListener() {//Extract
+        rbExtract.getButtonPressListeners().add(new ButtonPressListener() {// Extract
             @Override public void buttonPressed(Button bt)
             {
                 if (bt.isSelected()) ASetInstallType.perform(bt);
                 btShortcutAdvanced.setEnabled(cbShortcut.isSelected());
             }
         });
-        rbExecute.getButtonStateListeners().add(new ButtonStateListener() {//Execute
+        rbExecute.getButtonStateListeners().add(new ButtonStateListener() {// Execute
             @Override public void stateChanged(Button bt, State st)
             {
                 if (bt.isEnabled()) {
@@ -1242,6 +1279,9 @@ public class SetFrame extends FillPane implements Bindable
         rbOsWin.setEnabled(false);
         rbOsLin.setEnabled(false);
         rbOsMac.setEnabled(false);
+        rbArchAll.setEnabled(false);
+        rbArch32.setEnabled(false);
+        rbArch64.setEnabled(false);
         rbExecute.setEnabled(false);
         rbExtract.setEnabled(false);
         rbCopy.setEnabled(false);
@@ -1257,6 +1297,9 @@ public class SetFrame extends FillPane implements Bindable
         rbOsWin.setSelected(false);
         rbOsLin.setSelected(false);
         rbOsMac.setSelected(false);
+        rbArchAll.setSelected(false);
+        rbArch32.setSelected(false);
+        rbArch64.setSelected(false);
         rbExecute.setSelected(false);
         rbExtract.setSelected(false);
         rbCopy.setSelected(false);
@@ -1330,6 +1373,9 @@ public class SetFrame extends FillPane implements Bindable
         rbOsWin.setEnabled(true);
         rbOsLin.setEnabled(true);
         rbOsMac.setEnabled(true);
+        rbArchAll.setEnabled(true);
+        rbArch32.setEnabled(true);
+        rbArch64.setEnabled(true);
     }
     /**
      * Init properties for selected Pack
@@ -1339,8 +1385,7 @@ public class SetFrame extends FillPane implements Bindable
         //Global: bind radio button to install type
         assert pack != null;
         
-        INSTALL_TYPE IT = pack.getInstallType();
-        switch(IT) {
+        switch(pack.getInstallType()) {
         case COPY:
             rbCopy.setSelected(true);
             break;
@@ -1358,8 +1403,7 @@ public class SetFrame extends FillPane implements Bindable
             break;
         }
         
-        PLATFORM OS = pack.getInstallOs();
-        switch(OS) {
+        switch(pack.getInstallOs()) {
         case ALL:
             rbOsAll.setSelected(true);
             break;
@@ -1371,6 +1415,18 @@ public class SetFrame extends FillPane implements Bindable
             break;
         case MAC:
             rbOsMac.setSelected(true);
+            break;
+        }
+        
+        switch(pack.getArch()) {
+        case 0:
+            rbArchAll.setSelected(true);
+            break;
+        case 32:
+            rbArch32.setSelected(true);
+            break;
+        case 64:
+            rbArch64.setSelected(true);
             break;
         }
         
@@ -1427,6 +1483,9 @@ public class SetFrame extends FillPane implements Bindable
         PLATFORM OS = list.get(0).getInstallOs();
         boolean isSameOS = true;
         
+        int ARCH = list.get(0).getArch();
+        boolean isSameArch = true;
+        
         //Dependency
         Group sameGDep; Pack samePDep;
         sameGDep = list.get(0).getGroupDependency();
@@ -1463,6 +1522,8 @@ public class SetFrame extends FillPane implements Bindable
                 isSameIT = false;
             if (list.get(i).getInstallOs() != OS)
                 isSameOS = false;
+            if (list.get(i).getArch() != ARCH)
+                isSameArch = false;
             
             if (isSameDep) {
                 if (isGroupDependency()) {//Group dependency
@@ -1556,6 +1617,20 @@ public class SetFrame extends FillPane implements Bindable
             }
         }
         
+        if (isSameArch) {// Packs of same architecture selected
+            switch(ARCH) {
+            case 0:
+                rbArchAll.setSelected(true);
+                break;
+            case 32:
+                rbArch32.setSelected(true);
+                break;
+            case 64:
+                rbArch64.setSelected(true);
+                break;
+            }
+        }
+        
         if (isSameDep && isGroupDependency()) lbDependency.setSelectedItem(sameGDep);
         else if (isSameDep && !isGroupDependency()) lbDependency.setSelectedItem(samePDep);
         else lbDependency.setSelectedIndex(-1);
@@ -1583,6 +1658,9 @@ public class SetFrame extends FillPane implements Bindable
         rbOsWin.setEnabled(true);
         rbOsLin.setEnabled(true);
         rbOsMac.setEnabled(true);
+        rbArchAll.setEnabled(true);// Set Arch platforms
+        rbArch32.setEnabled(true);
+        rbArch64.setEnabled(true);
         lbDependency.setEnabled(true);//Set dependency
         inInstallGroups.setEnabled(true);//Set Install Groups
         inPInstallPath.setEnabled(true);//Set Pack Install Paths

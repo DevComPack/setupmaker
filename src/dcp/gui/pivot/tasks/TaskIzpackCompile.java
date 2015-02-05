@@ -531,7 +531,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         // Groups Writing
         for(Group G:groups) {
             Out.print("STAX", "Writing group " + G.getName());
-            if (!PW.addGroup(G)) {//If error writing
+            if (!PW.addGroup(G)) {// If error writing
                 Out.print("STAX", "Writing error for group " + G.getName() + "!");
                 return false;
             }
@@ -556,12 +556,12 @@ public class TaskIzpackCompile extends Task<Boolean>
                         ProcessW.addClassJob(P,"com.izforge.izpack.resources.SetupExecute",
                                                 new String[] {P.getName(), P.isSilentInstall()?"true":"false", "$INSTALL_PATH/$EXE_DIR"});
                     }
-                    else if (P.getFileType() == FILE_TYPE.Executable) {//Executable process writing
+                    else if (P.getFileType() == FILE_TYPE.Executable) {// Executable process writing
                         if (P.getName().endsWith(".jar")) {// Jar executable
                             ProcessW.addClassJob(P,"com.izforge.izpack.resources.JarExecute",
                                     new String[] {P.getName(), "$INSTALL_PATH/$EXE_DIR"});
                         }
-                        else if (P.getName().endsWith(".bat") || P.getName().endsWith(".sh")) {//Bat-Sh script
+                        else if (P.getName().endsWith(".bat") || P.getName().endsWith(".sh")) {// Bat-Sh script
                             ProcessW.addScriptJob(P, "DEP=$INSTALL_PATH\\"+IOFactory.exeTargetDir);
                         }
                         else if (P.getName().endsWith(".reg")) {// Reg script

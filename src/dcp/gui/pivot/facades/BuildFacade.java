@@ -40,13 +40,14 @@ public class BuildFacade
         assert path.length() > 0;
 
         File folder = new File(path);
-        if (!folder.exists()) return false;
-        if (folder.isFile()) // Get parent folder of file
+        if (!folder.exists() || folder.isFile()) // Get parent folder of file
             folder = folder.getParentFile();
+        if (!folder.exists()) return false;
         
         Desktop desktop = Desktop.getDesktop();
         desktop.open(folder); // Open folder
         Out.print("DEBUG", "Open desktop folder at " + folder.getAbsolutePath());
+        
         return true;
     }
     

@@ -23,15 +23,15 @@
 				<columns>
 					<TablePane.Column width="-1" />
 					<TablePane.Column width="1*" />
-					<!--  <TablePane.Column width="-1" /> -->
+					<TablePane.Column width="-1" />
 					<TablePane.Column width="-1" />
 				</columns>
 				<TablePane.Row>
 		    		<ListButton bxml:id="lbBuild" enabled="true" repeatable="false" listSize="10" listData="['IzPack', 'NuGet']" tooltipText="Builder" />
 					<TextInput bxml:id="inTargetPath" prompt="Target Path" tooltipText="Target Path" textSize="50" />
-					<!-- <PushButton bxml:id="btOpen" styles="{toolbar:'true', backgroundColor:'WHITE'}" tooltipText="Open folder in explorer">
+					<PushButton bxml:id="btOpen" styles="{toolbar:'true', backgroundColor:'WHITE'}" tooltipText="Open folder in explorer">
 						<content:ButtonData icon="/dcp/gui/icons/folder.png" />
-					</PushButton> -->
+					</PushButton>
 					<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
 						<content:ButtonData text="Browse" icon="/dcp/gui/icons/browse.png" />
 					</PushButton>

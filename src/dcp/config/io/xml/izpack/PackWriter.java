@@ -8,6 +8,7 @@ import dcp.config.io.IOFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
 import dcp.config.io.xml.StaxMateWriter;
 import dcp.logic.factory.PackFactory;
+import dcp.logic.factory.TypeFactory.CONDITION;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
@@ -87,79 +88,82 @@ public class PackWriter extends StaxMateWriter
     }
     
     //Write PACK Data
-    public boolean addPack(Pack PACK) throws XMLStreamException {
-        SMOutputElement pack = packRoot.addElement("pack");//<pack 
-        pack.addAttribute("name", PACK.getInstallName());//name="Pack_Name"
-        pack.addAttribute("required", (PACK.isRequired())?"yes":"no");//required="yes/no"
-        pack.addAttribute("preselected", (PACK.isSelected())?"yes":"no");//preselected="yes/no"
-        pack.addAttribute("hidden", (PACK.isHidden())?"true":"false");//hidden="true/false"
-        switch(PACK.getInstallOs()) {//os="windows/unix/mac"
+    public boolean addPack(Pack pack) throws XMLStreamException {
+        SMOutputElement xmlPack = packRoot.addElement("pack");//<pack 
+        xmlPack.addAttribute("name", pack.getInstallName());//name="Pack_Name"
+        xmlPack.addAttribute("required", (pack.isRequired())?"yes":"no");//required="yes/no"
+        xmlPack.addAttribute("preselected", (pack.isSelected())?"yes":"no");//preselected="yes/no"
+        xmlPack.addAttribute("hidden", (pack.isHidden())?"true":"false");//hidden="true/false"
+        switch(pack.getInstallOs()) {//os="windows/unix/mac"
         case WINDOWS:
-            pack.addAttribute("os", "windows");
+            xmlPack.addAttribute("os", "windows");
             break;
         case LINUX:
-            pack.addAttribute("os", "unix");
+            xmlPack.addAttribute("os", "unix");
             break;
         case MAC:
-            pack.addAttribute("os", "mac");
+            xmlPack.addAttribute("os", "mac");
             break;
         default:
             break;
         }
         
-        if (PACK.getGroup() != null) {
-            pack.addAttribute("parent", PACK.getGroupName());//parent="Group_name"
+        if (pack.getArch() > 0)
+            xmlPack.addAttribute("condition", (pack.getArch() == 64)? CONDITION.ARCH64.toString() : CONDITION.ARCH32.toString());
+        
+        if (pack.getGroup() != null) {
+            xmlPack.addAttribute("parent", pack.getGroupName());//parent="Group_name"
         }
         
-        if (!PACK.getInstallGroups().equals(""))
-            pack.addAttribute("installGroups", PACK.getInstallGroups());//installGroups="tools,dev"
+        if (!pack.getInstallGroups().equals(""))
+            xmlPack.addAttribute("installGroups", pack.getInstallGroups());//installGroups="tools,dev"
         
-        pack.addElementWithCharacters(null, "description", PACK.getDescription());//<description></description>
+        xmlPack.addElementWithCharacters(null, "description", pack.getDescription());//<description></description>
         
-        if (PACK.getFileType() ==  FILE_TYPE.Folder && PACK.getInstallType() == INSTALL_TYPE.EXTRACT) {//Folder unzip
-            SMOutputElement pack_file = pack.addElement("fileset");//<fileset 
-            pack_file.addAttribute("dir", PACK.getPath());//dir="path/to/file"
-            pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+PACK.getInstallPath());//targetDir="$INSTALL_PATH/Group"
-            if (PACK.isOverride())//override="asktrue"
+        if (pack.getFileType() ==  FILE_TYPE.Folder && pack.getInstallType() == INSTALL_TYPE.EXTRACT) {//Folder unzip
+            SMOutputElement pack_file = xmlPack.addElement("fileset");//<fileset 
+            pack_file.addAttribute("dir", pack.getPath());//dir="path/to/file"
+            pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+pack.getInstallPath());//targetDir="$INSTALL_PATH/Group"
+            if (pack.isOverride())//override="asktrue"
                 pack_file.addAttribute("override", "true");
             else pack_file.addAttribute("override", "false");
         }
         else {//Normal
-            SMOutputElement pack_file = pack.addElement("file");//<file 
-            pack_file.addAttribute("src", PACK.getPath());//src="path/to/file"
-            pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+PACK.getInstallPath());//targetDir="$INSTALL_PATH/Group"
-            if (PACK.isOverride())//override="asktrue"
+            SMOutputElement pack_file = xmlPack.addElement("file");//<file 
+            pack_file.addAttribute("src", pack.getPath());//src="path/to/file"
+            pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+pack.getInstallPath());//targetDir="$INSTALL_PATH/Group"
+            if (pack.isOverride())//override="asktrue"
                 pack_file.addAttribute("override", "true");
             else pack_file.addAttribute("override", "false");
-            if (PACK.getFileType() ==  FILE_TYPE.Archive && PACK.getInstallType() == INSTALL_TYPE.EXTRACT)//unpack="true"
+            if (pack.getFileType() ==  FILE_TYPE.Archive && pack.getInstallType() == INSTALL_TYPE.EXTRACT)//unpack="true"
                 pack_file.addAttribute("unpack", "true");
         }
         
-        if (PACK.getGroupDependency() != null) {//Group Dependencies
-            Group G = PACK.getGroupDependency();
-            SMOutputElement group_dep = pack.addElement("depends");//<depends 
+        if (pack.getGroupDependency() != null) {// Group Dependencies
+            Group G = pack.getGroupDependency();
+            SMOutputElement group_dep = xmlPack.addElement("depends");//<depends 
             group_dep.addAttribute("packname", G.getName());//packName="Dependency_Group"
             for(Pack P:PackFactory.getPacks()) {
                 if (P.getGroupName().equals(G.getName()) && P.getGroupPath().equals(G.getPath())) {
-                    SMOutputElement pack_dep = pack.addElement("depends");//<depends 
+                    SMOutputElement pack_dep = xmlPack.addElement("depends");//<depends 
                     pack_dep.addAttribute("packname", P.getInstallName());//packName="Dependency_Pack"
-                    if (PACK.getInstallType().equals(INSTALL_TYPE.EXECUTE)) {///Copy dependent files to tmp directory if executable
-                        SMOutputElement pack_file = pack.addElement("file");//<file 
+                    if (pack.getInstallType().equals(INSTALL_TYPE.EXECUTE)) {///Copy dependent files to tmp directory if executable
+                        SMOutputElement pack_file = xmlPack.addElement("file");//<file 
                         pack_file.addAttribute("src", P.getPath());//src="path/to/file"
-                        pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+PACK.getInstallPath());//targetDir="$INSTALL_PATH/tmp/Group"
+                        pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+pack.getInstallPath());//targetDir="$INSTALL_PATH/tmp/Group"
                         pack_file.addAttribute("override", "true");//override="asktrue"
                     }
                 }
             }
         }
-        else if(PACK.getPackDependency() != null) {//Pack Dependency
-            Pack P = PACK.getPackDependency();
-            SMOutputElement pack_dep = pack.addElement("depends");//<depends 
+        else if(pack.getPackDependency() != null) {// Pack Dependency
+            Pack P = pack.getPackDependency();
+            SMOutputElement pack_dep = xmlPack.addElement("depends");//<depends 
             pack_dep.addAttribute("packname", P.getInstallName());//packName="Dependency_Pack"
-            if (PACK.getInstallType().equals(INSTALL_TYPE.EXECUTE)) {///Copy dependent file to tmp directory if executable
-                SMOutputElement pack_file = pack.addElement("file");//<file 
+            if (pack.getInstallType().equals(INSTALL_TYPE.EXECUTE)) {///Copy dependent file to tmp directory if executable
+                SMOutputElement pack_file = xmlPack.addElement("file");//<file 
                 pack_file.addAttribute("src", P.getPath());//src="path/to/file"
-                pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+PACK.getInstallPath());//targetDir="$INSTALL_PATH/tmp/Group"
+                pack_file.addAttribute("targetdir", "$INSTALL_PATH/"+pack.getInstallPath());//targetDir="$INSTALL_PATH/tmp/Group"
                 pack_file.addAttribute("override", "true");//override="asktrue"
             }
         }

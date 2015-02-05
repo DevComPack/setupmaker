@@ -74,9 +74,9 @@ public class BuildFrame extends FillPane implements Bindable
     // Browse Area
     @BXML private FileBrowserSheet fileBrowserSheet;// File Browser
     @BXML private PushButton btBrowse;// Browse button
-    //@BXML private PushButton btOpen;// Open folder button
+    @BXML private PushButton btOpen;// Open folder button
     @BXML private TextInput inTargetPath;// Path Text Input
-    //private Action AOpenFolder;
+    private Action AOpenFolder;
     // Build
     @BXML private ListButton lbBuild;// Build type (IzPack/NuGet)
     @BXML private Accordion accBuildOpt;// Build options Accordion
@@ -142,7 +142,7 @@ public class BuildFrame extends FillPane implements Bindable
             }
         };
         
-        /*/ Open target folder in explorer
+        // Open target folder in explorer
         AOpenFolder = new Action() {
             @Override public void perform(Component c)
             {
@@ -160,7 +160,7 @@ public class BuildFrame extends FillPane implements Bindable
                     }
                 }
             }
-        };*/
+        };
     }
     
     @Override
@@ -183,7 +183,7 @@ public class BuildFrame extends FillPane implements Bindable
         
         // Action Binding
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
-        //btOpen.setAction(AOpenFolder);
+        btOpen.setAction(AOpenFolder);
         
         // Target file chosen from File Chooser event
         fileBrowserSheet.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {

@@ -205,7 +205,7 @@ public class CastFactory
     /**
      * Update model data of old Pack
      * @param P: Pack to update
-     * @param DCP_VERSION: DCP version of pack
+     * @param DCP_VERSION: old DCP version of pack
      */
     public static void packModelUpdate(Pack P, String DCP_VERSION) {
         switch (DCP_VERSION) {
@@ -213,6 +213,7 @@ public class CastFactory
             P.setInstallVersion(Pack.getVersionFromName(P.getName()));
             break;
         case "1.1":
+            P.setArch(0);
             break;
         }
     }

@@ -8,6 +8,7 @@
 	<bxml:define>
 		<ButtonGroup bxml:id="installMode" />
 		<ButtonGroup bxml:id="installOS" />
+		<ButtonGroup bxml:id="arch" />
 		<bxml:include bxml:id="ngdialog" src="/dcp/gui/pivot/bxml/ngDialog.bxml" />
 		<bxml:include bxml:id="rgdialog" src="/dcp/gui/pivot/bxml/rgDialog.bxml" />
 		<bxml:include bxml:id="sortDialog"
@@ -51,11 +52,11 @@
 													<!-- Packs buttons -->
 													<BoxPane orientation="Vertical"
 														styles="{padding:{left:0,right:4,top:10,bottom:5}, horizontalAlignment:'center'}">
-														<!-- <PushButton bxml:id="btCheck"
+														<PushButton bxml:id="btCheck"
 															tooltipText="Check and validate all packs data"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
 															<content:ButtonData icon="/dcp/gui/icons/debug.png" />
-														</PushButton> -->
+														</PushButton>
 														<PushButton bxml:id="btSelectAll" tooltipText="Select all"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/selectall.png" />
@@ -346,6 +347,20 @@
 																buttonGroup="$installOS" enabled="false" />
 															<RadioButton bxml:id="rbOsMac" buttonData="MacOS X"
 																buttonGroup="$installOS" enabled="false" />
+														</FillPane>
+													</FillPane>
+												</TablePane.Row>
+
+												<!-- Architecture -->
+												<TablePane.Row height="-1">
+													<FillPane orientation="Vertical">
+														<FillPane orientation="Horizontal">
+															<RadioButton bxml:id="rbArchAll" buttonData="All arch"
+																buttonGroup="$arch" enabled="false" />
+															<RadioButton bxml:id="rbArch32" buttonData="32 bits"
+																buttonGroup="$arch" enabled="false" />
+															<RadioButton bxml:id="rbArch64" buttonData="64 bits"
+																buttonGroup="$arch" enabled="false" />
 														</FillPane>
 													</FillPane>
 												</TablePane.Row>

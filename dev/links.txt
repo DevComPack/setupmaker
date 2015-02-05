@@ -1,5 +1,10 @@
 sf.net: https://sourceforge.net/projects/devcompack/
+github: http://jackred.github.io/devcompack
+
 Softpedia.com: http://www.softpedia.com/get/Authoring-tools/Setup-creators/DevComPack-Setup-Maker.shtml
+FreewareFiles.com: http://www.freewarefiles.com/DCP-Setup-Maker_program_103459.html
+Yemista: http://yemista.com/free-online-tools/
+
 PAD File: http://devcompack.sourceforge.net/files/releases/pad_file.xml
 c|net download.com: http://download.cnet.com/DCP-Setup-Maker/3000-2216_4-75938724.html
 ZDnet.com: http://downloads.zdnet.com/product/2216-75938724/
@@ -14,3 +19,7 @@ Softonic.com: http://dcp-setup-maker.en.softonic.com/
 EuroDownload.com: http://www.eurodownload.com/download-software/218885/DCP-Setup-Maker.html
 
 Veryhuo: http://www.veryhuo.com/down/html/73616.html
+Jaleco.com: https://dcp-setup-maker.jaleco.com/
+Downv.com: http://www.downv.com/Windows/download-DCP-Setup-Maker-10621463.htm
+InSofter: http://www.insofter.com/app/1653743/dcp_setup_maker.html
+Softango: http://www.softango.com/360675-dcp-setup-maker-1-0-1.html

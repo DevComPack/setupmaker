@@ -32,6 +32,7 @@ public class Pack implements Serializable
     private String path = "";//File Absolute Path
     private INSTALL_TYPE installType = INSTALL_TYPE.COPY;//Install Type
     private PLATFORM installOs = PLATFORM.ALL;//Install OS
+    private int arch = 0;// Platform Architecture (32/64 bits|0 = all)
     private String installPath = "";//Install Path, after the $INSTALL_PATH defined
     private String shortcutPath = "";//Relative path for shortcut
     //Info
@@ -87,12 +88,13 @@ public class Pack implements Serializable
         priority = pack.priority;
         fileType = pack.fileType;
         installName = pack.installName;
-        installVersion = pack.installVersion;
+        installVersion = pack.installVersion; // 1.1
         size = pack.size;
         path = pack.path;
         group = pack.group;
         installType = pack.installType;
-        if (pack.installOs!=null) installOs = pack.installOs;
+        if (pack.installOs != null) installOs = pack.installOs;
+        arch = pack.arch; // 1.2
         installPath = pack.installPath;
         shortcutPath = pack.shortcutPath;
         installGroups = pack.installGroups;
@@ -211,6 +213,12 @@ public class Pack implements Serializable
 
     public PLATFORM getInstallOs() { return installOs; }
     public void setInstallOs(PLATFORM OS) { installOs = OS; }
+    
+    public int getArch() { return arch; }
+    public void setArch(int arch) {
+        assert arch == 0 || arch == 32 || arch == 64;
+        this.arch = arch;
+    }
     
     public int getPriority() { return priority+1; }
     public void setPriority(int priority) { this.priority = priority; }
