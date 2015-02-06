@@ -9,7 +9,7 @@ Watch a demo of DCP Setup Maker's installer being made in 2 minutes: https://www
 Its intuitive UI and exceptional ease of use makes it very easy to build complex installers with large amounts of files.
 The whole process is done step by step through a wizard-like interface, filling in fields and setting up files to finally build your package.
 
-*Required: Java 1.6+*  
+*Required: Java 1.7+*  
 *Powered by Java, IzPack, Nuget, Apache Pivot, Apache Ant and Stax.*  
 
 
@@ -23,6 +23,31 @@ http://www.apache.org/licenses/
 
 CHANGELOG
 ---------
+
+*1.1.1*
++ New features:
+Nuget/Chocolatey process compiler
+Conditions support for IzPack
+- Enhancements:
+Code structure update
+Validators debugging warnings
+Multi lines clipboard copy of selected log lines
+Back to factory setup data on undo with no modifications
+Merge of dcp libs to one library
+Add scan horizontal split panel to Workspace auto-saved data
+Build mode and default build configurations added to workspace data
+Build logs copy to clipboard from context menu
+Apache Commons IO for file copy operations
+CommandLine build includes app name and version in package file
+* Bug fixes:
+Default empty target path was based on app data instead of setup data
+Workspace configuration was always saved even when not modified
+Save file extension correction on empty path
+Pack install name validation was displaying a wrong debug message
+SFTP data load generated exception on empty data
+Workspace data was saved with edit flag on
+Frames Singletons were not used as intended
+
 *1.1.0*
 * Bug Fixes:
 Set tab listbox circular mode disabled;
