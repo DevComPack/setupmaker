@@ -1,0 +1,305 @@
+﻿<html>
+	
+<head>
+	<title>What's new</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Personal Edition 4.6.2.573">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "index.html?" + sTopicUrl;
+			}
+			else if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+			{
+				top.FrameTOC.SelectTocItem("Whatsnew");
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">What's new</h1>
+				
+				</div>
+			<div id="topic_header_nav">
+				<a href="Introduction.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="GettingStarted.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">1.2.0</span></span></h1>
+<p class="rvps2"><span class="rvts6">-Code rewrite</span></p>
+<p class="rvps2"><span class="rvts6">+Open target folder button on Build tab</span></p>
+<p class="rvps2"><span class="rvts6">+Packs data Check feature</span></p>
+<p class="rvps2"><span class="rvts6">+Pack install architecture property</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">Bugfixes:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Empty Group creation was possible</span></li>
+<li class="rvps2"><span class="rvts6">Group treeview node delete button returned exception when none selected</span></li>
+<li class="rvps2"><span class="rvts6">Panels display flag wasn't initialized</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">+Packr/JARtoEXE implementation (_https://github.com/libgdx/packr)</span></p>
+<p class="rvps2"><span class="rvts6">+Tweak file options (icon, exe..)</span></p>
+<p class="rvps2"><span class="rvts6">+Scan mode change Start(Scan/Load)</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">1.1.1</span></span></h1>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">New features:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Nuget/Chocolatey process compiler</span></li>
+<li class="rvps2"><span class="rvts6">Conditions support for IzPack</span></li>
+</ul>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">Enhancements:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Code structure update</span></li>
+<li class="rvps2"><span class="rvts6">Validators debugging warnings</span></li>
+<li class="rvps2"><span class="rvts6">Multi lines clipboard copy of selected log lines</span></li>
+<li class="rvps2"><span class="rvts6">Back to factory setup data on undo with no modifications</span></li>
+<li class="rvps2"><span class="rvts6">Merge of dcp libs to one library</span></li>
+<li class="rvps2"><span class="rvts6">Add scan horizontal split panel to Workspace auto-saved data</span></li>
+<li class="rvps2"><span class="rvts6">Build mode and default build configurations added to workspace data</span></li>
+<li class="rvps2"><span class="rvts6">Build logs copy to clipboard from context menu</span></li>
+<li class="rvps2"><span class="rvts6">Apache Commons IO for file copy operations</span></li>
+<li class="rvps2"><span class="rvts6">CommandLine build includes app name and version in package file</span></li>
+</ul>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">Bug fixes:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Default empty target path was based on app data instead of setup data</span></li>
+<li class="rvps2"><span class="rvts6">Workspace configuration was always saved even when not modified</span></li>
+<li class="rvps2"><span class="rvts6">Save file extension correction on empty path</span></li>
+<li class="rvps2"><span class="rvts6">Pack install name validation was displaying a wrong debug message</span></li>
+<li class="rvps2"><span class="rvts6">SFTP data load generated exception on empty data</span></li>
+<li class="rvps2"><span class="rvts6">Workspace data was saved with edit flag on</span></li>
+<li class="rvps2"><span class="rvts6">Frames Singletons were not used as intended</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">1.1.0</span></span></h1>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">Bug Fixes:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Set tab listbox circular mode disabled</span></li>
+<li class="rvps2"><span class="rvts6">Packs tooltip text correction on empty area</span></li>
+<li class="rvps2"><span class="rvts6">Scan Packs TableView selection enabled</span></li>
+<li class="rvps2"><span class="rvts6">Expand/Collapse buttons fix for Java 8</span></li>
+<li class="rvps2"><span class="rvts6">Fixed Data initialization and load at startup</span></li>
+<li class="rvps2"><span class="rvts6">Tab Singletons initialize with instantiation</span></li>
+<li class="rvps2"><span class="rvts6">Scan on enabled selection didn't update packs list</span></li>
+</ul>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">New features:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Pack version property</span></li>
+<li class="rvps2"><span class="rvts6">New compilation system based on multiple compilers</span></li>
+<li class="rvps2"><span class="rvts6">Command Line compilation of dcp files</span></li>
+</ul>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">Enhancements:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Apache Pivot update to 2.0.4</span></li>
+<li class="rvps2"><span class="rvts6">Split panel on Scan tab's sidebar</span></li>
+<li class="rvps2"><span class="rvts6">Resizable RegExp filter input size</span></li>
+<li class="rvps2"><span class="rvts6">Version extract from pack file name</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">1.0.3</span></span></h1>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">Bug Fixes:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Fixed for Java 8</span></li>
+<li class="rvps2"><span class="rvts6">Code structure update</span></li>
+<li class="rvps2"><span class="rvts6">Simple scan didn't update on changed selection</span></li>
+<li class="rvps2"><span class="rvts6">Filters now are enabled when selected</span></li>
+<li class="rvps2"><span class="rvts6">Version increment format check + focus</span></li>
+</ul>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts17">Enhancements:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">GUI update</span></li>
+<li class="rvps2"><span class="rvts6">Assistant update</span></li>
+<li class="rvps2"><span class="rvts6">Recent scanned directories display with parent + full path on tooltip</span></li>
+<li class="rvps2"><span class="rvts6">Improved filtering system</span></li>
+<li class="rvps2"><span class="rvts6">Custom filters show up in UI</span></li>
+<li class="rvps2"><span class="rvts6">Second custom filter replaced with regexp filtering</span></li>
+<li class="rvps2"><span class="rvts6">Packs tooltip displays full path to pack on disk</span></li>
+<li class="rvps2"><span class="rvts6">Automated version number parts selection</span></li>
+<li class="rvps2"><span class="rvts6">Version Increment applies to selected part or last part by default</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">1.0.2</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">Custom user defined langpack</span></li>
+<li class="rvps2"><span class="rvts6">Hidden pack option</span></li>
+<li class="rvps2"><span class="rvts6">Pack Shortcut advanced options for folders and archives</span></li>
+<li class="rvps2"><span class="rvts6">Suggestions for folder/archive inner files' paths shortcuts</span></li>
+<li class="rvps2"><span class="rvts6">Packs source path included into save/load</span></li>
+<li class="rvps2"><span class="rvts6">Path Validator for scanned folder path</span></li>
+<li class="rvps2"><span class="rvts6">Scanned folder path can now be saved as default configuration</span></li>
+<li class="rvps2"><span class="rvts6">Changing/Correcting pack paths from Scan folder path if path error</span></li>
+<li class="rvps2"><span class="rvts6">Editing invalidated source path doesn't scan the folder</span></li>
+<li class="rvps2"><span class="rvts6">Added DCP version number to save-file for future versions load fix</span></li>
+<li class="rvps2"><span class="rvts6">Multiple comma separated authors can be added (emails included)</span></li>
+<li class="rvps2"><span class="rvts6">Helper assistant text updated</span></li>
+<li class="rvps2"><span class="rvts6">Added Tera-Bytes to split size units</span></li>
+<li class="rvps2"><span class="rvts6">Packs panel disabled if all packs are required</span></li>
+<li class="rvps2"><span class="rvts6">Shortcuts panel disabled if no shortcut to install</span></li>
+<li class="rvps2"><span class="rvts6">Log line selection copies content to clipboard</span></li>
+<li class="rvps2"><span class="rvts6">Packs can be deleted from Set tab</span></li>
+<li class="rvps2"><span class="rvts6">Increment version number button</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">1.0.1</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">Fixed for Mac OS X based systems</span></li>
+<li class="rvps2"><span class="rvts6">Apache Pivot library updated from 2.0.2 to 2.0.3</span></li>
+<li class="rvps2"><span class="rvts6">Tweak option for automated script generation at end of setup</span></li>
+<li class="rvps2"><span class="rvts6">Input validation for file paths</span></li>
+<li class="rvps2"><span class="rvts6">Process panel fixed for non-windows os</span></li>
+<li class="rvps2"><span class="rvts6">Added support for more executable file types (reg, bat, sh, jar)</span></li>
+<li class="rvps2"><span class="rvts6">Dependency implemented for executable packs</span></li>
+<li class="rvps2"><span class="rvts6">Packs can have two types of dependency (Group or single Pack)</span></li>
+<li class="rvps2"><span class="rvts6">Two Custom filters added to scan for advanced users</span></li>
+<li class="rvps2"><span class="rvts6">Platform OS option for Packs</span></li>
+<li class="rvps2"><span class="rvts6">Selected option by default for Packs</span></li>
+<li class="rvps2"><span class="rvts6">HTTP Web Setup builder</span></li>
+<li class="rvps2"><span class="rvts6">SFTP connection + packs file transfer</span></li>
+<li class="rvps2"><span class="rvts6">Directories filter enabled for Recursive Scan</span></li>
+<li class="rvps2"><span class="rvts6">Group rename function button added</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2" style="page-break-before: always;"><span class="rvts6"><br/></span></p>
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">0.9</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">JSON integration for advanced settings</span></li>
+<li class="rvps2"><span class="rvts6">Fixed for Linux based systems (tested on Ubuntu 13.04)</span></li>
+<li class="rvps2"><span class="rvts6">New options for Setup window size control</span></li>
+<li class="rvps2"><span class="rvts6">Helper assistant display binded to the current step</span></li>
+<li class="rvps2"><span class="rvts6">More detailed assistant tips</span></li>
+<li class="rvps2"><span class="rvts6">Scroll enabled for Tweak form</span></li>
+<li class="rvps2"><span class="rvts6">Install Path suggestions from other packs' install paths included</span></li>
+<li class="rvps2"><span class="rvts6">Dependency options integrated for multi packs selection</span></li>
+<li class="rvps2"><span class="rvts6">Advanced install groups managing for multiple packs selection</span></li>
+<li class="rvps2"><span class="rvts6">Save file path display on window title and * flag for unsaved edit</span></li>
+<li class="rvps2"><span class="rvts6">Shortcuts defined (help, load, save, save as, undo, new group validate, next, previous)</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">0.8</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">GUI update</span></li>
+<li class="rvps2"><span class="rvts6">Save/Load multiple files</span></li>
+<li class="rvps2"><span class="rvts6">Undo all function button</span></li>
+<li class="rvps2"><span class="rvts6">Group selection mapped to packs</span></li>
+<li class="rvps2"><span class="rvts6">Save default settings</span></li>
+<li class="rvps2"><span class="rvts6">Assisted adding of install groups</span></li>
+<li class="rvps2"><span class="rvts6">Two new langpacks supported (Dutch, Spanish)</span></li>
+<li class="rvps2"><span class="rvts6">Language packs selection in Tweak advanced options</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">0.7</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">GUI update</span></li>
+<li class="rvps2"><span class="rvts6">Code optimize</span></li>
+<li class="rvps2"><span class="rvts6">Recent scanned directories have remove button</span></li>
+<li class="rvps2"><span class="rvts6">License resource add in tweak</span></li>
+<li class="rvps2"><span class="rvts6">Status Bar</span></li>
+<li class="rvps2"><span class="rvts6">Pack Install Name update</span></li>
+<li class="rvps2"><span class="rvts6">Pack name validator for redundant names</span></li>
+<li class="rvps2"><span class="rvts6">About info alert dialog implemented</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">0.6</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">Build process implemented with Ant scripts instead of process commands</span></li>
+<li class="rvps2"><span class="rvts6">Application full 4 steps helper assistant at first launch</span></li>
+<li class="rvps2"><span class="rvts6">Windows Setup execute by java class instead of bat commands</span></li>
+<li class="rvps2"><span class="rvts6">Izpack xml file resources all grouped into a single install.xml file</span></li>
+<li class="rvps2"><span class="rvts6">Tweak Application URL analyzed and corrected at compile, no validator</span></li>
+<li class="rvps2"><span class="rvts6">Readme file resource at Tweak</span></li>
+<li class="rvps2"><span class="rvts6">More control on shortcuts at Tweak</span></li>
+<li class="rvps2"><span class="rvts6">Media files filters added to scan options</span></li>
+<li class="rvps2"><span class="rvts6">Text inputs' width fixed depending on parent component size</span></li>
+<li class="rvps2"><span class="rvts6">File Browsers root directory connected to other browsers</span></li>
+<li class="rvps2"><span class="rvts6">Build export package filename binded to application name and version</span></li>
+<li class="rvps2"><span class="rvts6">Izpack compile log messages display at compile log and debug at console</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">0.5</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">GUI update</span></li>
+<li class="rvps2"><span class="rvts6">Recent scanned directories</span></li>
+<li class="rvps2"><span class="rvts6">Project save/load to file</span></li>
+<li class="rvps2"><span class="rvts6">Application configuration saved to file</span></li>
+<li class="rvps2"><span class="rvts6">One page description helper at first run</span></li>
+<li class="rvps2"><span class="rvts6">Install mode property set to multiselected packs</span></li>
+<li class="rvps2"><span class="rvts6">Pack display name at Groups view instead of filename</span></li>
+<li class="rvps2"><span class="rvts6">Drag and Drop Packs to a Group</span></li>
+<li class="rvps2"><span class="rvts6">Drag and Drop Pack name to Text inputs</span></li>
+<li class="rvps2"><span class="rvts6">Set Packs select all/none buttons</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
+<h1 class="rvps6"><span class="rvts0"><span class="rvts16">0.4</span></span></h1>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Bug fixes</span></li>
+<li class="rvps2"><span class="rvts6">GUI Update</span></li>
+<li class="rvps2"><span class="rvts6">Integrated Izpack standalone compiler into application</span></li>
+<li class="rvps2"><span class="rvts6">Packs multiselection properties</span></li>
+<li class="rvps2"><span class="rvts6">Set tab Groups import button from scan (Groups + Packs)</span></li>
+<li class="rvps2"><span class="rvts6">Properties update (Name, Silent setup, Override, Shortcut)</span></li>
+<li class="rvps2"><span class="rvts6">Integrated Sort tab into Set side button for Packs</span></li>
+<li class="rvps2"><span class="rvts6">Tweak tab (Info dialog + Set install path + Logo)</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p></p>
+<p class="rvps5"><span class="rvts14">Created with the Personal Edition of HelpNDoc: </span><a class="rvts15" href="http://www.helpndoc.com/feature-tour/create-ebooks-for-amazon-kindle">Full-featured Kindle eBooks generator</a></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2015 by DevComPack. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+
