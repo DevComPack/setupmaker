@@ -144,11 +144,6 @@
 													<!-- Groups buttons -->
 													<BoxPane orientation="Vertical"
 														styles="{padding:{left:4,right:0,top:10,bottom:5}, horizontalAlignment:'center'}">
-														<PushButton bxml:id="btImport"
-															tooltipText="Import groups from folders" enabled="false"
-															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
-															<content:ButtonData icon="/dcp/gui/icons/import.png" />
-														</PushButton>
 														<PushButton bxml:id="btExpand" tooltipText="Expand all"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/expand.png" />

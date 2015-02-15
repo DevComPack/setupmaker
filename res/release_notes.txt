@@ -2,8 +2,9 @@
 =====
 -Code rewrite
 +Open target folder button on Build tab
-+Packs data Check feature
-+Pack install architecture property
++Packs DataCheck feature in Set tab
++Pack install architecture(x32/x64) property
+-Treat folders as groups moved to Scan tab (instead of Import button)
 --
 *Bugfixes:
 Empty Group creation was possible

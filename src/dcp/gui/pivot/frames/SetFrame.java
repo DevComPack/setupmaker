@@ -67,6 +67,7 @@ import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.PLATFORM;
+import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
@@ -120,7 +121,6 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private PushButton btAdd;//Add Pack to selected group
     @BXML private PushButton btDelete;//Delete selected Pack(s)
     //Group options
-    @BXML private PushButton btImport;//Groups import from Recursive scan
     @BXML private PushButton btExpand;// Expand all groups
     @BXML private PushButton btCollapse;// Collapse all groups
     @BXML private PushButton btNew;//Add new group
@@ -764,16 +764,6 @@ public class SetFrame extends FillPane implements Bindable
             @Override public void nodesRemoved(TreeView treeView, Path path, int index, int count)
             {
                 setModified(true);//Modified flag
-            }
-        });
-        
-        //Recursive Groups Import from Scan button event
-        btImport.getButtonPressListeners().add(new ButtonPressListener() {
-            @Override public void buttonPressed(Button bt)
-            {
-                nullProperties();//Unselect pack
-                ADataImport.perform(bt);
-                btImport.setEnabled(false);//Disable button
             }
         });
         
@@ -1670,25 +1660,25 @@ public class SetFrame extends FillPane implements Bindable
     /**
      * Initialize Tab Data from Scan tab
      */
-    public void scanInit() {
+    public void update() {
         System.out.println("scan init");
         nullProperties(); // Initialize properties values
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
         
         facade.clearGroups(); // Clear all groups
         treeData.clear(); // TreeView Data clear
-        if (scanFrame.facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {//If Recursive Scan, Folders > Groups
-            btImport.setEnabled(true); // Enable import button
+
+        if (scanFrame.facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN &&
+                scanFrame.facade.getFolderScan() == SCAN_FOLDER.GROUP_FOLDER) {// If Recursive Scan and enabled, import folders as groups
+            ADataImport.perform(this);
         }
-        else {
-            btImport.setEnabled(false); // Disable import button
-        }
-        
-        facade.clearPacks(); // Clear all packs
-        for(Pack P:scanFrame.getPacks()) { // Add Packs one by one
-            Pack pack = new Pack(P);
-            pack.setGroup(null);
-            facade.newPack(pack);
+        else {// import only packs (no folders/groups)
+            facade.clearPacks(); // Clear all packs
+            for(Pack P:scanFrame.getPacks()) { // Add Packs one by one
+                Pack pack = new Pack(P);
+                pack.setGroup(null);
+                facade.newPack(pack);
+            }   
         }
         
         setModified(true); // Modified flag

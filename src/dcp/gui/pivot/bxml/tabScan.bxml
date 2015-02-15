@@ -283,9 +283,10 @@
 							</BoxPane>
 						</TablePane.Row>
 						
+						<!-- Advanced Scan options -->
 						<TablePane.Row height="-1">
 							<BoxPane orientation="Horizontal" styles="{padding:2, horizontalAlignment:'right', verticalAlignment:'center'}">
-								<Checkbox bxml:id="cbFolderScan" selected="false" enabled="false">
+								<Checkbox bxml:id="cbFolderScan" selected="false" enabled="false" tooltipText="Convert folders to groups">
 									<content:ButtonData text="Treat folders as groups" icon="/dcp/gui/icons/folder.png" />
 								</Checkbox>
 							</BoxPane>

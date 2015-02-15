@@ -169,8 +169,8 @@ public class Facade
                 break;
             case 1://Set Tab
                 if (scanFrame.isModified() && !ScanFrame.isLoaded()) {//If Scanned directory
-                    scanFrame.setModified(false);
-                    setFrame.scanInit();//Data export to Set tab
+                    scanFrame.setModified(false);//Modified flag*
+                    setFrame.update();//Data export from Scan to Set tab
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
                 }

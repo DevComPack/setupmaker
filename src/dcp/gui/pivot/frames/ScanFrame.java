@@ -51,6 +51,7 @@ import org.apache.pivot.wtk.effects.TransitionListener;
 
 import dcp.config.io.IOFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
+import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.actions.BrowseAction;
@@ -450,6 +451,16 @@ public class ScanFrame extends FillPane implements Bindable
             {
                 if (cbCustExpr.isSelected())
                     ADirScan.perform(textInput);//Action launch
+            }
+        });
+        
+        cbFolderScan.getButtonStateListeners().add(new ButtonStateListener() {
+            @Override public void stateChanged(Button bt, State st)
+            {
+                if (bt.isSelected())
+                    facade.setFolderScan(SCAN_FOLDER.GROUP_FOLDER);
+                else facade.setFolderScan(SCAN_FOLDER.PACK_FOLDER);
+                setModified(true);// (*)
             }
         });
         
