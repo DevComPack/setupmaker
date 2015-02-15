@@ -282,6 +282,14 @@
 								</PushButton>
 							</BoxPane>
 						</TablePane.Row>
+						
+						<TablePane.Row height="-1">
+							<BoxPane orientation="Horizontal" styles="{padding:2, horizontalAlignment:'right', verticalAlignment:'center'}">
+								<Checkbox bxml:id="cbFolderScan" selected="false" enabled="false">
+									<content:ButtonData text="Treat folders as groups" icon="/dcp/gui/icons/folder.png" />
+								</Checkbox>
+							</BoxPane>
+						</TablePane.Row>
 					</TablePane>
 				</right>
 			</SplitPane>

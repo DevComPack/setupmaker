@@ -67,55 +67,50 @@ import dcp.main.log.Out;
 
 public class ScanFrame extends FillPane implements Bindable
 {
-    //Singleton reference
+    // Singleton reference
     private static ScanFrame singleton;
     public static ScanFrame getSingleton() { assert (singleton != null); return singleton; }
     public ScanFacade facade;
-    //Configuration
+    // Configuration
     private AppConfig appConfig = Master.facade.appConfig;
     private SetupConfig setupConfig = Master.facade.setupConfig;
     
-    //Flags
-    private boolean modified = false;//True if tab changed data
+    // Flags
+    private boolean modified = false;// True if tab changed data
     public void setModified(boolean VALUE) { modified = VALUE; }
     public boolean isModified() { return modified; }
     
-    private static boolean loaded = false;//True if tab loaded data
+    private static boolean loaded = false;// True if tab loaded data
     public static void setLoaded(boolean VALUE) { loaded = VALUE; }
     public static boolean isLoaded() { return loaded; }
-    //Packs
-    private static List<Pack> packs = new ArrayList<Pack>();//List of scanned packs
+    
     public void setPacks(List<Pack> packs) {
-        ScanFrame.packs = null;
-        ScanFrame.packs = packs;
-        ScanFrame.setLoaded(true);//Loaded flag
+        facade.setPacks(packs);
+        ScanFrame.setLoaded(true);// Loaded flag
     }
-    public static List<Pack> getPacks() {//Read-only Packs data (selected)
-        if (treeView.getCheckmarksEnabled() && !loaded)//If select mode and not loaded
+    public List<Pack> getPacks() {// Read-only Packs data (selected)
+        if (treeView.getCheckmarksEnabled() && !loaded)// If select mode and not loaded
             return getCheckedPacks();
-        return packs;
+        return facade.getPacks();
     }
-    //Groups
-    private static List<Group> groups = new ArrayList<Group>();//List of scanned directories
     public void setGroups(List<Group> groups) {
-        ScanFrame.groups = null;
-        ScanFrame.groups = groups;
+        facade.setGroups(groups);
         ScanFrame.setLoaded(true);//Loaded flag
     }
-    public static List<Group> getGroups() {//Read-only Groups data
-        return groups;
+    public List<Group> getGroups() {
+        return facade.getGroups();
     }
     
-    //Browse Area
-    @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
-    @BXML private TextInput inPath;//Path Text Input
-    public String getScanDir() { return inPath.getText(); }//Return scanned directory path
-    @BXML private PushButton btRefresh;//Refresh button
-    @BXML private PushButton btBrowse;//Browse button
-    //Recent Directories options
+    // Browse Area
+    @BXML private FileBrowserSheet fileBrowserSheet;// File Browser
+    @BXML private TextInput inPath;// Path Text Input
+    public String getScanDir() { return inPath.getText(); }// Return scanned directory path
+    @BXML private PushButton btRefresh;// Refresh button
+    @BXML private PushButton btBrowse;// Browse button
+    // Recent Directories options
     @BXML private SplitPane hSplitPane;
     @BXML private TablePane recent_dirs;
-    //Scan Mode options
+    // Scan Mode options
     @BXML private RadioButton btRadSimple;//Simple Scan Mode Radio Button
     @BXML private Checkbox btSelect;//Activate/Desactivate Node Check State Select mode
     @BXML private PushButton btSelectAll;//Select All button
@@ -125,7 +120,7 @@ public class ScanFrame extends FillPane implements Bindable
     @BXML private Spinner depthSpinner;//Spinner depth value
     @BXML private PushButton btCollapse;//Collapse button
     @BXML private PushButton btExpand;//Expand button
-    //Filter options
+    // Filter options
     @BXML private Checkbox cbZip;//Archives
     @BXML private Checkbox cbSetup;//Setups
     @BXML private Checkbox cbExe;//Executables
@@ -137,9 +132,10 @@ public class ScanFrame extends FillPane implements Bindable
     @BXML private Checkbox cbCustTxt;//Custom set filter
     @BXML private Checkbox cbCustExpr;//Custom Expression filter button
     @BXML private TextInput inCustExpr;//Custom REGEXP filter input
+    // Advanced options
+    @BXML private Checkbox cbFolderScan;// Treat folders as groups in Set tab
     //Displays
     @BXML private static TreeView treeView;//Tree View for scanned directory
-    private static List<TreeNode> treeData = new ArrayList<TreeNode>();//Tree view data
     //Filter
     private FilenameFilter filter;
     //Actions
@@ -185,7 +181,7 @@ public class ScanFrame extends FillPane implements Bindable
             @Override public void perform(Component source) {
                 if (btSelect.isSelected()) btSelect.press(); // * bugfix: scan on enabled selection doesn't update packs list
                 
-                TaskDirScan scan = new TaskDirScan(singleton, inPath.getText(), treeData, filter,
+                TaskDirScan scan = new TaskDirScan(singleton, inPath.getText(), facade.getTreeData(), filter,
                         (String) depthSpinner.getSelectedItem(), !cbDir.isSelected());
  
                 int res = scan.execute();
@@ -238,7 +234,7 @@ public class ScanFrame extends FillPane implements Bindable
         inPath.setValidator(new PathValidator());
         
         //Data Binding
-        treeView.setTreeData(treeData);//Bind Tree view to data
+        treeView.setTreeData(facade.getTreeData());//Bind Tree view to data
         treeView.getTreeViewNodeStateListeners().add(new TreeViewNodeStateListener() {
             @Override public void nodeCheckStateChanged(TreeView tv, Path arg1, NodeCheckState arg2)
             {
@@ -310,6 +306,8 @@ public class ScanFrame extends FillPane implements Bindable
                             depthPane.setVisible(false);
                             btCollapse.setEnabled(false);
                             btExpand.setEnabled(false);
+                            cbFolderScan.setSelected(false);
+                            cbFolderScan.setEnabled(false);
                         }
                     });
                 }
@@ -330,6 +328,7 @@ public class ScanFrame extends FillPane implements Bindable
                             btSelect.setVisible(false);
                             btSelectAll.setEnabled(false);
                             btSelectNone.setEnabled(false);
+                            cbFolderScan.setEnabled(true);
                         }
                     });
                     depthPane.setVisible(true);
@@ -464,6 +463,7 @@ public class ScanFrame extends FillPane implements Bindable
             btSelectAll.setEnabled(false);
             btSelectNone.setEnabled(false);
             depthPane.setVisible(true);
+            cbFolderScan.setEnabled(true);
         }
         else {
             setScanMode(SCAN_MODE.SIMPLE_SCAN);
@@ -473,6 +473,7 @@ public class ScanFrame extends FillPane implements Bindable
             depthPane.setVisible(false);
             btCollapse.setEnabled(false);
             btExpand.setEnabled(false);
+            cbFolderScan.setEnabled(false);
         }
     }
     
@@ -483,23 +484,23 @@ public class ScanFrame extends FillPane implements Bindable
      */
     private void selectAll() {
         if (treeView.getCheckmarksEnabled())
-        for(int i=0; i<treeData.getLength(); i++)//Select all
+        for(int i=0; i<facade.getTreeData().getLength(); i++)//Select all
             treeView.setNodeChecked(new Path(i), true);
     }
     private void selectNone() {
         if (treeView.getCheckmarksEnabled())
-        for(int i=0; i<treeData.getLength(); i++)//Select all
+        for(int i=0; i<facade.getTreeData().getLength(); i++)//Select all
             treeView.setNodeChecked(new Path(i), false);
     }
-    private static List<Pack> getCheckedPacks() {
+    private List<Pack> getCheckedPacks() {
         List<Pack> selected = new ArrayList<Pack>();
         Sequence<Path> list = treeView.getCheckedPaths();
         if (list.getLength() > 0) {
             Path p;
             for(int i = 0; i < list.getLength(); i++) {
                 p = list.get(i);
-                TreeNode node = treeData.get(p.get(0));
-                for(Pack P:packs) {
+                TreeNode node = facade.getTreeData().get(p.get(0));
+                for(Pack P:facade.getPacks()) {
                     if (node.getParent() == null && P.getName().equalsIgnoreCase(node.getText()) ) {
                         selected.add(P);
                         break;
@@ -642,9 +643,7 @@ public class ScanFrame extends FillPane implements Bindable
      */
     public void init(AppConfig appConfig, SetupConfig setupConfig) {
         inPath.setText(setupConfig.getSrcPath());
-        treeData.clear();
-        groups.clear();
-        packs.clear();
+        facade.clear();
         
         this.appConfig = appConfig;
         this.setupConfig = setupConfig;

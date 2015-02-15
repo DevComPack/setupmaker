@@ -27,8 +27,8 @@ public class TaskDirScan extends Task<Integer>
     private List<TreeNode> treeData;
     private String depthValue;
     //Data
-    private List<Group> groups = ScanFrame.getGroups();
-    private List<Pack> packs = ScanFrame.getPacks();
+    private List<Group> groups;
+    private List<Pack> packs;
     //Filter
     private boolean folderFilter;
     private FilenameFilter filter;
@@ -38,6 +38,10 @@ public class TaskDirScan extends Task<Integer>
                        String depthValue, boolean folderFilter)
     {
         this.scanFrame = source;
+        // point to data models lists
+        this.groups = scanFrame.facade.getGroups();
+        this.packs = scanFrame.facade.getPacks();
+        
         this.path = path;
         this.treeData = treeData;
         this.filter= filter;
@@ -106,9 +110,7 @@ public class TaskDirScan extends Task<Integer>
     @Override
     public Integer execute()
     {
-        ScanFrame.getPacks().clear();//clear packs data
-        ScanFrame.getGroups().clear();//clear groups data
-        treeData.clear();//clear tree data
+        scanFrame.facade.clear();// Clear data
         
         if (!path.equals("")) {//If a path is entered
             File dir = new File(path);

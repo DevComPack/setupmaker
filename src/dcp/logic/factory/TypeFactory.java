@@ -57,6 +57,23 @@ public class TypeFactory
         SIMPLE_SCAN,//Default
         RECURSIVE_SCAN
     }
+    // Scan folder import type enumeration
+    public static enum SCAN_FOLDER {
+        DEFAULT("pack"),
+        PACK_FOLDER("pack"),//Default
+        GROUP_FOLDER("group");
+        
+        private String _value;
+        private SCAN_FOLDER(String value)
+        {
+            _value = value;
+        }
+        @Override
+        public String toString()
+        {
+            return this._value;
+        }
+    }
     
     // Build mode enumeration
     public static enum BUILD_MODE {

@@ -78,6 +78,7 @@ public class SetFrame extends FillPane implements Bindable
 {
     //Singleton reference
     private static SetFrame singleton;
+    private ScanFrame scanFrame = ScanFrame.getSingleton();
     public static SetFrame getSingleton() { assert (singleton != null); return singleton; }
     public SetFacade facade;
     
@@ -188,12 +189,12 @@ public class SetFrame extends FillPane implements Bindable
             {
                 //Groups Import
                 facade.clearGroups();
-                for(Group G:ScanFrame.getGroups())// Fill Data from Scan folders
+                for(Group G:scanFrame.getGroups())// Fill Data from Scan folders
                     facade.newGroup(G);
                 
                 //Packs Import
                 facade.clearPacks();
-                for(Pack P:ScanFrame.getPacks())// Fill Data from Scan files
+                for(Pack P:scanFrame.getPacks())// Fill Data from Scan files
                     facade.newPack(P);
                 
                 treeView.expandAll();//Expand branches
@@ -1676,7 +1677,7 @@ public class SetFrame extends FillPane implements Bindable
         
         facade.clearGroups(); // Clear all groups
         treeData.clear(); // TreeView Data clear
-        if (ScanFrame.getSingleton().facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {//If Recursive Scan, Folders > Groups
+        if (scanFrame.facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {//If Recursive Scan, Folders > Groups
             btImport.setEnabled(true); // Enable import button
         }
         else {
@@ -1684,7 +1685,7 @@ public class SetFrame extends FillPane implements Bindable
         }
         
         facade.clearPacks(); // Clear all packs
-        for(Pack P:ScanFrame.getPacks()) { // Add Packs one by one
+        for(Pack P:scanFrame.getPacks()) { // Add Packs one by one
             Pack pack = new Pack(P);
             pack.setGroup(null);
             facade.newPack(pack);

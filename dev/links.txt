@@ -1,3 +1,5 @@
+www.devcompack.com/setupmaker
+
 sf.net: https://sourceforge.net/projects/devcompack/
 github: http://jackred.github.io/devcompack
 
