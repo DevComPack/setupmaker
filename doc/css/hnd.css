@@ -71,31 +71,109 @@ span.rvts13
  font-style: italic;
  font-weight: bold;
 }
-span.rvts14 /* Font Style */
+span.rvts14
+{
+ font-style: italic;
+ color: #00a5ff;
+ background-color: #ffefca;
+}
+span.rvts15
+{
+ font-style: italic;
+ font-weight: bold;
+ color: #00a5ff;
+ background-color: #ffefca;
+}
+a.rvts16, span.rvts16
+{
+ color: #0000ff;
+ text-decoration: underline;
+}
+span.rvts17 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #c0c0c0;
 }
-a.rvts15, span.rvts15 /* Font Style */
+a.rvts18, span.rvts18 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #6666ff;
  text-decoration: underline;
 }
-span.rvts16
+span.rvts19
 {
  font-size: 160%;
  font-weight: bold;
 }
-span.rvts17
+span.rvts20
 {
  font-size: 110%;
  font-style: italic;
  font-weight: bold;
 }
-span.rvts18
+span.rvts21
+{
+ font-size: 130%;
+ font-weight: bold;
+}
+span.rvts22
+{
+ font-size: 130%;
+ font-weight: bold;
+}
+span.rvts23
+{
+ font-style: italic;
+ font-weight: bold;
+}
+span.rvts24
+{
+ font-style: italic;
+ color: #00a5ff;
+ background-color: #ffefca;
+}
+span.rvts25
+{
+ font-size: 90%;
+ font-style: italic;
+ color: #00a5ff;
+}
+span.rvts26
+{
+ color: #00a5ff;
+}
+span.rvts27
+{
+ font-style: italic;
+ font-weight: bold;
+ color: #00a5ff;
+ background-color: #ffefca;
+}
+span.rvts28
+{
+ font-size: 90%;
+ font-style: italic;
+ font-weight: bold;
+ color: #00a5ff;
+}
+span.rvts29
+{
+ font-weight: bold;
+}
+span.rvts30
+{
+ font-size: 200%;
+ font-weight: bold;
+}
+a.rvts31, span.rvts31
+{
+ font-weight: bold;
+ color: #0000ff;
+ text-decoration: underline;
+}
+span.rvts32
 {
  font-style: italic;
 }
@@ -153,8 +231,23 @@ p,ul,ol /* Paragraph Style */
  padding: 0px 0px 0px 0px;
  margin: 16px 0px 4px 0px;
 }
+.rvps8
+{
+ text-align: left;
+ text-indent: 0px;
+ page-break-after: avoid;
+ padding: 0px 0px 0px 0px;
+ margin: 16px 0px 4px 0px;
+}
+.rvps9
+{
+ text-align: center;
+ margin: 16px 0px 4px 0px;
+}
 /* ========== Lists ========== */
 .list0 {text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;}
 .list1 {text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;}
 .list2 {text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: square;}
 .list3 {text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: disc;}
+.list4 {text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;}
+.list5 {text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;}

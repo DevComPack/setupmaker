@@ -7,7 +7,7 @@
     <meta name="generator" content="HelpNDoc Personal Edition 4.6.2.573">
 	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
 	<link type="text/css" rel="stylesheet" media="all" href="css/silver-theme/jquery-ui-1.8.12.custom.css" />
-	<link type="text/css" rel="stylesheet" media="all" href="css/dynatree/chm/ui.dynatree.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/dynatree/folder/ui.dynatree.css" />
 	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
 	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
     <link type="text/css" rel="stylesheet" media="all" href="css/toc.css" />
@@ -17,7 +17,7 @@
 	<style type="text/css">
 		#tabs .ui-widget-header
 		{
-			background-color: #EFEFEF;
+			background-color: #CDEBFC;
 		}
 	</style>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
@@ -48,7 +48,7 @@
 				$("#tab-toc").dynatree({
 					clickFolderMode: 1,
 					debugLevel: 0,
-					imagePath: 'css/dynatree/chm/',
+					imagePath: 'css/dynatree/folder/',
 					onActivate: function(node){
 						if ($("#tab-keywords").length && $("#tab-keywords").dynatree && $("#tab-keywords").dynatree("getTree") && $("#tab-keywords").dynatree("getTree").activateKey)
 							$("#tab-keywords").dynatree("getTree").activateKey(null);
@@ -71,7 +71,7 @@
 				$("#tab-keywords").dynatree({
 					clickFolderMode: 1,
 					debugLevel: 0,
-					imagePath: 'css/dynatree/chm/',
+					imagePath: 'css/dynatree/folder/',
 					onClick: function(node, event){
 						HideKwPopup();
 						if (node.data && node.data.click)
@@ -191,7 +191,7 @@
 				$("#search_results_content").dynatree({
 					clickFolderMode: 1,
 					debugLevel: 0,
-					imagePath: 'css/dynatree/chm/',
+					imagePath: 'css/dynatree/folder/',
 					onActivate: function(node){
 						if ($("#search_results_content") && $("#search_results_content").dynatree && $("#search_results_content").dynatree("getTree") && $("#search_results_content").dynatree("getTree").activateKey)
 							$("#search_results_content").dynatree("getTree").activateKey(null);
@@ -222,11 +222,23 @@
 							target="FrameMain">
 								Introduction</a>
 
+				</li><li class="" id="Systemrequirements" data="">
+							<a
+							href="Systemrequirements.html"
+							target="FrameMain">
+								System requirements</a>
+
 				</li><li class="" id="Whatsnew" data="">
 							<a
 							href="Whatsnew.html"
 							target="FrameMain">
 								What's new</a>
+
+				</li><li class="" id="FAQ" data="">
+							<a
+							href="FAQ.html"
+							target="FrameMain">
+								FAQ</a>
 
 				</li><li class="folder" id="GettingStarted" data="">
 							<a
@@ -234,13 +246,7 @@
 							target="FrameMain">
 								Getting Started</a>
 
-				<ul><li class="" id="Systemrequirements" data="">
-							<a
-							href="Systemrequirements.html"
-							target="FrameMain">
-								System requirements</a>
-
-				</li><li class="" id="Gettinghelp" data="">
+				<ul><li class="" id="Gettinghelp" data="">
 							<a
 							href="Gettinghelp.html"
 							target="FrameMain">
