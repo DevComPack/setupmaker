@@ -24,6 +24,7 @@ import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.model.config.AppConfig;
@@ -67,7 +68,7 @@ public class Facade
         {
             //appConfig.setAppName(AppName); appConfig.setAppVersion(AppVersion);
             if (!appConfig.getAppVersion().equals(version)) // Warning if conf.dcp file is old 
-                Out.print("WARNING", "Configuration file conf.dcp contains data of an old version: " + appConfig.getAppVersion());
+                Out.print(LOG_LEVEL.WARN, "Configuration file conf.dcp contains data of an old version: " + appConfig.getAppVersion());
             setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
             izpackConf = new IzpackConfig(appConfig.getDefaultIzpackConfig());
             nugetConf = new NugetConfig(appConfig.getDefaultNugetConfig());
@@ -124,7 +125,7 @@ public class Facade
     public void process(String saveFile)
     {
         if (!load(saveFile)) // load error
-            Out.print("ERROR", "Error loading the file! Please load it from the GUI and correct if there are some errors then reload it.");
+            Out.print(LOG_LEVEL.ERR, "Error loading the file! Please load it from the GUI and correct if there are some errors then reload it.");
         else { // load success
             for (Group G:groups) {// Add Groups to factory
                 GroupFactory.addGroup(G);
@@ -133,25 +134,25 @@ public class Facade
                 PackFactory.addPack(P);
             }
             
-            Out.print("INFO", "File data loaded successfully.");
+            Out.print(LOG_LEVEL.INFO, "File data loaded successfully.");
             System.out.println();
             
             final TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {//Finished compilation
                 @Override public void executeFailed(Task<Boolean> t) {//Failed
                     System.out.println();
-                    Out.print("ERROR", "Compiled with errors!");
+                    Out.print(LOG_LEVEL.ERR, "Compiled with errors!");
                 }
                 @Override public void taskExecuted(Task<Boolean> t) {//Success
                     if (t.getResult() == true) {//If no errors
                         System.out.println();
-                        Out.print("INFO", "Finished compiling.");
+                        Out.print(LOG_LEVEL.INFO, "Finished compiling.");
                     } else executeFailed(t);//Compile Errors
                 }
             };
             
             // IzPack Compile Task launch
             String filename = setupConfig.getAppName().replaceAll(" ", "") + "-" + setupConfig.getAppVersion() + ".jar";
-            Out.print("INFO", "Compiling file " + filename);
+            Out.print(LOG_LEVEL.INFO, "Compiling file " + filename);
             TaskIzpackCompile compileTask = new TaskIzpackCompile(new File(filename).getAbsolutePath(), setupConfig, izpackConf);
             compileTask.execute(new TaskAdapter<Boolean>(tlCompile));//Compile
         }
@@ -214,7 +215,7 @@ public class Facade
             
             os.close();
             out.close();
-            Out.print("INFO", appConfig.getAppName() + " " + appConfig.getAppVersion() +
+            Out.print(LOG_LEVEL.INFO, appConfig.getAppName() + " " + appConfig.getAppVersion() +
                       " configuration saved to " + IOFactory.confFile);
         }
         catch (IOException e) {
@@ -276,7 +277,7 @@ public class Facade
             
             os.close();
             out.close();
-            Out.print("INFO", setupConfig.getAppName() + " " + setupConfig.getAppVersion() +
+            Out.print(LOG_LEVEL.INFO, setupConfig.getAppName() + " " + setupConfig.getAppVersion() +
                       " data saved to " + f.getAbsolutePath());
         }
         catch (IOException e) {
@@ -301,10 +302,10 @@ public class Facade
                 ObjectInputStream is = new ObjectInputStream(in);
                 
                 String version = (String) is.readObject();
-                Out.print("DEBUG", "DCP File version: "+version);
+                Out.print(LOG_LEVEL.DEBUG, "DCP File version: "+version);
                 
                 setupConfig = (SetupConfig) is.readObject();
-                Out.print("DEBUG", setupConfig.getAppName() + " " + setupConfig.getAppVersion());
+                Out.print(LOG_LEVEL.DEBUG, setupConfig.getAppName() + " " + setupConfig.getAppVersion());
                 
                 groups = new ArrayList<Group>();
                 int nGroups = is.readInt();
@@ -312,7 +313,7 @@ public class Facade
                     Group G = (Group) is.readObject();
                     groups.add(G);
                 }
-                if (nGroups > 0) Out.print("DEBUG", groups.getLength() + " group(s) loaded");
+                if (nGroups > 0) Out.print(LOG_LEVEL.DEBUG, groups.getLength() + " group(s) loaded");
                 
                 packs = new ArrayList<Pack>();
                 int nPacks = is.readInt();
@@ -328,11 +329,11 @@ public class Facade
                     P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
                     packs.add(P);
                 }
-                if (nPacks > 0) Out.print("DEBUG", packs.getLength() + " pack(s) loaded");
+                if (nPacks > 0) Out.print(LOG_LEVEL.DEBUG, packs.getLength() + " pack(s) loaded");
                 
                 is.close();
                 in.close();
-                Out.print("INFO", "Data loaded from file "+IOFactory.saveFile);
+                Out.print(LOG_LEVEL.INFO, "Data loaded from file "+IOFactory.saveFile);
             }
         }
         catch (IOException e) {

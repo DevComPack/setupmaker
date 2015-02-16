@@ -15,6 +15,7 @@ import dcp.gui.pivot.Master;
 import dcp.gui.pivot.tasks.TaskIzpackCompile;
 import dcp.gui.pivot.tasks.TaskNugetCompile;
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -46,7 +47,7 @@ public class BuildFacade
         
         Desktop desktop = Desktop.getDesktop();
         desktop.open(folder); // Open folder
-        Out.print("DEBUG", "Open desktop folder at " + folder.getAbsolutePath());
+        Out.print(LOG_LEVEL.DEBUG, "Open desktop folder at " + folder.getAbsolutePath());
         
         return true;
     }
@@ -69,7 +70,7 @@ public class BuildFacade
                 selCb = String.format("%s%s%n", selCb, data.get(i));//selCb += sel.get(i) + "\n"; 
             }
             
-            Out.print("DEBUG", "Copied to Clipboard: "+ selCb);
+            Out.print(LOG_LEVEL.DEBUG, "Copied to Clipboard: "+ selCb);
             StringSelection selection = new StringSelection(selCb);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);

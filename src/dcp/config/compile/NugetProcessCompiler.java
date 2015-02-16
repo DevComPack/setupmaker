@@ -11,6 +11,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Scanner;
 
 import dcp.config.io.IOFactory;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 /**
@@ -57,9 +58,9 @@ public class NugetProcessCompiler
             Thread.sleep(500);
             while(in.hasNextLine() || err.hasNextLine()) {
                 if (in.hasNextLine())
-                    Out.print("NUGET", in.nextLine());
+                    Out.print(LOG_LEVEL.INFO, in.nextLine());
                 if (err.hasNextLine())
-                    Out.print("NUGET", err.nextLine());
+                    Out.print(LOG_LEVEL.ERR, err.nextLine());
                 Thread.sleep(500);
             }
             process.waitFor();
@@ -107,7 +108,7 @@ public class NugetProcessCompiler
         String command = nuget + " pack \""
                 + specFile.getAbsolutePath()
                 + "\" -NoPackageAnalysis";
-        Out.print("DEBUG", "$"+command);
+        Out.print(LOG_LEVEL.DEBUG, "$"+command);
         
         
         return exec(command);
@@ -125,7 +126,7 @@ public class NugetProcessCompiler
                 + pkg.getAbsolutePath()
                 + "\" -Source " + feedUrl
                 + " -ApiKey "+ apikey;
-        Out.print("DEBUG", "$"+command);
+        Out.print(LOG_LEVEL.DEBUG, "$"+command);
         
         
         return exec(command);

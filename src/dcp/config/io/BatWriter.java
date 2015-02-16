@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -24,7 +25,7 @@ public class BatWriter
     //Write setup install batch commands
     //cmd: msiexec /package "path/to/setupFile.msi" /passive /norestart
     public void writeSetup(String pack_name, boolean silent_install) throws IOException {
-        Out.print("IO", "Writing setup command to: " + file.getAbsolutePath());
+        Out.print(LOG_LEVEL.INFO, "Writing setup command to: " + file.getAbsolutePath());
         
         String tmpDir = IOFactory.exeTargetDir.replace('/', '\\');
         String command = "msiexec /package \"%INSTALL_PATH%" + tmpDir + pack_name + "\"" + ((silent_install==true)?" /passive":"") + " /norestart";
@@ -42,7 +43,7 @@ public class BatWriter
     //cmd1: elevate reg delete "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$APP_NAME $APP_VER" /f
     //cmd2: java -jar uninstaller.jar
     public void writeClean(String APP_NAME, String APP_VER) throws IOException {
-        Out.print("IO", "Writing clean command to: " + file.getAbsolutePath());
+        Out.print(LOG_LEVEL.INFO, "Writing clean command to: " + file.getAbsolutePath());
         
         String com1 = "reg delete \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"+APP_NAME + " " + APP_VER+"\" /f";
         String com2 = "java -jar uninstaller.jar";

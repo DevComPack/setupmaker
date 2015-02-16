@@ -10,6 +10,7 @@ import org.apache.pivot.wtk.SortDirection;
 import org.apache.pivot.wtk.TableView;
 
 import dcp.logic.factory.PackFactory;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.Pack;
 import dcp.main.log.Out;
 
@@ -81,7 +82,7 @@ public class PositionSortAction extends Action
                 //Sort table by priority
                 tableView.setSort("priority", SortDirection.ASCENDING);//Priority always sorted Ascending
                 rbCustom.setSelected(true);//Select Custom radio button
-                Out.print("PIVOT_SORT", "Pack: " + P.getName() + "- priority (" + (oldIndex) + ">" + (newIndex) + ")");
+                Out.print(LOG_LEVEL.DEBUG, "Pack: " + P.getName() + "- priority (" + (oldIndex) + ">" + (newIndex) + ")");
                 tableView.setSelectedIndex(newIndex);
                 tableView.requestFocus();//Focus on table view selected row
             }

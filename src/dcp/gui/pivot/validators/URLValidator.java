@@ -2,6 +2,7 @@ package dcp.gui.pivot.validators;
 
 import org.apache.pivot.wtk.validation.Validator;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -17,7 +18,7 @@ public class URLValidator implements Validator
                 url.startsWith("http://") || url.startsWith("https://"))
             return true;
         
-        Out.print("WARNING", "URL format incorrect: " + url);
+        Out.print(LOG_LEVEL.WARN, "URL format incorrect: " + url);
         return false;
     }
 

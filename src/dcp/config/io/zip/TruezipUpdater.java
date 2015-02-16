@@ -10,6 +10,8 @@ import java.io.Reader;
 import java.io.Writer;
 
 
+
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 import de.schlichtherle.truezip.file.TFile;
 import de.schlichtherle.truezip.file.TFileOutputStream;
@@ -42,7 +44,7 @@ public class TruezipUpdater
             TruezipUpdater tz = new TruezipUpdater("target/package.jar");
             tz.addBinFile("res/native/ShellLink.dll", "native");
             tz.addBinFile("res/native/ShellLink_x64.dll", "native");
-            Out.print("JAR", "Command executed!");
+            Out.print(LOG_LEVEL.INFO, "Command executed!");
         }
         catch (IOException e)
         {
@@ -78,7 +80,7 @@ public class TruezipUpdater
             else if (FILE_TO_ADD.contains("\\")) dirs = FILE_TO_ADD.split("\\\\");
             String DEST_FILE = dirs[dirs.length-1];
             
-            Out.print("JAR", "Copy "+FILE_TO_ADD+" to "+this.zipfile + "/"+ DEST_DIR +"/" + DEST_FILE);
+            Out.print(LOG_LEVEL.DEBUG, "Copy "+FILE_TO_ADD+" to "+this.zipfile + "/"+ DEST_DIR +"/" + DEST_FILE);
             
             File entry = new TFile(this.zipfile + "/"+ DEST_DIR +"/" + DEST_FILE);
             TFileOutputStream writer = new TFileOutputStream(entry);
@@ -100,7 +102,7 @@ public class TruezipUpdater
             return true;
         }
         else {
-            Out.print("JAR", "ERR> File '"+ FILE_TO_ADD +"' not found!");
+            Out.print(LOG_LEVEL.ERR, "File '"+ FILE_TO_ADD +"' not found!");
             return false;
         }
     }
@@ -111,7 +113,7 @@ public class TruezipUpdater
         BufferedReader br = new BufferedReader(reader);
         
         try {
-            Out.print("JAR", br.readLine());
+            Out.print(LOG_LEVEL.DEBUG, br.readLine());
         }
         finally {
             reader.close();
@@ -121,7 +123,7 @@ public class TruezipUpdater
     public void list() {
         TFile archive = new TFile(this.zipfile);
         for (String member : archive.list())
-          Out.print("JAR", member);
+          Out.print(LOG_LEVEL.DEBUG, member);
     }
     
     public void update() throws FileNotFoundException {

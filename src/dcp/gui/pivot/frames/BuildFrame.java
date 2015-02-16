@@ -52,6 +52,7 @@ import dcp.gui.pivot.tasks.TaskIzpackDebug;
 import dcp.gui.pivot.tasks.TaskIzpackRun;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.config.AppConfig;
 import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
@@ -155,7 +156,7 @@ public class BuildFrame extends FillPane implements Bindable
                     }
                     catch (IOException e)
                     {
-                        Out.print("ERROR", "File Not Found: " + target);
+                        Out.print(LOG_LEVEL.ERR, "File Not Found: " + target);
                         e.printStackTrace();
                     }
                 }
@@ -213,7 +214,7 @@ public class BuildFrame extends FillPane implements Bindable
                         //Master.appConfig.setBuildMode(BUILD_MODE.NUGET_BUILD);
                         setBuildMode(BUILD_MODE.NUGET_BUILD);
                     }
-                    Out.print("DEBUG", "Build Mode set to " + build);
+                    Out.print(LOG_LEVEL.DEBUG, "Build Mode set to " + build);
                     //displayRefresh();
                 }
                 catch (IOException e)
@@ -349,7 +350,7 @@ public class BuildFrame extends FillPane implements Bindable
                     private void taskFinished() {//Display Refresh
                         displayRefresh();
                         Out.newLine();
-                        Out.print("BUILD", "Finished.");
+                        Out.print(LOG_LEVEL.INFO, "Finished.");
                         waiter.setActive(false);//Waiter hide
                     }
                 };
@@ -387,7 +388,7 @@ public class BuildFrame extends FillPane implements Bindable
                 dcp.main.log.Out.clearCompileLog();//Clear Saved log
                 new TaskIzpackRun(CastFactory.pathValidate(inTargetPath.getText(), setupConfig.getAppName(),"jar"), logger, setupConfig.getAppName())
                     .execute(new TaskAdapter<Boolean>(tlRun));
-                Out.print("BUILD", "Launch generated package..");
+                Out.print(LOG_LEVEL.INFO, "Launch generated package..");
                 Out.newLine();
             }
         });
@@ -416,7 +417,7 @@ public class BuildFrame extends FillPane implements Bindable
                 dcp.main.log.Out.clearCompileLog();//Clear Saved log
                 new TaskIzpackDebug(CastFactory.pathValidate(inTargetPath.getText(), setupConfig.getAppName(),"jar"), logger, setupConfig.getAppName())
                     .execute(new TaskAdapter<Boolean>(tlDebug));
-                Out.print("BUILD", "Launch generated package with TRACE mode enabled..");
+                Out.print(LOG_LEVEL.INFO, "Launch generated package with TRACE mode enabled..");
                 Out.newLine();
             }
         });
@@ -491,7 +492,7 @@ public class BuildFrame extends FillPane implements Bindable
                 inTargetPath.setText(new File(filename).getCanonicalPath());
             }
             fileBrowserSheet.setSelectedFile(new File(inTargetPath.getText()).getCanonicalFile());
-            Out.print("DEBUG", "Export path set to file: " + inTargetPath.getText());
+            Out.print(LOG_LEVEL.DEBUG, "Export path set to file: " + inTargetPath.getText());
             break;
         case NUGET_BUILD: // NuGet
             accBuildOpt.setSelectedIndex(1);
@@ -511,7 +512,7 @@ public class BuildFrame extends FillPane implements Bindable
             else {
                 inTargetPath.setText(new File(".").getCanonicalPath());
             }
-            Out.print("DEBUG", "Export path set to folder: " + inTargetPath.getText());
+            Out.print(LOG_LEVEL.DEBUG, "Export path set to folder: " + inTargetPath.getText());
             break;
         default: break;
         }
@@ -561,7 +562,7 @@ public class BuildFrame extends FillPane implements Bindable
     public void init(AppConfig appConfig, SetupConfig setupConfig) throws IOException
     {
         lbBuild.setSelectedItem(appConfig.getBuildMode().toString());
-        setBuildMode(appConfig.getBuildMode());
+        //setBuildMode(appConfig.getBuildMode());
         
         // IzPack bindings
         cbSplit.setSelected(appConfig.getDefaultIzpackConfig().isSplit());

@@ -10,6 +10,7 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -61,7 +62,7 @@ public class JschFactory
             
             @Override public void end()
             {
-                Out.print("SFTP", "Upload of file "+ src.getName() +" succeeded.");
+                Out.print(LOG_LEVEL.INFO, "Upload of file "+ src.getName() +" succeeded.");
                 ready = true;
             }
             

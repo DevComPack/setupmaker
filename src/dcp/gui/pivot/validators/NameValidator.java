@@ -2,6 +2,7 @@ package dcp.gui.pivot.validators;
 
 import org.apache.pivot.wtk.validation.Validator;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -14,7 +15,7 @@ public class NameValidator implements Validator
         boolean correct = true;
         
         if (s.equals(""))//Empty string
-            correct = false;
+            return false;
         
         //Contains special characters
         else if (s.contains("/") || s.contains("\\") || s.contains("%") || s.contains("$") )
@@ -36,7 +37,7 @@ public class NameValidator implements Validator
         else if (s.contains("~") || s.contains("`") )
             correct = false;
         
-        if (!correct) Out.print("WARNING", "Name format incorrect: " + s);
+        if (!correct) Out.print(LOG_LEVEL.WARN, "Name format incorrect: " + s);
         return correct;
     }
 

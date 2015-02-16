@@ -23,6 +23,7 @@ import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.TextInputContentListener;
 import org.apache.pivot.wtk.Button.State;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.config.build.WebConfig;
 import dcp.main.log.Out;
 
@@ -136,7 +137,7 @@ public class SftpDialog extends Dialog implements Bindable
             
             os.close();
             out.close();
-            Out.print("INFO", "SFTP Data saved");
+            Out.print(LOG_LEVEL.INFO, "SFTP Data saved");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -157,7 +158,7 @@ public class SftpDialog extends Dialog implements Bindable
                 
                 is.close();
                 in.close();
-                Out.print("INFO", "SFTP Data loaded");
+                Out.print(LOG_LEVEL.INFO, "SFTP Data loaded");
                 
                 return webConfig;
             }

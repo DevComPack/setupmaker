@@ -13,6 +13,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 import dcp.main.log.StreamDisplay;
 
@@ -131,15 +132,15 @@ public class JarUpdater {
             cmd = cmd.concat(" -C "+ baseDir + " " + s);
         }
         
-        Out.print("JAR", "- JAR command: "+cmd);
+        Out.print(LOG_LEVEL.DEBUG, "- JAR command: "+cmd);
         
         Process process_update = Runtime.getRuntime().exec(cmd);
         
         //StreamDisplay.setWait(false);//finishes the process after 1s without stream
-        if (!StreamDisplay.show("JAR", process_update.getInputStream(), process_update.getErrorStream()))
-            Out.print("JAR", "Command terminated with errors!");
+        if (!StreamDisplay.show(LOG_LEVEL.INFO, process_update.getInputStream(), process_update.getErrorStream()))
+            Out.print(LOG_LEVEL.ERR, "Command terminated with errors!");
         else
-            Out.print("JAR", "Command executed.");
+            Out.print(LOG_LEVEL.INFO, "Command executed.");
         
         //StreamDisplay.setWait(true);
         return process_update.waitFor();
@@ -150,22 +151,22 @@ public class JarUpdater {
         File jarfile = new File(TARGET);
         if (jarfile.exists()) {
             if (!jarfile.canWrite()) {
-                Out.print("JAR", "Fichier JAR protégé en écriture!");
+                Out.print(LOG_LEVEL.WARN, "Fichier JAR protégé en écriture!");
                 jarfile.setWritable(true);
-                Out.print("JAR", "Permissions d'écriture affectées au fichier.");
+                Out.print(LOG_LEVEL.INFO, "Permissions d'écriture affectées au fichier.");
             }
             else {
-                Out.print("JAR", "Fichier JAR accessible en écriture");
+                Out.print(LOG_LEVEL.DEBUG, "Fichier JAR accessible en écriture");
                 JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(jarfile)));
                 out.putNextEntry(new JarEntry("res/native/ShellLink.dll"));
                 out.closeEntry();
-                Out.print("JAR", "Fichier JAR modifié.");
+                Out.print(LOG_LEVEL.DEBUG, "Fichier JAR modifié.");
                 out.finish();
                 out.close();
             }
         }
         else {
-            Out.print("JAR", "Fichier JAR non existant!");
+            Out.print(LOG_LEVEL.ERR, "Fichier JAR non existant!");
         }
     }
 }

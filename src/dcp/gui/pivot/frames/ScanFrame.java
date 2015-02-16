@@ -51,6 +51,7 @@ import org.apache.pivot.wtk.effects.TransitionListener;
 
 import dcp.config.io.IOFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.gui.pivot.Master;
@@ -187,7 +188,7 @@ public class ScanFrame extends FillPane implements Bindable
  
                 int res = scan.execute();
                 if (res == 0) {
-                    Out.print("DEBUG", "Scanned directory: " + inPath.getText());
+                    Out.print(LOG_LEVEL.DEBUG, "Scanned directory: " + inPath.getText());
                     //Save directory to app config recent dirs
                     appConfig.addRecentDir(new File(inPath.getText()));
                     recentDirsFill(appConfig.getRecentDirs());
@@ -197,7 +198,7 @@ public class ScanFrame extends FillPane implements Bindable
                     setModified(true);//Modified Flag (*)
                 }
                 else if (res == 2) {//Error: Path doesn't exist
-                    Out.print("DEBUG", "Path error: " + inPath.getText());
+                    Out.print(LOG_LEVEL.DEBUG, "Path error: " + inPath.getText());
                     Alert.alert("This path doesn't exist!", ScanFrame.this.getWindow());
                 }
                 
@@ -220,7 +221,7 @@ public class ScanFrame extends FillPane implements Bindable
                 customFilters += IOFactory.custExt[i] + " ";
             customFilters = "Custom " + customFilters.trim().replaceAll(" ", ", ")
                     + (IOFactory.custExt.length > maxExts ? "..)" : ")");
-            Out.print("FACTORY", "Loaded Filter: "+customFilters);
+            Out.print(LOG_LEVEL.DEBUG, "Loaded Filter: "+customFilters);
             cbCustTxt.setButtonData(new ButtonData(customFilters));
         }
         
@@ -269,7 +270,7 @@ public class ScanFrame extends FillPane implements Bindable
                     }
                     else {
                         ScanFrame.this.inPath.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
-                        Out.print("INFO", "Updated folder path for packs to: "+ScanFrame.this.inPath.getText());
+                        Out.print(LOG_LEVEL.INFO, "Updated folder path for packs to: "+ScanFrame.this.inPath.getText());
                     }
                 }
             }
@@ -389,61 +390,61 @@ public class ScanFrame extends FillPane implements Bindable
         cbZip.getButtonPressListeners().add(new ButtonPressListener() {//Archive
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Archive");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Archive");
             }
         });
         cbSetup.getButtonPressListeners().add(new ButtonPressListener() {//Setup
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Setup");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Setup");
             }
         });
         cbExe.getButtonPressListeners().add(new ButtonPressListener() {//Executable
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Executable");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Executable");
             }
         });
         cbDir.getButtonPressListeners().add(new ButtonPressListener() {//Directory
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Directory");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Directory");
             }
         });
         cbImg.getButtonPressListeners().add(new ButtonPressListener() {//Images
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Image");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Image");
             }
         });
         cbVid.getButtonPressListeners().add(new ButtonPressListener() {//Videos
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Video");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Video");
             }
         });
         cbSound.getButtonPressListeners().add(new ButtonPressListener() {//Sounds
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Sound");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Sound");
             }
         });
         cbDoc.getButtonPressListeners().add(new ButtonPressListener() {//Documents
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied filter: Document");
+                Out.print(LOG_LEVEL.DEBUG,"Applied filter: Document");
             }
         });
         cbCustTxt.getButtonPressListeners().add(new ButtonPressListener() {// Custom filter SETTINGS
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied custom filter");
+                Out.print(LOG_LEVEL.DEBUG,"Applied custom filter");
             }
         });
         cbCustExpr.getButtonPressListeners().add(new ButtonPressListener() {//Custom filter REGEXP
             @Override public void buttonPressed(Button button) {
                 ADirScan.perform(button);//Action launch
-                Out.print("DEBUG","Applied regular expression filter");
+                Out.print(LOG_LEVEL.DEBUG,"Applied regular expression filter");
             }
         });
         inCustExpr.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
@@ -539,10 +540,10 @@ public class ScanFrame extends FillPane implements Bindable
 
             if (mode == SCAN_MODE.DEFAULT) {
                 facade.setScanMode(new_mode);
-                Out.print("DEBUG", "Scan Mode set to " + new_mode);
+                Out.print(LOG_LEVEL.DEBUG, "Scan Mode set to " + new_mode);
             }
             else {
-                Out.print("DEBUG", "Scan Mode changed from " + mode + " to " + new_mode);
+                Out.print(LOG_LEVEL.DEBUG, "Scan Mode changed from " + mode + " to " + new_mode);
                 facade.setScanMode(new_mode);
                 ADirScan.perform(this);//Refresh the Packs View
             }
@@ -624,7 +625,7 @@ public class ScanFrame extends FillPane implements Bindable
                     @Override public void buttonPressed(Button bt)
                     {
                         recent_dirs.getRows().remove(row);
-                        Out.print("DEBUG", dir.getName()+" entry removed");
+                        Out.print(LOG_LEVEL.INFO, dir.getName()+" entry removed");
                         appConfig.removeRecentDir(dir);
                     }
                 });

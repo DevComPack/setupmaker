@@ -20,6 +20,7 @@ import dcp.config.io.xml.nuget.SpecWriter;
 import dcp.gui.pivot.Master;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.Pack;
 import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
@@ -54,7 +55,7 @@ public class TaskNugetCompile extends Task<Boolean>
     public Boolean execute()
     {
         try {
-            Out.print("BUILD", "Compiling package to " + compiler.getTarget());
+            Out.print(LOG_LEVEL.INFO, "Compiling package to " + compiler.getTarget());
 
             if (stepNbr > 0 && !config())
                 return false;
@@ -65,7 +66,7 @@ public class TaskNugetCompile extends Task<Boolean>
             if (stepNbr > 3 && !push())
                 return false;
             
-            Out.print("BUILD", "Compilation success.");
+            Out.print(LOG_LEVEL.INFO, "Compilation success.");
             
             return true;
         } catch (IOException e) {
@@ -86,7 +87,7 @@ public class TaskNugetCompile extends Task<Boolean>
      * @throws XMLStreamException
      */
     private boolean config() throws XMLStreamException {
-        Out.print("BUILD", "Adding chocolatey config file for install..");
+        Out.print(LOG_LEVEL.INFO, "Adding chocolatey config file for install..");
         
         ConfigWriter CW = new ConfigWriter(new File(compiler.getTarget(), "packages.config").toString(), this.feedUrl);
         CW.writePackages(packs);
@@ -102,7 +103,7 @@ public class TaskNugetCompile extends Task<Boolean>
      * @throws IOException 
      */
     private boolean writeSpecs() throws XMLStreamException, IOException, FileAlreadyExistsException {
-        Out.print("BUILD", "Writing NuSpec files..");
+        Out.print(LOG_LEVEL.INFO, "Writing NuSpec files..");
         SpecWriter SW;
         InstallWriter InstW = new InstallWriter(IOFactory.psChocolateyInstall);
         InstallWriter UninstW = new InstallWriter(IOFactory.psChocolateyUninstall);
@@ -184,7 +185,7 @@ public class TaskNugetCompile extends Task<Boolean>
             copyFolder.mkdir();
             //Files.copy(new File(p.getPath()).toPath(), new File(copyFolder, p.getName()).toPath());
             copy(new File(p.getPath()), new File(copyFolder, p.getName()));
-            Out.print("DEBUG", "copy "+ p.getPath() + " to " + new File(copyFolder, p.getName()).toString());
+            Out.print(LOG_LEVEL.DEBUG, "copy "+ p.getPath() + " to " + new File(copyFolder, p.getName()).toString());
             break;
             
         case EXTRACT:
@@ -192,7 +193,7 @@ public class TaskNugetCompile extends Task<Boolean>
             extrFolder.mkdir();
             //Files.copy(new File(p.getPath()).toPath(), new File(extrFolder, p.getName()).toPath());
             copy(new File(p.getPath()), new File(extrFolder, p.getName()));
-            Out.print("DEBUG", "copy "+ p.getPath() + " to " + new File(extrFolder, p.getName()).toString());
+            Out.print(LOG_LEVEL.DEBUG, "copy "+ p.getPath() + " to " + new File(extrFolder, p.getName()).toString());
             break;
             
         case EXECUTE:
@@ -204,7 +205,7 @@ public class TaskNugetCompile extends Task<Boolean>
             if (p.getFileType() == FILE_TYPE.Executable) // create new empty file flag to ignore batch redirection to executable
                 new File(execFolder, p.getName()+".ignore").createNewFile();
             
-            Out.print("DEBUG", "copy "+ p.getPath() + " to " + new File(execFolder, p.getName()).toString());
+            Out.print(LOG_LEVEL.DEBUG, "copy "+ p.getPath() + " to " + new File(execFolder, p.getName()).toString());
             break;
             
         default:
@@ -220,7 +221,7 @@ public class TaskNugetCompile extends Task<Boolean>
      * @throws InterruptedException 
      */
     private boolean pack() throws IOException, InterruptedException {
-        Out.print("BUILD", "Packing NuSpec files to NuPkg..");
+        Out.print(LOG_LEVEL.INFO, "Packing NuSpec files to NuPkg..");
         boolean success = true;
         int errCode = 0;
         
@@ -230,14 +231,14 @@ public class TaskNugetCompile extends Task<Boolean>
             
             pkg = new File(compiler.getTarget(), p.getInstallName() + "." + p.getInstallVersion() + ".nupkg");
             nuspec = new File(compiler.getTarget(), new File(p.getInstallName(), p.getInstallName()+".nuspec").toString());
-            Out.print("DEBUG", "Packing spec file "+ nuspec.toString() + " to package " + pkg.toString());
+            Out.print(LOG_LEVEL.DEBUG, "Packing spec file "+ nuspec.toString() + " to package " + pkg.toString());
             
             if (!p.isOverride() && pkg.exists())
                 continue;
             
             errCode = compiler.pack(nuspec).waitFor();
             if (errCode != 0) {
-                Out.print("ERROR", "Packing package " + pkg.toString() + " exited with code " + errCode);
+                Out.print(LOG_LEVEL.ERR, "Packing package " + pkg.toString() + " exited with code " + errCode);
                 success = false;
             }
         }
@@ -251,7 +252,7 @@ public class TaskNugetCompile extends Task<Boolean>
      * @throws IOException
      */
     private boolean clean() throws IOException {
-        Out.print("BUILD", "Cleaning Specification folders..");
+        Out.print(LOG_LEVEL.INFO, "Cleaning Specification folders..");
         
         File file;
         String path;
@@ -259,7 +260,7 @@ public class TaskNugetCompile extends Task<Boolean>
             file = new File(compiler.getTarget(), p.getInstallName());
             if (file.exists()) {
                 path = file.toString();
-                Out.print("DEBUG", "Deleting file " + path);
+                Out.print(LOG_LEVEL.DEBUG, "Deleting file " + path);
                 compiler.cleanDir(path);
             }
         }
@@ -274,7 +275,7 @@ public class TaskNugetCompile extends Task<Boolean>
      * @throws InterruptedException 
      */
     private boolean push() throws InterruptedException, IOException {
-        Out.print("BUILD", "Sending packages to nuget feed " + feedUrl);
+        Out.print(LOG_LEVEL.INFO, "Sending packages to nuget feed " + feedUrl);
         boolean success = true;
         int errCode = 0;
         
@@ -282,11 +283,11 @@ public class TaskNugetCompile extends Task<Boolean>
         for(Pack p:packs) {
             pkg = new File(compiler.getTarget(), p.getInstallName() + "." + p.getInstallVersion() + ".nupkg");
             if (!p.isHidden() && pkg.exists()) {
-                Out.print("DEBUG", "Sending file " + pkg.toString());
+                Out.print(LOG_LEVEL.DEBUG, "Sending file " + pkg.toString());
                 
                 errCode = compiler.push(pkg, feedUrl).waitFor();
                 if (errCode != 0) {
-                    Out.print("ERROR", "Pushing package " + pkg.toString() + " exited with code " + errCode);
+                    Out.print(LOG_LEVEL.ERR, "Pushing package " + pkg.toString() + " exited with code " + errCode);
                     success = false;
                 }
             }

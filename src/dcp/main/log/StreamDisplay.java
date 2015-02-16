@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
+
 
 public class StreamDisplay
 {
@@ -12,14 +14,14 @@ public class StreamDisplay
     private static int timeout = 1000;//Stream waiting timeout (1s)
     private static boolean wait = true;//Waits for a stream (or not)
     
-    /*
+    /**
      * Sets the display to wait or not for a stream result
      * Should be called before and after the function
      * to recover its state to the default one (true)
      */ 
-    public static void setWait(boolean WAIT)
+    public static void setWait(boolean wait)
     {
-        StreamDisplay.wait = WAIT;
+        StreamDisplay.wait = wait;
     }
     
     /*
@@ -34,7 +36,7 @@ public class StreamDisplay
     
     //Display the generated output of a stream
     @SuppressWarnings({"unused", "static-access"})
-    private static boolean mono_display (String TAG, InputStream STDOUT, InputStream STDERR) throws IOException, InterruptedException {
+    private static boolean mono_display (LOG_LEVEL level, InputStream STDOUT, InputStream STDERR) throws IOException, InterruptedException {
         String line = null;
         noError = true;
         
@@ -59,20 +61,20 @@ public class StreamDisplay
         //Output stream display
         if (br.ready())
         while ( (line = br.readLine()) != null)
-            Out.print(TAG, line);
+            Out.print(level, line);
         
         //Error stream display
         if (brErr.ready()) {
             noError = false;
             while ( (line = brErr.readLine()) != null) {
-                Out.print(TAG, "ERR> "+line);
+                Out.print(level, "ERR> "+line);
             }
         }
         
         return noError;
     }
     
-    private static boolean stereo_display(final String TAG, InputStream STDOUT, InputStream STDERR) throws IOException, InterruptedException {
+    private static boolean stereo_display(final LOG_LEVEL level, InputStream STDOUT, InputStream STDERR) throws IOException, InterruptedException {
         noError = true;
         
         //Output stream declaration
@@ -92,7 +94,7 @@ public class StreamDisplay
                     while(!br.ready());
                     if (br.ready())
                         while ( (line = br.readLine()) != null)
-                            Out.print(TAG, line);
+                            Out.print(level, line);
                 }
                 catch (IOException e) {
                     e.printStackTrace();
@@ -112,7 +114,7 @@ public class StreamDisplay
                     if (brErr.ready()) {
                         noError = false;
                         while ( (line = brErr.readLine()) != null) {
-                            Out.print(TAG, "ERR> "+line);
+                            Out.print(level, "ERR> "+line);
                         }
                     }
                 }
@@ -130,7 +132,7 @@ public class StreamDisplay
         return noError;
     }
     
-    public static boolean show(final String TAG, InputStream STDOUT, InputStream STDERR) throws IOException, InterruptedException {
-        return stereo_display(TAG, STDOUT, STDERR);
+    public static boolean show(final LOG_LEVEL level, InputStream STDOUT, InputStream STDERR) throws IOException, InterruptedException {
+        return stereo_display(level, STDOUT, STDERR);
     }
 }

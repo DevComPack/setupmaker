@@ -34,7 +34,9 @@ import org.apache.pivot.wtk.ListButton;
 import org.apache.pivot.wtk.ListButtonSelectionListener;
 import org.apache.pivot.wtk.LocalManifest;
 import org.apache.pivot.wtk.Manifest;
+import org.apache.pivot.wtk.MessageType;
 import org.apache.pivot.wtk.Point;
+import org.apache.pivot.wtk.Prompt;
 import org.apache.pivot.wtk.PushButton;
 import org.apache.pivot.wtk.RadioButton;
 import org.apache.pivot.wtk.Span;
@@ -66,6 +68,7 @@ import dcp.gui.pivot.facades.SetFacade;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.factory.TypeFactory.PLATFORM;
 import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
@@ -400,12 +403,12 @@ public class SetFrame extends FillPane implements Bindable
                 assert !multi_selection;
                 if (str.length() > 0) {
                     if (!str.matches("[a-zA-Z._\\-0-9]+")) {
-                        Out.print("WARNING", "Pack name format incorrect: " + str);
+                        Out.print(LOG_LEVEL.WARN, "Pack name format incorrect: " + str);
                         unvalid = true;
                         return false;
                     }
                     if (!facade.validatePack(str)) {
-                        Out.print("WARNING", "Pack name already used: " + str);
+                        Out.print(LOG_LEVEL.WARN, "Pack name already used: " + str);
                         unvalid = true;
                         return false;
                     }
@@ -418,7 +421,7 @@ public class SetFrame extends FillPane implements Bindable
             {
                 if (str.length() > 0) {
                     if (str.length() > 20 || !str.matches("[0-9]+([.][0-9]+)+")) {
-                        Out.print("WARNING", "Pack version format incorrect: " + str);
+                        Out.print(LOG_LEVEL.WARN, "Pack version format incorrect: " + str);
                         unvalid = true;
                         return false;
                     }
@@ -437,8 +440,10 @@ public class SetFrame extends FillPane implements Bindable
                 for (int i=0; i < data.getLength(); i++) {
                     tableView.setSelectedIndex(i);
                     setPackProperties((Pack) tableView.getTableData().get(i));
-                    if (unvalid) { unvalid = false; break; } // stop if unvalid flag true
+                    if (unvalid) break;// stop if unvalid flag true
                 }
+                if (unvalid) unvalid = false;
+                else Prompt.prompt(MessageType.INFO, "All packs data valid.", getWindow());
             }
         });
         btSelectAll.getButtonPressListeners().add(new ButtonPressListener() {
@@ -487,7 +492,7 @@ public class SetFrame extends FillPane implements Bindable
                         if (ngdialog.isValidated()) {// If pushed the OK button
                             if (!facade.newGroup(ngdialog.getText(), ngdialog.getHierarchy()))
                                 Alert.alert("Group already created!", Window.getActiveWindow());
-                        } else Out.print("SET", "Dialog not Validated");
+                        } else Out.print(LOG_LEVEL.WARN, "Dialog not Validated");
                     }
                 });
             }
@@ -537,8 +542,8 @@ public class SetFrame extends FillPane implements Bindable
                     if (pack != null) {
                         content = new LocalManifest();
                         content.putText(pack.getName());
-                        if (!multi_selection) Out.print("SET", "Begin Drag on pack " + pack.getName());//one pack selected
-                        else Out.print("SET", "Begin Drag on selected packs");//multi packs selected
+                        if (!multi_selection) Out.print(LOG_LEVEL.DEBUG, "Begin Drag on pack " + pack.getName());//one pack selected
+                        else Out.print(LOG_LEVEL.DEBUG, "Begin Drag on selected packs");//multi packs selected
                     }
     
                     return (content != null);
@@ -550,7 +555,7 @@ public class SetFrame extends FillPane implements Bindable
             { 
                 content = null;
                 drag_enabled = false;
-                Out.print("SET", "Drag end.");
+                Out.print(LOG_LEVEL.DEBUG, "Drag end.");
             }
         });
         

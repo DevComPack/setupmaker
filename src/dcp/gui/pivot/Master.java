@@ -39,6 +39,7 @@ import dcp.gui.pivot.frames.ScanFrame;
 import dcp.gui.pivot.helper.HelperFacade;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -141,12 +142,12 @@ public class Master extends Window implements Application, Bindable
             }
         };
 
-        Out.print("FACTORY", "Data loaded to memory");
+        Out.print(LOG_LEVEL.DEBUG, "Data loaded to memory");
     }
 
     @Override public void startup(Display display, Map<String, String> properties) throws Exception// App start
     {
-        Out.print("PIVOT", "Window open");
+        Out.print(LOG_LEVEL.DEBUG, "Window open");
         Locale.setDefault(Locale.ENGLISH);// Set default UI language to English
         BXMLSerializer bxmlSerializer = new BXMLSerializer();
         window = (Window) bxmlSerializer.readObject(getClass().getResource("master.bxml"));
@@ -165,9 +166,9 @@ public class Master extends Window implements Application, Bindable
             window.close();
             if (facade.appConfig.isModified()) { // Save configuration if modified
                 facade.confSave();
-                Out.print("INFO", "Workspace saved");
+                Out.print(LOG_LEVEL.INFO, "Workspace saved");
             }
-            Out.print("PIVOT", "BYE");
+            Out.print(LOG_LEVEL.DEBUG, "BYE");
         }
         return false;
     }
@@ -347,7 +348,7 @@ public class Master extends Window implements Application, Bindable
                     facade.factoryReset();
                     titleUpdate();
                     bt.setEnabled(false);
-                    Out.print("INFO", "Back to factory setup configuration");
+                    Out.print(LOG_LEVEL.INFO, "Back to factory setup configuration");
                 }
             }
         });
@@ -355,7 +356,7 @@ public class Master extends Window implements Application, Bindable
             @Override public void buttonPressed(Button bt)
             {
                 facade.saveDefault();
-                Out.print("INFO", "Default Workspace data saved.");
+                Out.print(LOG_LEVEL.INFO, "Default Workspace data saved.");
                 Prompt.prompt(MessageType.INFO, "Workspace data saved as default.", getWindow());
             }
         });
@@ -407,19 +408,19 @@ public class Master extends Window implements Application, Bindable
         if (args.length > 0) // Command Line Function
         {
             Out.setLogger(null);
-            Out.print("INFO", "Command Line compiling enabled");
-            Out.print("INFO", "Loading application...");
+            Out.print(LOG_LEVEL.INFO, "Command Line compiling enabled");
+            Out.print(LOG_LEVEL.INFO, "Loading application...");
             new Master();
             
             for (String s: args) {
                 if (new File(s).exists() && s.endsWith(".dcp")) {
-                    Out.print("INFO", "Processing dcp file: " + s);
+                    Out.print(LOG_LEVEL.INFO, "Processing dcp file: " + s);
                     System.out.println();
                     
                     Master.facade.process(s);// compile save file with izpack
                 }
                 else {
-                    Out.print("ERROR", "Filepath doesn't exist or file is incorrect! Please give a valid path to a dcp save file.");
+                    Out.print(LOG_LEVEL.ERR, "Filepath doesn't exist or file is incorrect! Please give a valid path to a dcp save file.");
                 }
             }
         }

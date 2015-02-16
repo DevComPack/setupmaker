@@ -41,6 +41,7 @@ import dcp.config.io.zip.TrueZipCastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
@@ -94,26 +95,26 @@ public class TaskIzpackCompile extends Task<Boolean>
             
             // IZPACK COMPILE
             if (IOFactory.izpackCompile) {//IzPack compilation enabled
-                Out.print("BUILD", "Compiling package to " + compiler.getTarget());
+                Out.print(LOG_LEVEL.INFO, "Compiling package to " + compiler.getTarget());
                 if (compiler.compile() == 0) {
-                    Out.print("BUILD", "Compilation success.");
+                    Out.print(LOG_LEVEL.INFO, "Compilation success.");
                     TrueZipCastFactory.clearArchives();
                     
                     if (izpackConf.getWebConfig() != null && izpackConf.getWebConfig().isEnabled()) {//Send pack files through SFTP
                         Out.newLine();
-                        Out.print("SFTP", "Web Setup upload process for packs begins..");
+                        Out.print(LOG_LEVEL.INFO, "Web Setup upload process for packs begins..");
                         return webUpload();
                     }
                     return true;
                 }
                 else {
-                    Out.print("BUILD", "Compilation error!");
+                    Out.print(LOG_LEVEL.INFO, "Compilation error!");
                     TrueZipCastFactory.clearArchives();
                     return false;
                 }
             }
             else {// Stop after xml data writing
-                Out.print("BUILD", "Data written on " + IOFactory.xmlIzpackInstall);
+                Out.print(LOG_LEVEL.INFO, "Data written on " + IOFactory.xmlIzpackInstall);
                 return true;
             }
             
@@ -199,7 +200,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     private boolean writeGuiPrefs() throws XMLStreamException
     {
         GuiprefsWriter GW = new GuiprefsWriter(root);
-        Out.print("STAX", "Writing GUI Preferences");
+        Out.print(LOG_LEVEL.INFO, "Writing GUI Preferences");
         GW.setPrefs(setupConfig);// Write Gui prefs
         // Modifiers
         GW.addModifier("langDisplayType", "native");
@@ -247,10 +248,10 @@ public class TaskIzpackCompile extends Task<Boolean>
 
     private void dataAnalyze() throws IOException
     {
-        Out.print("INFO", "Data parsing...");
-        Out.print("INFO", setupConfig.getAppName() + " " + setupConfig.getAppVersion());
-        Out.print("INFO", "#packs " + packs.getLength());
-        Out.print("INFO", "#groups " + groups.getLength());
+        Out.print(LOG_LEVEL.INFO, "Data parsing...");
+        Out.print(LOG_LEVEL.INFO, setupConfig.getAppName() + " " + setupConfig.getAppVersion());
+        Out.print(LOG_LEVEL.INFO, "#packs " + packs.getLength());
+        Out.print(LOG_LEVEL.INFO, "#groups " + groups.getLength());
         Out.newLine();
         
         boolean notRequired = false;// false if all packs are required
@@ -296,10 +297,10 @@ public class TaskIzpackCompile extends Task<Boolean>
             
             if (!new File(P.getPath()).exists()) {// packs' source file path correction
                 String newPath = setupConfig.getSrcPath()+"/"+P.getGroupPath()+P.getName();
-                Out.print("INFO", "Changing '"+P.getName()+"' source path to: "+newPath);
+                Out.print(LOG_LEVEL.INFO, "Changing '"+P.getName()+"' source path to: "+newPath);
                 File newFile = new File(newPath);
                 if (newFile.exists()) P.updatePack(newFile);
-                else Out.print("ERROR","File not found: "+newFile.getAbsolutePath());
+                else Out.print(LOG_LEVEL.ERR,"File not found: "+newFile.getAbsolutePath());
             }
             
             if (P.getInstallType() == INSTALL_TYPE.EXECUTE) {
@@ -307,7 +308,7 @@ public class TaskIzpackCompile extends Task<Boolean>
             }
             else if (P.getInstallType() == INSTALL_TYPE.EXTRACT) {
                 if (P.getName().toLowerCase().endsWith(".rar")) {// convert rar file to zip
-                    Out.print("INFO", "Converting rar file " + P.getName() + " to zip");
+                    Out.print(LOG_LEVEL.INFO, "Converting rar file " + P.getName() + " to zip");
                     P.updatePack(TrueZipCastFactory.rarToZip(new File(P.getPath())));
                 }
             }
@@ -327,19 +328,19 @@ public class TaskIzpackCompile extends Task<Boolean>
         
         if (!notRequired) {// if all packs are required
             isPackPanel = false;// disable packs panel display
-            Out.print("STAX", "Packs panel disabled");
+            Out.print(LOG_LEVEL.INFO, "Packs panel disabled");
         }
         if (!shortcut) {// if all packs don't have shortcut enabled
             setupConfig.setShortcuts(false);// disable shortcut panel
-            Out.print("STAX", "Shortcuts panel disabled");
+            Out.print(LOG_LEVEL.INFO, "Shortcuts panel disabled");
         }
         if (setupConfig.isForcePath())
-            Out.print("STAX", "Install path panel disabled");
+            Out.print(LOG_LEVEL.INFO, "Install path panel disabled");
         if (izpackConf.isSplit())
-            Out.print("STAX", "Packaging option enabled");
+            Out.print(LOG_LEVEL.INFO, "Packaging option enabled");
         
         if (isInstallGroup)
-            Out.print("STAX", "Install Group panel enabled");
+            Out.print(LOG_LEVEL.INFO, "Install Group panel enabled");
         
         Out.newLine();
     }
@@ -347,7 +348,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     private boolean writeInfo() throws XMLStreamException
     {
         InfoWriter IW = new InfoWriter(root);
-        Out.print("STAX", "Writing Setup Info");
+        Out.print(LOG_LEVEL.INFO, "Writing Setup Info");
         IW.setInfo(setupConfig, izpackConf);// Write Setup info
         
         return true;
@@ -364,7 +365,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         if (setupConfig.isSpanish()) { LW.addLangpack("spa"); done = true; }
         if (setupConfig.isEnglish() || !done) {
             LW.addLangpack("eng");
-            if (!done) Out.print("STAX", "Setting English as a default langpack");
+            if (!done) Out.print(LOG_LEVEL.INFO, "Setting English as a default langpack");
         }
         
         return true;
@@ -373,7 +374,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     private boolean writeVariables() throws XMLStreamException
     {
         VariableWriter VW = new VariableWriter(root);
-        Out.print("STAX", "Writing Variables");
+        Out.print(LOG_LEVEL.INFO, "Writing Variables");
         
         VW.addVariable("InstallerFrame.logfilePath", "$INSTALL_PATH/Uninstaller/install.log");
         VW.addVariable("DesktopShortcutCheckboxEnabled", "true");
@@ -387,7 +388,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     {
         // Packaging activate
         if (izpackConf.isSplit()) {
-            Out.print("STAX", "Setting packaging option");
+            Out.print(LOG_LEVEL.INFO, "Setting packaging option");
             PackagingWriter PkgW = new PackagingWriter(root);
             PkgW.setPackaging(izpackConf.getSplitSize());
         }
@@ -397,7 +398,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     
     private boolean writePanels() throws XMLStreamException {
         PanelWriter PW = new PanelWriter(root);
-        Out.print("STAX", "Writing Panels");
+        Out.print(LOG_LEVEL.INFO, "Writing Panels");
         
         if (setupConfig.isRegistryCheck())//<panel />
             PW.writePanel("CheckedHelloPanel");
@@ -440,7 +441,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     private boolean writeListeners() throws XMLStreamException
     {
         ListenerWriter LW = new ListenerWriter(root);
-        Out.print("STAX", "Writing Listeners");
+        Out.print(LOG_LEVEL.INFO, "Writing Listeners");
         
         LW.addListener("SummaryLoggerInstallerListener", "", false);
         if (setupConfig.isRegistryCheck())
@@ -452,7 +453,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     private boolean writeResources() throws XMLStreamException
     {
         ResourceWriter RW = new ResourceWriter(root);
-        Out.print("STAX", "Writing Resources");
+        Out.print(LOG_LEVEL.INFO, "Writing Resources");
         
         // Langpacks
         boolean done = false;
@@ -530,7 +531,7 @@ public class TaskIzpackCompile extends Task<Boolean>
 
     private boolean writeConditions() throws XMLStreamException
     {
-        Out.print("STAX", "Declaring pack conditions");
+        Out.print(LOG_LEVEL.INFO, "Declaring pack conditions");
         Out.newLine();
         
         ConditionWriter CondW = new ConditionWriter(root);
@@ -546,7 +547,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     
     private boolean writePacks(String process_spec) throws XMLStreamException, IOException
     {
-        Out.print("STAX", "Data-xml writing...");
+        Out.print(LOG_LEVEL.INFO, "Data-xml writing...");
         PackWriter PW = new PackWriter(root);// Packs writing: PacksPanelSpec.xml
         
         // Core pack: Include registry clean files if registry check enabled
@@ -554,17 +555,17 @@ public class TaskIzpackCompile extends Task<Boolean>
         
         // Groups Writing
         for(Group G:groups) {
-            Out.print("STAX", "Writing group " + G.getName());
+            Out.print(LOG_LEVEL.INFO, "Writing group " + G.getName());
             if (!PW.addGroup(G)) {// If error writing
-                Out.print("STAX", "Writing error for group " + G.getName() + "!");
+                Out.print(LOG_LEVEL.INFO, "Writing error for group " + G.getName() + "!");
                 return false;
             }
         }
         // Packs writing
         for(Pack P:packs) {
-            Out.print("STAX", "Writing pack " + P.getInstallName());
+            Out.print(LOG_LEVEL.INFO, "Writing pack " + P.getInstallName());
             if (!PW.addPack(P)) {// If error writing
-                Out.print("STAX", "Writing error for pack " + P.getInstallName() + "!");
+                Out.print(LOG_LEVEL.INFO, "Writing error for pack " + P.getInstallName() + "!");
                 return false;
             }
         }
@@ -575,7 +576,7 @@ public class TaskIzpackCompile extends Task<Boolean>
             
             for (Pack P:packs) {
                 if (P.getInstallType() == INSTALL_TYPE.EXECUTE) {
-                    Out.print("STAX", "Writing process pack job for " + P.getInstallName() + " to " + ProcessW.getTargetFile());
+                    Out.print(LOG_LEVEL.INFO, "Writing process pack job for " + P.getInstallName() + " to " + ProcessW.getTargetFile());
                     if (P.getFileType() == FILE_TYPE.Setup) {// Setups batch writing
                         ProcessW.addClassJob(P,"com.izforge.izpack.resources.SetupExecute",
                                                 new String[] {P.getName(), P.isSilentInstall()?"true":"false", "$INSTALL_PATH/$EXE_DIR"});
@@ -615,7 +616,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         ShortcutWriter SW = new ShortcutWriter(xml_file,
                                                 setupConfig.isShToStartMenu(),
                                                 setupConfig.isShToDesktop());
-        Out.print("STAX", "Writing Shortcuts to " + SW.getTargetFile());
+        Out.print(LOG_LEVEL.INFO, "Writing Shortcuts to " + SW.getTargetFile());
 
         if (setupConfig.isFolderShortcut())// Folder shortcut
             SW.addShortcut("$APP_NAME $APP_VER", "$INSTALL_PATH", "", "", setupConfig.isShToDesktop(), false);
@@ -648,17 +649,17 @@ public class TaskIzpackCompile extends Task<Boolean>
         
         try {
             sftp = new JschFactory(webConfig.getHost(), webConfig.getUser(), webConfig.getPass(), webConfig.getRemoteDir());
-            Out.print("SFTP", "SFTP Connection initiated");
+            Out.print(LOG_LEVEL.INFO, "SFTP Connection initiated");
             String package_name = compiler.getTarget().substring(0, compiler.getTarget().lastIndexOf("."));
-            Out.print("SFTP", "Begin uploading files:");
+            Out.print(LOG_LEVEL.INFO, "Begin upload:");
             File file = new File(package_name+".pack-core.jar");
-            System.out.println("Begin uploading file "+file.getName());
+            Out.print(LOG_LEVEL.INFO, "Uploading file "+file.getName());
             sftp.put(file, webConfig.getPath());
             while(!sftp.isReady()) Thread.sleep(100);
             file.delete();
             for(Pack P:packs) {
                 file = new File(package_name+".pack-"+P.getInstallName()+".jar");
-                System.out.println("Begin uploading file "+file.getName());
+                Out.print(LOG_LEVEL.INFO, "Uploading file "+file.getName());
                 sftp.put(file, webConfig.getPath());
                 while(!sftp.isReady())
                     Thread.sleep(200);
@@ -666,7 +667,7 @@ public class TaskIzpackCompile extends Task<Boolean>
             }
             for(Group G:groups) {
                 file = new File(package_name+".pack-"+G.getName()+".jar");
-                System.out.println("Begin uploading file "+file.getName());
+                Out.print(LOG_LEVEL.INFO, "Begin uploading file "+file.getName());
                 sftp.put(file, webConfig.getPath());
                 while(!sftp.isReady())
                     Thread.sleep(200);
@@ -675,24 +676,24 @@ public class TaskIzpackCompile extends Task<Boolean>
         }
         catch (JSchException e) {
             e.printStackTrace();
-            Out.print("SFTP", "JSch Error!");
+            Out.print(LOG_LEVEL.ERR, "JSch Error!");
             return false;
         }
         catch (SftpException e) {
             e.printStackTrace();
-            Out.print("SFTP", "SFTP connection Error!");
+            Out.print(LOG_LEVEL.ERR, "SFTP connection Error!");
             return false;
         }
         catch (InterruptedException e) {
             e.printStackTrace();
-            Out.print("SFTP", "SFTP connection interrupted!");
+            Out.print(LOG_LEVEL.ERR, "SFTP connection interrupted!");
             return false;
         }
         finally {
             sftp.disconnect();
         }
         
-        Out.print("SFTP", "All packs uploaded to "+webConfig.getPath());
+        Out.print(LOG_LEVEL.INFO, "All packs uploaded to "+webConfig.getPath());
         return true;
     }
 

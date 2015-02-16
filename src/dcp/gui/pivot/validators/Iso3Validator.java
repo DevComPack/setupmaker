@@ -2,6 +2,7 @@ package dcp.gui.pivot.validators;
 
 import org.apache.pivot.wtk.validation.Validator;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -15,7 +16,7 @@ public class Iso3Validator implements Validator
             return true;
         
         if (s.length() != 3) {// should be 3 characters
-            Out.print("WARNING", "ISO3 format incorrect: " + s);
+            Out.print(LOG_LEVEL.WARN, "ISO3 format incorrect: " + s);
             return false;
         }
         

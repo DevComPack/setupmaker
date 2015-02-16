@@ -7,17 +7,15 @@ import org.apache.pivot.collections.List;
 import org.apache.pivot.wtk.ApplicationContext;
 import org.apache.pivot.wtk.Component;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
+
 
 public class Out
 {
     //Log
     private static List<String> log = new ArrayList<String>();//Global Log
     public static List<String> getLog() { return log; }
-    private static String[] compileLogTags = {  "IZPACK", "NUGET",
-                                                "JAR", "STAX",
-                                                "BUILD", "INFO", "ERROR",
-                                                "REG", "IO", "SFTP"
-                                              };//Tags to display on log
+    private static int displayLevel = 1;//logs to display must be >= than this
     
     private static List<String> compileLog = new ArrayList<String>();//Izpack compile Log
     public static List<String> getCompileLog() { return compileLog; }
@@ -34,7 +32,7 @@ public class Out
     
     //Add a new empty line
     public static void newLine() {
-        print("INFO", "");
+        print(LOG_LEVEL.INFO, "");
     }
     
     /**
@@ -52,24 +50,20 @@ public class Out
      * @param TAG: tag name
      * @param TXT: text to log
      */
-    public static void print(String TAG, String TXT) {
-        print("["+TAG.toUpperCase()+"] "+TXT, System.out);
-        log.add(TXT);
-        final String log_TXT = TXT;
+    public static void print(LOG_LEVEL level, String msg) {
+        print("["+level.toString()+"] "+msg, System.out);
+        log.add(msg);
+        final String log_TXT = msg;
         
-        for(String S:compileLogTags) {//Compile logs to display
-            if (S.equalsIgnoreCase(TAG)) {
-                log(log_TXT);
-                break;
-            }
-        }
+        if (level.value() >= displayLevel)// display if >= than threshold
+            log(log_TXT);
     }
     
-    public static void log(final String MSG) {
+    public static void log(final String msg) {
         ApplicationContext.queueCallback(new Runnable() {//Enqueue GUI display repaint
             @Override public void run()
             {
-                compileLog.add(MSG);
+                compileLog.add(msg);
                 if (getLogger() != null) getLogger().repaint();//Component update
             }
         });

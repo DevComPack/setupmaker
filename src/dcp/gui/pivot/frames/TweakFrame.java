@@ -33,6 +33,7 @@ import dcp.gui.pivot.validators.NameValidator;
 import dcp.gui.pivot.validators.PathValidator;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.Pack;
 import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
@@ -174,7 +175,7 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 //If path changed
                 if (!TweakFrame.this.inReadme.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
-                    Out.print("TWEAK", "Changed readme file to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
+                    Out.print(LOG_LEVEL.DEBUG, "Changed readme file to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inReadme.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     //Setting same root directory for License file browser
                     fBSLicense.setRootDirectory(new File(TweakFrame.this.inReadme.getText()).getParentFile());
@@ -186,7 +187,7 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 //If path changed
                 if (!TweakFrame.this.inLicense.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
-                    Out.print("TWEAK", "Changed license file to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
+                    Out.print(LOG_LEVEL.DEBUG, "Changed license file to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inLicense.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     //Setting same root directory for Logo file browser
                     fBS1.setRootDirectory(new File(TweakFrame.this.inLicense.getText()).getParentFile());
@@ -198,7 +199,7 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 //If path changed
                 if (!TweakFrame.this.inLogo.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
-                    Out.print("TWEAK", "Changed logo to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
+                    Out.print(LOG_LEVEL.DEBUG, "Changed logo to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inLogo.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     //Setting same root directory for Side logo file browser
                     fBS2.setRootDirectory(new File(TweakFrame.this.inLogo.getText()).getParentFile());
@@ -210,7 +211,7 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 //If path changed
                 if (!TweakFrame.this.inSideLogo.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
-                    Out.print("TWEAK", "Changed side logo to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
+                    Out.print(LOG_LEVEL.DEBUG, "Changed side logo to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inSideLogo.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
                 }
             }
@@ -222,7 +223,7 @@ public class TweakFrame extends FillPane implements Bindable
                         fileName = fileBrowserSheet.getSelectedFile().getName();
                 //If path changed
                 if (!TweakFrame.this.inCustomLangpack.getText().equals(filePath)) {
-                    Out.print("TWEAK", "Changed langpack to: "+filePath);
+                    Out.print(LOG_LEVEL.DEBUG, "Changed langpack to: "+filePath);
                     TweakFrame.this.inCustomLangpack.setText(filePath);
                     //get ISO3 code if filename equals 3 chars (without file extension)
                     if (fileName.substring(0, fileName.lastIndexOf('.')).length() == 3)

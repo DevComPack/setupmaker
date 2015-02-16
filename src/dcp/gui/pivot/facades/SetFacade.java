@@ -11,6 +11,7 @@ import dcp.logic.factory.TypeFactory.FILE_TYPE;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.main.log.Out;
@@ -124,7 +125,7 @@ public class SetFacade
                 branches.get(parent).add(branch);
                 
                 branches.put(group, branch);
-                Out.print("MODEL", "Group added: " + group.getPath());
+                Out.print(LOG_LEVEL.DEBUG, "Group added: " + group.getPath());
                 return true;
             }
             else return false;
@@ -136,7 +137,7 @@ public class SetFacade
                 treeData.add(branch);
                 
                 branches.put(group, branch);
-                Out.print("MODEL", "Group added: " + group.getPath());
+                Out.print(LOG_LEVEL.DEBUG, "Group added: " + group.getPath());
                 return true;
             }
             else return false;
@@ -160,7 +161,7 @@ public class SetFacade
             String old_name = group.getName();
             branches.get(group).setText(new_name);
             group.setName(new_name);
-            Out.print("MODEL", "Group "+old_name+" renamed to "+new_name);
+            Out.print(LOG_LEVEL.DEBUG, "Group "+old_name+" renamed to "+new_name);
         }
     }
     
@@ -192,7 +193,7 @@ public class SetFacade
             if (branch.getParent() != null)
                 branch.getParent().remove(branch);
             else treeData.remove(branch);
-            Out.print("MODEL", "Group removed: " + path);
+            Out.print(LOG_LEVEL.DEBUG, "Group removed: " + path);
         }
         else if (node instanceof TreeNode)// Pack
         {
@@ -202,7 +203,7 @@ public class SetFacade
             P.setGroup(null);
             //TreeNode remove
             branch.remove(node);
-            Out.print("PIVOT_SET", "Pack '" + P.getName() + "' removed from Group: "+name);
+            Out.print(LOG_LEVEL.DEBUG, "Pack '" + P.getName() + "' removed from Group: "+name);
         }
     }
     
@@ -246,7 +247,7 @@ public class SetFacade
                 }
         
         branch.add(node);// Add node to branch
-        Out.print("MODEL", "Pack '" + pack.getName() + "' added to Group: " + group.getPath());
+        Out.print(LOG_LEVEL.DEBUG, "Pack '" + pack.getName() + "' added to Group: " + group.getPath());
     }
     
     /**

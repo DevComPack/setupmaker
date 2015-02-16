@@ -3,11 +3,13 @@ package dcp.gui.pivot.tasks;
 import java.io.IOException;
 
 
+
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.util.concurrent.TaskExecutionException;
 import org.apache.pivot.wtk.Component;
 
 import dcp.config.compile.IzpackAntCompiler;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -28,9 +30,9 @@ public class TaskIzpackDebug extends Task<Boolean>
         try
         {
             if (compiler.debug(appName) == 0) {
-                Out.print("IZPACK", "Install success.");
+                Out.print(LOG_LEVEL.INFO, "Install success.");
             }
-            else Out.print("IZPACK", "Install aborted!");
+            else Out.print(LOG_LEVEL.ERR, "Install aborted!");
             
         } catch (IOException e) {
             e.printStackTrace();

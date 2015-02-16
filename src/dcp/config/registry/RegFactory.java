@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.main.log.Out;
 
 
@@ -46,13 +47,13 @@ public class RegFactory
                         "DisplayName");
             
             if (value != null) {
-                //recherche si Java installé
+                // recherche si Java installé
                 if (value.toLowerCase().contains("java")) {
                 System.out.print(key+"/"+value+"; ");
                 version = WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE,
                         "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"+key,
                         "DisplayVersion");
-                Out.print("REG", "version: " + version);//affiche version installée
+                Out.print(LOG_LEVEL.DEBUG, "Java Version: " + version);// affiche version installée
                 }
             }
         }
@@ -67,7 +68,7 @@ public class RegFactory
         Date newInstallDate = null;
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         
-        Out.print("REG", "Registry scan...");
+        Out.print(LOG_LEVEL.INFO, "Registry scan...");
         for (String key:programs) {
             value = WinRegistry.readString (WinRegistry.HKEY_LOCAL_MACHINE,
                         "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"+key,
@@ -96,7 +97,7 @@ public class RegFactory
                                         "InstallLocation");
                                 
                                 InstallDate = newInstallDate;
-                                Out.print("REG", "["+new SimpleDateFormat("dd/MM/yyyy").format(newInstallDate)+"] " + value + " > " + path);
+                                Out.print(LOG_LEVEL.DEBUG, "["+new SimpleDateFormat("dd/MM/yyyy").format(newInstallDate)+"] " + value + " > " + path);
                             }
                         } catch (ParseException e) { e.printStackTrace(); }
                     }   

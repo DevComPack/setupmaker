@@ -3,6 +3,32 @@ package dcp.logic.factory;
 
 public class TypeFactory
 {
+    // Log level type
+    public enum LOG_LEVEL {
+        DEBUG(0, "DEBUG"),
+        INFO(1, "INFO"),
+        WARN(2, "WARNING"),
+        ERR(3, "ERROR");
+        
+        private int _level;
+        private String _tag;
+        private LOG_LEVEL(int level, String tag)
+        {
+            _level = level;
+            _tag = tag;
+        }
+        @Override
+        public String toString()
+        {
+            return this._tag;
+        }
+        
+        public int value()
+        {
+            return this._level;
+        }
+    }
+    
     // Pack install type
     public enum INSTALL_TYPE {
         DEFAULT,
