@@ -53,9 +53,8 @@ public class Facade
     public IzpackConfig izpackConf; // IzPack build configuration
     public NugetConfig nugetConf; // NuGet build configuration
 
-    public Facade(Window application, String name, String version)
+    public Facade(String name, String version)
     {
-        this.application = application;
         appConfig = confLoad();// Load configuration file
         if (appConfig == null)
         {
@@ -73,6 +72,15 @@ public class Facade
             izpackConf = new IzpackConfig(appConfig.getDefaultIzpackConfig());
             nugetConf = new NugetConfig(appConfig.getDefaultNugetConfig());
         }
+    }
+    
+    /**
+     * initialize window pointer to application
+     * @param application
+     */
+    public void setWindow(Window application)
+    {
+        this.application = application;
     }
     
     /**

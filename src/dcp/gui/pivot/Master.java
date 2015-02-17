@@ -18,7 +18,6 @@ import org.apache.pivot.wtk.Button;
 import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.Component;
 import org.apache.pivot.wtk.ComponentKeyListener;
-import org.apache.pivot.wtk.DesktopApplicationContext;
 import org.apache.pivot.wtk.Display;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
@@ -100,9 +99,18 @@ public class Master extends Window implements Application, Bindable
     }
     
     public Master() {
-        IOFactory.init();// Factory memory data initialize
-        facade = new Facade(this, AppName, AppVersion);
-        
+        if (facade == null)
+        {
+            IOFactory.init();// Factory memory data initialize
+            facade = new Facade(AppName, AppVersion);
+        }
+        else facade.setWindow(this);
+    }
+    @Override public void resume() throws Exception { }
+    @Override public void suspend() throws Exception { }
+
+    @Override public void startup(Display display, Map<String, String> properties) throws Exception// App start
+    {
         //Save action
         ASave = new Action() {// Project Save Action
             @Override public void perform(Component source) {
@@ -141,23 +149,20 @@ public class Master extends Window implements Application, Bindable
                 }
             }
         };
-
-        Out.print(LOG_LEVEL.DEBUG, "Data loaded to memory");
-    }
-
-    @Override public void startup(Display display, Map<String, String> properties) throws Exception// App start
-    {
-        Out.print(LOG_LEVEL.DEBUG, "Window open");
-        Locale.setDefault(Locale.ENGLISH);// Set default UI language to English
-        BXMLSerializer bxmlSerializer = new BXMLSerializer();
-        window = (Window) bxmlSerializer.readObject(getClass().getResource("master.bxml"));
-        window.open(display);
         
         // Helper launch if first time
         if (facade.appConfig.isHelp()) {
             helper.open(window);
             facade.appConfig.setHelp(false);
         }
+        
+        Out.print(LOG_LEVEL.DEBUG, "Data loaded to memory");
+        
+        Locale.setDefault(Locale.ENGLISH);// Set default UI language to English
+        BXMLSerializer bxmlSerializer = new BXMLSerializer();
+        window = (Window) bxmlSerializer.readObject(getClass().getResource("master.bxml"));
+        window.open(display);
+        Out.print(LOG_LEVEL.DEBUG, "Window open");
     }
 
     @Override public boolean shutdown(boolean optional) throws Exception//Window close
@@ -172,9 +177,6 @@ public class Master extends Window implements Application, Bindable
         }
         return false;
     }
-
-    @Override public void resume() throws Exception { }
-    @Override public void suspend() throws Exception { }
 
     @Override public void initialize(Map<String, Object> args, URL url, Resources res)
     {
@@ -396,36 +398,6 @@ public class Master extends Window implements Application, Bindable
                                 String.valueOf(tabPane.getTabs().getLength()) + ",");
         statusBarNPacks.setText(String.valueOf(PackFactory.getPacks().getLength()));
         statusBarNGroups.setText(String.valueOf(GroupFactory.getGroups().getLength()));
-    }
-
-    
-    /**
-     * Launch the Pivot application [ GUI/Command mode ]
-     * @param args
-     */
-    public static void main(String[] args)
-    {
-        if (args.length > 0) // Command Line Function
-        {
-            Out.setLogger(null);
-            Out.print(LOG_LEVEL.INFO, "Command Line compiling enabled");
-            Out.print(LOG_LEVEL.INFO, "Loading application...");
-            new Master();
-            
-            for (String s: args) {
-                if (new File(s).exists() && s.endsWith(".dcp")) {
-                    Out.print(LOG_LEVEL.INFO, "Processing dcp file: " + s);
-                    System.out.println();
-                    
-                    Master.facade.process(s);// compile save file with izpack
-                }
-                else {
-                    Out.print(LOG_LEVEL.ERR, "Filepath doesn't exist or file is incorrect! Please give a valid path to a dcp save file.");
-                }
-            }
-        }
-        else // GUI Application
-            DesktopApplicationContext.main(Master.class, args);
     }
 
 }
