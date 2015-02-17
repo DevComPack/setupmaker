@@ -22,7 +22,6 @@ public class SetFacade
     // DATA
     private List<TreeBranch> treeData; // Groups UI collection
     private java.util.Map<Group, TreeBranch> branches; // Treeview Branch mapped to Group
-    private List<Pack> packs = PackFactory.getPacks(); // Packs
     
     /**
      * Set Tab Facade Constructor
@@ -41,7 +40,7 @@ public class SetFacade
      */
     public Pack getPack(TreeNode node)
     {
-        for(Pack P:packs) {
+        for(Pack P : PackFactory.getPacks()) {
             if (P.getGroup() != null && P.equals(node))
                 return P;
         }
@@ -72,7 +71,7 @@ public class SetFacade
     public boolean validatePack(String name)
     {
         int i = 0;
-        for(Pack p:packs) {
+        for(Pack p : PackFactory.getPacks()) {
             if (p.getInstallName().equals(name)) i++;
         }
         if (i > 1) return false;
@@ -167,7 +166,7 @@ public class SetFacade
     
     //Unlink packs and groups from the Group
     private void unlinkGroup(Group group) {
-        for(Pack p:packs) {
+        for(Pack p : PackFactory.getPacks()) {
             if (p.getGroup() != null && p.getGroup().equals(group))
                 p.setGroup(null);
         }

@@ -1693,7 +1693,6 @@ public class SetFrame extends FillPane implements Bindable
      * Initialize Tab Data from loaded save file
      */
     public void loadInit() {
-        System.out.println("load init");
         nullProperties(); // Initialize properties values
         ngdialog.setHierarchy(false, ""); // Initialize NewGroup Hierarchy
         

@@ -5,7 +5,9 @@ import java.util.ListIterator;
 import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
 
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.model.Group;
+import dcp.main.log.Out;
 
 
 public class GroupFactory
@@ -14,8 +16,8 @@ public class GroupFactory
     public static List<Group> getGroups() { return groups; }
     
     //Returns Group of PATH
-    public static Group get(String[] PATH) {
-        return get(CastFactory.pathToString(PATH));
+    public static Group get(String[] path) {
+        return get(CastFactory.pathToString(path));
     }
     public static Group get(String path) {
         if (path==null) return null;
@@ -24,11 +26,11 @@ public class GroupFactory
                 return G;
         return null;
     }
-    public static List<Group> getByName(String NAME) {
-        if (NAME==null) return null;
+    public static List<Group> getByName(String name) {
+        if (name==null) return null;
         List<Group> list = new ArrayList<Group>();
         for(Group G:groups)
-            if (G.getName().equalsIgnoreCase(NAME))
+            if (G.getName().equalsIgnoreCase(name))
                 list.add(G);
         return list;
     }
@@ -39,12 +41,13 @@ public class GroupFactory
     }
     
     //Add a new group
-    public static boolean addGroup(Group G) {
-        if (indexOf(G) == -1) {//Group not already created
-            groups.add(G);
-            if (G.getParent()!=null) {//Has parent group
-                G.getParent().addChild(G);//Set the parent's child
+    public static boolean addGroup(Group group) {
+        if (indexOf(group) == -1) {//Group not already created
+            groups.add(group);
+            if (group.getParent() != null) {//Has parent group
+                group.getParent().addChild(group);//Set the parent's child
             }
+            Out.print(LOG_LEVEL.DEBUG, "Group added: " + group.getName());
             return true;
         }
         else {//Group already present
@@ -53,30 +56,34 @@ public class GroupFactory
     }
     
     //Remove a group (+sub groups)
-    public static void removeGroup(Group GROUP) {
-        if (GROUP.getParent() != null) {//If has parent
-            Group PARENT = GROUP.getParent();
-            PARENT.removeChild(GROUP);//Cascade delete
+    public static void removeGroup(Group group) {
+        if (group.getParent() != null) {//If has parent
+            Group PARENT = group.getParent();
+            PARENT.removeChild(group);//Cascade delete
         }
-        for (Group G:GROUP.getChildren())//Childs delete
+        for (Group G:group.getChildren())//Childs delete
             groups.remove(G);
-        groups.remove(GROUP);
+        
+        String name = group.getName();
+        groups.remove(group);
+        Out.print(LOG_LEVEL.DEBUG, "Group deleted with cascade: " + name);
     }
     
     //Clear all groups
     public static void clear() {
         groups.clear();
+        Out.print(LOG_LEVEL.DEBUG, "All Groups erased.");
     }
     
     //Returns Group root of G
-    public static Group getRoot(Group GROUP) {
-        if (GROUP.getParent() != null) {
-            Group ROOT = GROUP.getParent();
+    public static Group getRoot(Group group) {
+        if (group.getParent() != null) {
+            Group ROOT = group.getParent();
             while(ROOT.getParent() != null)
                 ROOT = ROOT.getParent();
             return ROOT;
         }
-        else return GROUP;//Is a root
+        else return group;//Is a root
     }
     
     //Returns the roots
@@ -98,10 +105,10 @@ public class GroupFactory
     }
     
     //Returns path from root to Group
-    public static String[] getPath(Group G) {
+    public static String[] getPath(Group group) {
         java.util.List<String> backList = new java.util.ArrayList<String>();
         //Return back in hierarchy
-        Group Gtmp = G;
+        Group Gtmp = group;
         do {
             backList.add(Gtmp.getName());
             Gtmp = Gtmp.getParent();

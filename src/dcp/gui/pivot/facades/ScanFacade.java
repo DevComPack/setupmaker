@@ -17,8 +17,8 @@ public class ScanFacade
     private SCAN_FOLDER folder = SCAN_FOLDER.DEFAULT;// folder import type
     
     // Model
-    private List<Pack> packs;//List of scanned packs
-    private List<Group> groups;//List of scanned directories
+    private List<Pack> packs;//List of scanned packs (Master)
+    private List<Group> groups;//List of scanned directories (Master)
     private List<TreeNode> treeData;//Tree view data
 
     

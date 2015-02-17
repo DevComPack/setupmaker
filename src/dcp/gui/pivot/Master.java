@@ -34,7 +34,6 @@ import org.apache.pivot.wtk.Keyboard.KeyLocation;
 
 import dcp.config.io.IOFactory;
 import dcp.gui.pivot.actions.BrowseAction;
-import dcp.gui.pivot.frames.ScanFrame;
 import dcp.gui.pivot.helper.HelperFacade;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
@@ -49,7 +48,7 @@ public class Master extends Window implements Application, Bindable
     public final static String AppVersion = "1.2.0";
     
     // Class Data
-    private Window window;// Main application window
+    private static Window window;// Main application window
     public static Facade facade;// Application data facade
     
     // Helpers
@@ -104,52 +103,54 @@ public class Master extends Window implements Application, Bindable
             IOFactory.init();// Factory memory data initialize
             facade = new Facade(AppName, AppVersion);
         }
-        else facade.setWindow(this);
+        else {
+            facade.setWindow(this); // bind window application to facade
+
+            //Save action
+            ASave = new Action() {// Project Save Action
+                @Override public void perform(Component source) {
+                    if (facade.save(IOFactory.saveFile)) {
+                        // Enable Save button
+                        if (!btSave.isEnabled()) {
+                            btSave.setEnabled(true);
+                            //btDefault.setEnabled(false);
+                        }
+                        btUndo.setEnabled(true);
+                        titleUpdate();
+                    }
+                } };
+            //Load Action
+            ALoad = new Action() {// Project Load Action
+                @Override
+                public void perform(Component arg0)
+                {
+                    if (facade.load(IOFactory.saveFile)) {
+                        facade.tabsInit(true);
+                        // Go to Set tab
+                        tabPane.setSelectedIndex(0);
+                        for(int i=1; i<tabPane.getTabs().getLength(); i++)
+                            tabPane.getTabs().get(i).setEnabled(false);
+                        tabPane.getTabs().get(0).setEnabled(true);
+                        //if (tabPane.getSelectedIndex() == 1)// If already on Set tab
+                        //    ScanFrame.setLoaded(false);// Disable scan loaded flag*
+                        btBack.setEnabled(false);
+                        btNext.setEnabled(true);
+                        // Enable Save button
+                        if (!btSave.isEnabled()) {
+                            btSave.setEnabled(true);
+                        }
+                        btUndo.setEnabled(true);
+                        titleUpdate();
+                    }
+                }
+            };
+        }
     }
     @Override public void resume() throws Exception { }
     @Override public void suspend() throws Exception { }
 
     @Override public void startup(Display display, Map<String, String> properties) throws Exception// App start
     {
-        //Save action
-        ASave = new Action() {// Project Save Action
-            @Override public void perform(Component source) {
-                if (facade.save(IOFactory.saveFile)) {
-                    // Enable Save button
-                    if (!btSave.isEnabled()) {
-                        btSave.setEnabled(true);
-                        //btDefault.setEnabled(false);
-                    }
-                    btUndo.setEnabled(true);
-                    titleUpdate();
-                }
-            } };
-        //Load Action
-        ALoad = new Action() {// Project Load Action
-            @Override
-            public void perform(Component arg0)
-            {
-                if (facade.load(IOFactory.saveFile)) {
-                    facade.tabsInit(true);
-                    // Go to Set tab
-                    tabPane.setSelectedIndex(1);
-                    for(int i=0; i<tabPane.getTabs().getLength(); i++)
-                        tabPane.getTabs().get(i).setEnabled(false);
-                    tabPane.getTabs().get(1).setEnabled(true);
-                    if (tabPane.getSelectedIndex() == 1)// If already on Set tab
-                        ScanFrame.setLoaded(false);// Disable scan loaded flag*
-                    btBack.setEnabled(true);
-                    btNext.setEnabled(true);
-                    // Enable Save button
-                    if (!btSave.isEnabled()) {
-                        btSave.setEnabled(true);
-                    }
-                    btUndo.setEnabled(true);
-                    titleUpdate();
-                }
-            }
-        };
-        
         // Helper launch if first time
         if (facade.appConfig.isHelp()) {
             helper.open(window);
