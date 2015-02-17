@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.pivot.collections.ArrayList;
-import org.apache.pivot.collections.List;
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.TaskAdapter;
@@ -37,10 +35,6 @@ import dcp.main.log.Out;
 public class Facade
 {
     private Window application;
-    
-    // Data (loaded from saved file)
-    public List<Pack> packs;
-    public List<Group> groups;
     // UI Tabs
     private ScanFrame scanFrame;
     private SetFrame setFrame;
@@ -107,9 +101,9 @@ public class Facade
             
             if (load) {
                 //Groups binding
-                scanFrame.setGroups(groups);//loaded flag enabled*
+                scanFrame.setGroups(GroupFactory.getGroups());//loaded flag enabled*
                 //Packs binding
-                scanFrame.setPacks(packs);//loaded flag enabled*
+                scanFrame.setPacks(PackFactory.getPacks());//loaded flag enabled*
                 //Tab data initialize
                 setFrame.loadInit();
             }
@@ -135,13 +129,6 @@ public class Facade
         if (!load(saveFile)) // load error
             Out.print(LOG_LEVEL.ERR, "Error loading the file! Please load it from the GUI and correct if there are some errors then reload it.");
         else { // load success
-            for (Group G:groups) {// Add Groups to factory
-                GroupFactory.addGroup(G);
-            }
-            for(Pack P:packs) {// Add Packs to factory
-                PackFactory.addPack(P);
-            }
-            
             Out.print(LOG_LEVEL.INFO, "File data loaded successfully.");
             System.out.println();
             
@@ -315,15 +302,13 @@ public class Facade
                 setupConfig = (SetupConfig) is.readObject();
                 Out.print(LOG_LEVEL.DEBUG, setupConfig.getAppName() + " " + setupConfig.getAppVersion());
                 
-                groups = new ArrayList<Group>();
                 int nGroups = is.readInt();
                 for(int i = 0; i<nGroups; i++) {
                     Group G = (Group) is.readObject();
-                    groups.add(G);
+                    GroupFactory.addGroup(G);
                 }
-                if (nGroups > 0) Out.print(LOG_LEVEL.DEBUG, groups.getLength() + " group(s) loaded");
+                if (nGroups > 0) Out.print(LOG_LEVEL.DEBUG, GroupFactory.getCount() + " group(s) loaded");
                 
-                packs = new ArrayList<Pack>();
                 int nPacks = is.readInt();
                 for(int i = 0; i<nPacks; i++) {
                     Pack P = (Pack) is.readObject();
@@ -335,9 +320,9 @@ public class Facade
                         CastFactory.packModelUpdate(P, "1.1");
                     
                     P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
-                    packs.add(P);
+                    PackFactory.addPack(P);
                 }
-                if (nPacks > 0) Out.print(LOG_LEVEL.DEBUG, packs.getLength() + " pack(s) loaded");
+                if (nPacks > 0) Out.print(LOG_LEVEL.DEBUG, PackFactory.getCount() + " pack(s) loaded");
                 
                 is.close();
                 in.close();
@@ -378,8 +363,8 @@ public class Facade
     public void factoryReset()
     {
         setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
-        packs = new ArrayList<Pack>();
-        groups = new ArrayList<Group>();
+        PackFactory.clear();
+        GroupFactory.clear();
         tabsInit(true);
         IOFactory.setSaveFile("");
     }

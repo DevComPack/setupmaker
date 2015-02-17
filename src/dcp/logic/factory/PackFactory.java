@@ -70,5 +70,13 @@ public class PackFactory
         Out.print(LOG_LEVEL.DEBUG, "All Packs erased.");
         return true;
     }
+
+    /**
+     * @return packs length
+     */
+    public static int getCount()
+    {
+        return packs.getLength();
+    }
     
 }

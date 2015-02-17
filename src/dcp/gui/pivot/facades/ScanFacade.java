@@ -25,8 +25,8 @@ public class ScanFacade
     public ScanFacade()
     {
         treeData = new ArrayList<TreeNode>();
-        setPacks(new ArrayList<Pack>());
-        setGroups(new ArrayList<Group>());
+        packs = new ArrayList<Pack>();
+        groups = new ArrayList<Group>();
     }
     
     //// METHODS
@@ -63,8 +63,10 @@ public class ScanFacade
     }
     public void setPacks(List<Pack> packs)
     {
-        this.packs = null;
-        this.packs = packs;
+        this.packs.clear();
+        for (Pack p:packs) {
+            this.packs.add(p);
+        }
     }
     
     // Group
@@ -74,8 +76,10 @@ public class ScanFacade
     }
     public void setGroups(List<Group> groups)
     {
-        this.groups = null;
-        this.groups = groups;
+        this.groups.clear();
+        for (Group g:groups) {
+            this.groups.add(g);
+        }
     }
     
     /**

@@ -122,5 +122,13 @@ public class GroupFactory
         }
         return PATH;
     }
+
+    /**
+     * @return groups length
+     */
+    public static int getCount()
+    {
+        return groups.getLength();
+    }
     
 }
