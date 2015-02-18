@@ -425,7 +425,10 @@ public class SetFrame extends FillPane implements Bindable
                     if (unvalid) break;// stop if unvalid flag true
                 }
                 if (unvalid) unvalid = false;
-                else Prompt.prompt(MessageType.INFO, "All packs data valid.", getWindow());
+                else {
+                    tableView.clearSelection();
+                    Prompt.prompt(MessageType.INFO, "All packs data valid.", getWindow());
+                }
             }
         });
         btSelectAll.getButtonPressListeners().add(new ButtonPressListener() {
@@ -498,7 +501,7 @@ public class SetFrame extends FillPane implements Bindable
         btClear.getButtonPressListeners().add(new ButtonPressListener() {//Remove all groups from tree view
             @Override public void buttonPressed(Button bt)
             {
-                facade.clearTreeView();
+                facade.clearGroups();
                 ngdialog.setHierarchy(false, "");//Clean new group hierarchy
                 tableView.clearSelection();//Clear selection on packs
                 tableView.repaint(tableView.getColumnBounds(TABLEVIEW_GROUP_COLUMN_INDEX));//Packs Group display update
@@ -1648,7 +1651,7 @@ public class SetFrame extends FillPane implements Bindable
      * Initialize Tab Data from Scan tab
      */
     public void update() {
-        System.out.println("scan init");
+        Out.print(LOG_LEVEL.DEBUG, "Set tab update");
         nullProperties(); // Initialize properties values
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
         

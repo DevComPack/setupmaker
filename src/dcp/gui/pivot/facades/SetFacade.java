@@ -2,6 +2,7 @@ package dcp.gui.pivot.facades;
 
 import java.util.TreeMap;
 
+import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
 import org.apache.pivot.wtk.content.TreeBranch;
 import org.apache.pivot.wtk.content.TreeNode;
@@ -35,21 +36,34 @@ public class SetFacade
     
     /**
      * Import/Create data from given lists of data (Scan)
-     * @param groups
-     * @param packs
+     * @param groups: list of scanned folders/groups (null if import packs only)
+     * @param packs: list of scanned packs
      */
     public boolean importDataFrom(List<Group> groups, List<Pack> packs)
     {
-        //Groups Import
-        clearGroups();
+        // Groups Import
+        GroupFactory.clear();
+        treeData.clear();
         if (groups != null)
             for(Group G:groups)// Fill Data from Scan folders
                 newGroup(new Group(G));
         
-        //Packs Import
-        clearPacks();
-        for(Pack P:packs) {// Fill Data from Scan files
-            Pack p = new Pack(P);
+        // Packs data save for same packs
+        List<Pack> newPacks = new ArrayList<Pack>();
+        for(Pack p:packs) {
+            List<Pack> oldPacks = PackFactory.getByName(p.getName());
+            if (oldPacks.getLength() == 1) {//if only one pack with same filename
+                Out.print(LOG_LEVEL.DEBUG, "Pack " + p.getName() + " data restored.");
+                newPacks.add(new Pack(oldPacks.get(0)));
+            }
+            else {//otherwise reset packs
+                newPacks.add(new Pack(p));
+            }
+        }
+        
+        // Packs Import
+        PackFactory.clear();
+        for(Pack p:newPacks) {// Fill Data from Scan files
             if (groups == null) p.setGroup(null);
             newPack(p);
         }
@@ -114,14 +128,6 @@ public class SetFacade
         if (pack.getGroup() != null)
             return false;
         return PackFactory.removePack(pack);
-    }
-    
-    /**
-     * Clear all packs from memory
-     */
-    public void clearPacks()
-    {
-        PackFactory.clear();
     }
     
     ////=====================================================================================
@@ -243,16 +249,6 @@ public class SetFacade
         // remove packs from groups
         for(Pack p:PackFactory.getPacks())
             p.setGroup(null);
-    }
-    
-    /**
-     * Clear nodes from TreeView
-     */
-    public void clearTreeView()
-    {
-        while (treeData.getLength() > 0) {
-            removeNode(treeData.get(0));
-        }
     }
     
     ////=====================================================================================

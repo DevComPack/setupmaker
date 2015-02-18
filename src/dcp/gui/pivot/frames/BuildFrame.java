@@ -583,6 +583,7 @@ public class BuildFrame extends FillPane implements Bindable
     // Export path set
     public void update() throws IOException
     {
+        Out.print(LOG_LEVEL.DEBUG, "Build tab update");
         String filename = setupConfig.getAppName() + "-" + setupConfig.getAppVersion() + ".jar";
         filename = filename.replaceAll(" ", "");
         

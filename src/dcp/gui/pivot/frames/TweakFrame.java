@@ -622,6 +622,7 @@ public class TweakFrame extends FillPane implements Bindable
      */
     public void update()
     {
+        Out.print(LOG_LEVEL.DEBUG, "Tweak tab update");
         boolean found = false;
         for(Pack p:PackFactory.getPacks())
             if (p.isShortcut() && p.getInstallType() != INSTALL_TYPE.EXECUTE) {

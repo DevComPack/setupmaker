@@ -23,6 +23,11 @@ public class PackFactory
             return packs.get(index);
         return null;
     }
+    
+    /**
+     * @param name: filename
+     * @return List of Packs of same name (length=0 if none)
+     */
     public static List<Pack> getByName(String name) {
         assert name != null;
         if (name==null) return null;
