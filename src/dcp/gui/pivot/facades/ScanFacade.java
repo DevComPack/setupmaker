@@ -2,6 +2,8 @@ package dcp.gui.pivot.facades;
 
 import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
+import org.apache.pivot.collections.Sequence;
+import org.apache.pivot.collections.Sequence.Tree.Path;
 import org.apache.pivot.wtk.content.TreeNode;
 
 import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
@@ -65,7 +67,7 @@ public class ScanFacade
     {
         this.packs.clear();
         for (Pack p:packs) {
-            this.packs.add(p);
+            this.packs.add(new Pack(p));
         }
     }
     
@@ -78,8 +80,32 @@ public class ScanFacade
     {
         this.groups.clear();
         for (Group g:groups) {
-            this.groups.add(g);
+            this.groups.add(new Group(g));
         }
+    }
+    
+    /**
+     * Get only packs checked in treeview
+     * @param sequence of checked paths in treeview
+     * @return list of checked packs
+     */
+    public List<Pack> getCheckedPacks(Sequence<Path> list) {
+        List<Pack> selected = new ArrayList<Pack>();
+
+        if (list.getLength() > 0) {
+            Path p;
+            for(int i = 0; i < list.getLength(); i++) {
+                p = list.get(i);
+                TreeNode node = treeData.get(p.get(0));
+                for(Pack P:packs) {
+                    if (node.getParent() == null && P.getName().equalsIgnoreCase(node.getText()) ) {
+                        selected.add(P);
+                        break;
+                    }
+                }
+            }
+        }
+        return selected;
     }
     
     /**

@@ -302,6 +302,7 @@ public class Facade
                 setupConfig = (SetupConfig) is.readObject();
                 Out.print(LOG_LEVEL.DEBUG, setupConfig.getAppName() + " " + setupConfig.getAppVersion());
                 
+                GroupFactory.clear();
                 int nGroups = is.readInt();
                 for(int i = 0; i<nGroups; i++) {
                     Group G = (Group) is.readObject();
@@ -309,6 +310,7 @@ public class Facade
                 }
                 if (nGroups > 0) Out.print(LOG_LEVEL.DEBUG, GroupFactory.getCount() + " group(s) loaded");
                 
+                PackFactory.clear();
                 int nPacks = is.readInt();
                 for(int i = 0; i<nPacks; i++) {
                     Pack P = (Pack) is.readObject();

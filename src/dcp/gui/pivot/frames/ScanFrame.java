@@ -8,7 +8,6 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.Bindable;
-import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.collections.Sequence;
@@ -44,7 +43,6 @@ import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.TreeView;
 import org.apache.pivot.wtk.Button.State;
 import org.apache.pivot.wtk.content.ButtonData;
-import org.apache.pivot.wtk.content.TreeNode;
 import org.apache.pivot.wtk.effects.FadeTransition;
 import org.apache.pivot.wtk.effects.Transition;
 import org.apache.pivot.wtk.effects.TransitionListener;
@@ -92,7 +90,7 @@ public class ScanFrame extends FillPane implements Bindable
     }
     public List<Pack> getPacks() {// Read-only Packs data (selected)
         if (treeView.getCheckmarksEnabled() && !loaded)// If select mode and not loaded
-            return getCheckedPacks();
+            return facade.getCheckedPacks(treeView.getCheckedPaths());
         return facade.getPacks();
     }
     public void setGroups(List<Group> groups) {
@@ -330,6 +328,7 @@ public class ScanFrame extends FillPane implements Bindable
                             btSelect.setVisible(false);
                             btSelectAll.setEnabled(false);
                             btSelectNone.setEnabled(false);
+                            cbFolderScan.setSelected(false);
                             cbFolderScan.setEnabled(true);
                         }
                     });
@@ -503,24 +502,6 @@ public class ScanFrame extends FillPane implements Bindable
         if (treeView.getCheckmarksEnabled())
         for(int i=0; i<facade.getTreeData().getLength(); i++)//Select all
             treeView.setNodeChecked(new Path(i), false);
-    }
-    private List<Pack> getCheckedPacks() {
-        List<Pack> selected = new ArrayList<Pack>();
-        Sequence<Path> list = treeView.getCheckedPaths();
-        if (list.getLength() > 0) {
-            Path p;
-            for(int i = 0; i < list.getLength(); i++) {
-                p = list.get(i);
-                TreeNode node = facade.getTreeData().get(p.get(0));
-                for(Pack P:facade.getPacks()) {
-                    if (node.getParent() == null && P.getName().equalsIgnoreCase(node.getText()) ) {
-                        selected.add(P);
-                        break;
-                    }
-                }
-            }
-        }
-        return selected;
     }
     
     /**

@@ -32,6 +32,29 @@ public class SetFacade
         this.treeData = treeData;
         branches = new TreeMap<Group, TreeBranch>();
     }
+    
+    /**
+     * Import/Create data from given lists of data (Scan)
+     * @param groups
+     * @param packs
+     */
+    public boolean importDataFrom(List<Group> groups, List<Pack> packs)
+    {
+        //Groups Import
+        clearGroups();
+        for(Group G:groups)// Fill Data from Scan folders
+            newGroup(G);
+        
+        //Packs Import
+        clearPacks();
+        for(Pack P:packs)// Fill Data from Scan files
+            newPack(P);
+        
+        return true;
+    }
+    
+    
+    ////====================================================================================
 
     /**
      * Get Pack of a node

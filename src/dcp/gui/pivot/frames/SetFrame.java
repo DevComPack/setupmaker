@@ -173,7 +173,6 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private PushButton btIPErase;//Install Path remove
     @BXML private TextArea inDescription;//Pack/Group's description
     //Actions
-    private Action ADataImport;// Import groups from recursive scan
     private Action AAddToGroup;// Add pack to group Action
     private Action ARemove;// Remove Group/Pack from tree view Action
     private Action ADeletePacks;// Delete selected packs
@@ -186,23 +185,6 @@ public class SetFrame extends FillPane implements Bindable
     {
         assert (singleton == null);
         singleton = this;
-        
-        ADataImport = new Action() {// Import groups from recursive scan
-            @Override public void perform(Component source)
-            {
-                //Groups Import
-                facade.clearGroups();
-                for(Group G:scanFrame.getGroups())// Fill Data from Scan folders
-                    facade.newGroup(G);
-                
-                //Packs Import
-                facade.clearPacks();
-                for(Pack P:scanFrame.getPacks())// Fill Data from Scan files
-                    facade.newPack(P);
-                
-                treeView.expandAll();//Expand branches
-            }
-        };
         
         AAddToGroup = new Action() {// Pack add to Group Button Action
             @Override public void perform(Component source)
@@ -1670,14 +1652,13 @@ public class SetFrame extends FillPane implements Bindable
         nullProperties(); // Initialize properties values
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
         
-        facade.clearGroups(); // Clear all groups
-        treeData.clear(); // TreeView Data clear
-
         if (scanFrame.facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN &&
                 scanFrame.facade.getFolderScan() == SCAN_FOLDER.GROUP_FOLDER) {// If Recursive Scan and enabled, import folders as groups
-            ADataImport.perform(this);
+            facade.importDataFrom(scanFrame.getGroups(), scanFrame.getPacks());
+            treeView.expandAll();//Expand branches   
         }
         else {// import only packs (no folders/groups)
+            facade.clearGroups(); // Clear all groups
             facade.clearPacks(); // Clear all packs
             for(Pack P:scanFrame.getPacks()) { // Add Packs one by one
                 Pack pack = new Pack(P);
@@ -1688,6 +1669,7 @@ public class SetFrame extends FillPane implements Bindable
         
         setModified(true); // Modified flag
     }
+    
 
     /**
      * Initialize Tab Data from loaded save file
@@ -1696,7 +1678,8 @@ public class SetFrame extends FillPane implements Bindable
         nullProperties(); // Initialize properties values
         ngdialog.setHierarchy(false, ""); // Initialize NewGroup Hierarchy
         
-        ADataImport.perform(this);
+        facade.importDataFrom(scanFrame.getGroups(), scanFrame.getPacks());
+        treeView.expandAll();//Expand branches   
         
         setModified(true); // Modified flag
     }
