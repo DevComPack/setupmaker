@@ -42,13 +42,17 @@ public class SetFacade
     {
         //Groups Import
         clearGroups();
-        for(Group G:groups)// Fill Data from Scan folders
-            newGroup(G);
+        if (groups != null)
+            for(Group G:groups)// Fill Data from Scan folders
+                newGroup(new Group(G));
         
         //Packs Import
         clearPacks();
-        for(Pack P:packs)// Fill Data from Scan files
-            newPack(P);
+        for(Pack P:packs) {// Fill Data from Scan files
+            Pack p = new Pack(P);
+            if (groups == null) p.setGroup(null);
+            newPack(p);
+        }
         
         return true;
     }
@@ -236,6 +240,9 @@ public class SetFacade
     {
         GroupFactory.clear();
         treeData.clear();
+        // remove packs from groups
+        for(Pack p:PackFactory.getPacks())
+            p.setGroup(null);
     }
     
     /**

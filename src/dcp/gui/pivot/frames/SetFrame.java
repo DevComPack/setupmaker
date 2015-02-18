@@ -1658,13 +1658,7 @@ public class SetFrame extends FillPane implements Bindable
             treeView.expandAll();//Expand branches   
         }
         else {// import only packs (no folders/groups)
-            facade.clearGroups(); // Clear all groups
-            facade.clearPacks(); // Clear all packs
-            for(Pack P:scanFrame.getPacks()) { // Add Packs one by one
-                Pack pack = new Pack(P);
-                pack.setGroup(null);
-                facade.newPack(pack);
-            }   
+            facade.importDataFrom(null, scanFrame.getPacks());
         }
         
         setModified(true); // Modified flag
