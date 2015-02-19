@@ -31,6 +31,7 @@ import dcp.gui.pivot.validators.IntValidator;
 import dcp.gui.pivot.validators.Iso3Validator;
 import dcp.gui.pivot.validators.NameValidator;
 import dcp.gui.pivot.validators.PathValidator;
+import dcp.gui.pivot.validators.VersionValidator;
 import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.factory.TypeFactory.LOG_LEVEL;
@@ -113,9 +114,9 @@ public class TweakFrame extends FillPane implements Bindable
     {
         //init(setupConfig);
         
-        //Text inputs validators
+        // Text inputs validators
         inAppName.setValidator(new NameValidator());//Name Validators
-        inAppVersion.setValidator(new NameValidator());
+        inAppVersion.setValidator(new VersionValidator());
         inAppWidth.setValidator(new IntValidator());//Int Validators
         inAppHeight.setValidator(new IntValidator());
         //inAppURL.setValidator(new URLValidator());//URL Validator
@@ -126,7 +127,7 @@ public class TweakFrame extends FillPane implements Bindable
         inCustomLangpack.setValidator(new PathValidator());
         inCustomISO3.setValidator(new Iso3Validator());// ISO3 Language Code Validator
         
-        //Browsers Set
+        // Browsers Set
         fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);
         fBSReadme.setMode(FileBrowserSheet.Mode.OPEN);
         fBSLicense.setMode(FileBrowserSheet.Mode.OPEN);
@@ -143,14 +144,14 @@ public class TweakFrame extends FillPane implements Bindable
         }
         catch (IOException e1) { e1.printStackTrace(); }
         
-        //Images filter
+        // Images filter
         fBSReadme.setDisabledFileFilter(IOFactory.docFilter);
         fBSLicense.setDisabledFileFilter(IOFactory.docFilter);
         fBSLangpack.setDisabledFileFilter(IOFactory.docFilter);
         fBS1.setDisabledFileFilter(IOFactory.imgFilter);
         fBS2.setDisabledFileFilter(IOFactory.imgFilter);
         
-        //Action binding
+        // Action binding
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
         btBrowseReadme.setAction(new BrowseAction(fBSReadme, inReadme.getText()));
         btBrowseLicense.setAction(new BrowseAction(fBSLicense, inLicense.getText()));
@@ -158,7 +159,7 @@ public class TweakFrame extends FillPane implements Bindable
         btBrowseSideLogo.setAction(new BrowseAction(fBS2, inSideLogo.getText()));
         btBrowseCustomLangpack.setAction(new BrowseAction(fBSLangpack, "."));
         
-        //File/Folder select in File Browser Event
+        // File/Folder select in File Browser Event
         fileBrowserSheet.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
             @Override public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
@@ -232,7 +233,7 @@ public class TweakFrame extends FillPane implements Bindable
             }
         });
         
-        //Application
+        // Application
         inAppName.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
@@ -338,7 +339,7 @@ public class TweakFrame extends FillPane implements Bindable
             }
         });
         
-        //Author
+        // Author
         inAuthorName.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
@@ -361,7 +362,7 @@ public class TweakFrame extends FillPane implements Bindable
             }
         });
         
-        //Install Path
+        // Install Path
         installPath.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
@@ -390,7 +391,7 @@ public class TweakFrame extends FillPane implements Bindable
             }
         });
         
-        //Resources
+        // Resources
         inReadme.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
@@ -432,7 +433,7 @@ public class TweakFrame extends FillPane implements Bindable
             }
         });
         
-        //Shortcuts
+        // Shortcuts
         cbShortcuts.getButtonPressListeners().add(new ButtonPressListener() {//Shortcuts enable for packs
             @Override public void buttonPressed(Button bt)
             {
@@ -462,7 +463,7 @@ public class TweakFrame extends FillPane implements Bindable
             }
         });
         
-        //Advanced
+        // Advanced
         cbRegistryCheck.getButtonPressListeners().add(new ButtonPressListener() {//Registry Check
             @Override public void buttonPressed(Button bt)
             {
@@ -578,33 +579,33 @@ public class TweakFrame extends FillPane implements Bindable
      */
     public void init(SetupConfig setupConfig)
     {
-        //Application
+        // Application
         inAppName.setText(setupConfig.getAppName());
         inAppVersion.setText(setupConfig.getAppVersion());
         inAppWidth.setText(String.valueOf(setupConfig.getAppWidth()));
         inAppHeight.setText(String.valueOf(setupConfig.getAppHeight()));
         cbResizable.setSelected(setupConfig.isResizable());
-        //Author
+        // Author
         inAuthorName.setText(setupConfig.getAuthorName());
         inAuthorEmail.setText(setupConfig.getAuthorEmail());
         inAppURL.setText(setupConfig.getAppURL());
-        //Install Path
+        // Install Path
         installPath.setText(setupConfig.getInstallPath());
         cbForce.setSelected(setupConfig.isForcePath());
-        //Resources
+        // Resources
         inReadme.setText(setupConfig.getReadmePath());
         inLicense.setText(setupConfig.getLicensePath());
         inLogo.setText(setupConfig.getLogoPath());
         inSideLogo.setText(setupConfig.getSideLogoPath());
-        //Shortcuts
+        // Shortcuts
         cbShortcuts.setSelected(setupConfig.isShortcuts());
         cbFolderSh.setSelected(setupConfig.isFolderShortcut());
         cbShToStartMenu.setSelected(setupConfig.isShToStartMenu());
         cbShToDesktop.setSelected(setupConfig.isShToDesktop());
-        //Advanced
+        // Advanced
         cbRegistryCheck.setSelected(setupConfig.isRegistryCheck());
         cbScriptGen.setSelected(setupConfig.isScriptGen());
-        //Langpacks
+        // Langpacks
         cbLpEnglish.setSelected(setupConfig.isEnglish());
         cbLpFrench.setSelected(setupConfig.isFrench());
         cbLpGerman.setSelected(setupConfig.isGerman());

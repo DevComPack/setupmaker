@@ -6,6 +6,7 @@
 +Pack install architecture(x32/x64) property
 -Treat folders as groups moved to Scan tab (instead of Import button)
 +Logging organized into 4 levels (DEBUG, INFO, WARN, ERR)
++Packs Data restore from set packs on new scan
 --
 *Bugfixes:
 Empty Group creation was possible
@@ -13,6 +14,7 @@ Group treeview node delete button returned exception when none selected
 Panels display flag wasn't initialized
 Build Mode was set double times on app start
 Faster application start
+Tweak application version validator wasn't working
 
 +Packr/JARtoEXE implementation (_https://github.com/libgdx/packr)
 +Tweak file options (icon, exe..)

@@ -65,6 +65,7 @@ import dcp.logic.factory.TypeFactory.FILE_TYPE;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.dad.TextInputDrop;
 import dcp.gui.pivot.facades.SetFacade;
+import dcp.gui.pivot.validators.VersionValidator;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
@@ -401,12 +402,9 @@ public class SetFrame extends FillPane implements Bindable
         inVersion.setValidator(new Validator() {
             @Override public boolean isValid(String str)
             {
-                if (str.length() > 0) {
-                    if (str.length() > 20 || !str.matches("[0-9]+([.][0-9]+)+")) {
-                        Out.print(LOG_LEVEL.WARN, "Pack version format incorrect: " + str);
-                        unvalid = true;
-                        return false;
-                    }
+                if (new VersionValidator().isValid(str) == false) {
+                    unvalid = true;
+                    return false;
                 }
                 return true;
             }
