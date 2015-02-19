@@ -6,6 +6,7 @@ import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.collections.Sequence.Tree.Path;
 import org.apache.pivot.wtk.content.TreeNode;
 
+import dcp.gui.pivot.Master;
 import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
 import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.logic.model.Group;
@@ -41,6 +42,7 @@ public class ScanFacade
     public void setScanMode(SCAN_MODE mode)
     {
         this.mode = mode;
+        Master.facade.setupConfig.setScanMode(mode);
     }
 
     public SCAN_FOLDER getFolderScan()
@@ -50,6 +52,7 @@ public class ScanFacade
     public void setFolderScan(SCAN_FOLDER folder)
     {
         this.folder = folder;
+        Master.facade.setupConfig.setScanFolder(folder);
     }
 
     // Model ---------------------------------------------------

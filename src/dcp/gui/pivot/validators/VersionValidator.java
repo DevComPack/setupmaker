@@ -12,7 +12,7 @@ public class VersionValidator implements Validator
     public boolean isValid(String s)
     {
         if (s.length() > 0) {
-            if (s.length() > 20 || !s.matches("[0-9]+([.][0-9]+)+")) {
+            if (s.length() > 20 || !s.matches("[0-9]+([.][0-9]+)*")) {
                 Out.print(LOG_LEVEL.WARN, "Pack version format incorrect: " + s);
                 return false;
             }

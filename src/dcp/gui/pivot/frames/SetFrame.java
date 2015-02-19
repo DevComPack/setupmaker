@@ -1664,19 +1664,5 @@ public class SetFrame extends FillPane implements Bindable
         
         setModified(true); // Modified flag
     }
-    
-
-    /**
-     * Initialize Tab Data from loaded save file
-     */
-    public void loadInit() {
-        nullProperties(); // Initialize properties values
-        ngdialog.setHierarchy(false, ""); // Initialize NewGroup Hierarchy
-        
-        facade.importDataFrom(scanFrame.getGroups(), scanFrame.getPacks());
-        treeView.expandAll();//Expand branches   
-        
-        setModified(true); // Modified flag
-    }
 
 }

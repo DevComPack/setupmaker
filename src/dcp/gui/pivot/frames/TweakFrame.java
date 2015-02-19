@@ -115,8 +115,8 @@ public class TweakFrame extends FillPane implements Bindable
         //init(setupConfig);
         
         // Text inputs validators
-        inAppName.setValidator(new NameValidator());//Name Validators
-        inAppVersion.setValidator(new VersionValidator());
+        inAppName.setValidator(new NameValidator());//Name Validator
+        inAppVersion.setValidator(new VersionValidator());//Version Validator
         inAppWidth.setValidator(new IntValidator());//Int Validators
         inAppHeight.setValidator(new IntValidator());
         //inAppURL.setValidator(new URLValidator());//URL Validator
@@ -615,6 +615,7 @@ public class TweakFrame extends FillPane implements Bindable
         inCustomLangpack.setText(setupConfig.getCustomLangPath());
         
         this.setupConfig = setupConfig;
+        setModified(false);
     }
     
     /**
@@ -634,6 +635,7 @@ public class TweakFrame extends FillPane implements Bindable
         if (cbShortcuts.isEnabled() != found) {
             cbShortcuts.setEnabled(found);
             cbShortcuts.setSelected(found);
+            if (found == true) Out.print(LOG_LEVEL.DEBUG, "Shortcuts option enabled for Packs");
         }
     }
 

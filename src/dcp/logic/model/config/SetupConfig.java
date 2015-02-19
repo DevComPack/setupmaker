@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 import dcp.config.io.OSValidator;
+import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
+import dcp.logic.factory.TypeFactory.SCAN_MODE;
 
 /**
  * IzPack exported setup info configuration
@@ -15,34 +17,37 @@ public class SetupConfig implements Serializable
      */
     private static final long serialVersionUID = 4289372637132381636L;
     
-    //Application
+    // Application
     private String appName="";//Application name
     private String appVersion="";//Application version
     private int appWidth=800, appHeight=600 ;//Application dimensions
     private boolean resizable = false;//If window is resizable
-    //Author
+    // Author
     private String authorName="";//Author Name
     private String authorEmail="";//Author Email
     private String appURL="";//Application URL
-    //Resources
+    // Resources
     private String readmePath="";//Readme Path
     private String licensePath="";//License Path
     private String logoPath="";//Logo Path
     private String sideLogoPath="";//Side Logo Path
-    //Langpacks
+    // Langpacks
     private boolean lp_eng = true;
     private boolean lp_fra = false;
     private boolean lp_deu = false;
     private boolean lp_spa = false;
     private boolean lp_cus = false;
     private String lp_iso = "", lp_path = "";
-    //Configuration
+    // Scan
     private String srcPath = "";//Packs source path
+    private SCAN_MODE scanMode = SCAN_MODE.SIMPLE_SCAN;// Scan mode (v1.2)
+    private SCAN_FOLDER scanFolder = SCAN_FOLDER.PACK_FOLDER;// Scan folders as packs (v1.2)
+    // Configuration
     private String installPath = "";//Default install directory path
     private boolean forcePath = false;//Whether to force an install path or not
     private boolean registryCheck = false;//Activate registry check for installed version
     private boolean scriptGen = false;//Activate script generation at end of Setup
-    //Shortcuts
+    // Shortcuts
     private boolean shortcuts = true;//Activate shortcuts creation
     private boolean folderShortcut = false;//Make a shortcut for global install path
     private boolean shToStartMenu = true;//Install shortcuts to start menu
@@ -97,6 +102,9 @@ public class SetupConfig implements Serializable
         lp_cus = setupConfig.lp_cus;
         
         srcPath = setupConfig.srcPath;
+        scanMode = setupConfig.scanMode;// 1.2
+        scanFolder = setupConfig.scanFolder;// 1.2
+        
         installPath = setupConfig.installPath;
         forcePath = setupConfig.forcePath;
         registryCheck = setupConfig.registryCheck;
@@ -153,6 +161,12 @@ public class SetupConfig implements Serializable
     public String getCustomLangISO() { return lp_iso; }
     public void setCustomLangPath(String PATH) { lp_path = PATH; }
     public String getCustomLangPath() { return lp_path; }
+    
+    //Scan
+    public SCAN_MODE getScanMode() { return this.scanMode; }
+    public void setScanMode(SCAN_MODE scanMode) { this.scanMode = scanMode; }
+    public SCAN_FOLDER getScanFolder() { return this.scanFolder; }
+    public void setScanFolder(SCAN_FOLDER scanFolder) { this.scanFolder = scanFolder; }
     
     //Configuration
     public String getSrcPath() { return srcPath; }

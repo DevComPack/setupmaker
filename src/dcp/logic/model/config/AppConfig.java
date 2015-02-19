@@ -9,7 +9,6 @@ import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
 
 import dcp.logic.factory.TypeFactory.BUILD_MODE;
-import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.logic.model.config.build.IzpackConfig;
 import dcp.logic.model.config.build.NugetConfig;
 
@@ -43,7 +42,6 @@ public class AppConfig implements Serializable
     private float setVerSplitPaneRatio = 0.6f;
     private float setHorSplitPaneRatio = 0.7f;
     // Modes
-    private SCAN_MODE scanMode = SCAN_MODE.SIMPLE_SCAN;
     private BUILD_MODE buildMode = BUILD_MODE.IZPACK_BUILD;
     // Default Configurations
     private SetupConfig defaultSetupConfig;
@@ -113,8 +111,6 @@ public class AppConfig implements Serializable
     public void setHelp(boolean help) { this.help = help; setModified(true); }
     
     // Default configurations methods
-    public SCAN_MODE getScanMode() { return this.scanMode; }
-    public void setScanMode(SCAN_MODE scanMode) { this.scanMode = scanMode; setModified(true); }
     public BUILD_MODE getBuildMode() { return buildMode; }
     public void setBuildMode(BUILD_MODE buildMode) { this.buildMode = buildMode;  setModified(true); }
     

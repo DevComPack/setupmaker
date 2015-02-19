@@ -125,7 +125,7 @@ public class Master extends Window implements Application, Bindable
                 public void perform(Component arg0)
                 {
                     if (facade.load(IOFactory.saveFile)) {
-                        facade.tabsInit(true);
+                        facade.tabsInit();
                         // Go to Set tab
                         tabPane.setSelectedIndex(0);
                         for(int i=1; i<tabPane.getTabs().getLength(); i++)
@@ -182,7 +182,7 @@ public class Master extends Window implements Application, Bindable
     @Override public void initialize(Map<String, Object> args, URL url, Resources res)
     {
         facade.framesInit();// Tabs singletons init
-        facade.tabsInit(false);// Tabs display init
+        facade.tabsInit();// Tabs display init
         
         //Shortcuts definition
         this.getComponentKeyListeners().add(new ComponentKeyListener.Adapter() {
@@ -345,8 +345,10 @@ public class Master extends Window implements Application, Bindable
         btUndo.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
-                if (Master.this.getTitle().contains("-") && Master.this.getTitle().contains("*")) // Modified save file
+                if (Master.this.getTitle().contains("-") && Master.this.getTitle().contains("*")) { // Modified save file
                     ALoad.perform(bt);
+                    Out.print(LOG_LEVEL.INFO, "Back to save file");
+                }
                 else { // back to default factory setup
                     facade.factoryReset();
                     titleUpdate();

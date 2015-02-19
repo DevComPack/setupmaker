@@ -80,22 +80,10 @@ public class ScanFrame extends FillPane implements Bindable
     public void setModified(boolean VALUE) { modified = VALUE; }
     public boolean isModified() { return modified; }
     
-    private static boolean loaded = false;// True if tab loaded data
-    public static void setLoaded(boolean VALUE) { loaded = VALUE; }
-    public static boolean isLoaded() { return loaded; }
-    
-    public void setPacks(List<Pack> packs) {
-        facade.setPacks(packs);
-        ScanFrame.setLoaded(true);// Loaded flag
-    }
     public List<Pack> getPacks() {// Read-only Packs data (selected)
-        if (treeView.getCheckmarksEnabled() && !loaded)// If select mode and not loaded
+        if (treeView.getCheckmarksEnabled())// If select mode and not loaded
             return facade.getCheckedPacks(treeView.getCheckedPaths());
         return facade.getPacks();
-    }
-    public void setGroups(List<Group> groups) {
-        facade.setGroups(groups);
-        ScanFrame.setLoaded(true);//Loaded flag
     }
     public List<Group> getGroups() {
         return facade.getGroups();
@@ -197,7 +185,7 @@ public class ScanFrame extends FillPane implements Bindable
                 }
                 else if (res == 2) {//Error: Path doesn't exist
                     Out.print(LOG_LEVEL.DEBUG, "Path error: " + inPath.getText());
-                    Alert.alert("This path doesn't exist!", ScanFrame.this.getWindow());
+                    Alert.alert("This path doesn't exist! Please correct it.", ScanFrame.this.getWindow());
                 }
                 
             } };
@@ -306,10 +294,10 @@ public class ScanFrame extends FillPane implements Bindable
                             depthPane.setVisible(false);
                             btCollapse.setEnabled(false);
                             btExpand.setEnabled(false);
-                            cbFolderScan.setSelected(false);
                             cbFolderScan.setEnabled(false);
                         }
                     });
+                    ADirScan.perform(bt);
                 }
             }
         });
@@ -328,12 +316,12 @@ public class ScanFrame extends FillPane implements Bindable
                             btSelect.setVisible(false);
                             btSelectAll.setEnabled(false);
                             btSelectNone.setEnabled(false);
-                            cbFolderScan.setSelected(false);
                             cbFolderScan.setEnabled(true);
                         }
                     });
                     depthPane.setVisible(true);
                     depthAppTrans.start();//Depth appear transition
+                    ADirScan.perform(bt);
                 }
             }
         });
@@ -464,28 +452,6 @@ public class ScanFrame extends FillPane implements Bindable
             }
         });
         
-        //Default Scan Mode loaded
-        if (appConfig.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
-            setScanMode(SCAN_MODE.RECURSIVE_SCAN);
-            btRadRecursiv.setSelected(true);
-            btCollapse.setEnabled(true);
-            btExpand.setEnabled(true);
-            btSelect.setVisible(false);
-            btSelectAll.setEnabled(false);
-            btSelectNone.setEnabled(false);
-            depthPane.setVisible(true);
-            cbFolderScan.setEnabled(true);
-        }
-        else {
-            setScanMode(SCAN_MODE.SIMPLE_SCAN);
-            btRadSimple.setSelected(true);
-            btSelect.setVisible(true);
-            btSelect.setSelected(false);
-            depthPane.setVisible(false);
-            btCollapse.setEnabled(false);
-            btExpand.setEnabled(false);
-            cbFolderScan.setEnabled(false);
-        }
     }
     
     //========================
@@ -510,24 +476,39 @@ public class ScanFrame extends FillPane implements Bindable
      */
     private void setScanMode(SCAN_MODE new_mode)
     {
+        assert (new_mode == SCAN_MODE.RECURSIVE_SCAN || new_mode == SCAN_MODE.SIMPLE_SCAN);
         SCAN_MODE mode = facade.getScanMode();
-        if (mode != new_mode &&
-            (new_mode == SCAN_MODE.RECURSIVE_SCAN || new_mode == SCAN_MODE.SIMPLE_SCAN) ) {
-            
+        if (mode != new_mode) {
             //Directory Filter Checkbox value change
-            if (new_mode == SCAN_MODE.RECURSIVE_SCAN) {//Recursive Scan
-                treeView.setCheckmarksEnabled(false);//Checkstate disable
+            if (new_mode == SCAN_MODE.RECURSIVE_SCAN) {// Recursive Scan
+                treeView.setCheckmarksEnabled(false);// Check state disable
             }
 
-            if (mode == SCAN_MODE.DEFAULT) {
-                facade.setScanMode(new_mode);
+            if (mode == SCAN_MODE.DEFAULT)
                 Out.print(LOG_LEVEL.DEBUG, "Scan Mode set to " + new_mode);
-            }
-            else {
+            else
                 Out.print(LOG_LEVEL.DEBUG, "Scan Mode changed from " + mode + " to " + new_mode);
-                facade.setScanMode(new_mode);
-                ADirScan.perform(this);//Refresh the Packs View
-            }
+            
+            facade.setScanMode(new_mode);
+        }
+    }
+    
+    /**
+     * Changes the folder scan mode [PACK|GROUP]
+     * @param new_mode
+     */
+    private void setFolderScan(SCAN_FOLDER new_mode)
+    {
+        SCAN_FOLDER mode = facade.getFolderScan();
+        if (mode != new_mode) {
+            cbFolderScan.setSelected(new_mode == SCAN_FOLDER.GROUP_FOLDER ? true : false);
+
+            if (mode == SCAN_FOLDER.DEFAULT)
+                Out.print(LOG_LEVEL.DEBUG, "Folder scan mode set to: " + new_mode);
+            else
+                Out.print(LOG_LEVEL.DEBUG, "Folder scan mode changed from " + mode + " to " + new_mode);
+            
+            facade.setFolderScan(new_mode);
         }
     }
     
@@ -631,8 +612,9 @@ public class ScanFrame extends FillPane implements Bindable
     }
     
     /**
-     * clear scanned directory path
-     * @param setupConfig 
+     * Init options from default/loaded setup configuration
+     * @param appConfig: application configuration
+     * @param setupConfig: default or loaded setup configuration data
      */
     public void init(AppConfig appConfig, SetupConfig setupConfig) {
         inPath.setText(setupConfig.getSrcPath());
@@ -640,6 +622,35 @@ public class ScanFrame extends FillPane implements Bindable
         
         this.appConfig = appConfig;
         this.setupConfig = setupConfig;
+
+        if (setupConfig.getScanFolder() != facade.getFolderScan())
+            setFolderScan(setupConfig.getScanFolder());
+        
+        if (setupConfig.getScanMode() != facade.getScanMode()) {
+            // display update
+            if (setupConfig.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
+                btRadRecursiv.setSelected(true);
+                btCollapse.setEnabled(true);
+                btExpand.setEnabled(true);
+                btSelect.setVisible(false);
+                btSelectAll.setEnabled(false);
+                btSelectNone.setEnabled(false);
+                depthPane.setVisible(true);
+                cbFolderScan.setEnabled(true);
+            }
+            else {
+                btRadSimple.setSelected(true);
+                btSelect.setVisible(true);
+                btSelect.setSelected(false);
+                depthPane.setVisible(false);
+                btCollapse.setEnabled(false);
+                btExpand.setEnabled(false);
+                cbFolderScan.setEnabled(false);
+            }
+            setScanMode(setupConfig.getScanMode());// scans folder too
+        }
+        
+        setModified(true);
     }
     
 }

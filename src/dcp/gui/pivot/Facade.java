@@ -92,22 +92,12 @@ public class Facade
      * Bind data to GUI
      * @param load: init Scan and Set for load mode
      */
-    public void tabsInit(boolean load)
+    public void tabsInit()
     {
         try
         {
-            //Clear scanned path
+            //ScanFrame binding
             scanFrame.init(appConfig, setupConfig);
-            
-            if (load) {
-                //Groups binding
-                scanFrame.setGroups(GroupFactory.getGroups());//loaded flag enabled*
-                //Packs binding
-                scanFrame.setPacks(PackFactory.getPacks());//loaded flag enabled*
-                //Tab data initialize
-                setFrame.loadInit();
-            }
-            
             //SetupConfig binding
             tweakFrame.init(setupConfig);
             //AppConfig binding
@@ -164,13 +154,12 @@ public class Facade
             case 0://Scan Tab
                 break;
             case 1://Set Tab
-                if (scanFrame.isModified() && !ScanFrame.isLoaded()) {//If Scanned directory
+                if (scanFrame.isModified()) {//If Scanned directory
                     scanFrame.setModified(false);//Modified flag*
                     setFrame.update();//Data export from Scan to Set tab
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
                 }
-                else ScanFrame.setLoaded(false);//Disable scan loaded flag*
                 break;
             case 2://Tweak Tab
                 if (setFrame.isModified()) {
@@ -355,7 +344,6 @@ public class Facade
         appConfig.setDefaultSetupConfig(new SetupConfig(setupConfig));
         appConfig.setDefaultIzpackConfig(new IzpackConfig(izpackConf));
         appConfig.setDefaultNugetConfig(new NugetConfig(nugetConf));
-        appConfig.setScanMode(scanFrame.facade.getScanMode());
         appConfig.setBuildMode(buildFrame.facade.getBuildMode());
     }
 
@@ -367,7 +355,7 @@ public class Facade
         setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
         PackFactory.clear();
         GroupFactory.clear();
-        tabsInit(true);
+        tabsInit();
         IOFactory.setSaveFile("");
     }
 
