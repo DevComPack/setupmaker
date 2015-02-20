@@ -1644,6 +1644,19 @@ public class SetFrame extends FillPane implements Bindable
         inInstallGroups.setEnabled(true);//Set Install Groups
         inPInstallPath.setEnabled(true);//Set Pack Install Paths
     }
+
+    /**
+     * Fill components with model data (from loaded data)
+     * @param groups: list of groups data
+     * @param packs: list of packs data
+     */
+    public void init(List<Group> groups, List<Pack> packs)
+    {
+        facade.importDataFrom(groups, packs);
+        treeView.expandAll();//Expand branches
+        
+        setModified(false);
+    }
     
     /**
      * Initialize Tab Data from Scan tab
@@ -1662,7 +1675,7 @@ public class SetFrame extends FillPane implements Bindable
             facade.importDataFrom(null, scanFrame.getPacks());
         }
         
-        setModified(true); // Modified flag
+        setModified(true);
     }
 
 }

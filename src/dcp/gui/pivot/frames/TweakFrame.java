@@ -620,7 +620,6 @@ public class TweakFrame extends FillPane implements Bindable
     
     /**
      * Enable shortcuts for packs if a pack is configured for a shortcut
-     * @param enable
      */
     public void update()
     {
@@ -637,6 +636,8 @@ public class TweakFrame extends FillPane implements Bindable
             cbShortcuts.setSelected(found);
             if (found == true) Out.print(LOG_LEVEL.DEBUG, "Shortcuts option enabled for Packs");
         }
+        
+        setModified(true);
     }
 
 }

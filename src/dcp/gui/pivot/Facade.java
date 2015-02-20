@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.pivot.collections.ArrayList;
+import org.apache.pivot.collections.List;
 import org.apache.pivot.util.concurrent.Task;
 import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.TaskAdapter;
@@ -46,6 +48,10 @@ public class Facade
     public SetupConfig setupConfig;// Setup configuration file
     public IzpackConfig izpackConf; // IzPack build configuration
     public NugetConfig nugetConf; // NuGet build configuration
+    
+    // Model data (filled on load)
+    private List<Pack> packs;//List of loaded packs
+    private List<Group> groups;//List of loaded directories
 
     public Facade(String name, String version)
     {
@@ -96,11 +102,13 @@ public class Facade
     {
         try
         {
-            //ScanFrame binding
+            // ScanFrame binding
             scanFrame.init(appConfig, setupConfig);
-            //SetupConfig binding
+            // SetFrame binding
+            setFrame.init(groups, packs);
+            // SetupConfig binding
             tweakFrame.init(setupConfig);
-            //AppConfig binding
+            // AppConfig binding
             buildFrame.init(appConfig, setupConfig);
         }
         catch (IOException e)
@@ -122,16 +130,24 @@ public class Facade
             Out.print(LOG_LEVEL.INFO, "File data loaded successfully.");
             System.out.println();
             
-            final TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {//Finished compilation
-                @Override public void executeFailed(Task<Boolean> t) {//Failed
+            // Fill model factories from loaded data
+            GroupFactory.clear();// groups
+            for(Group g:groups)
+                GroupFactory.addGroup(g);
+            PackFactory.clear();// packs
+            for(Pack p:packs)
+                PackFactory.addPack(p);
+            
+            final TaskListener<Boolean> tlCompile = new TaskListener<Boolean>() {// Finished compilation
+                @Override public void executeFailed(Task<Boolean> t) {// Failed
                     System.out.println();
                     Out.print(LOG_LEVEL.ERR, "Compiled with errors!");
                 }
-                @Override public void taskExecuted(Task<Boolean> t) {//Success
-                    if (t.getResult() == true) {//If no errors
+                @Override public void taskExecuted(Task<Boolean> t) {// Success
+                    if (t.getResult() == true) {// If no errors
                         System.out.println();
                         Out.print(LOG_LEVEL.INFO, "Finished compiling.");
-                    } else executeFailed(t);//Compile Errors
+                    } else executeFailed(t);// Compile Errors
                 }
             };
             
@@ -155,7 +171,7 @@ public class Facade
                 break;
             case 1://Set Tab
                 if (scanFrame.isModified()) {//If Scanned directory
-                    scanFrame.setModified(false);//Modified flag*
+                    scanFrame.setModified(false);
                     setFrame.update();//Data export from Scan to Set tab
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
@@ -163,17 +179,16 @@ public class Facade
                 break;
             case 2://Tweak Tab
                 if (setFrame.isModified()) {
-                    setFrame.setModified(false);//Modified flag*
-                    tweakFrame.update();
-                    tweakFrame.setModified(true);
+                    setFrame.setModified(false);
+                    tweakFrame.update();//Enable/Disable packs shortcut option
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
                 }
                 break;
             case 3://Build Tab
                 if (tweakFrame.isModified()) {
-                    tweakFrame.setModified(false);//Modified flag*
-                    buildFrame.update();
+                    tweakFrame.setModified(false);
+                    buildFrame.update();//Generate target file export path filename
                     if (!application.getTitle().contains("*"))
                         application.setTitle(application.getTitle().concat("*"));//modified flag in Title
                 }
@@ -290,16 +305,19 @@ public class Facade
                 
                 setupConfig = (SetupConfig) is.readObject();
                 Out.print(LOG_LEVEL.DEBUG, setupConfig.getAppName() + " " + setupConfig.getAppVersion());
-                
-                GroupFactory.clear();
+
+                groups = new ArrayList<Group>();
+                //GroupFactory.clear();
                 int nGroups = is.readInt();
                 for(int i = 0; i<nGroups; i++) {
                     Group G = (Group) is.readObject();
-                    GroupFactory.addGroup(G);
+                    //GroupFactory.addGroup(G);
+                    groups.add(G);
                 }
                 if (nGroups > 0) Out.print(LOG_LEVEL.DEBUG, GroupFactory.getCount() + " group(s) loaded");
-                
-                PackFactory.clear();
+
+                packs = new ArrayList<Pack>();
+                //PackFactory.clear();
                 int nPacks = is.readInt();
                 for(int i = 0; i<nPacks; i++) {
                     Pack P = (Pack) is.readObject();
@@ -311,13 +329,14 @@ public class Facade
                         CastFactory.packModelUpdate(P, "1.1");
                     
                     P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
-                    PackFactory.addPack(P);
+                    //PackFactory.addPack(P);
+                    packs.add(P);
                 }
                 if (nPacks > 0) Out.print(LOG_LEVEL.DEBUG, PackFactory.getCount() + " pack(s) loaded");
                 
                 is.close();
                 in.close();
-                Out.print(LOG_LEVEL.INFO, "Data loaded from file "+IOFactory.saveFile);
+                Out.print(LOG_LEVEL.INFO, "Data loaded from file " + IOFactory.saveFile);
             }
         }
         catch (IOException e) {

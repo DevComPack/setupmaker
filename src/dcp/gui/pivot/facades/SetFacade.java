@@ -41,6 +41,8 @@ public class SetFacade
      */
     public boolean importDataFrom(List<Group> groups, List<Pack> packs)
     {
+        if (packs==null && groups==null) return false;
+        
         // Groups Import
         GroupFactory.clear();
         treeData.clear();

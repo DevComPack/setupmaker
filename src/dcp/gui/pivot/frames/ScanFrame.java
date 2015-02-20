@@ -650,7 +650,7 @@ public class ScanFrame extends FillPane implements Bindable
             setScanMode(setupConfig.getScanMode());// scans folder too
         }
         
-        setModified(true);
+        setModified(false);
     }
     
 }
