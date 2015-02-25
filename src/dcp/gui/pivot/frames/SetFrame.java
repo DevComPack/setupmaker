@@ -21,6 +21,7 @@ import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
 import org.apache.pivot.wtk.Component;
+import org.apache.pivot.wtk.ComponentMouseButtonListener;
 import org.apache.pivot.wtk.ComponentMouseListener;
 import org.apache.pivot.wtk.ComponentStateListener;
 import org.apache.pivot.wtk.Dialog;
@@ -193,6 +194,28 @@ public class SetFrame extends FillPane implements Bindable
         assert (singleton == null);
         singleton = this;
         
+        // packs context menu
+        MHTableView = new MenuHandler.Adapter() {
+            @Override
+            public boolean configureContextMenu(Component component, Menu menu, int x, int y)
+            {
+                Menu.Section menuSection = new Menu.Section();
+                menu.getSections().add(menuSection);
+
+                Menu.Item delete = new Menu.Item("delete");
+                
+                delete.setAction(new Action() {
+                    @Override public void perform(Component source) {
+                        if (tableView.getSelectedRow() != null)
+                            btDelete.press();
+                    }
+                });
+
+                menuSection.add(delete);
+                return false;
+            }
+        };
+        
         // groups context menu
         MHTreeView = new MenuHandler.Adapter() {
             @Override
@@ -217,27 +240,6 @@ public class SetFrame extends FillPane implements Bindable
 
                 menuSection.add(rename);
                 menuSection.add(remove);
-                return false;
-            }
-        };
-        
-        // packs context menu
-        MHTableView = new MenuHandler.Adapter() {
-            @Override
-            public boolean configureContextMenu(Component component, Menu menu, int x, int y)
-            {
-                Menu.Section menuSection = new Menu.Section();
-                menu.getSections().add(menuSection);
-
-                Menu.Item delete = new Menu.Item("delete");
-                
-                delete.setAction(new Action() {
-                    @Override public void perform(Component source) {
-                        btDelete.press();
-                    }
-                });
-
-                menuSection.add(delete);
                 return false;
             }
         };
@@ -305,6 +307,7 @@ public class SetFrame extends FillPane implements Bindable
                 }
                 else {//multi packs selected
                     Sequence<Pack> ps = getSelectedPacks();
+                    tableView.clearSelection();
                     for(int i = 0; i < ps.getLength(); i++) {
                         if (!removePack(ps.get(i))) break;
                     }
@@ -410,10 +413,10 @@ public class SetFrame extends FillPane implements Bindable
         hSplitPane.setSplitRatio(Master.facade.appConfig.getSetHorSplitPaneRatio());
         
         //Data Binding
-        tableView.setMenuHandler(MHTableView);
-        treeView.setMenuHandler(MHTreeView);
         tableView.setTableData(PackFactory.getPacks());//Bind table view to packs
         treeView.setTreeData(treeData);//Bind root to tree view
+        tableView.setMenuHandler(MHTableView);
+        treeView.setMenuHandler(MHTreeView);
         dependencyFill(isGroupDependency());//Bind Groups data to List Button for dependency
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy to none
         
