@@ -42,6 +42,7 @@ import org.apache.pivot.wtk.TaskAdapter;
 import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.Button.State;
 import org.apache.pivot.wtk.TextInputContentListener;
+import org.apache.pivot.wtk.content.ButtonData;
 import org.apache.pivot.wtk.validation.Validator;
 
 import dcp.config.io.IOFactory;
@@ -130,7 +131,7 @@ public class BuildFrame extends FillPane implements Bindable
                 Menu.Section menuSection = new Menu.Section();
                 menu.getSections().add(menuSection);
 
-                Menu.Item copy = new Menu.Item("copy to clipboard");
+                Menu.Item copy = new Menu.Item(new ButtonData(IOFactory.imgImport, "copy to clipboard"));
                 copy.setAction(new Action() {
                     @SuppressWarnings("unchecked")
                     @Override public void perform(Component source) {

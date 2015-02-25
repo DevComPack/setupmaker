@@ -21,7 +21,6 @@ import org.apache.pivot.wtk.ButtonPressListener;
 import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
 import org.apache.pivot.wtk.Component;
-import org.apache.pivot.wtk.ComponentMouseButtonListener;
 import org.apache.pivot.wtk.ComponentMouseListener;
 import org.apache.pivot.wtk.ComponentStateListener;
 import org.apache.pivot.wtk.Dialog;
@@ -59,12 +58,14 @@ import org.apache.pivot.wtk.TreeViewSelectionListener;
 import org.apache.pivot.wtk.Visual;
 import org.apache.pivot.wtk.Window;
 import org.apache.pivot.wtk.Button.State;
+import org.apache.pivot.wtk.content.ButtonData;
 import org.apache.pivot.wtk.content.TableViewRowComparator;
 import org.apache.pivot.wtk.content.TreeBranch;
 import org.apache.pivot.wtk.content.TreeNode;
 import org.apache.pivot.wtk.validation.Validator;
 
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
+import dcp.config.io.IOFactory;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.dad.TextInputDrop;
 import dcp.gui.pivot.facades.SetFacade;
@@ -84,16 +85,16 @@ import dcp.main.log.Out;
 
 public class SetFrame extends FillPane implements Bindable
 {
-    //Singleton reference
+    // Singleton reference
     private static SetFrame singleton;
     private ScanFrame scanFrame = ScanFrame.getSingleton();
     public static SetFrame getSingleton() { assert (singleton != null); return singleton; }
     public SetFacade facade;
     
-    //------DATA
-    //Constants
+    //------ DATA
+    // Constants
     private final static int TABLEVIEW_GROUP_COLUMN_INDEX = 3;
-    //Flags
+    // Flags
     private boolean modified = false;//True if tab processed data
     public void setModified(boolean VALUE) { modified = VALUE; }
     public boolean isModified() { return modified; }
@@ -101,11 +102,11 @@ public class SetFrame extends FillPane implements Bindable
     private boolean drag_enabled = false;//If a component is being dragged
     private boolean isGroupDependency() { return ((String)cbDepType.getButtonData()).equals("Group"); }
     private boolean unvalid = false;// True if some validator is negative
-    //Packs
+    // Packs
     private Pack getSelectedPack() { return (Pack) tableView.getSelectedRow(); }
     @SuppressWarnings("unchecked")
     private Sequence<Pack> getSelectedPacks() { return (Sequence<Pack>) tableView.getSelectedRows(); }
-    //Groups
+    // Groups
     private List<TreeBranch> treeData = new ArrayList<TreeBranch>();//Groups tree view root element
     private Group getSelectedGroup() {//Return selected group or selected pack's group from treeView
         TreeNode node = (TreeNode) treeView.getSelectedNode();//Get selected branch
@@ -119,41 +120,40 @@ public class SetFrame extends FillPane implements Bindable
         return null;
     }
     
-    //Panel Buttons
-    //Pack options
+    // Pack options
     @BXML private PushButton btSelectAll;//Select all packs in table view
     @BXML private PushButton btSelectNone;//Clear pack selection in table view
     @BXML private PushButton btCheck;//Check and validate packs data
     @BXML private PushButton btSort;//Packs Sorting Dialog open
     @BXML private PushButton btAdd;//Add Pack to selected group
     @BXML private PushButton btDelete;//Delete selected Pack(s)
-    //Group options
+    // Group options
     @BXML private PushButton btExpand;// Expand all groups
     @BXML private PushButton btCollapse;// Collapse all groups
     @BXML private PushButton btNew;//Add new group
     @BXML private PushButton btRename;//Rename group
     @BXML private PushButton btRemove;//Remove selected Pack from group
     @BXML private PushButton btClear;//Remove all groups
-    //Displays
+    // Displays
     @BXML private SplitPane vSplitPane;//Split Pane between Table(left) and Tree(right) view
     @BXML private SplitPane hSplitPane;//Split Pane between Table(left) and Tree(right) view
     @BXML private TableView tableView;//Table View for scanned directory
     @BXML private TreeView treeView;//Tree View for created groups hierarchy
     @BXML private Border propertiesPane;//Properties Border pane view
-    //Dialogs
+    // Dialogs
     @BXML private SortDialog sortDialog;//Packs Sorting Dialog
     @BXML private NGDialog ngdialog;//Dialog user input for new group add
     @BXML private RGDialog rgdialog;//Dialog user input for group rename
     @BXML private ShortcutDialog shortcutDialog;//Shortcut advanced options Dialog
-    //Buttons
+    // Buttons
     @BXML private PushButton btShortcutAdvanced;//Advanced Shortcut options
-    //Checkboxes
+    // Checkboxes
     @BXML private Checkbox cbRequired;//If pack is required or not
     @BXML private Checkbox cbSelected;//If pack is selected or not
     @BXML private Checkbox cbHidden;//If pack is hidden or not
     @BXML private Checkbox cbOverride;//If pack will override existing install or not
     @BXML private Checkbox cbShortcut;//If a shortcut to this pack is created
-    //Radio Buttons
+    // Radio Buttons
     @BXML private RadioButton rbOsAll;//OS install platform
     @BXML private RadioButton rbOsWin;//OS install platform
     @BXML private RadioButton rbOsLin;//OS install platform
@@ -165,7 +165,7 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private Checkbox cbSilent;//Execute msi setup with passive par
     @BXML private RadioButton rbExtract;//Extract the pack archive
     @BXML private RadioButton rbCopy;//Copy the pack to the install directory
-    //Text Inputs
+    // Text Inputs
     @BXML private TextInput inName;//Pack install name
     @BXML private TextInput inVersion;//Pack install version
     @BXML private TextInput inPInstallPath;//Pack's install Path directory
@@ -176,14 +176,14 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private PushButton btIGErase;//Install Groups remove
     @BXML private PushButton btIPErase;//Install Path remove
     @BXML private TextArea inDescription;//Pack/Group's description
-    //Actions
+    
+    // Actions
     private Action AAddToGroup;// Add pack to group Action
     private Action ARemove;// Remove Group/Pack from tree view Action
     private Action ADeletePacks;// Delete selected packs
     private Action ASetInstallType;// Changes the default install type of a pack Action
     private Action ASetInstallOS;// Changes the destiny install OS of a pack Action
     private Action ASetArch;// Changes the destiny install architecture
-    
     // Menu Handlers
     private MenuHandler MHTreeView;
     private MenuHandler MHTableView;
@@ -202,12 +202,11 @@ public class SetFrame extends FillPane implements Bindable
                 Menu.Section menuSection = new Menu.Section();
                 menu.getSections().add(menuSection);
 
-                Menu.Item delete = new Menu.Item("delete");
+                Menu.Item delete = new Menu.Item(new ButtonData(IOFactory.imgDelete, "delete"));
                 
                 delete.setAction(new Action() {
                     @Override public void perform(Component source) {
-                        if (tableView.getSelectedRow() != null)
-                            btDelete.press();
+                        btDelete.press();
                     }
                 });
 
@@ -224,8 +223,8 @@ public class SetFrame extends FillPane implements Bindable
                 Menu.Section menuSection = new Menu.Section();
                 menu.getSections().add(menuSection);
 
-                Menu.Item rename = new Menu.Item("rename");
-                Menu.Item remove = new Menu.Item("remove");
+                Menu.Item rename = new Menu.Item(new ButtonData(IOFactory.imgEdit, "rename"));
+                Menu.Item remove = new Menu.Item(new ButtonData(IOFactory.imgDelete, "delete"));
                 
                 rename.setAction(new Action() {
                     @Override public void perform(Component source) {
@@ -283,11 +282,13 @@ public class SetFrame extends FillPane implements Bindable
         ARemove = new Action() {// Remove TreeView Group/Pack button Action
             @Override public void perform(Component source)
             {
-                facade.removeNode((TreeNode) treeView.getSelectedNode());
-                
-                ngdialog.setHierarchy(false, "");//Clean new group hierarchy
-                tableView.clearSelection();//Clear selection on packs
-                tableView.repaint(tableView.getColumnBounds(TABLEVIEW_GROUP_COLUMN_INDEX));//Packs Group display update
+                if (treeView.getSelectedNode() != null) {
+                    facade.removeNode((TreeNode) treeView.getSelectedNode());
+                    
+                    ngdialog.setHierarchy(false, "");//Clean new group hierarchy
+                    tableView.clearSelection();//Clear selection on packs
+                    tableView.repaint(tableView.getColumnBounds(TABLEVIEW_GROUP_COLUMN_INDEX));//Packs Group display update
+                }
             }//perform()
         };
         
@@ -302,14 +303,16 @@ public class SetFrame extends FillPane implements Bindable
             
             @Override public void perform(Component source)
             {
-                if (!multi_selection) {//one pack selected
-                    removePack(getSelectedPack());
-                }
-                else {//multi packs selected
-                    Sequence<Pack> ps = getSelectedPacks();
-                    tableView.clearSelection();
-                    for(int i = 0; i < ps.getLength(); i++) {
-                        if (!removePack(ps.get(i))) break;
+                if (tableView.getSelectedRow() != null) {
+                    if (!multi_selection) {//one pack selected
+                        removePack(getSelectedPack());
+                    }
+                    else {//multi packs selected
+                        Sequence<Pack> ps = getSelectedPacks();
+                        tableView.clearSelection();
+                        for(int i = 0; i < ps.getLength(); i++) {
+                            if (!removePack(ps.get(i))) break;
+                        }
                     }
                 }
             }
@@ -477,15 +480,17 @@ public class SetFrame extends FillPane implements Bindable
                 unvalid = false;
                 @SuppressWarnings("unchecked")
                 List<Pack> data = (List<Pack>) tableView.getTableData();
-                for (int i=0; i < data.getLength(); i++) {
-                    tableView.setSelectedIndex(i);
-                    setPackProperties((Pack) tableView.getTableData().get(i));
-                    if (unvalid) break;// stop if unvalid flag true
-                }
-                if (unvalid) unvalid = false;
-                else {
-                    tableView.clearSelection();
-                    Prompt.prompt(MessageType.INFO, "All packs data valid.", getWindow());
+                if (data.getLength() > 0) {
+                    for (int i=0; i < data.getLength(); i++) {
+                        tableView.setSelectedIndex(i);
+                        setPackProperties((Pack) tableView.getTableData().get(i));
+                        if (unvalid) break;// stop if unvalid flag true
+                    }
+                    if (unvalid) unvalid = false;
+                    else {
+                        tableView.clearSelection();
+                        Prompt.prompt(MessageType.INFO, "All packs data valid.", getWindow());
+                    }
                 }
             }
         });
@@ -562,10 +567,12 @@ public class SetFrame extends FillPane implements Bindable
         btClear.getButtonPressListeners().add(new ButtonPressListener() {//Remove all groups from tree view
             @Override public void buttonPressed(Button bt)
             {
-                facade.clearGroups();
-                ngdialog.setHierarchy(false, "");//Clean new group hierarchy
-                tableView.clearSelection();//Clear selection on packs
-                tableView.repaint(tableView.getColumnBounds(TABLEVIEW_GROUP_COLUMN_INDEX));//Packs Group display update
+                if (treeView.getSelectedNode() != null) {
+                    facade.clearGroups();
+                    ngdialog.setHierarchy(false, "");//Clean new group hierarchy
+                    tableView.clearSelection();//Clear selection on packs
+                    tableView.repaint(tableView.getColumnBounds(TABLEVIEW_GROUP_COLUMN_INDEX));//Packs Group display update
+                }
             }
         });
         

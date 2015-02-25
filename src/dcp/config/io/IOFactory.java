@@ -128,7 +128,7 @@ public class IOFactory
     }
     
     
-    //Cached icons
+    // Cached icons
     private static final String iconsPath = "/dcp/gui/icons/";
     public static Image imgFolder;//Folder icon
     public static Image imgFile;//File icon
@@ -143,12 +143,10 @@ public class IOFactory
     public static Image imgCust;//Custom filter file icon
     public static Image imgHistory;//History file icon
     public static Image imgClose;//Close file icon
-    /*/Langpacks
-    public static String lpDeu;//Deutsch langpack
-    public static String lpEng;//English langpack
-    public static String lpFra;//French langpack
-    public static String lpSpa;//Spanish langpack
-    */
+    // Menu icons
+    public static Image imgEdit;//Edit menu icon
+    public static Image imgDelete;//Delete menu icon
+    public static Image imgImport;//Import menu icon
     
     //Filters
     public final static Filter<File> imgFilter = new Filter<File>() {
@@ -306,7 +304,10 @@ public class IOFactory
             imgVid = Image.load(IOFactory.class.getClass().getResource(iconsPath + "video.png"));
             imgCust = Image.load(IOFactory.class.getClass().getResource(iconsPath + "filter.png"));
             imgHistory = Image.load(IOFactory.class.getClass().getResource(iconsPath + "history.png"));
-            imgClose = Image.load(IOFactory.class.getClass().getResource(iconsPath + "close.png"));;
+            imgClose = Image.load(IOFactory.class.getClass().getResource(iconsPath + "close.png"));
+            imgEdit = Image.load(IOFactory.class.getClass().getResource(iconsPath + "edit.png"));
+            imgDelete = Image.load(IOFactory.class.getClass().getResource(iconsPath + "delete.png"));
+            imgImport = Image.load(IOFactory.class.getClass().getResource(iconsPath + "import.png"));
             
             //Make needed directories
             String[] dirs = new String[] {resPath, antPath, batPath, xmlPath, targetPath, savePath};

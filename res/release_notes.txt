@@ -24,6 +24,7 @@ Faster application start
 Tweak application version validator wasn't working
 Tooltip on empty tableView field is now hidden
 Multi selected packs validation was still active on deletion
+Exceptions on some buttons when empty data
 
 +Packr/JARtoEXE implementation (_https://github.com/libgdx/packr)
 +Tweak file options (icon, exe..)
