@@ -1,7 +1,7 @@
 ﻿<html>
 	
 <head>
-	<title>What's new</title>
+	<title>Change log</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="generator" content="HelpNDoc Personal Edition 4.6.2.573">
 	<meta name="keywords" content="">
@@ -30,7 +30,7 @@
 			}
 			else if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
 			{
-				top.FrameTOC.SelectTocItem("Whatsnew");
+				top.FrameTOC.SelectTocItem("Changelog");
 			}
 		});
 	</script>
@@ -41,11 +41,11 @@
 
 <div id="topic_header">
 			<div id="topic_header_content">
-				<h1 id="topic_header_text">What's new</h1>
+				<h1 id="topic_header_text">Change log</h1>
 				
 				</div>
 			<div id="topic_header_nav">
-				<a href="Systemrequirements.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				<a href="Requirements.html"><img src="img/arrow_left.png" alt="Previous"/></a>
 				
 				<a href="FAQ.html"><img src="img/arrow_right.png" alt="Next"/></a>
 				
@@ -56,11 +56,28 @@
 		
 <p></p>
 <h1 class="rvps6"><span class="rvts0"><span class="rvts19">1.2.0</span></span></h1>
-<h5 class="rvps7"><span class="rvts0"><span class="rvts20">Bugfixes:</span></span></h5>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts20">New features:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Open package target folder on Build</span></li>
+<li class="rvps2"><span class="rvts6">Check packs properties for errors</span></li>
+<li class="rvps2"><span class="rvts6">Pack target architecture(x32/x64) property</span></li>
+<li class="rvps2"><span class="rvts6">Properties restored on new scan for same packs</span></li>
+</ul>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts20">Enhancements:</span></span></h5>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Treat folders as groups moved to Scan tab (instead of Import button)</span></li>
+<li class="rvps2"><span class="rvts6">Logging organized into 4 levels (DEBUG, INFO, WARN, ERR)</span></li>
+<li class="rvps2"><span class="rvts6">NuGet Builder option only available from Windows systems</span></li>
+<li class="rvps2"><span class="rvts6">Model data structure update on cascade when loading projects of older version (starting from version 1.0)</span></li>
+</ul>
+<h5 class="rvps7"><span class="rvts0"><span class="rvts20">Bug fixes:</span></span></h5>
 <ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Empty Group creation was possible</span></li>
 <li class="rvps2"><span class="rvts6">Group treeview node delete button returned exception when none selected</span></li>
 <li class="rvps2"><span class="rvts6">Panels display flag wasn't initialized</span></li>
+<li class="rvps2"><span class="rvts6">Build Mode was set double times on app start</span></li>
+<li class="rvps2"><span class="rvts6">Faster application start</span></li>
+<li class="rvps2"><span class="rvts6">Tweak application version validator wasn't working</span></li>
 </ul>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>

@@ -173,7 +173,37 @@ a.rvts31, span.rvts31
  color: #0000ff;
  text-decoration: underline;
 }
-span.rvts32
+a.rvts32, span.rvts32
+{
+ font-weight: bold;
+ color: #ff8040;
+ text-decoration: underline;
+}
+span.rvts33
+{
+ font-weight: bold;
+}
+span.rvts34
+{
+ font-weight: bold;
+ color: #ff8040;
+}
+span.rvts35
+{
+ font-weight: bold;
+ color: #92d050;
+}
+span.rvts36
+{
+ font-weight: bold;
+ color: #00bfbf;
+}
+span.rvts37
+{
+ font-size: 80%;
+ font-style: italic;
+}
+span.rvts38
 {
  font-style: italic;
 }
