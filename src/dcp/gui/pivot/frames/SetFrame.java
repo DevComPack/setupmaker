@@ -34,6 +34,8 @@ import org.apache.pivot.wtk.ListButton;
 import org.apache.pivot.wtk.ListButtonSelectionListener;
 import org.apache.pivot.wtk.LocalManifest;
 import org.apache.pivot.wtk.Manifest;
+import org.apache.pivot.wtk.Menu;
+import org.apache.pivot.wtk.MenuHandler;
 import org.apache.pivot.wtk.MessageType;
 import org.apache.pivot.wtk.Point;
 import org.apache.pivot.wtk.Prompt;
@@ -181,11 +183,64 @@ public class SetFrame extends FillPane implements Bindable
     private Action ASetInstallOS;// Changes the destiny install OS of a pack Action
     private Action ASetArch;// Changes the destiny install architecture
     
+    // Menu Handlers
+    private MenuHandler MHTreeView;
+    private MenuHandler MHTableView;
+    
     //=========================================
     public SetFrame()//Constructor
     {
         assert (singleton == null);
         singleton = this;
+        
+        // groups context menu
+        MHTreeView = new MenuHandler.Adapter() {
+            @Override
+            public boolean configureContextMenu(Component component, Menu menu, int x, int y)
+            {
+                Menu.Section menuSection = new Menu.Section();
+                menu.getSections().add(menuSection);
+
+                Menu.Item rename = new Menu.Item("rename");
+                Menu.Item remove = new Menu.Item("remove");
+                
+                rename.setAction(new Action() {
+                    @Override public void perform(Component source) {
+                        btRename.press();
+                    }
+                });
+                remove.setAction(new Action() {
+                    @Override public void perform(Component source) {
+                        btRemove.press();
+                    }
+                });
+
+                menuSection.add(rename);
+                menuSection.add(remove);
+                return false;
+            }
+        };
+        
+        // packs context menu
+        MHTableView = new MenuHandler.Adapter() {
+            @Override
+            public boolean configureContextMenu(Component component, Menu menu, int x, int y)
+            {
+                Menu.Section menuSection = new Menu.Section();
+                menu.getSections().add(menuSection);
+
+                Menu.Item delete = new Menu.Item("delete");
+                
+                delete.setAction(new Action() {
+                    @Override public void perform(Component source) {
+                        btDelete.press();
+                    }
+                });
+
+                menuSection.add(delete);
+                return false;
+            }
+        };
         
         AAddToGroup = new Action() {// Pack add to Group Button Action
             @Override public void perform(Component source)
@@ -355,6 +410,8 @@ public class SetFrame extends FillPane implements Bindable
         hSplitPane.setSplitRatio(Master.facade.appConfig.getSetHorSplitPaneRatio());
         
         //Data Binding
+        tableView.setMenuHandler(MHTableView);
+        treeView.setMenuHandler(MHTreeView);
         tableView.setTableData(PackFactory.getPacks());//Bind table view to packs
         treeView.setTreeData(treeData);//Bind root to tree view
         dependencyFill(isGroupDependency());//Bind Groups data to List Button for dependency
@@ -554,7 +611,7 @@ public class SetFrame extends FillPane implements Bindable
                     Pack p = (Pack) tableView.getTableData().get(index);
                     tableView.setTooltipText(p.getPath());
                 }
-                else tableView.setTooltipText("Packs");
+                else tableView.setTooltipText(null);
                 return super.mouseMove(component, x, y);
             }
         });
