@@ -483,14 +483,17 @@ public class SetFrame extends FillPane implements Bindable
         btRename.getButtonPressListeners().add(new ButtonPressListener() {//Rename a selected group
             @Override public void buttonPressed(Button bt)
             {
-                Group selectedG = getSelectedGroup();
+                final Group selectedG = getSelectedGroup();
+                
                 if (selectedG != null) {
                     final String old_name = selectedG.getName();
                     rgdialog.setText(old_name);
                     rgdialog.open(SetFrame.this.getDisplay(), SetFrame.this.getWindow(), new DialogCloseListener() {
                         @Override public void dialogClosed(Dialog dialog, boolean modal)
                         { 
-                            facade.renameGroup(getSelectedGroup(), rgdialog.getText());
+                            facade.renameGroup(selectedG, rgdialog.getText());
+                            treeView.repaint();
+                            tableView.repaint(tableView.getColumnBounds(3));
                         }
                     });
                 }

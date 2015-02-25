@@ -20,7 +20,7 @@ public class GroupFactory
         return get(CastFactory.pathToString(path));
     }
     public static Group get(String path) {
-        if (path==null) return null;
+        if (path == null) return null;
         for(Group G:groups)
             if (G.getPath().equalsIgnoreCase(path))
                 return G;

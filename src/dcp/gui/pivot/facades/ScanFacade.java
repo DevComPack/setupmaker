@@ -66,25 +66,11 @@ public class ScanFacade
     {
         return packs;
     }
-    public void setPacks(List<Pack> packs)
-    {
-        this.packs.clear();
-        for (Pack p:packs) {
-            this.packs.add(new Pack(p));
-        }
-    }
     
     // Group
     public List<Group> getGroups()
     {
         return groups;
-    }
-    public void setGroups(List<Group> groups)
-    {
-        this.groups.clear();
-        for (Group g:groups) {
-            this.groups.add(new Group(g));
-        }
     }
     
     /**

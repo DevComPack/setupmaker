@@ -181,9 +181,10 @@ public class ScanFrame extends FillPane implements Bindable
                     if (depthSpinner.getSelectedIndex() < 5)
                         treeView.expandAll();
                     else treeView.collapseAll();
+                    
                     setModified(true);//Modified Flag (*)
                 }
-                else if (res == 2) {//Error: Path doesn't exist
+                else if (res == 2) {// Error: Path doesn't exist
                     Out.print(LOG_LEVEL.DEBUG, "Path error: " + inPath.getText());
                     Alert.alert("This path doesn't exist! Please correct it.", ScanFrame.this.getWindow());
                 }
@@ -280,8 +281,8 @@ public class ScanFrame extends FillPane implements Bindable
         });
         
         //Simple scan activate radio button listener
-        btRadSimple.getButtonStateListeners().add(new ButtonStateListener() {
-            @Override public void stateChanged(Button bt, State st)
+        btRadSimple.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
             {
                 if (facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
                     setScanMode(SCAN_MODE.SIMPLE_SCAN);
@@ -301,10 +302,9 @@ public class ScanFrame extends FillPane implements Bindable
                 }
             }
         });
-        
         //Recursive scan activate radio button listener
-        btRadRecursiv.getButtonStateListeners().add(new ButtonStateListener() {
-            @Override public void stateChanged(Button bt, State st)
+        btRadRecursiv.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
             {
                 if (facade.getScanMode() == SCAN_MODE.SIMPLE_SCAN) {
                     setScanMode(SCAN_MODE.RECURSIVE_SCAN);
@@ -317,6 +317,9 @@ public class ScanFrame extends FillPane implements Bindable
                             btSelectAll.setEnabled(false);
                             btSelectNone.setEnabled(false);
                             cbFolderScan.setEnabled(true);
+                            // enable Group folder scan by default
+                            cbFolderScan.setSelected(true);
+                            setFolderScan(SCAN_FOLDER.GROUP_FOLDER);
                         }
                     });
                     depthPane.setVisible(true);
@@ -325,6 +328,7 @@ public class ScanFrame extends FillPane implements Bindable
                 }
             }
         });
+        
         btExpand.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -442,13 +446,12 @@ public class ScanFrame extends FillPane implements Bindable
             }
         });
         
-        cbFolderScan.getButtonStateListeners().add(new ButtonStateListener() {
-            @Override public void stateChanged(Button bt, State st)
+        cbFolderScan.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
             {
                 if (bt.isSelected())
-                    facade.setFolderScan(SCAN_FOLDER.GROUP_FOLDER);
-                else facade.setFolderScan(SCAN_FOLDER.PACK_FOLDER);
-                setModified(true);// (*)
+                    setFolderScan(SCAN_FOLDER.GROUP_FOLDER);
+                else setFolderScan(SCAN_FOLDER.PACK_FOLDER);
             }
         });
         
@@ -490,6 +493,7 @@ public class ScanFrame extends FillPane implements Bindable
                 Out.print(LOG_LEVEL.DEBUG, "Scan Mode changed from " + mode + " to " + new_mode);
             
             facade.setScanMode(new_mode);
+            setModified(true);
         }
     }
     
@@ -501,14 +505,13 @@ public class ScanFrame extends FillPane implements Bindable
     {
         SCAN_FOLDER mode = facade.getFolderScan();
         if (mode != new_mode) {
-            cbFolderScan.setSelected(new_mode == SCAN_FOLDER.GROUP_FOLDER ? true : false);
-
             if (mode == SCAN_FOLDER.DEFAULT)
                 Out.print(LOG_LEVEL.DEBUG, "Folder scan mode set to: " + new_mode);
             else
                 Out.print(LOG_LEVEL.DEBUG, "Folder scan mode changed from " + mode + " to " + new_mode);
             
             facade.setFolderScan(new_mode);
+            setModified(true);
         }
     }
     
@@ -622,13 +625,17 @@ public class ScanFrame extends FillPane implements Bindable
         
         this.appConfig = appConfig;
         this.setupConfig = setupConfig;
-
-        if (setupConfig.getScanFolder() != facade.getFolderScan())
-            setFolderScan(setupConfig.getScanFolder());
         
-        if (setupConfig.getScanMode() != facade.getScanMode()) {
+        SCAN_FOLDER scanFolder = setupConfig.getScanFolder();
+        if (scanFolder != facade.getFolderScan()) {
+            cbFolderScan.setSelected(scanFolder == SCAN_FOLDER.GROUP_FOLDER ? true : false);
+            setFolderScan(scanFolder);
+        }
+        
+        SCAN_MODE scanMode = setupConfig.getScanMode();
+        if (scanMode != facade.getScanMode()) {
             // display update
-            if (setupConfig.getScanMode() == SCAN_MODE.RECURSIVE_SCAN) {
+            if (scanMode == SCAN_MODE.RECURSIVE_SCAN) {
                 btRadRecursiv.setSelected(true);
                 btCollapse.setEnabled(true);
                 btExpand.setEnabled(true);
@@ -647,10 +654,11 @@ public class ScanFrame extends FillPane implements Bindable
                 btExpand.setEnabled(false);
                 cbFolderScan.setEnabled(false);
             }
-            setScanMode(setupConfig.getScanMode());// scans folder too
+            setScanMode(scanMode);// scans folder too
         }
         
-        setModified(false);
+        ADirScan.perform(null);
+        setModified(false);// disable update on next step
     }
     
 }

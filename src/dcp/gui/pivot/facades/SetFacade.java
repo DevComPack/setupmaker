@@ -41,26 +41,31 @@ public class SetFacade
      */
     public boolean importDataFrom(List<Group> groups, List<Pack> packs)
     {
-        if (packs==null && groups==null) return false;
+        if (packs == null && groups == null) return false;
         
         // Groups Import
         GroupFactory.clear();
         treeData.clear();
         if (groups != null)
             for(Group G:groups)// Fill Data from Scan folders
-                newGroup(new Group(G));
+                newGroup(G);
         
         // Packs data save for same packs
         List<Pack> newPacks = new ArrayList<Pack>();
+        Pack pack;
         for(Pack p:packs) {
             List<Pack> oldPacks = PackFactory.getByName(p.getName());
-            if (oldPacks.getLength() == 1) {//if only one pack with same filename
+            if (oldPacks.getLength() == 1) {// if only one pack with same filename
                 Out.print(LOG_LEVEL.DEBUG, "Pack " + p.getName() + " data restored.");
-                newPacks.add(new Pack(oldPacks.get(0)));
+                pack = new Pack(oldPacks.get(0));
             }
-            else {//otherwise reset packs
-                newPacks.add(new Pack(p));
+            else {// otherwise reset packs
+                pack = new Pack(p);
             }
+            for(Group g:GroupFactory.getGroups())
+                if (g.equals(pack.getGroup()))
+                    pack.setGroup(g);// group rename bugfix: point to the new created group
+            newPacks.add(pack);
         }
         
         // Packs Import
@@ -191,11 +196,16 @@ public class SetFacade
     public void renameGroup(Group group, String new_name)
     {
         assert group != null;
-        if (new_name.length() > 0) {
-            String old_name = group.getName();
+        String old_name = group.getName();
+        
+        if (new_name.length() > 0 && !new_name.equals(old_name)) {
             branches.get(group).setText(new_name);
+            /*for(Pack p : PackFactory.getPacks()) {
+                if (p.getGroup() != null && p.getGroup().equals(group))
+                    p.getGroup().setName(new_name);
+            }*/
             group.setName(new_name);
-            Out.print(LOG_LEVEL.DEBUG, "Group "+old_name+" renamed to "+new_name);
+            Out.print(LOG_LEVEL.DEBUG, "Group " + old_name + " renamed to " + new_name);
         }
     }
     
