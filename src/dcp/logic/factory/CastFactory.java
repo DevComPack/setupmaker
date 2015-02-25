@@ -6,15 +6,25 @@ import java.util.ListIterator;
 
 
 
+
+
+
+
+
 import org.apache.pivot.wtk.content.TreeBranch;
 import org.apache.pivot.wtk.content.TreeNode;
 import org.apache.pivot.wtk.media.Image;
 
 import dcp.config.io.IOFactory;
 import dcp.logic.factory.TypeFactory.FILE_TYPE;
+import dcp.logic.factory.TypeFactory.LOG_LEVEL;
+import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
+import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.config.io.OSValidator;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
+import dcp.logic.model.config.SetupConfig;
+import dcp.main.log.Out;
 
 /**
  * Casts class between
@@ -208,13 +218,31 @@ public class CastFactory
      * @param DCP_VERSION: old DCP version of pack
      */
     public static void packModelUpdate(Pack P, String DCP_VERSION) {
-        switch (DCP_VERSION) {
+        switch (DCP_VERSION) {// no break for first cases to update properties on cascade
         case "1.0":
             P.setInstallVersion(Pack.getVersionFromName(P.getName()));
-            break;
         case "1.1":
             P.setArch(0);
-            break;
+            
+        Out.print(LOG_LEVEL.DEBUG, "Pack data model updated from "+ DCP_VERSION +".x to current DCP version");
+        break;
+        }
+    }
+    
+    /**
+     * Update setup data of old SetupConfigs
+     * @param setupConfig: SetupConfig to update
+     * @param DCP_VERSION: old DCP version of pack
+     */
+    public static void setupModelUpdate(SetupConfig setupConfig, String DCP_VERSION) {
+        switch (DCP_VERSION) {// no break for first cases to update properties on cascade
+        case "1.0":
+        case "1.1":
+            setupConfig.setScanMode(SCAN_MODE.SIMPLE_SCAN);
+            setupConfig.setScanFolder(SCAN_FOLDER.PACK_FOLDER);
+            
+        Out.print(LOG_LEVEL.DEBUG, "Setup data model updated from "+ DCP_VERSION +".x to current DCP version");
+        break;
         }
     }
     

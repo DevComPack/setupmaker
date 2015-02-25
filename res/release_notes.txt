@@ -1,14 +1,19 @@
 1.2.0
 =====
 -Code rewrite
-+Open target folder button on Build tab
-+Packs DataCheck feature in Set tab
-+Pack install architecture(x32/x64) property
--Treat folders as groups moved to Scan tab (instead of Import button)
-+Logging organized into 4 levels (DEBUG, INFO, WARN, ERR)
-+Packs Data restore from set packs on new scan
++ New features:
+Open package target folder on Build
+Check packs properties for errors
+Pack target architecture(x32/x64) property
+Properties restored on new scan for same packs
 --
-*Bugfixes:
+- Enhancements:
+Treat folders as groups moved to Scan tab (instead of Import button)
+Logging organized into 4 levels (DEBUG, INFO, WARN, ERR)
+NuGet Builder option only available from Windows systems
+Model data structure update on cascade when loading projects of older version (starting from version 1.0)
+--
+* Bug fixes:
 Empty Group creation was possible
 Group treeview node delete button returned exception when none selected
 Panels display flag wasn't initialized

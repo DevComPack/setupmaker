@@ -305,6 +305,9 @@ public class Facade
                 
                 setupConfig = (SetupConfig) is.readObject();
                 Out.print(LOG_LEVEL.DEBUG, setupConfig.getAppName() + " " + setupConfig.getAppVersion());
+                
+                // File compatibility fix
+                CastFactory.setupModelUpdate(setupConfig, version.substring(0, 3));// cast Setup model from old versions
 
                 groups = new ArrayList<Group>();
                 //GroupFactory.clear();
@@ -323,10 +326,7 @@ public class Facade
                     Pack P = (Pack) is.readObject();
                     
                     // File compatibility fix
-                    if (version.startsWith("1.0"))// cast Pack model from 1.0.x (Chocolatey feature)
-                        CastFactory.packModelUpdate(P, "1.0");
-                    else if (version.startsWith("1.0"))// cast Pack model from 1.1.x (architecture)
-                        CastFactory.packModelUpdate(P, "1.1");
+                    CastFactory.packModelUpdate(P, version.substring(0, 3));// cast Pack model from old versions
                     
                     P.setIcon(CastFactory.nameToImage(P.getName(), P.getFileType() == FILE_TYPE.Folder));
                     //PackFactory.addPack(P);
