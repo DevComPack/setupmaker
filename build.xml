@@ -14,6 +14,8 @@
 	<property name="jar_file" value="${basedir}/${jar_name}"/>
 	<property name="current_release" value="${releases}/DCP_${version}/"/>
 	
+	<property name="doc_path" value="D:\cds\workspaces\packTrunk\devcompack.gh-pages\setupmaker\doc"/>
+	
 	<target name="init">
 		<tstamp/>
 		<mkdir dir="${releases}"/>
@@ -76,4 +78,16 @@
 		</zip>
 	</target>
 	
+	<target name="doc_copyright" description="erase HelpnDoc copyright tags from html files" >
+		<replaceregexp byline="true">
+			<regexp pattern="&lt;p class=&quot;rvps5&quot;&gt;&lt;span class=&quot;rvts17&quot;&gt;Created with.*&lt;/p&gt;"/>
+			<substitution expression=""/>
+			<fileset dir="${doc_path}">
+				<include name="*.html" />
+				<exclude name="toc.html" />
+				<exclude name="index.html" />
+			</fileset>
+		</replaceregexp>
+	</target>
+
 </project>
