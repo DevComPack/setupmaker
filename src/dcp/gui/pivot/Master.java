@@ -122,7 +122,7 @@ public class Master extends Window implements Application, Bindable
             //Load Action
             ALoad = new Action() {// Project Load Action
                 @Override
-                public void perform(Component arg0)
+                public void perform(Component c)
                 {
                     if (facade.load(IOFactory.saveFile)) {
                         facade.tabsInit();
@@ -151,18 +151,19 @@ public class Master extends Window implements Application, Bindable
 
     @Override public void startup(Display display, Map<String, String> properties) throws Exception// App start
     {
-        // Helper launch if first time
-        if (facade.appConfig.isHelp()) {
-            helper.open(window);
-            facade.appConfig.setHelp(false);
-        }
-        
         Out.print(LOG_LEVEL.DEBUG, "Data loaded to memory");
         
         Locale.setDefault(Locale.ENGLISH);// Set default UI language to English
         BXMLSerializer bxmlSerializer = new BXMLSerializer();
         window = (Window) bxmlSerializer.readObject(getClass().getResource("master.bxml"));
         window.open(display);
+
+        // Helper launch if first time
+        if (facade.appConfig.isHelp()) {
+            helper.open(window);
+            facade.appConfig.setHelp(false);
+        }
+        
         Out.print(LOG_LEVEL.DEBUG, "Window open");
     }
 
@@ -178,10 +179,21 @@ public class Master extends Window implements Application, Bindable
         }
         return false;
     }
+    
+    /**
+     * Load a project file in the GUI
+     * @param file to load (dcp file)
+     */
+    public void loadProject(String file)
+    {
+        IOFactory.setSaveFile(file);
+        ALoad.perform(null);
+        Prompt.prompt(MessageType.INFO, "Data loaded from saved project.", getWindow());
+    }
 
     @Override public void initialize(Map<String, Object> args, URL url, Resources res)
     {
-        facade.framesInit();// Tabs singletons init
+        facade.framesInit(this);// Tabs singletons init
         facade.tabsInit();// Tabs display init
         
         //Shortcuts definition
@@ -292,9 +304,7 @@ public class Master extends Window implements Application, Bindable
                     try {
                         String s = fileBrowserSheet.getSelectedFile().getCanonicalPath();
                         if (!s.equals(IOFactory.saveFile)) {
-                            IOFactory.setSaveFile(s);
-                            ALoad.perform(fileBrowserSheet);
-                            Prompt.prompt(MessageType.INFO, "Data loaded from saved project.", getWindow());
+                            loadProject(s);
                         }
                     }
                     catch (IOException e) {

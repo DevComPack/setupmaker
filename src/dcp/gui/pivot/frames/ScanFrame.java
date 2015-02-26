@@ -75,6 +75,9 @@ public class ScanFrame extends FillPane implements Bindable
     private AppConfig appConfig = Master.facade.appConfig;
     private SetupConfig setupConfig = Master.facade.setupConfig;
     
+    private Master master;
+    public void setMaster(Master master) { this.master = master; }
+    
     // Flags
     private boolean modified = false;// True if tab changed data
     public void setModified(boolean VALUE) { modified = VALUE; }
@@ -98,43 +101,44 @@ public class ScanFrame extends FillPane implements Bindable
     // Recent Directories options
     @BXML private SplitPane hSplitPane;
     @BXML private TablePane recent_dirs;
+    @BXML private TablePane recent_projects;
     // Scan Mode options
-    @BXML private RadioButton btRadSimple;//Simple Scan Mode Radio Button
-    @BXML private Checkbox btSelect;//Activate/Desactivate Node Check State Select mode
-    @BXML private PushButton btSelectAll;//Select All button
-    @BXML private PushButton btSelectNone;//Select None button
-    @BXML private RadioButton btRadRecursiv;//Recursive Scan Mode Radio Button (default)
-    @BXML private BoxPane depthPane;//Depth Label+Spinner Box Pane
-    @BXML private Spinner depthSpinner;//Spinner depth value
-    @BXML private PushButton btCollapse;//Collapse button
-    @BXML private PushButton btExpand;//Expand button
+    @BXML private RadioButton btRadSimple;// Simple Scan Mode Radio Button
+    @BXML private Checkbox btSelect;// Activate/Desactivate Node Check State Select mode
+    @BXML private PushButton btSelectAll;// Select All button
+    @BXML private PushButton btSelectNone;// Select None button
+    @BXML private RadioButton btRadRecursiv;// Recursive Scan Mode Radio Button (default)
+    @BXML private BoxPane depthPane;// Depth Label+Spinner Box Pane
+    @BXML private Spinner depthSpinner;// Spinner depth value
+    @BXML private PushButton btCollapse;// Collapse button
+    @BXML private PushButton btExpand;// Expand button
     // Filter options
-    @BXML private Checkbox cbZip;//Archives
-    @BXML private Checkbox cbSetup;//Setups
-    @BXML private Checkbox cbExe;//Executables
-    @BXML private Checkbox cbDir;//Directories
-    @BXML private Checkbox cbImg;//Images
-    @BXML private Checkbox cbVid;//Videos
-    @BXML private Checkbox cbSound;//Sounds
-    @BXML private Checkbox cbDoc;//Documents
-    @BXML private Checkbox cbCustTxt;//Custom set filter
-    @BXML private Checkbox cbCustExpr;//Custom Expression filter button
-    @BXML private TextInput inCustExpr;//Custom REGEXP filter input
+    @BXML private Checkbox cbZip;// Archives
+    @BXML private Checkbox cbSetup;// Setups
+    @BXML private Checkbox cbExe;// Executables
+    @BXML private Checkbox cbDir;// Directories
+    @BXML private Checkbox cbImg;// Images
+    @BXML private Checkbox cbVid;// Videos
+    @BXML private Checkbox cbSound;// Sounds
+    @BXML private Checkbox cbDoc;// Documents
+    @BXML private Checkbox cbCustTxt;// Custom set filter
+    @BXML private Checkbox cbCustExpr;// Custom Expression filter button
+    @BXML private TextInput inCustExpr;// Custom REGEXP filter input
     // Advanced options
     @BXML private Checkbox cbFolderScan;// Treat folders as groups in Set tab
-    //Displays
-    @BXML private static TreeView treeView;//Tree View for scanned directory
-    //Filter
+    // Displays
+    @BXML private static TreeView treeView;// Tree View for scanned directory
+    // Filter
     private FilenameFilter filter;
-    //Actions
-    private Action ADirScan;//Scan the given directory
+    // Actions
+    private Action ADirScan;// Scan the given directory
     //========================
     
-    public ScanFrame() {//Constructor
+    public ScanFrame() {// Constructor
         assert (singleton == null);
         singleton = this;
         
-        filter = new FilenameFilter() {//Checkbox packs filters
+        filter = new FilenameFilter() {// Checkbox packs filters
             @Override public boolean accept(File dir, String name)
             {
                 try {
@@ -165,7 +169,7 @@ public class ScanFrame extends FillPane implements Bindable
             }
         };
         
-        ADirScan = new Action() {//Directory Scan from Filters/mode Action
+        ADirScan = new Action() {// Directory Scan from Filters/mode Action
             @Override public void perform(Component source) {
                 if (btSelect.isSelected()) btSelect.press(); // * bugfix: scan on enabled selection doesn't update packs list
                 
@@ -175,14 +179,14 @@ public class ScanFrame extends FillPane implements Bindable
                 int res = scan.execute();
                 if (res == 0) {
                     Out.print(LOG_LEVEL.DEBUG, "Scanned directory: " + inPath.getText());
-                    //Save directory to app config recent dirs
+                    // Save directory to app config recent dirs
                     appConfig.addRecentDir(new File(inPath.getText()));
-                    recentDirsFill(appConfig.getRecentDirs());
+                    recentFieldFill(recent_dirs, appConfig.getRecentDirs());
                     if (depthSpinner.getSelectedIndex() < 5)
                         treeView.expandAll();
                     else treeView.collapseAll();
                     
-                    setModified(true);//Modified Flag (*)
+                    setModified(true);// Modified Flag (*)
                 }
                 else if (res == 2) {// Error: Path doesn't exist
                     Out.print(LOG_LEVEL.DEBUG, "Path error: " + inPath.getText());
@@ -197,7 +201,8 @@ public class ScanFrame extends FillPane implements Bindable
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
         facade = new ScanFacade();
-        recentDirsFill(appConfig.getRecentDirs());
+        recentFieldFill(recent_dirs, appConfig.getRecentDirs());
+        recentFieldFill(recent_projects, appConfig.getRecentProjects());
         hSplitPane.setSplitRatio(appConfig.getScanHorSplitPaneRatio());
         
         // Custom filters fill from settings.json file to UI
@@ -212,18 +217,18 @@ public class ScanFrame extends FillPane implements Bindable
             cbCustTxt.setButtonData(new ButtonData(customFilters));
         }
         
-        //Select button transitions
+        // Select button transitions
         final AppearTransition selectExpTrans = new AppearTransition(btSelect, 150, 20);
         final FadeTransition selectCollTrans = new FadeTransition(btSelect, 100, 20);
-        //Depth transitions
+        // Depth transitions
         final AppearTransition depthAppTrans = new AppearTransition(depthPane, 150, 20);
         final FadeTransition depthFadeTrans = new FadeTransition(depthPane, 100, 20);
         
-        //Validators
+        // Validators
         inPath.setValidator(new PathValidator());
         
-        //Data Binding
-        treeView.setTreeData(facade.getTreeData());//Bind Tree view to data
+        // Data Binding
+        treeView.setTreeData(facade.getTreeData());// Bind Tree view to data
         treeView.getTreeViewNodeStateListeners().add(new TreeViewNodeStateListener() {
             @Override public void nodeCheckStateChanged(TreeView tv, Path arg1, NodeCheckState arg2)
             {
@@ -231,29 +236,29 @@ public class ScanFrame extends FillPane implements Bindable
             }
         });
         
-        //Action Binding
+        // Action Binding
         btRefresh.setAction(ADirScan);
         btRefresh.setButtonDataKey("ENTER");
         btBrowse.setAction(new BrowseAction(fileBrowserSheet));
         
-        //Set default directory selection in File Browser (packs/)
-        try {//Set working directory as root directory for file browser
+        // Set default directory selection in File Browser (packs/)
+        try {// Set working directory as root directory for file browser
             fileBrowserSheet.setRootDirectory(new File(".").getCanonicalFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);//FileBrowser Mode to Directory selection
+        fileBrowserSheet.setMode(FileBrowserSheet.Mode.SAVE_TO);// FileBrowser Mode to Directory selection
         
-        //Directory select in File Browser Event
+        // Directory select in File Browser Event
         fileBrowserSheet.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
             @Override
             public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
-                //If path changed
+                // If path changed
                 if (!ScanFrame.this.inPath.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
                     if (ScanFrame.this.inPath.getValidator().isValid(inPath.getText()) || ScanFrame.this.inPath.getText().length() == 0) {
                         ScanFrame.this.inPath.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
-                        ADirScan.perform(fileBrowserSheet);//Action launch
+                        ADirScan.perform(fileBrowserSheet);// Action launch
                     }
                     else {
                         ScanFrame.this.inPath.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
@@ -516,26 +521,27 @@ public class ScanFrame extends FillPane implements Bindable
     }
     
     /**
-     * Fill recent directories field with list of Files
-     * @param directories
+     * Fill recent paths field with list of Files
+     * @param field: gui component to fill
+     * @param files: list of paths to put
      */
-    public void recentDirsFill(final List<File> directories) {
-        if (directories != null)
+    public void recentFieldFill(final TablePane field, final List<File> files) {
+        if (files != null)
         try
         {
-            if (recent_dirs.getRows().getLength() > 0)//Data clear
-                recent_dirs.getRows().remove(0, recent_dirs.getRows().getLength());
+            if (field.getRows().getLength() > 0)// Data clear
+                field.getRows().remove(0, field.getRows().getLength());
             
             //Analyze for wrong paths to remove
-            int n = directories.getLength();
+            int n = files.getLength();
             for(int i = 0; i < n; i++) {
-                if (!directories.get(i).exists()) {
-                    directories.remove(directories.get(i));
+                if (!files.get(i).exists()) {
+                    files.remove(files.get(i));
                     i--; n--;
                 }
             }
             
-            for(final File dir:directories)
+            for(final File file:files)
             {
                 //Remove button
                 ButtonData remBtData = new ButtonData(IOFactory.imgClose, "");
@@ -551,10 +557,10 @@ public class ScanFrame extends FillPane implements Bindable
                 
                 //Directory Link button
                 ButtonData btData = new ButtonData(IOFactory.imgHistory,
-                        dir.getParentFile().getName() + "/" + dir.getName());
+                        file.getParentFile().getName() + "/" + file.getName());
                 final LinkButton btLink = new LinkButton(btData);//LinkButton
                 btLink.setStyles("{color:'#0198E1'}");
-                btLink.setTooltipText(dir.getAbsolutePath());
+                btLink.setTooltipText(file.getAbsolutePath());
 
                 final BoxPane linkBoxPane = new BoxPane();//BoxPane
                 linkBoxPane.setOrientation(Orientation.HORIZONTAL);
@@ -571,7 +577,7 @@ public class ScanFrame extends FillPane implements Bindable
                 row.add(fillPane);
                 row.add(removeBoxPane);
                 
-                recent_dirs.getRows().add(row);
+                field.getRows().add(row);
                 
                 //Remove button display/hide event
                 removeBoxPane.getComponentMouseListeners().add(new ComponentMouseListener.Adapter() {
@@ -589,9 +595,12 @@ public class ScanFrame extends FillPane implements Bindable
                 btRemove.getButtonPressListeners().add(new ButtonPressListener() {
                     @Override public void buttonPressed(Button bt)
                     {
-                        recent_dirs.getRows().remove(row);
-                        Out.print(LOG_LEVEL.INFO, dir.getName()+" entry removed");
-                        appConfig.removeRecentDir(dir);
+                        field.getRows().remove(row);
+                        Out.print(LOG_LEVEL.INFO, file.getName()+" entry removed");
+                        if (field.equals(recent_dirs))
+                            appConfig.removeRecentDir(file);
+                        else if (field.equals(recent_projects))
+                            appConfig.removeRecentProject(file);
                     }
                 });
                 
@@ -599,15 +608,20 @@ public class ScanFrame extends FillPane implements Bindable
                 btLink.getButtonPressListeners().add(new ButtonPressListener() {
                     @Override public void buttonPressed(Button bt)
                     {
-                        inPath.setText(dir.getAbsolutePath());
-                        fileBrowserSheet.setRootDirectory(dir.getParentFile());
-                        fileBrowserSheet.setSelectedFile(dir);
-                        ADirScan.perform(bt);
+                        if (field.equals(recent_dirs)) { // Scan folder
+                            inPath.setText(file.getAbsolutePath());
+                            fileBrowserSheet.setRootDirectory(file.getParentFile());
+                            fileBrowserSheet.setSelectedFile(file);
+                            ADirScan.perform(bt);
+                        }
+                        else if (field.equals(recent_projects)) { // Load project
+                            master.loadProject(file.getAbsolutePath());
+                        }
                     }
                 });
             }
             
-            recent_dirs.repaint();
+            field.repaint();
         }
         catch (SerializationException e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ Open package target folder on Build
 Check packs properties for errors
 Pack target architecture(x32/x64) property
 Properties restored on new scan for same packs
+Easy access for recent saved/loaded projects
 --
 - Enhancements:
 Treat folders as groups moved to Scan tab (instead of Import button)
@@ -13,7 +14,8 @@ Logging organized into 4 levels (DEBUG, INFO, WARN, ERR)
 NuGet Builder option only available from Windows systems
 Model data structure update on cascade when loading projects of older version (starting from version 1.0)
 Group rename disabled when same name
-Context menus for Packs and Groups views
+Context menus for Packs and Groups views with icons
+Executables temporary target dir updated for use
 --
 * Bug fixes:
 Empty Group creation was possible
@@ -28,7 +30,6 @@ Exceptions on some buttons when empty data
 
 +Packr/JARtoEXE implementation (_https://github.com/libgdx/packr)
 +Tweak file options (icon, exe..)
-+Scan mode change Start(Scan/Load)
 
 
 1.1.1

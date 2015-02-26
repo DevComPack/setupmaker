@@ -215,9 +215,31 @@
 						</TablePane.Row>
 
 						<!-- Recent scanned directories -->
-						<TablePane.Row height="130">
+						<TablePane.Row height="120">
 							<Border title="Recent directories" styles="{color:'#FFFFFF', titleColor:'#ff5500', padding:4}">
 								<TablePane bxml:id="recent_dirs"
+									styles="{showHorizontalGridLines: true, horizontalGridColor:10,
+						        padding:4, horizontalSpacing:1, verticalSpacing:1}">
+									<columns>
+										<TablePane.Column width="5*" />
+										<TablePane.Column width="1*" />
+									</columns>
+
+									<!-- <TablePane.Row height="24"> <BoxPane styles="{verticalAlignment:'center'}"> 
+										<LinkButton styles="{color:'#38ACEC'}"> <content:ButtonData text="last scanned 
+										directory" icon="/dcp/gui/icons/history.png"/> </LinkButton> </BoxPane> </TablePane.Row> -->
+								</TablePane>
+							</Border>
+						</TablePane.Row>
+
+						<TablePane.Row>
+							<Separator styles="{color:'#DDDDDD'}" />
+						</TablePane.Row>
+
+						<!-- Recent project files -->
+						<TablePane.Row height="100">
+							<Border title="Recent projects" styles="{color:'#FFFFFF', titleColor:'#ff5500', padding:4}">
+								<TablePane bxml:id="recent_projects"
 									styles="{showHorizontalGridLines: true, horizontalGridColor:10,
 						        padding:4, horizontalSpacing:1, verticalSpacing:1}">
 									<columns>

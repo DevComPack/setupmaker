@@ -25,7 +25,8 @@ public class AppConfig implements Serializable
     private static final long serialVersionUID = 1194986597451209924L;
 
     // Constants
-    private final static int MAX_RECENT_DIRECTORIES = 5;
+    private transient final static int MAX_RECENT_DIRECTORIES = 5;
+    private transient final static int MAX_RECENT_PROJECTS = 3;
     // Flag
     transient private boolean modified = false;
     public boolean isModified() { return modified; }
@@ -37,6 +38,7 @@ public class AppConfig implements Serializable
     private String appVersion;
     // Data
     private LinkedList<File> recentDirs = new LinkedList<File>();
+    private LinkedList<File> recentProjects = new LinkedList<File>();
     // Workspace
     private float scanHorSplitPaneRatio = 0.25f;
     private float setVerSplitPaneRatio = 0.6f;
@@ -64,7 +66,7 @@ public class AppConfig implements Serializable
     public String getAppVersion() { return appVersion; }
     public void setAppVersion(String app_version) { this.appVersion = app_version; setModified(true); }
     
-    // Data
+    // Recent Scanned directories
     public List<File> getRecentDirs() {
         if (recentDirs.size() > 0) {
             List<File> list = new ArrayList<File>();
@@ -94,6 +96,38 @@ public class AppConfig implements Serializable
         assert !directory.getName().equals("");
         setModified(true);
         return recentDirs.remove(directory);
+    }
+    
+    // Recent projects
+    public List<File> getRecentProjects() {
+        if (recentProjects.size() > 0) {
+            List<File> list = new ArrayList<File>();
+            Iterator<File> it = recentProjects.descendingIterator();
+            while(it.hasNext()) {
+                list.add(it.next());
+            }
+            return list;
+        }
+        else return null;
+    }
+    public void addRecentProject(File file) {
+        assert !file.getAbsolutePath().equals("");
+        if (recentProjects.size() == 0 || !file.equals(recentProjects.getLast())) {
+            if (recentProjects.contains(file)) {
+                recentProjects.remove(file);
+            }
+            else {
+                if (recentProjects.size() == MAX_RECENT_PROJECTS)
+                    recentProjects.removeFirst();
+            }
+            recentProjects.addLast(file);
+            setModified(true);
+        }
+    }
+    public boolean removeRecentProject(File file) {
+        assert !file.getName().equals("");
+        setModified(true);
+        return recentProjects.remove(file);
     }
     
     // Workspace methods

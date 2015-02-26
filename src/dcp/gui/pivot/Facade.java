@@ -86,9 +86,10 @@ public class Facade
     /**
      * Initialize frames from instantiated singletons
      */
-    public void framesInit()
+    public void framesInit(Master master)
     {
         scanFrame = ScanFrame.getSingleton();
+            scanFrame.setMaster(master);
         setFrame = SetFrame.getSingleton();
         tweakFrame = TweakFrame.getSingleton();
         buildFrame = BuildFrame.getSingleton();
@@ -278,6 +279,7 @@ public class Facade
             out.close();
             Out.print(LOG_LEVEL.INFO, setupConfig.getAppName() + " " + setupConfig.getAppVersion() +
                       " data saved to " + f.getAbsolutePath());
+            appConfig.addRecentProject(f);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -293,10 +295,10 @@ public class Facade
         try
         {
             File f = new File(saveFile);
-            if (!f.exists()) {//If save file not exists
-                return false;//error
+            if (!f.exists()) {// If save file not exists
+                return false;// error
             }
-            else {//File exists
+            else {// File exists
                 FileInputStream in = new FileInputStream(f);
                 ObjectInputStream is = new ObjectInputStream(in);
                 
@@ -337,6 +339,7 @@ public class Facade
                 is.close();
                 in.close();
                 Out.print(LOG_LEVEL.INFO, "Data loaded from file " + IOFactory.saveFile);
+                appConfig.addRecentProject(f);
             }
         }
         catch (IOException e) {
