@@ -23,6 +23,7 @@ import org.apache.pivot.wtk.ButtonStateListener;
 import org.apache.pivot.wtk.Checkbox;
 import org.apache.pivot.wtk.Component;
 import org.apache.pivot.wtk.ComponentMouseListener;
+import org.apache.pivot.wtk.ComponentStateListener;
 import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.FillPane;
@@ -180,12 +181,12 @@ public class ScanFrame extends FillPane implements Bindable
                 if (res == 0) {
                     Out.print(LOG_LEVEL.DEBUG, "Scanned directory: " + inPath.getText());
                     // Save directory to app config recent dirs
-                    appConfig.addRecentDir(new File(inPath.getText()));
-                    recentFieldFill(recent_dirs, appConfig.getRecentDirs());
+                    appConfig.addRecentDir(new File(inPath.getText()));// add scanned dir to recent dirs
+                    recentFieldFill(recent_dirs, appConfig.getRecentDirs());// refresh recent dirs list display
                     if (depthSpinner.getSelectedIndex() < 5)
                         treeView.expandAll();
                     else treeView.collapseAll();
-                    
+                    inPath.requestFocus();
                     setModified(true);// Modified Flag (*)
                 }
                 else if (res == 2) {// Error: Path doesn't exist
@@ -276,12 +277,23 @@ public class ScanFrame extends FillPane implements Bindable
             }
         });
         
-        // update setup source path from inPath
+        // Update setup source path from inPath
         inPath.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
                 if (TI.isValid())// path exists
                     setupConfig.setSrcPath(TI.getText());
+            }
+        });
+        // Set root directory from written path to file browser
+        inPath.getComponentStateListeners().add(new ComponentStateListener.Adapter() {
+            @Override public void focusedChanged(Component component, Component obverseComponent)
+            {
+                if (!component.isFocused()) {
+                    File root = new File(inPath.getText());
+                    if (root.exists() && root.isDirectory())
+                        fileBrowserSheet.setRootDirectory(root);
+                }
             }
         });
         
