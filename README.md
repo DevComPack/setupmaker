@@ -4,7 +4,7 @@ Powerful cross-platform install builder
 
 Great and powerful application to generate stable and multi-platform java installers.  
 
-Watch a demo of DCP Setup Maker's installer being made in 2 minutes: https://www.youtube.com/watch?v=lb4nBb8wUqE
+Watch a demo of DCP Setup Maker's installer being made in 2 minutes: https://www.youtube.com/watch?v=dmF5Kyla7Hg
 
 Its intuitive UI and exceptional ease of use makes it very easy to build complex installers with large amounts of files.
 The whole process is done step by step through a wizard-like interface, filling in fields and setting up files to finally build your package.
@@ -25,10 +25,10 @@ CHANGELOG
 ---------
 
 *1.1.1*
-+ New features:
++ New features:  
 Nuget/Chocolatey process compiler;  
 Conditions support for IzPack;  
-- Enhancements:
+- Enhancements:  
 Code structure update;  
 Validators debugging warnings;  
 Multi lines clipboard copy of selected log lines;  
@@ -39,7 +39,7 @@ Build mode and default build configurations added to workspace data;
 Build logs copy to clipboard from context menu;  
 Apache Commons IO for file copy operations;  
 CommandLine build includes app name and version in package file;  
-* Bug fixes:
+* Bug fixes:  
 Default empty target path was based on app data instead of setup data;  
 Workspace configuration was always saved even when not modified;  
 Save file extension correction on empty path;  
@@ -49,7 +49,7 @@ Workspace data was saved with edit flag on;
 Frames Singletons were not used as intended  
 
 *1.1.0*
-* Bug Fixes:
+* Bug Fixes:  
 Set tab listbox circular mode disabled;  
 Packs tooltip text correction on empty area;  
 Scan Packs TableView selection enabled;  
@@ -57,11 +57,11 @@ Expand/Collapse buttons fix for Java 8;
 Fixed Data initialization and load at startup;  
 Tab Singletons initialize with instantiation;  
 Scan on enabled selection didn't update packs list  
-+ New features:
++ New features:  
 Pack version property;  
 New compilation system based on multiple compilers;  
 Command Line compilation of dcp files  
-- Enhancements:
+- Enhancements:  
 Apache Pivot update to 2.0.4;  
 Split panel on Scan tab's side bar;  
 Resizable RegExp filter input size;  
@@ -69,22 +69,22 @@ Version extract from pack file name
 
 
 *1.0.3*
-* Bug Fixes:
-Fixed for Java 8;
-Code structure update;
-Simple scan didn't update on changed selection;
-Filters now are enabled when selected;
-Version increment format check + focus
-+ Enhancements:
-GUI update;
-Assistant update;
-Recent scanned directories display with parent + full path on tooltip;
-Improved filtering system;
-Custom filters show up in UI;
-Second custom filter replaced with regexp filtering;
-Packs tooltip displays full path to pack on disk;
-Automated version number parts selection;
-Version Increment applies to selected part or last part by default
+* Bug Fixes:  
+Fixed for Java 8;  
+Code structure update;  
+Simple scan didn't update on changed selection;  
+Filters now are enabled when selected;  
+Version increment format check + focus  
++ Enhancements:  
+GUI update;  
+Assistant update;  
+Recent scanned directories display with parent + full path on tooltip;  
+Improved filtering system;  
+Custom filters show up in UI;  
+Second custom filter replaced with regexp filtering;  
+Packs tooltip displays full path to pack on disk;  
+Automated version number parts selection;  
+Version Increment applies to selected part or last part by default  
 
 
 *1.0.2*
