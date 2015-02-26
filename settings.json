@@ -21,7 +21,7 @@
 		"psPath": "./res/ps",
 		"libPath": "./lib/dcp",
 		"targetPath": "./target",
-		"exeTargetDir": "tmp/"
+		"exeTargetDir": "~tmp/"
 	},
 	
 	"files": {

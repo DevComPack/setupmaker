@@ -224,7 +224,7 @@ public class SetFrame extends FillPane implements Bindable
                 menu.getSections().add(menuSection);
 
                 Menu.Item rename = new Menu.Item(new ButtonData(IOFactory.imgEdit, "rename"));
-                Menu.Item remove = new Menu.Item(new ButtonData(IOFactory.imgDelete, "delete"));
+                Menu.Item remove = new Menu.Item(new ButtonData(IOFactory.imgDelete, "remove"));
                 
                 rename.setAction(new Action() {
                     @Override public void perform(Component source) {
@@ -1096,13 +1096,13 @@ public class SetFrame extends FillPane implements Bindable
                     }
                 }
             }
-            //Make path suggestions
+            //Auto path suggestions
             @Override public void textInserted(TextInput textInput, int index, int count)
             {
                 String text = textInput.getText().toLowerCase();
-                String suggestion = facade.getInstallPathSuggestion(text);
+                String suggestion = facade.getInstallPathSuggestion(text);// get suggestion
                 
-                if (suggestion.length() > 0) {
+                if (suggestion.length() > 0) {// select completed suggestion part for easy edit
                     int selectionStart = text.length();
                     int selectionLength = suggestion.length() - selectionStart;
                     
@@ -1486,7 +1486,8 @@ public class SetFrame extends FillPane implements Bindable
         cbOverride.setSelected(pack.isOverride());
         cbShortcut.setSelected(pack.isShortcut());
         inDescription.setText(pack.getDescription());
-        inPInstallPath.setText(pack.getInstallPath());
+        inPInstallPath.setText((pack.getInstallType() == INSTALL_TYPE.EXECUTE)?
+                IOFactory.exeTargetDir : pack.getInstallPath());// display exe temporary target path if executable
         inName.setText(pack.getInstallName());
         inVersion.setText(pack.getInstallVersion());
         inInstallGroups.setText(pack.getInstallGroups());

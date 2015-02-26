@@ -319,6 +319,9 @@ public class SetFacade
      */
     public String getInstallPathSuggestion(String text)
     {
+        if (IOFactory.exeTargetDir.startsWith(text))// Executables temporary target dir
+            return IOFactory.exeTargetDir;
+        
         for(Group G:GroupFactory.getGroups()) {//Suggestions from Group paths
             if (G.getPath().toLowerCase().startsWith(text)) {
                 return G.getPath();

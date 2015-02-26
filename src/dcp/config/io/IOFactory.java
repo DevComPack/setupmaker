@@ -181,7 +181,7 @@ public class IOFactory
     public static String libPath;// = "lib/dcp";
     public static String targetPath;// = "target";
     public static String savePath;// = "saves";
-    public static String exeTargetDir;// = "tmp/";
+    public static String exeTargetDir;// = "~tmp/";
     //File Paths
     public static String confFile;// = "conf.dcp";
     public static String defDirFile;// = resPath+"/default-dir.txt";
@@ -190,7 +190,7 @@ public class IOFactory
     //Options
     public static boolean izpackWrite;// = true; 
     public static boolean izpackCompile;// = true;
-    public static String apikey; // = Admin:Admin
+    public static String apikey;// = Admin:Admin
     
     //Jar libraries
     //public static String jarExecutable;// = libPath+"/dcp-executable.jar";
