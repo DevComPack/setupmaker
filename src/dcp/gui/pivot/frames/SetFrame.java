@@ -189,8 +189,7 @@ public class SetFrame extends FillPane implements Bindable
     private MenuHandler MHTableView;
     
     //=========================================
-    public SetFrame()//Constructor
-    {
+    public SetFrame() {//Constructor
         assert (singleton == null);
         singleton = this;
         

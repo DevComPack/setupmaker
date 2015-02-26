@@ -28,6 +28,8 @@ import org.apache.pivot.wtk.FileBrowserSheet;
 import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.FillPane;
 import org.apache.pivot.wtk.LinkButton;
+import org.apache.pivot.wtk.Menu;
+import org.apache.pivot.wtk.MenuHandler;
 import org.apache.pivot.wtk.Orientation;
 import org.apache.pivot.wtk.PushButton;
 import org.apache.pivot.wtk.RadioButton;
@@ -44,6 +46,7 @@ import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.TreeView;
 import org.apache.pivot.wtk.Button.State;
 import org.apache.pivot.wtk.content.ButtonData;
+import org.apache.pivot.wtk.content.TreeNode;
 import org.apache.pivot.wtk.effects.FadeTransition;
 import org.apache.pivot.wtk.effects.Transition;
 import org.apache.pivot.wtk.effects.TransitionListener;
@@ -133,11 +136,43 @@ public class ScanFrame extends FillPane implements Bindable
     private FilenameFilter filter;
     // Actions
     private Action ADirScan;// Scan the given directory
+    // Menu Handlers
+    private MenuHandler MHTreeView;
     //========================
     
     public ScanFrame() {// Constructor
         assert (singleton == null);
         singleton = this;
+        
+        // folder tree view context menu
+        MHTreeView = new MenuHandler.Adapter() {
+            @Override public boolean configureContextMenu(Component component, Menu menu, int x, int y)
+            {
+                final TreeNode node = (TreeNode) treeView.getSelectedNode();
+                
+                if (node != null) {
+                    Menu.Section menuSection = new Menu.Section();
+                    menu.getSections().add(menuSection);
+    
+                    Menu.Item itemOpen = new Menu.Item(new ButtonData(IOFactory.imgFolder, "scan"));
+                    
+                    final File newDir = new File(inPath.getText(), node.getText());
+                    if (newDir.exists() && newDir.isDirectory()) {
+                        itemOpen.getButtonPressListeners().add(new ButtonPressListener() {// scan selected folder
+                            @Override public void buttonPressed(Button bt) {
+                                Out.print(LOG_LEVEL.DEBUG, "Scan folder set to child folder: " + node.getText());
+                                inPath.setText(newDir.getAbsolutePath());
+                                ADirScan.perform(bt);
+                            }
+                        });
+                    }
+                    else itemOpen.setEnabled(false);
+    
+                    menuSection.add(itemOpen);
+                }
+                return false;
+            }
+        };
         
         filter = new FilenameFilter() {// Checkbox packs filters
             @Override public boolean accept(File dir, String name)
@@ -229,6 +264,7 @@ public class ScanFrame extends FillPane implements Bindable
         inPath.setValidator(new PathValidator());
         
         // Data Binding
+        treeView.setMenuHandler(MHTreeView);
         treeView.setTreeData(facade.getTreeData());// Bind Tree view to data
         treeView.getTreeViewNodeStateListeners().add(new TreeViewNodeStateListener() {
             @Override public void nodeCheckStateChanged(TreeView tv, Path arg1, NodeCheckState arg2)

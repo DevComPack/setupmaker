@@ -7,6 +7,7 @@ Check packs properties for errors
 Pack target architecture(x32/x64) property
 Properties restored on new scan for same packs
 Easy access for recent saved/loaded projects
+Scan child folders directly from file view context menu
 --
 - Enhancements:
 Treat folders as groups moved to Scan tab (instead of Import button)
