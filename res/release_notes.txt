@@ -4,8 +4,8 @@
 + New features:
 Open package target folder on Build
 Check packs properties for errors
-Pack target architecture(x32/x64) property
-Properties restored on new scan for same packs
+Pack target architecture(x32/x64) property (request by Danish42)
+Properties restored on new scan for same packs (request by Hozku)
 Easy access for recent saved/loaded projects
 Scan child folders directly from file view context menu
 --

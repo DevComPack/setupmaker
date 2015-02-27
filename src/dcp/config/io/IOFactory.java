@@ -144,6 +144,8 @@ public class IOFactory
     public static Image imgHistory;//History file icon
     public static Image imgClose;//Close file icon
     // Menu icons
+    public static Image imgAdd;//Add menu icon
+    public static Image imgRight;//Right arrow menu icon
     public static Image imgEdit;//Edit menu icon
     public static Image imgDelete;//Delete menu icon
     public static Image imgImport;//Import menu icon
@@ -305,6 +307,9 @@ public class IOFactory
             imgCust = Image.load(IOFactory.class.getClass().getResource(iconsPath + "filter.png"));
             imgHistory = Image.load(IOFactory.class.getClass().getResource(iconsPath + "history.png"));
             imgClose = Image.load(IOFactory.class.getClass().getResource(iconsPath + "close.png"));
+            imgAdd = Image.load(IOFactory.class.getClass().getResource(iconsPath + "add.png"));
+            
+            imgRight = Image.load(IOFactory.class.getClass().getResource(iconsPath + "right.png"));
             imgEdit = Image.load(IOFactory.class.getClass().getResource(iconsPath + "edit.png"));
             imgDelete = Image.load(IOFactory.class.getClass().getResource(iconsPath + "delete.png"));
             imgImport = Image.load(IOFactory.class.getClass().getResource(iconsPath + "import.png"));

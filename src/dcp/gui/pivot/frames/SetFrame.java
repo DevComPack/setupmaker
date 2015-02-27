@@ -201,14 +201,33 @@ public class SetFrame extends FillPane implements Bindable
                 Menu.Section menuSection = new Menu.Section();
                 menu.getSections().add(menuSection);
 
+                Menu.Item addtogroup = new Menu.Item(new ButtonData(IOFactory.imgRight, "add to group"));
                 Menu.Item delete = new Menu.Item(new ButtonData(IOFactory.imgDelete, "delete"));
                 
-                delete.setAction(new Action() {
-                    @Override public void perform(Component source) {
-                        btDelete.press();
+                if (tableView.getSelectedIndex() != -1) { // if selected pack
+                    
+                    if (treeView.getSelectedNode() != null) { // if selected group
+                        addtogroup.setAction(new Action() {
+                            @Override public void perform(Component source)
+                            {
+                                btAdd.press();
+                            }
+                        });
                     }
-                });
+                    else addtogroup.setEnabled(false);
+                    
+                    delete.setAction(new Action() {
+                        @Override public void perform(Component source) {
+                            btDelete.press();
+                        }
+                    });
+                }
+                else {
+                    addtogroup.setEnabled(false);
+                    delete.setEnabled(false);
+                }
 
+                menuSection.add(addtogroup);
                 menuSection.add(delete);
                 return false;
             }
@@ -221,20 +240,26 @@ public class SetFrame extends FillPane implements Bindable
             {
                 Menu.Section menuSection = new Menu.Section();
                 menu.getSections().add(menuSection);
-
+                
                 Menu.Item rename = new Menu.Item(new ButtonData(IOFactory.imgEdit, "rename"));
                 Menu.Item remove = new Menu.Item(new ButtonData(IOFactory.imgDelete, "remove"));
                 
-                rename.setAction(new Action() {
-                    @Override public void perform(Component source) {
-                        btRename.press();
-                    }
-                });
-                remove.setAction(new Action() {
-                    @Override public void perform(Component source) {
-                        btRemove.press();
-                    }
-                });
+                if (treeView.getSelectedNode() != null) { // if selected group
+                    rename.setAction(new Action() {
+                        @Override public void perform(Component source) {
+                            btRename.press();
+                        }
+                    });
+                    remove.setAction(new Action() {
+                        @Override public void perform(Component source) {
+                            btRemove.press();
+                        }
+                    });
+                }
+                else {
+                    rename.setEnabled(false);
+                    remove.setEnabled(false);
+                }
 
                 menuSection.add(rename);
                 menuSection.add(remove);

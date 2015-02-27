@@ -52,11 +52,6 @@
 													<!-- Packs buttons -->
 													<BoxPane orientation="Vertical"
 														styles="{padding:{left:0,right:4,top:10,bottom:5}, horizontalAlignment:'center'}">
-														<PushButton bxml:id="btCheck"
-															tooltipText="Check and validate all packs data"
-															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-															<content:ButtonData icon="/dcp/gui/icons/debug.png" />
-														</PushButton>
 														<PushButton bxml:id="btSelectAll" tooltipText="Select all"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/selectall.png" />
@@ -65,16 +60,20 @@
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/selectnone.png" />
 														</PushButton>
-														<PushButton bxml:id="btAdd"
-															tooltipText="Add selected pack(s) to selected group"
+														<PushButton bxml:id="btCheck"
+															tooltipText="Check and validate all packs data"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-															<content:ButtonData icon="/dcp/gui/icons/right.png" />
+															<content:ButtonData icon="/dcp/gui/icons/debug.png" />
 														</PushButton>
 														<PushButton bxml:id="btSort" tooltipText="Sort packs priority"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/sort.png" />
 														</PushButton>
-														<PushButton bxml:id="btDelete" tooltipText="Delete selected pack(s)"
+														<PushButton bxml:id="btAdd" tooltipText="Add selected pack(s) to selected group" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/dcp/gui/icons/right.png" />
+														</PushButton>
+														<PushButton bxml:id="btDelete" tooltipText="Delete selected pack(s)" visible="false"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
 															<content:ButtonData icon="/dcp/gui/icons/delete.png" />
 														</PushButton>
@@ -156,18 +155,17 @@
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
 															<content:ButtonData icon="/dcp/gui/icons/add.png" />
 														</PushButton>
-														<PushButton bxml:id="btRename" tooltipText="Rename selected group"
-															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
-															<content:ButtonData icon="/dcp/gui/icons/edit.png" />
-														</PushButton>
-														<PushButton bxml:id="btRemove"
-															tooltipText="Remove selected group/pack"
-															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
-															<content:ButtonData icon="/dcp/gui/icons/delete.png" />
-														</PushButton>
 														<PushButton bxml:id="btClear" tooltipText="Clear all groups"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
 															<content:ButtonData icon="/dcp/gui/icons/clear.png" />
+														</PushButton>
+														<PushButton bxml:id="btRename" tooltipText="Rename selected group" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/dcp/gui/icons/edit.png" />
+														</PushButton>
+														<PushButton bxml:id="btRemove" tooltipText="Remove selected group/pack" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/dcp/gui/icons/delete.png" />
 														</PushButton>
 													</BoxPane>
 												</TablePane.Row>
