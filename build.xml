@@ -1,33 +1,84 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project name="Create Runnable Jar for Project devcompack with Jar-in-Jar Loader" default="create_run_jar" basedir=".">
+<project name="DCP Setup Maker build file" default="dist" basedir=".">
     <!-- ANT 1.7 is required -->
 	
     <description>
-        DevComPack Setup Maker Ant build file
+        DevComPack Setup Maker Ant build file.
+		Continous Integration online at https://travis-ci.org/DevComPack/setupmaker
     </description>
 	
-	<!-- set global properties for this build -->
+	<!-- global properties for build -->
 	<property name="version" value="1.2.0"/>
+    <property name="source" value="1.7"/>
+    <property name="target" value="1.7"/>
+	<property name="user.name" value="SAID EL IMAM, Said"/>
+	<property name="src" value="src"/>
+	<property name="build" value="bin"/>
 	<property name="lib" location="${basedir}/lib"/>
 	<property name="releases" value="${basedir}/releases"/>
 	<property name="jar_name" value="DCP-SNAPSHOT.jar"/>
 	<property name="jar_file" value="${basedir}/${jar_name}"/>
 	<property name="current_release" value="${releases}/DCP_${version}/"/>
-	
 	<property name="doc_path" value="D:\cds\workspaces\packTrunk\devcompack.gh-pages\setupmaker\doc"/>
 	
 	<target name="init">
-		<tstamp/>
-		<mkdir dir="${releases}"/>
+		<mkdir dir="${build}"/>
+		<copy includeemptydirs="false" todir="${build}">
+            <fileset dir="${src}">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
 	</target>
 	
-    <target name="create_run_jar" depends="init" description="create runnable jar file">
-        <jar destfile="${jar_file}">
+	<path id="master.classpath">
+        <pathelement location="${build}"/>
+        <pathelement location="${lib}/truezip-samples-7.7.1-jar-with-dependencies.jar"/>
+        <pathelement location="${lib}/ant/ant.jar"/>
+        <pathelement location="${lib}/staxmate-2.2.0.jar"/>
+        <pathelement location="${lib}/stax2-api-3.1.1.jar"/>
+        <pathelement location="${lib}/woodstox-core-asl-4.1.5.jar"/>
+        <pathelement location="${lib}/izpack/compiler.jar"/>
+        <pathelement location="${lib}/izpack/installer.jar"/>
+        <pathelement location="${lib}/izpack/jakarta-regexp-1.3.jar"/>
+        <pathelement location="${lib}/ant/ant-launcher.jar"/>
+        <pathelement location="${lib}/ant/ant-apache-log4j.jar"/>
+        <pathelement location="${lib}/ant/ant-apache-regexp.jar"/>
+        <pathelement location="${lib}/ant/ant-contrib.jar"/>
+        <pathelement location="${lib}/izpack/izevent.jar"/>
+        <pathelement location="${lib}/izpack/standalone-compiler.jar"/>
+        <pathelement location="${lib}/izpack/uninstaller-ext.jar"/>
+        <pathelement location="${lib}/izpack/uninstaller.jar"/>
+        <pathelement location="${lib}/izpack/bsf.jar"/>
+        <pathelement location="${lib}/izpack/kunststoff.jar"/>
+        <pathelement location="${lib}/izpack/liquidlnf.jar"/>
+        <pathelement location="${lib}/izpack/looks.jar"/>
+        <pathelement location="${lib}/izpack/metouia.jar"/>
+        <pathelement location="${lib}/izpack/nimbus.jar"/>
+        <pathelement location="${lib}/izpack/substance.jar"/>
+        <pathelement location="${lib}/json/json-simple-1.1.1.jar"/>
+        <pathelement location="${lib}/web/jsch-0.1.50.jar"/>
+        <pathelement location="${lib}/pivot/pivot-charts-2.0.4.jar"/>
+        <pathelement location="${lib}/pivot/pivot-core-2.0.4.jar"/>
+        <pathelement location="${lib}/pivot/pivot-wtk-2.0.4.jar"/>
+        <pathelement location="${lib}/pivot/pivot-wtk-terra-2.0.4.jar"/>
+        <pathelement location="${lib}/commons-io-2.4.jar"/>
+	</path>
+	
+	<target name="compile" depends="init" description="compile source code to class files">
+		<javac source="${source}" srcdir="${src}" target="${target}" destdir="${build}"
+				includeantruntime="false" debug="true" verbose="no" >
+			<classpath refid="master.classpath"/>
+		</javac>
+	</target>
+	
+    <target name="dist" depends="compile" description="create runnable jar file">
+		<jar destfile="${jar_file}">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="dcp.gui.pivot.Master"/>
+                <attribute name="Rsrc-Main-Class" value="dcp.gui.pivot.Main"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ truezip-samples-7.7.1-jar-with-dependencies.jar ant.jar staxmate-2.2.0.jar stax2-api-3.1.1.jar woodstox-core-asl-4.1.5.jar compiler.jar installer.jar jakarta-regexp-1.3.jar ant-launcher.jar ant-apache-log4j.jar ant-apache-regexp.jar ant-contrib.jar izevent.jar standalone-compiler.jar uninstaller-ext.jar uninstaller.jar bsf.jar kunststoff.jar liquidlnf.jar looks.jar metouia.jar nimbus.jar substance.jar json-simple-1.1.1.jar jsch-0.1.50.jar pivot-charts-2.0.4.jar pivot-core-2.0.4.jar pivot-wtk-2.0.4.jar pivot-wtk-terra-2.0.4.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ truezip-samples-7.7.1-jar-with-dependencies.jar ant.jar staxmate-2.2.0.jar stax2-api-3.1.1.jar woodstox-core-asl-4.1.5.jar compiler.jar installer.jar jakarta-regexp-1.3.jar ant-launcher.jar ant-apache-log4j.jar ant-apache-regexp.jar ant-contrib.jar izevent.jar standalone-compiler.jar uninstaller-ext.jar uninstaller.jar bsf.jar kunststoff.jar liquidlnf.jar looks.jar metouia.jar nimbus.jar substance.jar json-simple-1.1.1.jar jsch-0.1.50.jar pivot-charts-2.0.4.jar pivot-core-2.0.4.jar pivot-wtk-2.0.4.jar pivot-wtk-terra-2.0.4.jar commons-io-2.4.jar"/>
             </manifest>
             <zipfileset src="${lib}/jar-in-jar-loader.zip"/>
             <fileset dir="${basedir}/bin"/>
@@ -61,11 +112,26 @@
             <zipfileset dir="${lib}\pivot" includes="pivot-core-2.0.4.jar"/>
             <zipfileset dir="${lib}\pivot" includes="pivot-wtk-2.0.4.jar"/>
             <zipfileset dir="${lib}\pivot" includes="pivot-wtk-terra-2.0.4.jar"/>
+			<zipfileset dir="${lib}" includes="commons-io-2.4.jar"/>
         </jar>
 		<echo message="${jar_file} file created."/>
     </target>
 	
-	<target name="prepare_release" description="prepare release archive" >
+    <target name="clean" description="clean environment for build">
+		<delete dir="${build}"/>
+		<delete file="./install.xml"/>
+		<delete file="./res/default-dir.txt"/>
+		<delete>
+			<fileset dir="./res/ant" includes="*"/>
+			<fileset dir="./res/bat" includes="*"/>
+			<fileset dir="./res/xml" includes="*" excludes="RegistrySpec.xml" />
+			<fileset dir="." includes="*.dcp"/>
+		</delete>
+		<echo message="Clean success."/>
+	</target>
+	
+	<target name="release" depends="clean" description="prepare release archive" >
+		<mkdir dir="${releases}"/>
 		<mkdir dir="${current_release}"/>
 		<zip destfile="${current_release}/DCP-${version}.zip">
 			<fileset dir="${basedir}" includes="lib/dcp/"/>
