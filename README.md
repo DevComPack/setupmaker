@@ -1,6 +1,8 @@
 DCP Setup Maker
 ===============
-Powerful cross-platform install builder 
+[![Build Status](https://travis-ci.org/DevComPack/setupmaker.svg)](https://travis-ci.org/DevComPack/setupmaker)  
+  
+Powerful cross-platform install builder  
 
 Great and powerful application to generate stable and multi-platform java installers.  
 
