@@ -24,6 +24,7 @@ import org.apache.pivot.wtk.FileBrowserSheetListener;
 import org.apache.pivot.wtk.Keyboard;
 import org.apache.pivot.wtk.Keyboard.Modifier;
 import org.apache.pivot.wtk.Label;
+import org.apache.pivot.wtk.Menu;
 import org.apache.pivot.wtk.MessageType;
 import org.apache.pivot.wtk.Prompt;
 import org.apache.pivot.wtk.PushButton;
@@ -33,7 +34,6 @@ import org.apache.pivot.wtk.Window;
 import org.apache.pivot.wtk.Keyboard.KeyLocation;
 
 import dcp.config.io.IOFactory;
-import dcp.gui.pivot.actions.BrowseAction;
 import dcp.gui.pivot.helper.HelperFacade;
 import dcp.logic.factory.GroupFactory;
 import dcp.logic.factory.PackFactory;
@@ -65,12 +65,13 @@ public class Master extends Window implements Application, Bindable
     // Buttons
     @BXML private PushButton btBack;
     @BXML private PushButton btNext;
-    @BXML private PushButton btSaveAs;
-    @BXML private PushButton btSave;
-    @BXML private PushButton btLoad;
-    @BXML private PushButton btUndo;
-    @BXML private PushButton btDefault;
-    @BXML private PushButton btHelp;
+    // Menu
+    @BXML private Menu.Item btSave;
+    @BXML private Menu.Item btSaveAs;
+    @BXML private Menu.Item btLoad;
+    @BXML private Menu.Item btUndo;
+    @BXML private Menu.Item btDefault;
+    @BXML private Menu.Item btHelp;
     //@BXML private PushButton btInfo;
     
     //Actions
@@ -249,8 +250,18 @@ public class Master extends Window implements Application, Bindable
         info.setText(AppVersion + " ");
         
         //Actions binding
-        btSaveAs.setAction(new BrowseAction(saveFileBrowserSheet));
-        btLoad.setAction(new BrowseAction(loadFileBrowserSheet));
+        btSaveAs.setAction(new Action() {
+            @Override public void perform(Component source)
+            {
+                saveFileBrowserSheet.open(getWindow());
+            }
+        });
+        btLoad.setAction(new Action() {
+            @Override public void perform(Component source)
+            {
+                loadFileBrowserSheet.open(getWindow());
+            }
+        });
         
         //Set default directory selection in File Browser (packs/)
         try {//Set working directory as root directory for file browser

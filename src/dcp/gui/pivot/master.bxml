@@ -52,41 +52,47 @@
 				            
 				            <TablePane.Filler />
 				            
-				            <PushButton bxml:id="btSaveAs" tooltipText="Save as.." visible="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="/dcp/gui/icons/saveas.png" />
-				            </PushButton>
-				            <PushButton bxml:id="btSave" tooltipText="Save" visible="true" enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="/dcp/gui/icons/save.png" />
-				            </PushButton>
-							<PushButton bxml:id="btLoad" tooltipText="Load" visible="true" enabled="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="/dcp/gui/icons/load.png" />
-				            </PushButton>
+				            <MenuButton styles="{toolbar:'true'}">
+				            	<buttonData>
+							        <content:ButtonData icon="/dcp/gui/icons/menu.png" text="Menu"/>
+							    </buttonData>
+							    
+							    <Menu>
+        							<Menu.Section>
+							            <Menu.Item bxml:id="btSave" tooltipText="Save project to disk" enabled="false">
+							            	<buttonData><content:ButtonData text="Save" icon="/dcp/gui/icons/save.png" /></buttonData>
+							            </Menu.Item>
+							            <Menu.Item bxml:id="btSaveAs" tooltipText="Save as a new project">
+							            	<buttonData><content:ButtonData text="Save as.." icon="/dcp/gui/icons/saveas.png" /></buttonData>
+							            </Menu.Item>
+										<Menu.Item bxml:id="btLoad" tooltipText="Load a project" enabled="true">
+							            	<buttonData><content:ButtonData text="Load" icon="/dcp/gui/icons/load.png" /></buttonData>
+							            </Menu.Item>
+							            
+							            <Menu.Item bxml:id="btUndo" tooltipText="Undo all changes" enabled="false">
+							            	<buttonData><content:ButtonData text="Undo" icon="/dcp/gui/icons/undo.png" /></buttonData>
+							            </Menu.Item>
+							            
+							            <Menu.Item bxml:id="btDefault" tooltipText="Save default settings" enabled="true">
+							            	<buttonData><content:ButtonData text="Save default" icon="/dcp/gui/icons/default.png" /></buttonData>
+							            </Menu.Item>
+							            
+						            	<Menu.Item bxml:id="btHelp" tooltipText="Launch app helper">
+							            	<buttonData><content:ButtonData text="Get Help" icon="/dcp/gui/icons/help.png" /></buttonData>
+							            </Menu.Item>
+					            	</Menu.Section>
+					            </Menu>
+					        </MenuButton>
 				            
-				            <PushButton bxml:id="btUndo" tooltipText="Undo all" visible="true" enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="/dcp/gui/icons/undo.png" />
+			            	<PushButton bxml:id="btInfo" tooltipText="About" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+				            	<content:ButtonData icon="/dcp/gui/icons/info.png" />
+					            <buttonPressListeners>
+					                importPackage(org.apache.pivot.wtk);
+					                function buttonPressed(button) {
+					                    Alert.alert(MessageType.INFO, "DCP Setup Maker is developed by Said SAID EL IMAM, and powered by IzPack 4.3.5 and NuGet. www.devcompack.com/setupmaker ", master);
+					                }
+					            </buttonPressListeners>
 				            </PushButton>
-				            
-				            <PushButton bxml:id="btDefault" tooltipText="Save default settings" visible="true" enabled="true" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-				            	<content:ButtonData icon="/dcp/gui/icons/default.png" />
-				            </PushButton>
-				            
-				        	<BoxPane styles="{horizontalAlignment:'right', verticalAlignment:'center'}">
-				            	<PushButton bxml:id="btHelp" tooltipText="Launch application helper" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-					            	<content:ButtonData icon="/dcp/gui/icons/help.png" />
-					            </PushButton>
-				            </BoxPane>
-				            
-				        	<BoxPane styles="{horizontalAlignment:'right', verticalAlignment:'center'}">
-				            	<PushButton bxml:id="btInfo" tooltipText="About" styles="{toolbar:'true', backgroundColor:'WHITE'}">
-					            	<content:ButtonData icon="/dcp/gui/icons/info.png" />
-						            <buttonPressListeners>
-						                importPackage(org.apache.pivot.wtk);
-						                function buttonPressed(button) {
-						                    Alert.alert(MessageType.INFO, "DCP Setup Maker is developed by Said SAID EL IMAM, and powered by IzPack 4.3.5 and NuGet. www.devcompack.com/setupmaker ", master);
-						                }
-						            </buttonPressListeners>
-					            </PushButton>
-				            </BoxPane>
 				            
 				        	<BoxPane styles="{horizontalAlignment:'right', verticalAlignment:'center'}">
 				            	<Label bxml:id="info" styles="{color:'#999999'}" />

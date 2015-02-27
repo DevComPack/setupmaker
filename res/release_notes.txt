@@ -18,6 +18,7 @@ Group rename disabled when same name
 Context menus for Packs and Groups views with icons
 Executables temporary target dir updated for use
 Scan filebrowser root folder update on path change
+Master GUI buttons grouped inside one menu Bar
 --
 * Bug fixes:
 Empty Group creation was possible
