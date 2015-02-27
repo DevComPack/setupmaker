@@ -4,6 +4,7 @@ import java.util.TreeMap;
 
 import org.apache.pivot.collections.ArrayList;
 import org.apache.pivot.collections.List;
+import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.wtk.content.TreeBranch;
 import org.apache.pivot.wtk.content.TreeNode;
 
@@ -23,6 +24,7 @@ public class SetFacade
     // DATA
     private List<TreeBranch> treeData; // Groups UI collection
     private java.util.Map<Group, TreeBranch> branches; // Treeview Branch mapped to Group
+    private Pack packData;// Pack data copied for pasting to other packs
     
     /**
      * Set Tab Facade Constructor
@@ -337,4 +339,41 @@ public class SetFacade
         return "";
     }
     
+    /**
+     * Copy Pack data to memory
+     * @param pack to copy
+     */
+    public void copyPack(Pack pack)
+    {
+        this.packData = pack;
+    }
+    
+    /**
+     * @return Pack data available for copy
+     */
+    public boolean isPackData()
+    {
+        return this.packData != null;
+    }
+    
+    /**
+     * Paste pack data to target pack
+     * @param pack
+     */
+    public void pastePack(Pack pack)
+    {
+        pack.setRequired(packData.isRequired());
+        pack.setSelected(packData.isSelected());
+        pack.setHidden(packData.isHidden());
+        pack.setArch(packData.getArch());
+        pack.setInstallOs(packData.getInstallOs());
+        pack.setArch(packData.getArch());
+        pack.setInstallPath(packData.getInstallPath());
+        pack.setOverride(packData.isOverride());
+        pack.setShortcut(packData.isShortcut());
+    }
+    public void pastePack(Sequence<Pack> packs) {
+        for(int i = 0; i < packs.getLength(); i++)
+            pastePack(packs.get(i));
+    }
 }

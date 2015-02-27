@@ -149,6 +149,8 @@ public class IOFactory
     public static Image imgEdit;//Edit menu icon
     public static Image imgDelete;//Delete menu icon
     public static Image imgImport;//Import menu icon
+    public static Image imgCopy;//Copy menu icon
+    public static Image imgPaste;//Paste menu icon
     
     //Filters
     public final static Filter<File> imgFilter = new Filter<File>() {
@@ -313,6 +315,8 @@ public class IOFactory
             imgEdit = Image.load(IOFactory.class.getClass().getResource(iconsPath + "edit.png"));
             imgDelete = Image.load(IOFactory.class.getClass().getResource(iconsPath + "delete.png"));
             imgImport = Image.load(IOFactory.class.getClass().getResource(iconsPath + "import.png"));
+            imgCopy = Image.load(IOFactory.class.getClass().getResource(iconsPath + "copy.png"));
+            imgPaste = Image.load(IOFactory.class.getClass().getResource(iconsPath + "paste.png"));
             
             //Make needed directories
             String[] dirs = new String[] {resPath, antPath, batPath, xmlPath, targetPath, savePath};

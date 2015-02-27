@@ -52,21 +52,21 @@
 				            
 				            <TablePane.Filler />
 				            
-				            <MenuButton styles="{toolbar:'true'}">
+				            <MenuButton tooltipText="Menu" styles="{toolbar:'true'}">
 				            	<buttonData>
-							        <content:ButtonData icon="/dcp/gui/icons/menu.png" text="Menu"/>
+							        <content:ButtonData icon="/dcp/gui/icons/menu.png" />
 							    </buttonData>
 							    
 							    <Menu>
         							<Menu.Section>
+										<Menu.Item bxml:id="btLoad" tooltipText="Load a project" enabled="true">
+							            	<buttonData><content:ButtonData text="Load" icon="/dcp/gui/icons/load.png" /></buttonData>
+							            </Menu.Item>
 							            <Menu.Item bxml:id="btSave" tooltipText="Save project to disk" enabled="false">
 							            	<buttonData><content:ButtonData text="Save" icon="/dcp/gui/icons/save.png" /></buttonData>
 							            </Menu.Item>
 							            <Menu.Item bxml:id="btSaveAs" tooltipText="Save as a new project">
 							            	<buttonData><content:ButtonData text="Save as.." icon="/dcp/gui/icons/saveas.png" /></buttonData>
-							            </Menu.Item>
-										<Menu.Item bxml:id="btLoad" tooltipText="Load a project" enabled="true">
-							            	<buttonData><content:ButtonData text="Load" icon="/dcp/gui/icons/load.png" /></buttonData>
 							            </Menu.Item>
 							            
 							            <Menu.Item bxml:id="btUndo" tooltipText="Undo all changes" enabled="false">

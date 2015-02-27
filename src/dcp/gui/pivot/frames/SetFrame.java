@@ -95,11 +95,11 @@ public class SetFrame extends FillPane implements Bindable
     // Constants
     private final static int TABLEVIEW_GROUP_COLUMN_INDEX = 3;
     // Flags
-    private boolean modified = false;//True if tab processed data
+    private boolean modified = false;// True if tab processed data
     public void setModified(boolean VALUE) { modified = VALUE; }
     public boolean isModified() { return modified; }
-    private boolean multi_selection = false;//If multiple packs selected or only one
-    private boolean drag_enabled = false;//If a component is being dragged
+    private boolean multi_selection = false;// If multiple packs selected or only one
+    private boolean drag_enabled = false;// If a component is being dragged
     private boolean isGroupDependency() { return ((String)cbDepType.getButtonData()).equals("Group"); }
     private boolean unvalid = false;// True if some validator is negative
     // Packs
@@ -107,75 +107,77 @@ public class SetFrame extends FillPane implements Bindable
     @SuppressWarnings("unchecked")
     private Sequence<Pack> getSelectedPacks() { return (Sequence<Pack>) tableView.getSelectedRows(); }
     // Groups
-    private List<TreeBranch> treeData = new ArrayList<TreeBranch>();//Groups tree view root element
-    private Group getSelectedGroup() {//Return selected group or selected pack's group from treeView
-        TreeNode node = (TreeNode) treeView.getSelectedNode();//Get selected branch
+    private List<TreeBranch> treeData = new ArrayList<TreeBranch>();// Groups tree view root element
+    private Group getSelectedGroup() {// Return selected group or selected pack's group from treeView
+        TreeNode node = (TreeNode) treeView.getSelectedNode();// Get selected branch
         if (node != null) {
             TreeBranch branch;
-            if (!(node instanceof TreeBranch))//If node is a pack
-                branch = node.getParent();//Get parent branch/group
+            if (!(node instanceof TreeBranch))// If node is a pack
+                branch = node.getParent();// Get parent branch/group
             else branch = (TreeBranch) node;
-            return facade.getGroup(branch);//Get group mapped to this branch
+            return facade.getGroup(branch);// Get group mapped to this branch
         }
         return null;
     }
     
     // Pack options
-    @BXML private PushButton btSelectAll;//Select all packs in table view
-    @BXML private PushButton btSelectNone;//Clear pack selection in table view
-    @BXML private PushButton btCheck;//Check and validate packs data
-    @BXML private PushButton btSort;//Packs Sorting Dialog open
-    @BXML private PushButton btAdd;//Add Pack to selected group
-    @BXML private PushButton btDelete;//Delete selected Pack(s)
+    @BXML private PushButton btSelectAll;// Select all packs in table view
+    @BXML private PushButton btSelectNone;// Clear pack selection in table view
+    @BXML private PushButton btCheck;// Check and validate packs data
+    @BXML private PushButton btSort;// Packs Sorting Dialog open
+    @BXML private PushButton btAdd;// Add Pack to selected group
+    @BXML private PushButton btDelete;// Delete selected Pack(s)
+    @BXML private PushButton btCopy;// Copy pack data
+    @BXML private PushButton btPaste;// Paste pack data
     // Group options
     @BXML private PushButton btExpand;// Expand all groups
     @BXML private PushButton btCollapse;// Collapse all groups
-    @BXML private PushButton btNew;//Add new group
-    @BXML private PushButton btRename;//Rename group
-    @BXML private PushButton btRemove;//Remove selected Pack from group
-    @BXML private PushButton btClear;//Remove all groups
+    @BXML private PushButton btNew;// Add new group
+    @BXML private PushButton btRename;// Rename group
+    @BXML private PushButton btRemove;// Remove selected Pack from group
+    @BXML private PushButton btClear;// Remove all groups
     // Displays
-    @BXML private SplitPane vSplitPane;//Split Pane between Table(left) and Tree(right) view
-    @BXML private SplitPane hSplitPane;//Split Pane between Table(left) and Tree(right) view
-    @BXML private TableView tableView;//Table View for scanned directory
-    @BXML private TreeView treeView;//Tree View for created groups hierarchy
-    @BXML private Border propertiesPane;//Properties Border pane view
+    @BXML private SplitPane vSplitPane;// Split Pane between Table(left) and Tree(right) view
+    @BXML private SplitPane hSplitPane;// Split Pane between Table(left) and Tree(right) view
+    @BXML private TableView tableView;// Table View for scanned directory
+    @BXML private TreeView treeView;// Tree View for created groups hierarchy
+    @BXML private Border propertiesPane;// Properties Border pane view
     // Dialogs
-    @BXML private SortDialog sortDialog;//Packs Sorting Dialog
-    @BXML private NGDialog ngdialog;//Dialog user input for new group add
-    @BXML private RGDialog rgdialog;//Dialog user input for group rename
-    @BXML private ShortcutDialog shortcutDialog;//Shortcut advanced options Dialog
+    @BXML private SortDialog sortDialog;// Packs Sorting Dialog
+    @BXML private NGDialog ngdialog;// Dialog user input for new group add
+    @BXML private RGDialog rgdialog;// Dialog user input for group rename
+    @BXML private ShortcutDialog shortcutDialog;// Shortcut advanced options Dialog
     // Buttons
-    @BXML private PushButton btShortcutAdvanced;//Advanced Shortcut options
+    @BXML private PushButton btShortcutAdvanced;// Advanced Shortcut options
     // Checkboxes
-    @BXML private Checkbox cbRequired;//If pack is required or not
-    @BXML private Checkbox cbSelected;//If pack is selected or not
-    @BXML private Checkbox cbHidden;//If pack is hidden or not
-    @BXML private Checkbox cbOverride;//If pack will override existing install or not
-    @BXML private Checkbox cbShortcut;//If a shortcut to this pack is created
+    @BXML private Checkbox cbRequired;// If pack is required or not
+    @BXML private Checkbox cbSelected;// If pack is selected or not
+    @BXML private Checkbox cbHidden;// If pack is hidden or not
+    @BXML private Checkbox cbOverride;// If pack will override existing install or not
+    @BXML private Checkbox cbShortcut;// If a shortcut to this pack is created
     // Radio Buttons
-    @BXML private RadioButton rbOsAll;//OS install platform
-    @BXML private RadioButton rbOsWin;//OS install platform
-    @BXML private RadioButton rbOsLin;//OS install platform
-    @BXML private RadioButton rbOsMac;//OS install platform
-    @BXML private RadioButton rbArchAll;//arch platform
-    @BXML private RadioButton rbArch32;//arch platform
-    @BXML private RadioButton rbArch64;//arch platform
-    @BXML private RadioButton rbExecute;//Execute the pack executable
-    @BXML private Checkbox cbSilent;//Execute msi setup with passive par
-    @BXML private RadioButton rbExtract;//Extract the pack archive
-    @BXML private RadioButton rbCopy;//Copy the pack to the install directory
+    @BXML private RadioButton rbOsAll;// OS install platform
+    @BXML private RadioButton rbOsWin;// OS install platform
+    @BXML private RadioButton rbOsLin;// OS install platform
+    @BXML private RadioButton rbOsMac;// OS install platform
+    @BXML private RadioButton rbArchAll;// arch platform
+    @BXML private RadioButton rbArch32;// arch platform
+    @BXML private RadioButton rbArch64;// arch platform
+    @BXML private RadioButton rbExecute;// Execute the pack executable
+    @BXML private Checkbox cbSilent;// Execute msi setup with passive par
+    @BXML private RadioButton rbExtract;// Extract the pack archive
+    @BXML private RadioButton rbCopy;// Copy the pack to the install directory
     // Text Inputs
-    @BXML private TextInput inName;//Pack install name
-    @BXML private TextInput inVersion;//Pack install version
-    @BXML private TextInput inPInstallPath;//Pack's install Path directory
-    @BXML private TextInput inInstallGroups;//Pack/Group's install Groups
-    @BXML private LinkButton cbDepType;//Dependency type (group or pack)
-    @BXML private ListButton lbDependency;//Group list for dependency
-    @BXML private PushButton btDepErase;//lbDependency remove
-    @BXML private PushButton btIGErase;//Install Groups remove
-    @BXML private PushButton btIPErase;//Install Path remove
-    @BXML private TextArea inDescription;//Pack/Group's description
+    @BXML private TextInput inName;// Pack install name
+    @BXML private TextInput inVersion;// Pack install version
+    @BXML private TextInput inPInstallPath;// Pack's install Path directory
+    @BXML private TextInput inInstallGroups;// Pack/Group's install Groups
+    @BXML private LinkButton cbDepType;// Dependency type (group or pack)
+    @BXML private ListButton lbDependency;// Group list for dependency
+    @BXML private PushButton btDepErase;// lbDependency remove
+    @BXML private PushButton btIGErase;// Install Groups remove
+    @BXML private PushButton btIPErase;// Install Path remove
+    @BXML private TextArea inDescription;// Pack/Group's description
     
     // Actions
     private Action AAddToGroup;// Add pack to group Action
@@ -201,10 +203,29 @@ public class SetFrame extends FillPane implements Bindable
                 Menu.Section menuSection = new Menu.Section();
                 menu.getSections().add(menuSection);
 
+                Menu.Item copy = new Menu.Item(new ButtonData(IOFactory.imgCopy, "copy data"));
+                Menu.Item paste = new Menu.Item(new ButtonData(IOFactory.imgPaste, "paste data"));
                 Menu.Item addtogroup = new Menu.Item(new ButtonData(IOFactory.imgRight, "add to group"));
                 Menu.Item delete = new Menu.Item(new ButtonData(IOFactory.imgDelete, "delete"));
                 
                 if (tableView.getSelectedIndex() != -1) { // if selected pack
+                    
+                    copy.setAction(new Action() {
+                        @Override public void perform(Component source)
+                        {
+                            btCopy.press();
+                        }
+                    });
+                    
+                    if (facade.isPackData()) { // if pack data in memory
+                        paste.setAction(new Action() {
+                            @Override public void perform(Component source)
+                            {
+                                btPaste.press();
+                            }
+                        });
+                    }
+                    else paste.setEnabled(false);
                     
                     if (treeView.getSelectedNode() != null) { // if selected group
                         addtogroup.setAction(new Action() {
@@ -223,10 +244,14 @@ public class SetFrame extends FillPane implements Bindable
                     });
                 }
                 else {
+                    copy.setEnabled(false);
+                    paste.setEnabled(false);
                     addtogroup.setEnabled(false);
                     delete.setEnabled(false);
                 }
 
+                menuSection.add(copy);
+                menuSection.add(paste);
                 menuSection.add(addtogroup);
                 menuSection.add(delete);
                 return false;
@@ -537,6 +562,29 @@ public class SetFrame extends FillPane implements Bindable
             {
                 sortDialog.updatePriorities();//Update packs priorities from current list
                 sortDialog.open(SetFrame.this.getDisplay(), SetFrame.this.getWindow(), null);
+            }
+        });
+        btCopy.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                Pack pack = getSelectedPack();
+                if (!multi_selection && pack != null)
+                    facade.copyPack(pack);
+            }
+        });
+        btPaste.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                if (tableView.getSelectedIndex() > -1) {
+                    if (multi_selection) { // multi packs selected
+                        facade.pastePack(getSelectedPacks());
+                        setMultiProperties(getSelectedPacks());
+                    }
+                    else { // one selected pack
+                        facade.pastePack(getSelectedPack());
+                        setPackProperties(getSelectedPack());
+                    }
+                }
             }
         });
         
@@ -1509,6 +1557,7 @@ public class SetFrame extends FillPane implements Bindable
         cbHidden.setSelected(pack.isHidden());
         cbOverride.setSelected(pack.isOverride());
         cbShortcut.setSelected(pack.isShortcut());
+        btShortcutAdvanced.setEnabled((pack.isShortcut() == true && pack.getInstallType() == INSTALL_TYPE.EXTRACT)?true:false);
         inDescription.setText(pack.getDescription());
         inPInstallPath.setText((pack.getInstallType() == INSTALL_TYPE.EXECUTE)?
                 IOFactory.exeTargetDir : pack.getInstallPath());// display exe temporary target path if executable

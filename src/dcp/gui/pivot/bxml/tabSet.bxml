@@ -69,6 +69,7 @@
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
 															<content:ButtonData icon="/dcp/gui/icons/sort.png" />
 														</PushButton>
+														<!-- Context menu -->
 														<PushButton bxml:id="btAdd" tooltipText="Add selected pack(s) to selected group" visible="false"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
 															<content:ButtonData icon="/dcp/gui/icons/right.png" />
@@ -76,6 +77,14 @@
 														<PushButton bxml:id="btDelete" tooltipText="Delete selected pack(s)" visible="false"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
 															<content:ButtonData icon="/dcp/gui/icons/delete.png" />
+														</PushButton>
+														<PushButton bxml:id="btCopy" tooltipText="Copy pack data" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/dcp/gui/icons/copy.png" />
+														</PushButton>
+														<PushButton bxml:id="btPaste" tooltipText="Paste pack data" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/dcp/gui/icons/paste.png" />
 														</PushButton>
 													</BoxPane>
 
@@ -159,6 +168,7 @@
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
 															<content:ButtonData icon="/dcp/gui/icons/clear.png" />
 														</PushButton>
+														<!-- Context menu -->
 														<PushButton bxml:id="btRename" tooltipText="Rename selected group" visible="false"
 															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
 															<content:ButtonData icon="/dcp/gui/icons/edit.png" />
