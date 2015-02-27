@@ -66,13 +66,16 @@
 	</path>
 	
 	<target name="compile" depends="init" description="compile source code to class files">
+		<echo message="Compile start"/>
 		<javac source="${source}" srcdir="${src}" target="${target}" destdir="${build}"
 				includeantruntime="false" debug="true" verbose="no" >
 			<classpath refid="master.classpath"/>
 		</javac>
+		<echo message="Compile success"/>
 	</target>
 	
     <target name="dist" depends="compile" description="create runnable jar file">
+		<echo message="Release build start"/>
 		<jar destfile="${jar_file}">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
@@ -118,6 +121,7 @@
     </target>
 	
     <target name="clean" description="clean environment for build">
+		<echo message="Clean start"/>
 		<delete dir="${build}"/>
 		<delete file="./install.xml"/>
 		<delete file="./res/default-dir.txt"/>
@@ -127,10 +131,11 @@
 			<fileset dir="./res/xml" includes="*" excludes="RegistrySpec.xml" />
 			<fileset dir="." includes="*.dcp"/>
 		</delete>
-		<echo message="Clean success."/>
+		<echo message="Clean success"/>
 	</target>
 	
 	<target name="release" depends="clean" description="prepare release archive" >
+		<echo message="Release Package start"/>
 		<mkdir dir="${releases}"/>
 		<mkdir dir="${current_release}"/>
 		<zip destfile="${current_release}/DCP-${version}.zip">
@@ -142,6 +147,7 @@
 			<zipfileset dir="${basedir}" includes="LICENSE" fullpath="LICENSE"/>
 			<zipfileset dir="${basedir}" includes="res/release_notes.txt" fullpath="changelog.txt"/>
 		</zip>
+		<echo message="Release success"/>
 	</target>
 	
 	<target name="doc_copyright" description="erase HelpnDoc copyright tags from html files" >
