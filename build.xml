@@ -70,6 +70,7 @@
 		<javac source="${source}" srcdir="${src}" target="${target}" destdir="${build}"
 				includeantruntime="false" debug="true" verbose="no" >
 			<classpath refid="master.classpath"/>
+			<compilerarg line="-encoding utf-8"/>
 		</javac>
 		<echo message="Compile success"/>
 	</target>

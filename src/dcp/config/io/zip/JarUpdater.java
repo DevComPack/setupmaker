@@ -151,22 +151,22 @@ public class JarUpdater {
         File jarfile = new File(TARGET);
         if (jarfile.exists()) {
             if (!jarfile.canWrite()) {
-                Out.print(LOG_LEVEL.WARN, "Fichier JAR protégé en écriture!");
+                Out.print(LOG_LEVEL.WARN, "JAR File is read-only!");
                 jarfile.setWritable(true);
-                Out.print(LOG_LEVEL.INFO, "Permissions d'écriture affectées au fichier.");
+                Out.print(LOG_LEVEL.INFO, "Write permissions affected to file.");
             }
             else {
-                Out.print(LOG_LEVEL.DEBUG, "Fichier JAR accessible en écriture");
+                Out.print(LOG_LEVEL.DEBUG, "JAR File accessible for write");
                 JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(jarfile)));
                 out.putNextEntry(new JarEntry("res/native/ShellLink.dll"));
                 out.closeEntry();
-                Out.print(LOG_LEVEL.DEBUG, "Fichier JAR modifié.");
+                Out.print(LOG_LEVEL.DEBUG, "Jar file edited.");
                 out.finish();
                 out.close();
             }
         }
         else {
-            Out.print(LOG_LEVEL.ERR, "Fichier JAR non existant!");
+            Out.print(LOG_LEVEL.ERR, "JAR File not found!");
         }
     }
 }

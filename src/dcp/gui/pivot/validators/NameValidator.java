@@ -26,15 +26,13 @@ public class NameValidator implements Validator
             correct = false;
         else if (s.contains("(") || s.contains(")") || s.contains("[") || s.contains("]") )
             correct = false;
-        else if (s.contains(">") || s.contains("<") || s.contains("@") || s.contains("²") )
+        else if (s.contains(">") || s.contains("<") || s.contains("@") || s.contains("=") )
             correct = false;
-        else if (s.contains("{") || s.contains("}") || s.contains("°") || s.contains("=") )
+        else if (s.contains("{") || s.contains("}") || s.contains("#") || s.contains("*") )
             correct = false;
-        else if (s.contains("+") || s.contains("*") || s.contains("#") || s.contains("£") )
+        else if (s.contains("+") || s.contains("^") || s.contains("|") || s.contains("~") )
             correct = false;
-        else if (s.contains("¤") || s.contains("µ") || s.contains("^") || s.contains("|") )
-            correct = false;
-        else if (s.contains("~") || s.contains("`") )
+        else if (s.contains("`") )
             correct = false;
         
         if (!correct) Out.print(LOG_LEVEL.WARN, "Name format incorrect: " + s);

@@ -236,7 +236,7 @@ public class TaskIzpackCompile extends Task<Boolean>
     
     private void configAnalyze(SetupConfig setupConfig)
     {
-        if (!setupConfig.getAppURL().equals("")) {// Si URL définie
+        if (!setupConfig.getAppURL().equals("")) {// If URL defined
             if (!(setupConfig.getAppURL().startsWith("http://") || setupConfig.getAppURL().startsWith("https://"))) {
                 setupConfig.setAppURL("http://"+setupConfig.getAppURL());
             }

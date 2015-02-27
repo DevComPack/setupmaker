@@ -47,13 +47,13 @@ public class RegFactory
                         "DisplayName");
             
             if (value != null) {
-                // recherche si Java installé
+                // search if java installed
                 if (value.toLowerCase().contains("java")) {
                 System.out.print(key+"/"+value+"; ");
                 version = WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE,
                         "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"+key,
                         "DisplayVersion");
-                Out.print(LOG_LEVEL.DEBUG, "Java Version: " + version);// affiche version installée
+                Out.print(LOG_LEVEL.DEBUG, "Java Version: " + version);// display installed version
                 }
             }
         }
@@ -75,7 +75,7 @@ public class RegFactory
                         "DisplayName");
             
             if (value != null) {
-                //recherche si Java installé
+                // search if java installed
                 if (value.toLowerCase().contains("java ") || value.toLowerCase().contains("java(tm) ")) {
                     String contact = WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE,
                             "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"+key,
