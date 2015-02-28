@@ -121,6 +121,10 @@
 		<echo message="${jar_file} file created."/>
     </target>
 	
+	<target name="test" depends="clean" description="jUnit tests" >
+		<echo message="jUnit testing.."/>
+	</target>
+	
     <target name="clean" description="clean environment for build">
 		<echo message="Clean start"/>
 		<delete dir="${build}"/>
