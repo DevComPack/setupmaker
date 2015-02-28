@@ -128,11 +128,11 @@
     <target name="clean" description="clean environment for build">
 		<echo message="Clean start"/>
 		<delete dir="${build}"/>
+		<delete dir="./res/ant"/>
+		<delete dir="./res/bat"/>
 		<delete file="./install.xml"/>
 		<delete file="./res/default-dir.txt"/>
 		<delete>
-			<fileset dir="./res/ant" includes="*"/>
-			<fileset dir="./res/bat" includes="*"/>
 			<fileset dir="./res/xml" includes="*" excludes="RegistrySpec.xml" />
 			<fileset dir="." includes="*.dcp"/>
 		</delete>
