@@ -293,13 +293,15 @@ public class ScanFrame extends FillPane implements Bindable
             {
                 // If path changed
                 if (!ScanFrame.this.inPath.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
-                    if (ScanFrame.this.inPath.getValidator().isValid(inPath.getText()) || ScanFrame.this.inPath.getText().length() == 0) {
-                        ScanFrame.this.inPath.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
-                        ADirScan.perform(fileBrowserSheet);// Action launch
+                    boolean error = false;
+                    if (!ScanFrame.this.inPath.getValidator().isValid(inPath.getText()) && ScanFrame.this.inPath.getText().length() > 0) {
+                        error = true;
                     }
-                    else {
-                        ScanFrame.this.inPath.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
+                    ScanFrame.this.inPath.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
+                    ADirScan.perform(fileBrowserSheet);// Scan Action
+                    if (error == true) {
                         Out.print(LOG_LEVEL.INFO, "Updated folder path for packs to: "+ScanFrame.this.inPath.getText());
+                        //setModified(false);
                     }
                 }
             }
