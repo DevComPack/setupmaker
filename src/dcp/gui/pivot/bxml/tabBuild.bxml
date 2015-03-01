@@ -118,8 +118,8 @@
 		<!-- Log Text Area -->
 		<TablePane.Row height="1*">
 			<FillPane>
-				<Border title="Log" styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
-			        <FillPane styles="{padding:1, backgroundColor:'#0198E1'}">
+				<Border title="Log" styles="{padding:4, titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+			        <FillPane styles="{padding:1}">
 						<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="auto">
 							<ListView bxml:id="logger" selectMode="multi" styles="{color:'#aa5500', backgroundColor:'WHITE'}" />
 						</ScrollPane>

@@ -12,9 +12,9 @@ import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.collections.Sequence.Tree.Path;
 import org.apache.pivot.util.Filter;
 import org.apache.pivot.util.Resources;
+import org.apache.pivot.wtk.Accordion;
 import org.apache.pivot.wtk.Action;
 import org.apache.pivot.wtk.Alert;
-import org.apache.pivot.wtk.Border;
 import org.apache.pivot.wtk.Bounds;
 import org.apache.pivot.wtk.Button;
 import org.apache.pivot.wtk.ButtonPressListener;
@@ -141,7 +141,7 @@ public class SetFrame extends FillPane implements Bindable
     @BXML private SplitPane hSplitPane;// Split Pane between Table(left) and Tree(right) view
     @BXML private TableView tableView;// Table View for scanned directory
     @BXML private TreeView treeView;// Tree View for created groups hierarchy
-    @BXML private Border propertiesPane;// Properties Border pane view
+    @BXML private Accordion propertiesPane;// Properties Border pane view
     // Dialogs
     @BXML private SortDialog sortDialog;// Packs Sorting Dialog
     @BXML private NGDialog ngdialog;// Dialog user input for new group add
@@ -732,7 +732,7 @@ public class SetFrame extends FillPane implements Bindable
                     int n = pList.getLength();
                     if (n == 1) {//If one row selected
                         Pack p = pList.get(0);
-                        propertiesPane.setTitle("Properties : " +
+                        Accordion.setHeaderData(propertiesPane.get(0), "Properties : " +
                                                 ((p.getGroup()!=null)?p.getGroupPath():"") + p.getName());
                         
                         packInstallModes(p.getFileType());//Enable install mode relevant properties
@@ -743,11 +743,11 @@ public class SetFrame extends FillPane implements Bindable
                         nullProperties();
                         
                         if (n==0) {//No pack selected
-                            propertiesPane.setTitle("Properties");
+                            Accordion.setHeaderData(propertiesPane.get(0), "Properties");
                         }
                         else if (n > 1) {//Multi pack selection
                             multi_selection = true;
-                            propertiesPane.setTitle("Properties : " + n + " packs selected");
+                            Accordion.setHeaderData(propertiesPane.get(0), "Properties : " + n + " packs selected");
                             setMultiProperties(pList);
                         }
                     }

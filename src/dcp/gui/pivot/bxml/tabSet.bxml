@@ -90,8 +90,7 @@
 
 													<!-- Packs View -->
 													<FillPane>
-														<Border title="Packs"
-															styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+														<Border styles="{padding:0}">
 															<FillPane styles="{padding:1}">
 																<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 																	verticalScrollBarPolicy="fill_to_capacity">
@@ -138,7 +137,7 @@
 													<!-- Groups View -->
 													<FillPane>
 														<Border title="Groups"
-															styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+															styles="{padding:4, titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
 															<FillPane styles="{padding:1}">
 																<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 																	verticalScrollBarPolicy="fill_to_capacity">
@@ -192,9 +191,9 @@
 				<!-- Pack properties Area -->
 				<bottom>
 					<FillPane>
-						<Border bxml:id="propertiesPane" title="Properties"
-							styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
-							<TablePane
+						<Accordion bxml:id="propertiesPane" styles="{buttonColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+						
+							<TablePane Accordion.headerData="Properties"
 								styles="{showVerticalGridLines: true, horizontalSpacing:10, verticalGridColor:10}">
 								<columns>
 									<TablePane.Column width="1*" />
@@ -459,7 +458,7 @@
 
 								</TablePane.Row>
 							</TablePane>
-						</Border>
+						</Accordion>
 					</FillPane>
 				</bottom>
 			</SplitPane>
