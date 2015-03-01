@@ -1,0 +1,3 @@
+second undo doesn't delete factory data
+packs copy doesn't copy pack dependency and install groups
+set packs group data restore on new scan

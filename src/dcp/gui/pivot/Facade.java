@@ -375,8 +375,8 @@ public class Facade
     public void factoryReset()
     {
         setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
-        PackFactory.clear();
-        GroupFactory.clear();
+        PackFactory.clear(); packs.clear();
+        GroupFactory.clear(); groups.clear();
         tabsInit();
         IOFactory.setSaveFile("");
     }
