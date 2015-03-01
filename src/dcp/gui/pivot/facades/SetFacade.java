@@ -40,8 +40,9 @@ public class SetFacade
      * Import/Create data from given lists of data (Scan)
      * @param groups: list of scanned folders/groups (null if import packs only)
      * @param packs: list of scanned packs
+     * @param groupTarget: if folder target is enabled, set pack install path to groups
      */
-    public boolean importDataFrom(List<Group> groups, List<Pack> packs)
+    public boolean importDataFrom(List<Group> groups, List<Pack> packs, boolean groupTarget)
     {
         if (packs == null && groups == null) return false;
         
@@ -60,19 +61,27 @@ public class SetFacade
             if (oldPacks.getLength() == 1) {// if only one pack with same filename
                 Out.print(LOG_LEVEL.DEBUG, "Pack " + p.getName() + " data restored.");
                 pack = new Pack(oldPacks.get(0));
+                pack.setGroup(oldPacks.get(0).getGroup());
             }
             else {// otherwise reset packs
                 pack = new Pack(p);
             }
+            boolean found = false;
             for(Group g:GroupFactory.getGroups())
-                if (g.equals(pack.getGroup()))
+                if (g.equals(pack.getGroup())) {
+                    found = true;
                     pack.setGroup(g);// group rename bugfix: point to the new created group
+                    break;
+                }
+            if (found == false)// bugfix: pack data restore groups no more available
+                pack.setGroup(null);
             newPacks.add(pack);
         }
         
         // Packs Import
         PackFactory.clear();
         for(Pack p:newPacks) {// Fill Data from Scan files
+            if (groupTarget == true) p.setInstallPath(p.getGroupPath());
             if (groups == null) p.setGroup(null);
             newPack(p);
         }

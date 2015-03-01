@@ -308,8 +308,11 @@
 						<!-- Advanced Scan options -->
 						<TablePane.Row height="-1">
 							<BoxPane orientation="Horizontal" styles="{padding:2, horizontalAlignment:'right', verticalAlignment:'center'}">
-								<Checkbox bxml:id="cbFolderScan" selected="false" enabled="false" tooltipText="Convert folders to groups">
-									<content:ButtonData text="Treat folders as groups" icon="/dcp/gui/icons/folder.png" />
+								<Checkbox bxml:id="cbFolderScan" selected="false" enabled="false" tooltipText="Convert folders to groups and put packs inside">
+									<content:ButtonData text="Folders as groups" icon="/dcp/gui/icons/set.png" />
+								</Checkbox>
+								<Checkbox bxml:id="cbFolderTarget" selected="false" enabled="false" tooltipText="Set groups as target path for packs">
+									<content:ButtonData text="Folders as paths" icon="/dcp/gui/icons/set.png" />
 								</Checkbox>
 							</BoxPane>
 						</TablePane.Row>

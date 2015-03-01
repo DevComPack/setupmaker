@@ -42,6 +42,7 @@ public class SetupConfig implements Serializable
     private String srcPath = "";//Packs source path
     private SCAN_MODE scanMode = SCAN_MODE.SIMPLE_SCAN;// Scan mode (v1.2)
     private SCAN_FOLDER scanFolder = SCAN_FOLDER.PACK_FOLDER;// Scan folders as packs (v1.2)
+    private boolean scanFolderTarget = false;// folder target mode (v1.2)
     // Configuration
     private String installPath = "";//Default install directory path
     private boolean forcePath = false;//Whether to force an install path or not
@@ -104,6 +105,7 @@ public class SetupConfig implements Serializable
         srcPath = setupConfig.srcPath;
         scanMode = setupConfig.scanMode;// 1.2
         scanFolder = setupConfig.scanFolder;// 1.2
+        scanFolderTarget = setupConfig.scanFolderTarget;// 1.2
         
         installPath = setupConfig.installPath;
         forcePath = setupConfig.forcePath;
@@ -167,6 +169,8 @@ public class SetupConfig implements Serializable
     public void setScanMode(SCAN_MODE scanMode) { this.scanMode = scanMode; }
     public SCAN_FOLDER getScanFolder() { return this.scanFolder; }
     public void setScanFolder(SCAN_FOLDER scanFolder) { this.scanFolder = scanFolder; }
+    public boolean getScanTarget() { return this.scanFolderTarget; }
+    public void setScanTarget(boolean scanTarget) { this.scanFolderTarget = scanTarget; }
     
     //Configuration
     public String getSrcPath() { return srcPath; }

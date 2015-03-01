@@ -446,7 +446,7 @@
 																tooltipText="Advanced shortcut options"
 																styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}"
 																enabled="false">
-																<content:ButtonData icon="/dcp/gui/icons/setting.png" />
+																<content:ButtonData icon="/dcp/gui/icons/set.png" />
 															</PushButton>
 														</BoxPane>
 													</FillPane>

@@ -6,11 +6,13 @@ Open package target folder on Build
 Check packs properties for errors
 Pack target architecture(x32/x64) property (request by Danish42)
 Properties restored on new scan for same packs (request by Hozku)
-Easy access for recent saved/loaded projects
+Easy access for recent saved/loaded projects (up to 3)
 Scan child folders directly from file view context menu
 Copy/Paste pack data between packs (context menu)
+Folder target path set to packs from scan tab
 --
 - Enhancements:
+GUI update
 Treat folders as groups moved to Scan tab (instead of Import button)
 Logging organized into 4 levels (DEBUG, INFO, WARN, ERR)
 NuGet Builder option only available from Windows systems

@@ -1796,7 +1796,7 @@ public class SetFrame extends FillPane implements Bindable
      */
     public void init(List<Group> groups, List<Pack> packs)
     {
-        facade.importDataFrom(groups, packs);
+        facade.importDataFrom(groups, packs, false);
         treeView.expandAll();//Expand branches
         
         setModified(false);
@@ -1812,11 +1812,11 @@ public class SetFrame extends FillPane implements Bindable
         
         if (scanFrame.facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN &&
                 scanFrame.facade.getFolderScan() == SCAN_FOLDER.GROUP_FOLDER) {// If Recursive Scan and enabled, import folders as groups
-            facade.importDataFrom(scanFrame.getGroups(), scanFrame.getPacks());
+            facade.importDataFrom(scanFrame.getGroups(), scanFrame.getPacks(), scanFrame.facade.getFolderTarget());
             treeView.expandAll();//Expand branches   
         }
         else {// import only packs (no folders/groups)
-            facade.importDataFrom(null, scanFrame.getPacks());
+            facade.importDataFrom(null, scanFrame.getPacks(), false);
         }
         
         setModified(true);

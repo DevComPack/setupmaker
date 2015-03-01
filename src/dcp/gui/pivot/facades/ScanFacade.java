@@ -17,7 +17,6 @@ public class ScanFacade
 {
     // Configuration
     private SCAN_MODE mode = SCAN_MODE.DEFAULT;// scan mode
-    private SCAN_FOLDER folder = SCAN_FOLDER.DEFAULT;// folder import type
     
     // Model
     private List<Pack> packs;//List of scanned packs
@@ -47,12 +46,20 @@ public class ScanFacade
 
     public SCAN_FOLDER getFolderScan()
     {
-        return folder;
+        return Master.facade.setupConfig.getScanFolder();
     }
     public void setFolderScan(SCAN_FOLDER folder)
     {
-        this.folder = folder;
         Master.facade.setupConfig.setScanFolder(folder);
+    }
+
+    public boolean getFolderTarget()
+    {
+        return Master.facade.setupConfig.getScanTarget();
+    }
+    public void setFolderTarget(boolean folderTarget)
+    {
+        Master.facade.setupConfig.setScanTarget(folderTarget);
     }
 
     // Model ---------------------------------------------------

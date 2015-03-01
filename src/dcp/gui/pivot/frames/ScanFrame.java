@@ -130,6 +130,7 @@ public class ScanFrame extends FillPane implements Bindable
     @BXML private TextInput inCustExpr;// Custom REGEXP filter input
     // Advanced options
     @BXML private Checkbox cbFolderScan;// Treat folders as groups in Set tab
+    @BXML private Checkbox cbFolderTarget;// Treat folders as install paths for Packs in Set tab
     // Displays
     @BXML private static TreeView treeView;// Tree View for scanned directory
     // Filter
@@ -351,6 +352,7 @@ public class ScanFrame extends FillPane implements Bindable
                             btCollapse.setEnabled(false);
                             btExpand.setEnabled(false);
                             cbFolderScan.setEnabled(false);
+                            cbFolderTarget.setEnabled(false);
                         }
                     });
                     ADirScan.perform(bt);
@@ -372,9 +374,12 @@ public class ScanFrame extends FillPane implements Bindable
                             btSelectAll.setEnabled(false);
                             btSelectNone.setEnabled(false);
                             cbFolderScan.setEnabled(true);
-                            // enable Group folder scan by default
+                            cbFolderTarget.setEnabled(true);
+                            // enable Group folder options by default
                             cbFolderScan.setSelected(true);
                             setFolderScan(SCAN_FOLDER.GROUP_FOLDER);
+                            cbFolderTarget.setSelected(true);
+                            setFolderTarget(true);
                         }
                     });
                     depthPane.setVisible(true);
@@ -509,6 +514,14 @@ public class ScanFrame extends FillPane implements Bindable
                 else setFolderScan(SCAN_FOLDER.PACK_FOLDER);
             }
         });
+        cbFolderTarget.getButtonPressListeners().add(new ButtonPressListener() {
+            @Override public void buttonPressed(Button bt)
+            {
+                if (bt.isSelected())
+                    setFolderTarget(true);
+                else setFolderTarget(false);
+            }
+        });
         
     }
     
@@ -566,6 +579,22 @@ public class ScanFrame extends FillPane implements Bindable
                 Out.print(LOG_LEVEL.DEBUG, "Folder scan mode changed from " + mode + " to " + new_mode);
             
             facade.setFolderScan(new_mode);
+            setModified(true);
+        }
+    }
+    /**
+     * Changes the folder target mode [true|false]
+     * @param enable
+     */
+    private void setFolderTarget(boolean enable)
+    {
+        if (facade.getFolderTarget() != enable) {
+            if (enable == true)
+                Out.print(LOG_LEVEL.DEBUG, "Folder target mode set");
+            else
+                Out.print(LOG_LEVEL.DEBUG, "Folder target mode unset");
+            
+            facade.setFolderTarget(enable);
             setModified(true);
         }
     }
@@ -695,6 +724,10 @@ public class ScanFrame extends FillPane implements Bindable
             cbFolderScan.setSelected(scanFolder == SCAN_FOLDER.GROUP_FOLDER ? true : false);
             setFolderScan(scanFolder);
         }
+        if (setupConfig.getScanTarget() != facade.getFolderTarget()) {
+            cbFolderTarget.setSelected(setupConfig.getScanTarget());
+            setFolderTarget(setupConfig.getScanTarget());
+        }
         
         SCAN_MODE scanMode = setupConfig.getScanMode();
         if (scanMode != facade.getScanMode()) {
@@ -708,6 +741,7 @@ public class ScanFrame extends FillPane implements Bindable
                 btSelectNone.setEnabled(false);
                 depthPane.setVisible(true);
                 cbFolderScan.setEnabled(true);
+                cbFolderTarget.setEnabled(true);
             }
             else {
                 btRadSimple.setSelected(true);
@@ -717,6 +751,7 @@ public class ScanFrame extends FillPane implements Bindable
                 btCollapse.setEnabled(false);
                 btExpand.setEnabled(false);
                 cbFolderScan.setEnabled(false);
+                cbFolderTarget.setEnabled(false);
             }
             setScanMode(scanMode);// scans folder too
         }

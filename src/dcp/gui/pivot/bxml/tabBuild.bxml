@@ -55,7 +55,7 @@
 				    	<Checkbox bxml:id="cbWeb" tooltipText="Make HTTP Web based Setup" buttonData="Web Setup" selected="false" />
 				    	<TextInput bxml:id="inWebDir" text="http://" tooltipText="Download URL" prompt="Download URL" preferredWidth="150" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
 						<PushButton bxml:id="btWebConfig" tooltipText="Transfer packs via SFTP" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}" enabled="false">
-	    					<content:ButtonData icon="/dcp/gui/icons/setting.png" />
+	    					<content:ButtonData icon="/dcp/gui/icons/set.png" />
 	    				</PushButton>
 			        </BoxPane>
 		 		</FillPane>
