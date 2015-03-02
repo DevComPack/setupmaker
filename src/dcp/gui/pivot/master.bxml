@@ -60,7 +60,7 @@
 							    <Menu>
         							<Menu.Section>
 										<Menu.Item bxml:id="btLoad" tooltipText="Load a project" enabled="true">
-							            	<buttonData><content:ButtonData text="Load" icon="/dcp/gui/icons/load.png" /></buttonData>
+							            	<buttonData><content:ButtonData text="Load.." icon="/dcp/gui/icons/load.png" /></buttonData>
 							            </Menu.Item>
 							            <Menu.Item bxml:id="btSave" tooltipText="Save project to disk" enabled="false">
 							            	<buttonData><content:ButtonData text="Save" icon="/dcp/gui/icons/save.png" /></buttonData>
@@ -74,7 +74,7 @@
 							            </Menu.Item>
 							            
 							            <Menu.Item bxml:id="btDefault" tooltipText="Save default settings" enabled="true">
-							            	<buttonData><content:ButtonData text="Save default" icon="/dcp/gui/icons/default.png" /></buttonData>
+							            	<buttonData><content:ButtonData text="Save defaults" icon="/dcp/gui/icons/default.png" /></buttonData>
 							            </Menu.Item>
 							            
 						            	<Menu.Item bxml:id="btHelp" tooltipText="Launch app helper">

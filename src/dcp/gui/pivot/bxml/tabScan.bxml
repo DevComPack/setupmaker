@@ -268,7 +268,7 @@
 							<!-- Packs Tree View -->
 							<FillPane>
 								<Border title="Packs view"
-									styles="{padding:4, color:'#0198E1', titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+									styles="{padding:4, titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
 									<FillPane styles="{padding:1}">
 										<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
 											verticalScrollBarPolicy="fill_to_capacity">
@@ -308,8 +308,11 @@
 						<!-- Advanced Scan options -->
 						<TablePane.Row height="-1">
 							<BoxPane orientation="Horizontal" styles="{padding:2, horizontalAlignment:'right', verticalAlignment:'center'}">
-								<Checkbox bxml:id="cbFolderScan" selected="false" enabled="false" tooltipText="Convert folders to groups">
-									<content:ButtonData text="Treat folders as groups" icon="/dcp/gui/icons/folder.png" />
+								<Checkbox bxml:id="cbFolderScan" selected="false" enabled="false" tooltipText="Convert folders to groups and put packs inside">
+									<content:ButtonData text="Folders as groups" icon="/dcp/gui/icons/set.png" />
+								</Checkbox>
+								<Checkbox bxml:id="cbFolderTarget" selected="false" enabled="false" tooltipText="Set groups as target path for packs">
+									<content:ButtonData text="Folders as paths" icon="/dcp/gui/icons/set.png" />
 								</Checkbox>
 							</BoxPane>
 						</TablePane.Row>

@@ -55,7 +55,7 @@
 				    	<Checkbox bxml:id="cbWeb" tooltipText="Make HTTP Web based Setup" buttonData="Web Setup" selected="false" />
 				    	<TextInput bxml:id="inWebDir" text="http://" tooltipText="Download URL" prompt="Download URL" preferredWidth="150" visible="true" enabled="false" styles="{backgroundColor:'WHITE', color:'#38ACEC'}" />
 						<PushButton bxml:id="btWebConfig" tooltipText="Transfer packs via SFTP" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}" enabled="false">
-	    					<content:ButtonData icon="/dcp/gui/icons/setting.png" />
+	    					<content:ButtonData icon="/dcp/gui/icons/set.png" />
 	    				</PushButton>
 			        </BoxPane>
 		 		</FillPane>
@@ -118,8 +118,8 @@
 		<!-- Log Text Area -->
 		<TablePane.Row height="1*">
 			<FillPane>
-				<Border title="Log" styles="{padding:4, color:'#0198E1', backgroundColor:'#EEF0FF'}">
-			        <FillPane styles="{padding:1, backgroundColor:'#0198E1'}">
+				<Border title="Log" styles="{padding:4, titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+			        <FillPane styles="{padding:1}">
 						<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="auto">
 							<ListView bxml:id="logger" selectMode="multi" styles="{color:'#aa5500', backgroundColor:'WHITE'}" />
 						</ScrollPane>
