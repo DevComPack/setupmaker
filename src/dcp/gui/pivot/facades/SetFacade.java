@@ -371,6 +371,15 @@ public class SetFacade
         pack.setInstallPath(packData.getInstallPath());
         pack.setOverride(packData.isOverride());
         pack.setShortcut(packData.isShortcut());
+        
+        if (pack.getFileType().equals(packData.getFileType())) { // same pack type
+            pack.setInstallType(packData.getInstallType());
+            pack.setSilentInstall(packData.isSilentInstall());
+            pack.setShortcutPath(packData.getShortcutPath());
+        }
+        
+        if (!pack.equals(packData.getPackDependency()))// pack dependency
+            pack.setPackDependency(packData.getPackDependency());
     }
     public void pastePack(Sequence<Pack> packs) {
         for(int i = 0; i < packs.getLength(); i++)
