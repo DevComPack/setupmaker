@@ -1,6 +1,7 @@
 DCP Setup Maker
 ===============
 [![Build Status](https://travis-ci.org/DevComPack/setupmaker.svg)](https://travis-ci.org/DevComPack/setupmaker)  
+[![Download DCP Setup Maker](https://img.shields.io/sourceforge/dt/devcompack.svg)](https://sourceforge.net/projects/devcompack/files/latest/download)
   
 Powerful cross-platform install builder  
 
@@ -10,6 +11,8 @@ Watch a demo of DCP Setup Maker's installer being made in 2 minutes: https://www
 
 Its intuitive UI and exceptional ease of use makes it very easy to build complex installers with large amounts of files.
 The whole process is done step by step through a wizard-like interface, filling in fields and setting up files to finally build your package.
+
+[![Download DCP Setup Maker](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/devcompack/files/latest/download)
 
 *Required: Java 1.7 for DCP Setup Maker and Java 1.6+ for built packages*  
 *Powered by Java, IzPack, Nuget, Apache Pivot, Apache Ant and Stax.*  
