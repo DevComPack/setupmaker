@@ -1,0 +1,7 @@
+-Text file editor on set tab
+-Arguments for executables (convert silent install to arguments for MSI)
+-Run command for new unknown executable files (convert known executable files to run commands)
+-Settings for filters to change extensions list from GUI
+-Global application configuration with settings.json content
+-Duplicate pack for different configurations for same pack
+-Application name and version set from pack when only one (or one and dependencies)
