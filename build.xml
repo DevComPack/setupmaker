@@ -68,7 +68,7 @@
 	<target name="compile" depends="init" description="compile source code to class files">
 		<echo message="Compile start"/>
 		<javac source="${source}" srcdir="${src}" target="${target}" destdir="${build}"
-				includeantruntime="false" debug="true" verbose="no" >
+				includeantruntime="false" debug="true" verbose="yes" >
 			<classpath refid="master.classpath"/>
 			<compilerarg line="-encoding utf-8"/>
 		</javac>
@@ -155,7 +155,7 @@
 		<echo message="Release success"/>
 	</target>
 	
-	<target name="doc_copyright" description="erase HelpnDoc copyright tags from html files" >
+	<target name="doc_copyright" description="prepare documentation html files for publish" >
 		<replaceregexp byline="true">
 			<regexp pattern="&lt;p class=&quot;rvps5&quot;&gt;&lt;span class=&quot;rvts17&quot;&gt;Created with.*&lt;/p&gt;"/>
 			<substitution expression=""/>
