@@ -44,7 +44,7 @@ public class SetFacade
      */
     public boolean importDataFrom(List<Group> groups, List<Pack> packs, boolean folderGroup, boolean groupTarget)
     {
-        if (packs == null && groups == null) return false;
+        //if (packs == null && groups == null) return false;
         
         // Groups Import
         GroupFactory.clear();
@@ -54,48 +54,52 @@ public class SetFacade
                 newGroup(G);
         
         // Packs data save for same packs
-        List<Pack> newPacks = new ArrayList<Pack>();
-        Pack pack;// pack data to restore
-        for(Pack p:packs) {
-            List<Pack> oldPacks = PackFactory.getByName(p.getName());
-            if (oldPacks.getLength() == 1) {// if only one pack with same filename
-                Out.print(LOG_LEVEL.DEBUG, "Pack " + p.getName() + " data restored.");
-                pack = new Pack(oldPacks.get(0));
-                pack.setGroup(p.getGroup());
-            }
-            else {// otherwise reset packs
-                pack = new Pack(p);
+        if (packs != null) {
+            List<Pack> newPacks = new ArrayList<Pack>();
+            Pack pack;// pack data to restore
+            
+            for(Pack p:packs) {
+                List<Pack> oldPacks = PackFactory.getByName(p.getName());
+                if (oldPacks.getLength() == 1) {// if only one pack with same filename
+                    Out.print(LOG_LEVEL.DEBUG, "Pack " + p.getName() + " data restored.");
+                    pack = new Pack(oldPacks.get(0));
+                    pack.setGroup(p.getGroup());
+                }
+                else {// otherwise reset packs
+                    pack = new Pack(p);
+                }
+                
+                // remove install path if option disabled from scan
+                if (pack.getInstallPath().length() > 0 && groupTarget == false && pack.getInstallPath().equals(p.getGroupPath()))
+                    pack.setInstallPath("");
+                // set group folder path if enabled from scan
+                else if (groupTarget == true)
+                    pack.setInstallPath(p.getGroupPath());
+                
+                // Group correct
+                if (folderGroup == true) {
+                    boolean found = false;
+                    for(Group g:GroupFactory.getGroups())
+                        if (g.equals(pack.getGroup())) {
+                            found = true;
+                            pack.setGroup(g);// group rename bugfix: point to the new created group
+                            break;
+                        }
+                    if (found == false)// bugfix: pack data restore groups no more available
+                        pack.setGroup(null);
+                }
+                else pack.setGroup(null);
+                
+                newPacks.add(pack);
             }
             
-            // remove install path if option disabled from scan
-            if (pack.getInstallPath().length() > 0 && groupTarget == false && pack.getInstallPath().equals(p.getGroupPath()))
-                pack.setInstallPath("");
-            // set group folder path if enabled from scan
-            else if (groupTarget == true)
-                pack.setInstallPath(p.getGroupPath());
-            
-            // Group correct
-            if (folderGroup == true) {
-                boolean found = false;
-                for(Group g:GroupFactory.getGroups())
-                    if (g.equals(pack.getGroup())) {
-                        found = true;
-                        pack.setGroup(g);// group rename bugfix: point to the new created group
-                        break;
-                    }
-                if (found == false)// bugfix: pack data restore groups no more available
-                    pack.setGroup(null);
+            // Packs Import
+            PackFactory.clear();
+            for(Pack p : newPacks) {// Fill Data from Scan files
+                newPack(p);
             }
-            else pack.setGroup(null);
-            
-            newPacks.add(pack);
         }
-        
-        // Packs Import
-        PackFactory.clear();
-        for(Pack p : newPacks) {// Fill Data from Scan files
-            newPack(p);
-        }
+        else PackFactory.clear();
         
         return true;
     }

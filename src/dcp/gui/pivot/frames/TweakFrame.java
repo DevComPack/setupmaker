@@ -47,11 +47,14 @@ public class TweakFrame extends FillPane implements Bindable
     public static TweakFrame getSingleton() { assert (singleton != null); return singleton; }
     //Configuration
     private SetupConfig setupConfig = Master.facade.setupConfig;
-
-    //Flags
-    private boolean modified = false;//True if tab processed data
-    public void setModified(boolean VALUE) { modified = VALUE; }
+    // Master class
+    private Master master;
+    public void setMaster(Master master) { this.master = master; }
+    // Edit Flag
+    private boolean modified = false;// True if tab changed data
+    public void setModified(boolean VALUE) { assert master != null; modified = VALUE; master.setUndo(true); }
     public boolean isModified() { return modified; }
+    
     //---Components
     //Application
     @BXML private TextInput inAppName;

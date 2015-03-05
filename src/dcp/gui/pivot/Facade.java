@@ -36,7 +36,7 @@ import dcp.main.log.Out;
 
 public class Facade
 {
-    private Window application;
+    private Window master;
     // UI Tabs
     private ScanFrame scanFrame;
     private SetFrame setFrame;
@@ -80,7 +80,7 @@ public class Facade
      */
     public void setWindow(Window application)
     {
-        this.application = application;
+        this.master = application;
     }
     
     /**
@@ -89,10 +89,16 @@ public class Facade
     public void framesInit(Master master)
     {
         scanFrame = ScanFrame.getSingleton();
-            scanFrame.setMaster(master);
+        scanFrame.setMaster(master);
+        
         setFrame = SetFrame.getSingleton();
+        setFrame.setMaster(master);
+        
         tweakFrame = TweakFrame.getSingleton();
+        tweakFrame.setMaster(master);
+        
         buildFrame = BuildFrame.getSingleton();
+        buildFrame.setMaster(master);
     }
 
     /**
@@ -174,24 +180,24 @@ public class Facade
                 if (scanFrame.isModified()) {//If Scanned directory
                     scanFrame.setModified(false);
                     setFrame.update();//Data export from Scan to Set tab
-                    if (!application.getTitle().contains("*"))
-                        application.setTitle(application.getTitle().concat("*"));//modified flag in Title
+                    if (!master.getTitle().contains("*"))
+                        master.setTitle(master.getTitle().concat("*"));//modified flag in Title
                 }
                 break;
             case 2://Tweak Tab
                 if (setFrame.isModified()) {
                     setFrame.setModified(false);
                     tweakFrame.update();//Enable/Disable packs shortcut option
-                    if (!application.getTitle().contains("*"))
-                        application.setTitle(application.getTitle().concat("*"));//modified flag in Title
+                    if (!master.getTitle().contains("*"))
+                        master.setTitle(master.getTitle().concat("*"));//modified flag in Title
                 }
                 break;
             case 3://Build Tab
                 if (tweakFrame.isModified()) {
                     tweakFrame.setModified(false);
                     buildFrame.update();//Generate target file export path filename
-                    if (!application.getTitle().contains("*"))
-                        application.setTitle(application.getTitle().concat("*"));//modified flag in Title
+                    if (!master.getTitle().contains("*"))
+                        master.setTitle(master.getTitle().concat("*"));//modified flag in Title
                 }
                 break;
             default:
@@ -375,8 +381,8 @@ public class Facade
     public void factoryReset()
     {
         setupConfig = new SetupConfig(appConfig.getDefaultSetupConfig());
-        PackFactory.clear(); if (packs != null) packs.clear();
-        GroupFactory.clear(); if (groups != null) groups.clear();
+        if (packs != null) packs.clear();
+        if (groups != null) groups.clear();
         tabsInit();
         IOFactory.setSaveFile("");
     }

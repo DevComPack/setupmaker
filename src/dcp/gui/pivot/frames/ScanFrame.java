@@ -78,13 +78,12 @@ public class ScanFrame extends FillPane implements Bindable
     // Configuration
     private AppConfig appConfig = Master.facade.appConfig;
     private SetupConfig setupConfig = Master.facade.setupConfig;
-    
+    // Master class
     private Master master;
     public void setMaster(Master master) { this.master = master; }
-    
-    // Flags
+    // Edit Flag
     private boolean modified = false;// True if tab changed data
-    public void setModified(boolean VALUE) { modified = VALUE; }
+    public void setModified(boolean VALUE) { assert master != null; modified = VALUE; master.setUndo(true); }
     public boolean isModified() { return modified; }
     
     public List<Pack> getPacks() {// Read-only Packs data (selected)

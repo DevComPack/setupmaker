@@ -116,8 +116,7 @@ public class Master extends Window implements Application, Bindable
                             btSave.setEnabled(true);
                             //btDefault.setEnabled(false);
                         }
-                        btUndo.setEnabled(true);
-                        titleUpdate();
+                        setUndo(true);
                     }
                 } };
             //Load Action
@@ -140,8 +139,7 @@ public class Master extends Window implements Application, Bindable
                         if (!btSave.isEnabled()) {
                             btSave.setEnabled(true);
                         }
-                        btUndo.setEnabled(true);
-                        titleUpdate();
+                        setUndo(true);
                     }
                 }
             };
@@ -190,6 +188,16 @@ public class Master extends Window implements Application, Bindable
         IOFactory.setSaveFile(file);
         ALoad.perform(null);
         Prompt.prompt(MessageType.INFO, "Data loaded from saved project.", getWindow());
+    }
+    
+    /**
+     * enable/disable undo
+     * @param enable: true|false
+     */
+    public void setUndo(boolean enable)
+    {
+        btUndo.setEnabled(enable);
+        titleUpdate();
     }
 
     @Override public void initialize(Map<String, Object> args, URL url, Resources res)

@@ -89,14 +89,18 @@ public class SetFrame extends FillPane implements Bindable
     private ScanFrame scanFrame = ScanFrame.getSingleton();
     public static SetFrame getSingleton() { assert (singleton != null); return singleton; }
     public SetFacade facade;
+    // Master class
+    private Master master;
+    public void setMaster(Master master) { this.master = master; }
+    // Edit Flag
+    private boolean modified = false;// True if tab changed data
+    public void setModified(boolean VALUE) { assert master != null; modified = VALUE; master.setUndo(true); }
+    public boolean isModified() { return modified; }
     
     //------ DATA
     // Constants
     private final static int TABLEVIEW_GROUP_COLUMN_INDEX = 3;
     // Flags
-    private boolean modified = false;// True if tab processed data
-    public void setModified(boolean VALUE) { modified = VALUE; }
-    public boolean isModified() { return modified; }
     private boolean multi_selection = false;// If multiple packs selected or only one
     private boolean drag_enabled = false;// If a component is being dragged
     private boolean isGroupDependency() { return ((String)cbDepType.getButtonData()).equals("Group"); }
@@ -497,12 +501,12 @@ public class SetFrame extends FillPane implements Bindable
                 assert !multi_selection;
                 if (str.length() > 0) {
                     if (!str.matches("[a-zA-Z._\\-0-9]+")) {
-                        Out.print(LOG_LEVEL.WARN, "Pack name format incorrect: " + str);
+                        Out.print(LOG_LEVEL.DEBUG, "Pack name format incorrect: " + str);
                         unvalid = true;
                         return false;
                     }
                     if (!facade.validatePack(str)) {
-                        Out.print(LOG_LEVEL.WARN, "Pack name already used: " + str);
+                        Out.print(LOG_LEVEL.DEBUG, "Pack name already used: " + str);
                         unvalid = true;
                         return false;
                     }

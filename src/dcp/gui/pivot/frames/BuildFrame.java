@@ -67,12 +67,14 @@ public class BuildFrame extends FillPane implements Bindable
     public BuildFacade facade;
     //Configuration
     private SetupConfig setupConfig = Master.facade.setupConfig;
-    //private AppConfig appConfig = Master.facade.appConfig;
+    // Master class
+    private Master master;
+    public void setMaster(Master master) { this.master = master; }
+    // Edit Flag
+    private boolean modified = false;// True if tab changed data
+    public void setModified(boolean VALUE) { assert master != null; modified = VALUE; master.setUndo(true); }
+    public boolean isModified() { return modified; }
     
-    // Flags
-    private static boolean modified = false;// True if tab processed data
-    public static void setModified(boolean VALUE) { modified = VALUE; }
-    public static boolean isModified() { return modified; }
     // Browse Area
     @BXML private FileBrowserSheet fileBrowserSheet;// File Browser
     @BXML private PushButton btBrowse;// Browse button

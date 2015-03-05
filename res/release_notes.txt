@@ -18,9 +18,10 @@ NuGet Builder option only available from Windows systems
 Model data structure update on cascade when loading projects of older version (starting from version 1.0)
 Group rename disabled when same name
 Context menus for Packs and Groups views with icons
-Executables temporary target dir updated for use
-Scan filebrowser root folder update on path change
+Executables temporary target directory updated for use
+Scan file-browser root folder update on path change
 Master GUI buttons grouped inside one menu Bar
+Undo enabled for every edit to reload new project
 --
 * Bug fixes:
 Empty Group creation was possible
