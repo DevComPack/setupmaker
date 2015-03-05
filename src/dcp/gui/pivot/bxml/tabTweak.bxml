@@ -34,9 +34,9 @@
 								<content:ButtonData text="" icon="/dcp/gui/icons/up.png" />
 							</PushButton>
 				        </BoxPane>
-				        <TextInput bxml:id="inAuthorName" Form.label="Name" textSize="40" prompt="Author Name" />
-				        <TextInput bxml:id="inAuthorEmail" Form.label="Email" textSize="40" prompt="Author Email" />
-				        <TextInput bxml:id="inAppURL" Form.label="URL" textSize="40" prompt="URL" />
+				        <TextInput bxml:id="inAuthorName" Form.label="Author Name" textSize="40" prompt="Author Name" />
+				        <TextInput bxml:id="inAuthorEmail" Form.label="Email" textSize="40" prompt="Contact Email" />
+				        <TextInput bxml:id="inAppURL" Form.label="URL" textSize="40" prompt="Product URL" />
 				    </Form.Section>
 				    
 				    <!-- InstallPath -->

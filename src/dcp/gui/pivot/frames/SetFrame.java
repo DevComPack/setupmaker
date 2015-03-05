@@ -76,7 +76,6 @@ import dcp.logic.factory.PackFactory;
 import dcp.logic.factory.TypeFactory.LOG_LEVEL;
 import dcp.logic.factory.TypeFactory.PLATFORM;
 import dcp.logic.factory.TypeFactory.SCAN_FOLDER;
-import dcp.logic.factory.TypeFactory.SCAN_MODE;
 import dcp.logic.model.Group;
 import dcp.logic.model.Pack;
 import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
@@ -1396,6 +1395,8 @@ public class SetFrame extends FillPane implements Bindable
      * Properties Packs functions
      */
     private void nullProperties() {//no pack selected properties
+        tableView.clearSelection();
+        
         rbOsAll.setEnabled(false);
         rbOsWin.setEnabled(false);
         rbOsLin.setEnabled(false);
@@ -1796,7 +1797,7 @@ public class SetFrame extends FillPane implements Bindable
      */
     public void init(List<Group> groups, List<Pack> packs)
     {
-        facade.importDataFrom(groups, packs, false);
+        facade.importDataFrom(groups, packs, true, false);
         treeView.expandAll();//Expand branches
         
         setModified(false);
@@ -1810,14 +1811,13 @@ public class SetFrame extends FillPane implements Bindable
         nullProperties(); // Initialize properties values
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
         
-        if (scanFrame.facade.getScanMode() == SCAN_MODE.RECURSIVE_SCAN &&
-                scanFrame.facade.getFolderScan() == SCAN_FOLDER.GROUP_FOLDER) {// If Recursive Scan and enabled, import folders as groups
-            facade.importDataFrom(scanFrame.getGroups(), scanFrame.getPacks(), scanFrame.facade.getFolderTarget());
-            treeView.expandAll();//Expand branches   
-        }
-        else {// import only packs (no folders/groups)
-            facade.importDataFrom(null, scanFrame.getPacks(), false);
-        }
+        // If Recursive Scan and enabled, import folders as groups
+        facade.importDataFrom(scanFrame.getGroups(),
+                scanFrame.getPacks(),
+                scanFrame.facade.getFolderScan() == SCAN_FOLDER.GROUP_FOLDER,
+                scanFrame.facade.getFolderTarget()
+                );
+        treeView.expandAll();//Expand branches
         
         setModified(true);
     }

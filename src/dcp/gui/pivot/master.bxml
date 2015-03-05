@@ -69,8 +69,8 @@
 							            	<buttonData><content:ButtonData text="Save as.." icon="/dcp/gui/icons/saveas.png" /></buttonData>
 							            </Menu.Item>
 							            
-							            <Menu.Item bxml:id="btUndo" tooltipText="Undo all changes" enabled="false">
-							            	<buttonData><content:ButtonData text="Undo" icon="/dcp/gui/icons/undo.png" /></buttonData>
+							            <Menu.Item bxml:id="btUndo" tooltipText="Undo all changes" enabled="true">
+							            	<buttonData><content:ButtonData text="Undo/New" icon="/dcp/gui/icons/undo.png" /></buttonData>
 							            </Menu.Item>
 							            
 							            <Menu.Item bxml:id="btDefault" tooltipText="Save default settings" enabled="true">
