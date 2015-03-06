@@ -29,6 +29,43 @@ http://www.apache.org/licenses/
 CHANGELOG
 ---------
 
+*1.2.0*
++ New features:  
+Open package target folder on Build  
+Check packs properties for errors  
+Pack target architecture(x32/x64) property (request by Danish42)  
+Properties restored on new scan for same packs (request by Hozku)  
+Easy access for recent saved/loaded projects (up to 3)  
+Scan child folders directly from file view context menu  
+Copy/Paste pack data between packs (context menu)  
+Folder target path set to packs from scan tab  
+Text fields validators register error message on component tooltip text  
+- Enhancements:  
+GUI update  
+Treat folders as groups moved to Scan tab (instead of Import button)  
+Logging organized into 4 levels (DEBUG, INFO, WARN, ERR)  
+NuGet Builder option only available from Windows systems  
+Model data structure update on cascade when loading projects of older version (starting from version 1.0)  
+Group rename disabled when same name  
+Context menus for Packs and Groups views with icons  
+Executables temporary target directory updated for use  
+Scan file-browser root folder update on path change  
+Master GUI buttons grouped inside one menu Bar  
+Undo enabled for every edit to reload new project  
+Tweak options organized into different tab levels  
+Tweak pack shortcut option always enabled for setting  
+* Bug fixes:  
+Empty Group creation was possible  
+Group treeview node delete button returned exception when none selected  
+Panels display flag wasn't initialized  
+Build Mode was set double times on app start  
+Faster application start  
+Tweak application version validator wasn't working  
+Tooltip on empty tableView field is now hidden  
+Multi selected packs validation was still active on deletion  
+Exceptions on some buttons when empty data  
+Advanced shortcut button enable bug  
+
 *1.1.1*
 + New features:  
 Nuget/Chocolatey process compiler;  
