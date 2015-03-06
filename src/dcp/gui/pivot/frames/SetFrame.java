@@ -642,12 +642,10 @@ public class SetFrame extends FillPane implements Bindable
         btClear.getButtonPressListeners().add(new ButtonPressListener() {//Remove all groups from tree view
             @Override public void buttonPressed(Button bt)
             {
-                if (treeView.getSelectedNode() != null) {
-                    facade.clearGroups();
-                    ngdialog.setHierarchy(false, "");//Clean new group hierarchy
-                    tableView.clearSelection();//Clear selection on packs
-                    tableView.repaint(tableView.getColumnBounds(TABLEVIEW_GROUP_COLUMN_INDEX));//Packs Group display update
-                }
+                facade.clearGroups();
+                ngdialog.setHierarchy(false, "");//Clean new group hierarchy
+                tableView.clearSelection();//Clear selection on packs
+                tableView.repaint(tableView.getColumnBounds(TABLEVIEW_GROUP_COLUMN_INDEX));//Packs Group display update
             }
         });
         

@@ -10,7 +10,7 @@ import dcp.main.log.Out;
 public class VersionValidator implements Validator
 {
     private Component component;
-    private static String tooltipText = "Version";
+    private String tooltipText = "Version";
     private boolean required;
     
     public VersionValidator(Component component, boolean required)

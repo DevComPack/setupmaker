@@ -82,19 +82,20 @@ public class Master extends Window implements Application, Bindable
      * Update title with save file and edit flag '*'
      */
     private void titleUpdate() {
-        if (!Master.this.getTitle().contains("-")) {//No save file defined
-            if (Master.this.getTitle().contains("*"))//remove * flag from title
+        if (!Master.this.getTitle().contains("-")) {// No save file defined
+            if (Master.this.getTitle().contains("*"))// remove * flag from title
                 Master.this.setTitle(Master.this.getTitle().substring(0, Master.this.getTitle().length()-1));
-            Master.this.setTitle(Master.this.getTitle().concat(" - "+IOFactory.saveFile ));
+            if (IOFactory.saveFile.length() > 0)
+                Master.this.setTitle(Master.this.getTitle().concat(" - " + IOFactory.saveFile ));
         }
-        else {//Already saved on a file
+        else {// Already saved on a file
             if (IOFactory.saveFile.length() > 0) // Save file set
                 Master.this.setTitle(Master.this.getTitle().
-                        substring(0, Master.this.getTitle().indexOf('-')+2).
+                        substring(0, Master.this.getTitle().indexOf('-') + 2).
                         concat(IOFactory.saveFile));
             else // Save file unset
                 Master.this.setTitle(Master.this.getTitle().
-                        substring(0, Master.this.getTitle().indexOf('-')-1));
+                        substring(0, Master.this.getTitle().indexOf('-') - 1));
         }
     }
     

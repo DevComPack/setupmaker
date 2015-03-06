@@ -191,7 +191,7 @@
 				<!-- Pack properties Area -->
 				<bottom>
 					<FillPane>
-						<Accordion bxml:id="propertiesPane" styles="{buttonColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+						<Accordion bxml:id="propertiesPane" styles="{buttonColor:'#ff5500', backgroundColor:'#FEFEFE'}">
 						
 							<TablePane Accordion.headerData="Properties"
 								styles="{showVerticalGridLines: true, horizontalSpacing:10, verticalGridColor:10}">
@@ -247,7 +247,7 @@
 													<!-- Description -->
 													<TablePane.Row height="1*">
 														<Border title="Description" styles="{titleColor:7, padding:8}">
-															<ScrollPane verticalScrollBarPolicy="fill"
+															<ScrollPane verticalScrollBarPolicy="fill_to_capacity"
 																horizontalScrollBarPolicy="fill">
 																<TextArea bxml:id="inDescription" enabled="false"
 																	styles="{wrapText:'true', acceptsEnter:'false'}" />

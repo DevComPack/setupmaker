@@ -10,7 +10,7 @@ import dcp.main.log.Out;
 public class NameValidator implements Validator
 {
     private Component component;
-    private static String tooltipText = "Name";
+    private String tooltipText = "Name";
     private boolean required;
     
     public NameValidator(Component component, boolean required)
