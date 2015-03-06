@@ -26,7 +26,7 @@
 								
 								<Paragraph></Paragraph>
 								<Paragraph>DCP Setup Maker is an open source application that generates java installers </Paragraph>
-								<Paragraph>It's all about 3 simple steps for your setup to be ready! </Paragraph>
+								<Paragraph>It's all about 4 simple steps for your setup to be ready! </Paragraph>
 								<Paragraph></Paragraph>
 								
 								<BulletedList style="CIRCLE">
@@ -44,8 +44,11 @@
 								<Paragraph>  'depth' is reached where folders are packs. </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>Custom filters can be set in 'settings.json' file. </Paragraph>
-								<Paragraph>Regular Expressions can be used to filter a file format </Paragraph>
+								<Paragraph>Regular Expressions can be used to filter a file group </Paragraph>
 								<Paragraph>Example: ".*\.(exe|msi)" will filter all files with 'exe' or 'msi' extension </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>- 'Folders as groups' option will convert folders to groups </Paragraph>
+								<Paragraph>- 'Folders as paths' option will fill packs install paths with folder paths </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>Press Next when list of files is ready.. </Paragraph>
 							</Document>
@@ -67,23 +70,25 @@
 								<Paragraph>and even organize them by Groups/Install groups. </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>You add a new group using the green '+' button at right, and entering its name </Paragraph>
-								<Paragraph>then you may use the Add button at left of packs or Drag and Drop them to a group. </Paragraph>
+								<Paragraph>then you may use the 'Add to group' from context menu on packs or Drag and Drop them to a group. </Paragraph>
+								<Paragraph>You may then sort packs for execution priority. However executable packs can't be processed before others </Paragraph>
+								<Paragraph>The 'debug' option for Packs will validate all of packs' data and stop on an incorrect one, you may </Paragraph>
+								<Paragraph>get error details from a 'red' field by hovering over it and reading tooltip text. </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>- A Pack is either 'executed' during install, or 'copied' or 'extracted' to 'install path'. </Paragraph>
 								<Paragraph>- Packs can be part of many install groups. </Paragraph>
-								<Paragraph>- A Pack may depend on a Group of packs, so that it won't be installed </Paragraph>
-								<Paragraph>  unless all packs of the dependent group are selected. </Paragraph>
-								<Paragraph>- A required pack can't be disabled on install. </Paragraph>
-								<Paragraph>- The arch (32/64) is checked at the running JVM, not the OS. </Paragraph>
+								<Paragraph>- A Pack may depend on a Pack or a Group of packs on install </Paragraph>
+								<Paragraph>- A required pack will be installed and can't be disabled on install </Paragraph>
+								<Paragraph>- A hidden pack will be installed and won't display on install </Paragraph>
+								<Paragraph>- The arch (32/64) is checked at the running JVM arch (not the OS) </Paragraph>
 								<Paragraph>- A shortcut can be enabled for a pack or more to access it directly; </Paragraph>
-								<Paragraph>  advanced shortcut options are available to access a specific file </Paragraph>
-								<Paragraph>  inside a folder or extracted archive. </Paragraph>
+								<Paragraph>  advanced shortcut options are available to access a specific file inside a folder or extracted archive </Paragraph>
 								<Paragraph>- The 'Install path' of a pack is relative to the global install path of setup. </Paragraph>
 								<Paragraph></Paragraph>
-								<Paragraph>An executable script can access its dependencies from code </Paragraph>
-								<Paragraph>using 'DEP' environment variable as a path. </Paragraph>
+								<Paragraph>Single item options for packs or groups are accessed from context menu (Mouse Right clic) </Paragraph>
+								<Paragraph>An executable script can access its dependencies from code using the 'DEP' environment variable as path </Paragraph>
 								<Paragraph></Paragraph>
-								<Paragraph>Once all your packs and groups set, you push Next.. </Paragraph>
+								<Paragraph>Once all your packs and groups set, you press Next.. </Paragraph>
 							</Document>
 						</TextPane>
 						<!-- Step 3 -->
@@ -99,8 +104,8 @@
 								</BulletedList>
 								
 								<Paragraph></Paragraph>
-								<Paragraph>Finally, you add some informations for your package </Paragraph>
-								<Paragraph>like the application name and version number. </Paragraph>
+								<Paragraph>Finally, you add some informations for your package like the application name and version number. </Paragraph>
+								<Paragraph>You navigate between options types from the left tabs. </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph>You may select any part of the version and increment it as long as it is a number </Paragraph>
 								<Paragraph>By default, the increment button will add 1 to the last part. </Paragraph>
@@ -123,26 +128,20 @@
 								
 								<Paragraph></Paragraph>
 								<Paragraph>Your package is ready to be packaged at the given export path. </Paragraph>
-								<Paragraph>You just have to set the target path and then 'Compile'. </Paragraph>
+								<Paragraph>You just have to choose a builder and set the target path, then 'Compile'. </Paragraph>
 								<Paragraph></Paragraph>
-								<Paragraph>Once the build is successful, you may 'Launch' the resulting package </Paragraph>
-								<Paragraph>or 'Debug' it for advanced bug tracking. </Paragraph>
+								<Paragraph>Once the build is successful, you may 'Launch' the resulting package or 'Debug' it for bug tracking. </Paragraph>
 								<Paragraph></Paragraph>
-								<Paragraph>Don't forget to 'save' your project to 'load' it later, and if you feel </Paragraph>
-								<Paragraph>like it'll make your future work easier, 'save default' settings ;) </Paragraph>
-								<Paragraph>For developers who want more possibilities, they can edit the settings.json </Paragraph>
-								<Paragraph>file to just generate the IzPack files, edit them, then compile. </Paragraph>
+								<Paragraph>Don't forget to 'save' your project to 'load' it later, and if you need, 'save default' settings </Paragraph>
+								<Paragraph>For developers who want more possibilities, they can edit the settings.json file to just generate </Paragraph>
+								<Paragraph>the IzPack specification files, edit them, then compile. </Paragraph>
 								<Paragraph></Paragraph>
-								<Paragraph>If you load a project not yours, or not created from this machine, </Paragraph>
-								<Paragraph>you should go back to 'Scan' step and edit the path with the correct new </Paragraph>
-								<Paragraph>source folder path containing all of the packs (with the same hierarchy), </Paragraph>
-								<Paragraph>then compile so packs' paths are corrected and save. </Paragraph>
 								<Paragraph></Paragraph>
 								<Paragraph foregroundColor="#ff5500" font="Arial BOLD 14">Enjoy packaging! ;) </Paragraph>
 								
 								<Paragraph></Paragraph>
 								<Paragraph></Paragraph>
-								<Paragraph font="Arial BOLD ITALIC 10">http://www.devcompack.com/setupmaker </Paragraph>
+								<Paragraph font="Arial BOLD ITALIC 10">More help at the official website: http://www.devcompack.com/setupmaker </Paragraph>
 							</Document>
 						</TextPane>
 					</CardPane>
