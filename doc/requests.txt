@@ -5,3 +5,4 @@
 -Global application configuration with settings.json content
 -Duplicate pack for different configurations for same pack
 -Application name and version set from pack when only one (or one and dependencies)
+-Truezip lib update to Truevs
