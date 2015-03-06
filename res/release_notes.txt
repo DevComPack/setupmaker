@@ -23,6 +23,8 @@ Executables temporary target directory updated for use
 Scan file-browser root folder update on path change
 Master GUI buttons grouped inside one menu Bar
 Undo enabled for every edit to reload new project
+Tweak options organized into different tab levels
+Tweak pack shortcut option always enabled for setting
 --
 * Bug fixes:
 Empty Group creation was possible

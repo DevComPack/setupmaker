@@ -32,10 +32,7 @@ import dcp.gui.pivot.validators.Iso3Validator;
 import dcp.gui.pivot.validators.NameValidator;
 import dcp.gui.pivot.validators.PathValidator;
 import dcp.gui.pivot.validators.VersionValidator;
-import dcp.logic.factory.PackFactory;
-import dcp.logic.factory.TypeFactory.INSTALL_TYPE;
 import dcp.logic.factory.TypeFactory.LOG_LEVEL;
-import dcp.logic.model.Pack;
 import dcp.logic.model.config.SetupConfig;
 import dcp.main.log.Out;
 
@@ -118,7 +115,7 @@ public class TweakFrame extends FillPane implements Bindable
         // init(setupConfig);
         
         // Validators
-        inAppName.setValidator(new NameValidator(inAppName, true));// Name Validator
+        inAppName.setValidator(new NameValidator(inAppName, true, false));// Name Validator
         inAppVersion.setValidator(new VersionValidator(inAppVersion, true));// Version Validator
         inAppWidth.setValidator(new IntValidator());// Int Validators
         inAppHeight.setValidator(new IntValidator());
@@ -627,7 +624,7 @@ public class TweakFrame extends FillPane implements Bindable
     public void update()
     {
         Out.print(LOG_LEVEL.DEBUG, "Tweak tab update");
-        boolean found = false;
+        /*boolean found = false;
         for(Pack p:PackFactory.getPacks())
             if (p.isShortcut() && p.getInstallType() != INSTALL_TYPE.EXECUTE) {
                 found = true;
@@ -638,7 +635,7 @@ public class TweakFrame extends FillPane implements Bindable
             cbShortcuts.setEnabled(found);
             cbShortcuts.setSelected(found);
             if (found == true) Out.print(LOG_LEVEL.DEBUG, "Shortcuts option enabled for Packs");
-        }
+        }*/
         
         setModified(true);
     }

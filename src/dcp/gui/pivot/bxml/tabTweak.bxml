@@ -111,7 +111,7 @@
 				    <!-- Shortcuts -->
 				    <Form.Section heading="Shortcuts">
 				        <BoxPane Form.label="Enable for" orientation="Horizontal">
-				   			<Checkbox bxml:id="cbShortcuts" buttonData="Packs" selected="false" enabled="false" styles="{color:'GRAY'}"
+				   			<Checkbox bxml:id="cbShortcuts" buttonData="Packs" selected="false" enabled="true" styles="{color:'GRAY'}"
 				   				tooltipText="install shortcuts for shortcut enabled packs" />
 				   			<Checkbox bxml:id="cbFolderSh" buttonData="Install folder" styles="{color:'GRAY'}"
 				   				tooltipText="add folder shortcut to install path" />

@@ -12,12 +12,14 @@ public class NameValidator implements Validator
     private Component component;
     private String tooltipText = "Name";
     private boolean required;
+    private boolean id;
     
-    public NameValidator(Component component, boolean required)
+    public NameValidator(Component component, boolean required, boolean id)
     {
         assert component != null;
         this.component = component;
         this.required = required;
+        this.id = id;
     }
 
     @Override
@@ -25,7 +27,8 @@ public class NameValidator implements Validator
     {
         if (str.length() == 0) return !this.required;
         
-        if (!str.matches("[a-zA-Z._\\-0-9]+")) {
+        if (!(str.matches("[a-zA-Z._\\-0-9]+")
+                || (!id && str.matches("[a-zA-Z._\\-0-9 ]+")) )) {
             Out.print(LOG_LEVEL.DEBUG, "Pack name incorrect: " + str);
             if (str.contains(" "))
                 component.setTooltipText("[No space allowed]");

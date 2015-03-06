@@ -500,7 +500,7 @@ public class SetFrame extends FillPane implements Bindable
             @Override public boolean isValid(String str)
             {
                 assert !multi_selection;
-                if (!new NameValidator(inName, true).isValid(str)) {
+                if (!new NameValidator(inName, true,true).isValid(str)) {
                     unvalid = true;
                     return false;
                 }
