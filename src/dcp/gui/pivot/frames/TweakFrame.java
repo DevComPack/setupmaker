@@ -42,10 +42,10 @@ import dcp.main.log.Out;
 
 public class TweakFrame extends FillPane implements Bindable
 {
-    //Singleton reference
+    // Singleton reference
     private static TweakFrame singleton;
     public static TweakFrame getSingleton() { assert (singleton != null); return singleton; }
-    //Configuration
+    // Configuration
     private SetupConfig setupConfig = Master.facade.setupConfig;
     // Master class
     private Master master;
@@ -55,55 +55,55 @@ public class TweakFrame extends FillPane implements Bindable
     public void setModified(boolean VALUE) { assert master != null; modified = VALUE; master.setUndo(true); }
     public boolean isModified() { return modified; }
     
-    //---Components
-    //Application
+    // ---Components
+    // Application
     @BXML private TextInput inAppName;
     @BXML private TextInput inAppVersion;
     @BXML private PushButton btIncr;
     @BXML private TextInput inAppWidth;
     @BXML private TextInput inAppHeight;
-    @BXML private Checkbox cbResizable;//If Window will be resizable
-    //Author
+    @BXML private Checkbox cbResizable;// If Window will be resizable
+    // Author
     @BXML private TextInput inAuthorName;
     @BXML private TextInput inAuthorEmail;
     @BXML private TextInput inAppURL;
-    //Install Path
-    @BXML private FileBrowserSheet fileBrowserSheet;//File Browser
-    @BXML private Checkbox cbForce;//Force a target path for the setup
-    @BXML private PushButton btBrowse;//Browse button
-    @BXML private TextInput installPath;//Default Install Path Text Input
-    //Resources
-    @BXML private TextInput inReadme;//Readme
-    @BXML private TextInput inLicense;//License
-    @BXML private FileBrowserSheet fBSReadme;//Readme File Browser
-    @BXML private FileBrowserSheet fBSLicense;//License File Browser
-    @BXML private PushButton btBrowseReadme;//Browse button
-    @BXML private PushButton btBrowseLicense;//Browse button
+    // Install Path
+    @BXML private FileBrowserSheet fileBrowserSheet;// File Browser
+    @BXML private Checkbox cbForce;// Force a target path for the setup
+    @BXML private PushButton btBrowse;// Browse button
+    @BXML private TextInput installPath;// Default Install Path Text Input
+    // Resources
+    @BXML private TextInput inReadme;// Readme
+    @BXML private TextInput inLicense;// License
+    @BXML private FileBrowserSheet fBSReadme;// Readme File Browser
+    @BXML private FileBrowserSheet fBSLicense;// License File Browser
+    @BXML private PushButton btBrowseReadme;// Browse button
+    @BXML private PushButton btBrowseLicense;// Browse button
     @BXML private TextInput inLogo;
-    @BXML private FileBrowserSheet fBS1;//Logo File Browser
-    @BXML private PushButton btBrowseLogo;//Browse button
+    @BXML private FileBrowserSheet fBS1;// Logo File Browser
+    @BXML private PushButton btBrowseLogo;// Browse button
     @BXML private TextInput inSideLogo;
-    @BXML private FileBrowserSheet fBS2;//Side Logo File Browser
-    @BXML private PushButton btBrowseSideLogo;//Browse button
-    //Shortcuts
-    @BXML private Checkbox cbShortcuts;//Shortcuts enable/disable option
-    @BXML private Checkbox cbFolderSh;//Shortcut to global install path
-    @BXML private Checkbox cbShToStartMenu;//Add shortcuts to start menu
-    @BXML private Checkbox cbShToDesktop;//Add shortcuts to desktop
-    //Advanced
-    @BXML private Checkbox cbRegistryCheck;//Registry version check option
-    @BXML private Checkbox cbScriptGen;//Script generation option
-    @BXML private Checkbox cbLpEnglish;//English langpack
-    @BXML private Checkbox cbLpFrench;//French langpack
-    @BXML private Checkbox cbLpGerman;//German langpack
-    @BXML private Checkbox cbLpSpanish;//Spanish langpack
+    @BXML private FileBrowserSheet fBS2;// Side Logo File Browser
+    @BXML private PushButton btBrowseSideLogo;// Browse button
+    // Shortcuts
+    @BXML private Checkbox cbShortcuts;// Shortcuts enable/disable option
+    @BXML private Checkbox cbFolderSh;// Shortcut to global install path
+    @BXML private Checkbox cbShToStartMenu;// Add shortcuts to start menu
+    @BXML private Checkbox cbShToDesktop;// Add shortcuts to desktop
+    // Advanced
+    @BXML private Checkbox cbRegistryCheck;// Registry version check option
+    @BXML private Checkbox cbScriptGen;// Script generation option
+    @BXML private Checkbox cbLpEnglish;// English langpack
+    @BXML private Checkbox cbLpFrench;// French langpack
+    @BXML private Checkbox cbLpGerman;// German langpack
+    @BXML private Checkbox cbLpSpanish;// Spanish langpack
     
-    @BXML private BoxPane boxCustomLP;//Custom langpack elements
-    @BXML private Checkbox cbLpCustom;//Custom langpack checkbox
-    @BXML private TextInput inCustomISO3;//ISO3 code input
-    @BXML private TextInput inCustomLangpack;//xml langpack file input
-    @BXML private FileBrowserSheet fBSLangpack;//Custom Langpack File Browser
-    @BXML private PushButton btBrowseCustomLangpack;//Browse button
+    @BXML private BoxPane boxCustomLP;// Custom langpack elements
+    @BXML private Checkbox cbLpCustom;// Custom langpack checkbox
+    @BXML private TextInput inCustomISO3;// ISO3 code input
+    @BXML private TextInput inCustomLangpack;// xml langpack file input
+    @BXML private FileBrowserSheet fBSLangpack;// Custom Langpack File Browser
+    @BXML private PushButton btBrowseCustomLangpack;// Browse button
     
     
     public TweakFrame()
@@ -115,19 +115,19 @@ public class TweakFrame extends FillPane implements Bindable
     @Override
     public void initialize(Map<String, Object> args, URL url, Resources res)
     {
-        //init(setupConfig);
+        // init(setupConfig);
         
-        // Text inputs validators
-        inAppName.setValidator(new NameValidator());//Name Validator
-        inAppVersion.setValidator(new VersionValidator());//Version Validator
-        inAppWidth.setValidator(new IntValidator());//Int Validators
+        // Validators
+        inAppName.setValidator(new NameValidator(inAppName, true));// Name Validator
+        inAppVersion.setValidator(new VersionValidator(inAppVersion, true));// Version Validator
+        inAppWidth.setValidator(new IntValidator());// Int Validators
         inAppHeight.setValidator(new IntValidator());
-        //inAppURL.setValidator(new URLValidator());//URL Validator
-        inReadme.setValidator(new PathValidator());//Path Validators
-        inLicense.setValidator(new PathValidator());
-        inLogo.setValidator(new PathValidator());
-        inSideLogo.setValidator(new PathValidator());
-        inCustomLangpack.setValidator(new PathValidator());
+        // inAppURL.setValidator(new URLValidator());// URL Validator
+        inReadme.setValidator(new PathValidator(inReadme, false));// Path Validators
+        inLicense.setValidator(new PathValidator(inLicense, false));
+        inLogo.setValidator(new PathValidator(inLogo, false));
+        inSideLogo.setValidator(new PathValidator(inSideLogo, false));
+        inCustomLangpack.setValidator(new PathValidator(inCustomLangpack, false));
         inCustomISO3.setValidator(new Iso3Validator());// ISO3 Language Code Validator
         
         // Browsers Set
@@ -137,7 +137,7 @@ public class TweakFrame extends FillPane implements Bindable
         fBSLangpack.setMode(FileBrowserSheet.Mode.OPEN);
         fBS1.setMode(FileBrowserSheet.Mode.OPEN);
         fBS2.setMode(FileBrowserSheet.Mode.OPEN);
-        try//Set working directory as root directory for file browser
+        try// Set working directory as root directory for file browser
         {
             fBSReadme.setRootDirectory(new File(".").getCanonicalFile());
             fBSLicense.setRootDirectory(new File(".").getCanonicalFile());
@@ -177,11 +177,11 @@ public class TweakFrame extends FillPane implements Bindable
         fBSReadme.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
             @Override public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
-                //If path changed
+                // If path changed
                 if (!TweakFrame.this.inReadme.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
                     Out.print(LOG_LEVEL.DEBUG, "Changed readme file to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inReadme.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
-                    //Setting same root directory for License file browser
+                    // Setting same root directory for License file browser
                     fBSLicense.setRootDirectory(new File(TweakFrame.this.inReadme.getText()).getParentFile());
                 }
             }
@@ -189,11 +189,11 @@ public class TweakFrame extends FillPane implements Bindable
         fBSLicense.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
             @Override public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
-                //If path changed
+                // If path changed
                 if (!TweakFrame.this.inLicense.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
                     Out.print(LOG_LEVEL.DEBUG, "Changed license file to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inLicense.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
-                    //Setting same root directory for Logo file browser
+                    // Setting same root directory for Logo file browser
                     fBS1.setRootDirectory(new File(TweakFrame.this.inLicense.getText()).getParentFile());
                 }
             }
@@ -201,11 +201,11 @@ public class TweakFrame extends FillPane implements Bindable
         fBS1.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
             @Override public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
-                //If path changed
+                // If path changed
                 if (!TweakFrame.this.inLogo.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
                     Out.print(LOG_LEVEL.DEBUG, "Changed logo to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inLogo.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
-                    //Setting same root directory for Side logo file browser
+                    // Setting same root directory for Side logo file browser
                     fBS2.setRootDirectory(new File(TweakFrame.this.inLogo.getText()).getParentFile());
                 }
             }
@@ -213,7 +213,7 @@ public class TweakFrame extends FillPane implements Bindable
         fBS2.getFileBrowserSheetListeners().add(new FileBrowserSheetListener.Adapter() {
             @Override public void selectedFilesChanged(FileBrowserSheet fileBrowserSheet, Sequence<File> previousSelectedFiles)
             {
-                //If path changed
+                // If path changed
                 if (!TweakFrame.this.inSideLogo.getText().equals(fileBrowserSheet.getSelectedFile().getAbsolutePath())) {
                     Out.print(LOG_LEVEL.DEBUG, "Changed side logo to: "+fileBrowserSheet.getSelectedFile().getAbsolutePath());
                     TweakFrame.this.inSideLogo.setText(fileBrowserSheet.getSelectedFile().getAbsolutePath());
@@ -225,11 +225,11 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 String filePath = fileBrowserSheet.getSelectedFile().getAbsolutePath(),
                         fileName = fileBrowserSheet.getSelectedFile().getName();
-                //If path changed
+                // If path changed
                 if (!TweakFrame.this.inCustomLangpack.getText().equals(filePath)) {
                     Out.print(LOG_LEVEL.DEBUG, "Changed langpack to: "+filePath);
                     TweakFrame.this.inCustomLangpack.setText(filePath);
-                    //get ISO3 code if filename equals 3 chars (without file extension)
+                    // get ISO3 code if filename equals 3 chars (without file extension)
                     if (fileName.substring(0, fileName.lastIndexOf('.')).length() == 3)
                         inCustomISO3.setText(fileName.substring(0, fileName.lastIndexOf('.')));
                 }
@@ -247,7 +247,7 @@ public class TweakFrame extends FillPane implements Bindable
                         installPath.setText(s);
                     }
                     setupConfig.setAppName(TI.getText());
-                    setModified(true);//Modified flag*
+                    setModified(true);// Modified flag*
                 }
             }
         });
@@ -255,7 +255,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setAppVersion(TI.getText());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         inAppVersion.getComponentMouseButtonListeners().add(new ComponentMouseButtonListener.Adapter() {
@@ -322,7 +322,7 @@ public class TweakFrame extends FillPane implements Bindable
                 try { Integer.parseInt(TI.getText()); }
                 catch(NumberFormatException e) { return; }
                 setupConfig.setAppWidth(Integer.parseInt(TI.getText()));
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         inAppHeight.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
@@ -331,14 +331,14 @@ public class TweakFrame extends FillPane implements Bindable
                 try { Integer.parseInt(TI.getText()); }
                 catch(NumberFormatException e) { return; }
                 setupConfig.setAppHeight(Integer.parseInt(TI.getText()));
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         cbResizable.getButtonStateListeners().add(new ButtonStateListener() {
             @Override public void stateChanged(Button bt, State st)
             {
                 setupConfig.setResizable(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         
@@ -347,21 +347,21 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setAuthorName(TI.getText());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         inAuthorEmail.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setAuthorEmail(TI.getText());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         inAppURL.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setAppURL(TI.getText());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         
@@ -369,11 +369,11 @@ public class TweakFrame extends FillPane implements Bindable
         installPath.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
-                setupConfig.setInstallPath(TI.getText());//Set the default install path
+                setupConfig.setInstallPath(TI.getText());// Set the default install path
                 File f = new File(TI.getText());
-                if (f.exists())//Map the file browser with the path entered
+                if (f.exists())// Map the file browser with the path entered
                     fileBrowserSheet.setRootDirectory(f.isDirectory()?f:f.getParentFile());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
                 if (TI.getText().length() > 0) {
                     if (!cbForce.isEnabled()) {
                         cbForce.setEnabled(true);
@@ -390,7 +390,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void stateChanged(Button bt, State st)
             {
                 setupConfig.setForcePath(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         
@@ -400,9 +400,9 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 setupConfig.setReadmePath(TI.getText());
                 File f = new File(TI.getText());
-                if (f.exists())//Map the file browser with the path entered
+                if (f.exists())// Map the file browser with the path entered
                     fBSReadme.setRootDirectory(f.isDirectory()?f:f.getParentFile());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         inLicense.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
@@ -410,9 +410,9 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 setupConfig.setLicensePath(TI.getText());
                 File f = new File(TI.getText());
-                if (f.exists())//Map the file browser with the path entered
+                if (f.exists())// Map the file browser with the path entered
                     fBSLicense.setRootDirectory(f.isDirectory()?f:f.getParentFile());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         inLogo.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
@@ -420,9 +420,9 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 setupConfig.setLogoPath(TI.getText());
                 File f = new File(TI.getText());
-                if (f.exists())//Map the file browser with the path entered
+                if (f.exists())// Map the file browser with the path entered
                     fBS1.setRootDirectory(f.isDirectory()?f:f.getParentFile());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         inSideLogo.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
@@ -430,98 +430,98 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 setupConfig.setSideLogoPath(TI.getText());
                 File f = new File(TI.getText());
-                if (f.exists())//Map the file browser with the path entered
+                if (f.exists())// Map the file browser with the path entered
                     fBS2.setRootDirectory(f.isDirectory()?f:f.getParentFile());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         
         // Shortcuts
-        cbShortcuts.getButtonPressListeners().add(new ButtonPressListener() {//Shortcuts enable for packs
+        cbShortcuts.getButtonPressListeners().add(new ButtonPressListener() {// Shortcuts enable for packs
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setShortcuts(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
-        cbFolderSh.getButtonPressListeners().add(new ButtonPressListener() {//Shortcut enable for folder
+        cbFolderSh.getButtonPressListeners().add(new ButtonPressListener() {// Shortcut enable for folder
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setFolderShortcut(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
-        cbShToStartMenu.getButtonPressListeners().add(new ButtonPressListener() {//Shortcuts to start menu
+        cbShToStartMenu.getButtonPressListeners().add(new ButtonPressListener() {// Shortcuts to start menu
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setShToStartMenu(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
-        cbShToDesktop.getButtonPressListeners().add(new ButtonPressListener() {//Shortcuts to desktop
+        cbShToDesktop.getButtonPressListeners().add(new ButtonPressListener() {// Shortcuts to desktop
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setShToDesktop(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
         
         // Advanced
-        cbRegistryCheck.getButtonPressListeners().add(new ButtonPressListener() {//Registry Check
+        cbRegistryCheck.getButtonPressListeners().add(new ButtonPressListener() {// Registry Check
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setRegistryCheck(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
-        cbScriptGen.getButtonPressListeners().add(new ButtonPressListener() {//Script Generation
+        cbScriptGen.getButtonPressListeners().add(new ButtonPressListener() {// Script Generation
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setScriptGen(bt.isSelected());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
-        cbLpEnglish.getButtonPressListeners().add(new ButtonPressListener() {//English Langpack
+        cbLpEnglish.getButtonPressListeners().add(new ButtonPressListener() {// English Langpack
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setEnglish(bt.isSelected());
                 if (!cbLpEnglish.isSelected() && !cbLpFrench.isSelected() && !cbLpCustom.isSelected() &&
                         !cbLpGerman.isSelected() && !cbLpSpanish.isSelected())
-                    cbLpEnglish.setSelected(true);//Select English when none is selected
-                setModified(true);//Modified flag*
+                    cbLpEnglish.setSelected(true);// Select English when none is selected
+                setModified(true);// Modified flag*
             }
         });
-        cbLpFrench.getButtonPressListeners().add(new ButtonPressListener() {//French Langpack
+        cbLpFrench.getButtonPressListeners().add(new ButtonPressListener() {// French Langpack
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setFrench(bt.isSelected());
                 if (!cbLpEnglish.isSelected() && !cbLpFrench.isSelected() && !cbLpCustom.isSelected() &&
                         !cbLpGerman.isSelected() && !cbLpSpanish.isSelected())
-                    cbLpEnglish.setSelected(true);//Select English when none is selected
-                setModified(true);//Modified flag*
+                    cbLpEnglish.setSelected(true);// Select English when none is selected
+                setModified(true);// Modified flag*
             }
         });
-        cbLpGerman.getButtonPressListeners().add(new ButtonPressListener() {//German Langpack
+        cbLpGerman.getButtonPressListeners().add(new ButtonPressListener() {// German Langpack
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setGerman(bt.isSelected());
                 if (!cbLpEnglish.isSelected() && !cbLpFrench.isSelected() && !cbLpCustom.isSelected() &&
                         !cbLpGerman.isSelected() && !cbLpSpanish.isSelected())
-                    cbLpEnglish.setSelected(true);//Select English when none is selected
-                setModified(true);//Modified flag*
+                    cbLpEnglish.setSelected(true);// Select English when none is selected
+                setModified(true);// Modified flag*
             }
         });
-        cbLpSpanish.getButtonPressListeners().add(new ButtonPressListener() {//Spanish Langpack
+        cbLpSpanish.getButtonPressListeners().add(new ButtonPressListener() {// Spanish Langpack
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setSpanish(bt.isSelected());
                 if (!cbLpEnglish.isSelected() && !cbLpFrench.isSelected() && !cbLpCustom.isSelected() &&
                         !cbLpGerman.isSelected() && !cbLpSpanish.isSelected())
-                    cbLpEnglish.setSelected(true);//Select English when none is selected
-                setModified(true);//Modified flag*
+                    cbLpEnglish.setSelected(true);// Select English when none is selected
+                setModified(true);// Modified flag*
             }
         });
-        cbLpCustom.getButtonPressListeners().add(new ButtonPressListener() {//Custom Langpack
+        cbLpCustom.getButtonPressListeners().add(new ButtonPressListener() {// Custom Langpack
             @Override public void buttonPressed(Button bt)
             {
                 setupConfig.setCustomLang(bt.isSelected());
@@ -530,24 +530,24 @@ public class TweakFrame extends FillPane implements Bindable
                 boxCustomLP.setEnabled(bt.isSelected());
                 if (!cbLpEnglish.isSelected() && !cbLpFrench.isSelected() && !cbLpCustom.isSelected() &&
                         !cbLpGerman.isSelected() && !cbLpSpanish.isSelected())
-                    cbLpEnglish.setSelected(true);//Select English when none is selected
-                setModified(true);//Modified flag*
+                    cbLpEnglish.setSelected(true);// Select English when none is selected
+                setModified(true);// Modified flag*
             }
         });
         inCustomISO3.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setCustomLangISO(TI.getText());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
-            //Make iso3 codes suggestions
+            // Make iso3 codes suggestions
             @Override public void textInserted(TextInput textInput, int index, int count)
             {
                 String text = textInput.getText().toLowerCase();
                 boolean found = false;
                 String suggestion = "";
                 
-                for(String iso:IOFactory.iso3Codes) {//Suggestions from Group paths
+                for(String iso:IOFactory.iso3Codes) {// Suggestions from Group paths
                     if (iso.toLowerCase().startsWith(text)) {
                         found = true;
                         suggestion = iso;
@@ -569,9 +569,9 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 setupConfig.setCustomLangPath(TI.getText());
                 File f = new File(TI.getText());
-                if (f.exists())//Map the file browser with the path entered
+                if (f.exists())// Map the file browser with the path entered
                     fBSLangpack.setRootDirectory(f.isDirectory()?f:f.getParentFile());
-                setModified(true);//Modified flag*
+                setModified(true);// Modified flag*
             }
         });
     }

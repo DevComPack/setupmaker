@@ -233,14 +233,14 @@
 																	<Label text="Name " styles="{color:7}" />
 																</BoxPane>
 																<TextInput bxml:id="inName" enabled="false"
-																	tooltipText="Pack ID (Must be unique)" textSize="17" />
+																	tooltipText="Pack ID" textSize="17" />
 															</TablePane.Row>
 															<TablePane.Row>
 																<BoxPane styles="{verticalAlignment:'center'}">
 																	<Label text="Version " styles="{color:7}" />
 																</BoxPane>
 																<TextInput bxml:id="inVersion" enabled="false"
-																	tooltipText="Pack Version (X.X.X)" textSize="10" />
+																	tooltipText="Pack Version (x.x.x)" textSize="10" />
 															</TablePane.Row>
 														</TablePane>
 													</TablePane.Row>

@@ -113,20 +113,6 @@ public class IOFactory
         return false;
     }
     
-    /**
-     * Returns if a path string exists or empty string
-     * @param path
-     * @return true: if path exists or empty path
-     */
-    public static boolean pathValidate(String path) {
-        assert path != null;
-        if (path.length()==0) return true;
-        File f = new File(path);
-        if (f.exists())
-            return true;
-        return false;
-    }
-    
     
     // Cached icons
     private static final String iconsPath = "/dcp/gui/icons/";

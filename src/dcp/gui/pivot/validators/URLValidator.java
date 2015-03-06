@@ -18,7 +18,7 @@ public class URLValidator implements Validator
                 url.startsWith("http://") || url.startsWith("https://"))
             return true;
         
-        Out.print(LOG_LEVEL.WARN, "URL format incorrect: " + url);
+        Out.print(LOG_LEVEL.DEBUG, "URL format incorrect: " + url);
         return false;
     }
 

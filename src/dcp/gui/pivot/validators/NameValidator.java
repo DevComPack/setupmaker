@@ -1,5 +1,6 @@
 package dcp.gui.pivot.validators;
 
+import org.apache.pivot.wtk.Component;
 import org.apache.pivot.wtk.validation.Validator;
 
 import dcp.logic.factory.TypeFactory.LOG_LEVEL;
@@ -8,35 +9,33 @@ import dcp.main.log.Out;
 
 public class NameValidator implements Validator
 {
+    private Component component;
+    private static String tooltipText = "Name";
+    private boolean required;
+    
+    public NameValidator(Component component, boolean required)
+    {
+        assert component != null;
+        this.component = component;
+        this.required = required;
+    }
 
     @Override
-    public boolean isValid(String s)
+    public boolean isValid(String str)
     {
-        boolean correct = true;
+        if (str.length() == 0) return !this.required;
         
-        if (s.equals(""))//Empty string
+        if (!str.matches("[a-zA-Z._\\-0-9]+")) {
+            Out.print(LOG_LEVEL.DEBUG, "Pack name incorrect: " + str);
+            if (str.contains(" "))
+                component.setTooltipText("[No space allowed]");
+            else component.setTooltipText("[Name contains invalid characters]");
+            
             return false;
+        }
         
-        //Contains special characters
-        else if (s.contains("/") || s.contains("\\") || s.contains("%") || s.contains("$") )
-            correct = false;
-        else if (s.contains("'") || s.contains("\"") || s.contains(",") || s.contains("&") )
-            correct = false;
-        else if (s.contains(":") || s.contains(";") || s.contains("?") || s.contains("!") )
-            correct = false;
-        else if (s.contains("(") || s.contains(")") || s.contains("[") || s.contains("]") )
-            correct = false;
-        else if (s.contains(">") || s.contains("<") || s.contains("@") || s.contains("=") )
-            correct = false;
-        else if (s.contains("{") || s.contains("}") || s.contains("#") || s.contains("*") )
-            correct = false;
-        else if (s.contains("+") || s.contains("^") || s.contains("|") || s.contains("~") )
-            correct = false;
-        else if (s.contains("`") )
-            correct = false;
-        
-        if (!correct) Out.print(LOG_LEVEL.WARN, "Name format incorrect: " + s);
-        return correct;
+        component.setTooltipText(tooltipText);
+        return true;
     }
 
 }

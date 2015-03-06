@@ -16,7 +16,7 @@ public class Iso3Validator implements Validator
             return true;
         
         if (s.length() != 3) {// should be 3 characters
-            Out.print(LOG_LEVEL.WARN, "ISO3 format incorrect: " + s);
+            Out.print(LOG_LEVEL.DEBUG, "ISO3 format incorrect: " + s);
             return false;
         }
         

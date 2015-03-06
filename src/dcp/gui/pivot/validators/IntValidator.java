@@ -7,12 +7,12 @@ public class IntValidator implements Validator
 {
 
     @Override
-    public boolean isValid(String s)
+    public boolean isValid(String str)
     {
-        if (s.equals(""))//Empty string
+        if (str.length() == 0)// Empty string
             return false;
         
-        try { Integer.parseInt(s); }
+        try { Integer.parseInt(str); }
         catch(NumberFormatException e) {
             return false;
         }

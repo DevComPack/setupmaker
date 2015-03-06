@@ -69,6 +69,7 @@ import dcp.config.io.IOFactory;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.dad.TextInputDrop;
 import dcp.gui.pivot.facades.SetFacade;
+import dcp.gui.pivot.validators.NameValidator;
 import dcp.gui.pivot.validators.VersionValidator;
 import dcp.logic.factory.CastFactory;
 import dcp.logic.factory.GroupFactory;
@@ -194,7 +195,7 @@ public class SetFrame extends FillPane implements Bindable
     private MenuHandler MHTableView;
     
     //=========================================
-    public SetFrame() {//Constructor
+    public SetFrame() {// Constructor
         assert (singleton == null);
         singleton = this;
         
@@ -463,11 +464,11 @@ public class SetFrame extends FillPane implements Bindable
     {
         facade = new SetFacade(treeData);
         
-        //Workspace set
+        // Workspace set
         vSplitPane.setSplitRatio(Master.facade.appConfig.getSetVerSplitPaneRatio());
         hSplitPane.setSplitRatio(Master.facade.appConfig.getSetHorSplitPaneRatio());
         
-        //Data Binding
+        // Data Binding
         tableView.setTableData(PackFactory.getPacks());//Bind table view to packs
         treeView.setTreeData(treeData);//Bind root to tree view
         tableView.setMenuHandler(MHTableView);
@@ -475,12 +476,12 @@ public class SetFrame extends FillPane implements Bindable
         dependencyFill(isGroupDependency());//Bind Groups data to List Button for dependency
         ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy to none
         
-        //Actions Binding
+        // Actions Binding
         btAdd.setAction(AAddToGroup);
         btDelete.setAction(ADeletePacks);
         btRemove.setAction(ARemove);
         
-        //Workspace Splitpanes ratio value save to appconfig
+        // Workspace Splitpanes ratio value save to appconfig
         vSplitPane.getSplitPaneListeners().add(new SplitPaneListener.Adapter() {
             @Override public void splitRatioChanged(SplitPane sp, float ratio)
             {
@@ -494,30 +495,29 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Validators
+        // Validators
         inName.setValidator(new Validator() {
             @Override public boolean isValid(String str)
             {
                 assert !multi_selection;
-                if (str.length() > 0) {
-                    if (!str.matches("[a-zA-Z._\\-0-9]+")) {
-                        Out.print(LOG_LEVEL.DEBUG, "Pack name format incorrect: " + str);
-                        unvalid = true;
-                        return false;
-                    }
-                    if (!facade.validatePack(str)) {
-                        Out.print(LOG_LEVEL.DEBUG, "Pack name already used: " + str);
-                        unvalid = true;
-                        return false;
-                    }
+                if (!new NameValidator(inName, true).isValid(str)) {
+                    unvalid = true;
+                    return false;
                 }
+                if (str.length() > 0 && !facade.validatePack(str)) {
+                    Out.print(LOG_LEVEL.DEBUG, "Pack name already used: " + str);
+                    inName.setTooltipText("[Name already in use]");
+                    unvalid = true;
+                    return false;
+                }
+                inName.setTooltipText("Pack ID");
                 return true;
             }
         });
         inVersion.setValidator(new Validator() {
             @Override public boolean isValid(String str)
             {
-                if (new VersionValidator().isValid(str) == false) {
+                if (new VersionValidator(inVersion, true).isValid(str) == false) {
                     unvalid = true;
                     return false;
                 }
@@ -525,7 +525,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Packs panel buttons
+        // Packs panel buttons
         btCheck.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -592,7 +592,7 @@ public class SetFrame extends FillPane implements Bindable
         });
         
         
-        //Groups panel buttons
+        // Groups panel buttons
         btExpand.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -651,7 +651,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Table View Drag Source
+        // Table View Drag Source
         tableView.setDragSource(new DragSource() {
             private LocalManifest content = null;
             
@@ -701,7 +701,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Table view Sort listener (+ Update priorities of Sort tab)
+        // Table view Sort listener (+ Update priorities of Sort tab)
         tableView.getTableViewSortListeners().add(new TableViewSortListener.Adapter() {
             @Override public void sortChanged(TableView tableView)
             {
@@ -711,7 +711,7 @@ public class SetFrame extends FillPane implements Bindable
                 setModified(true);//Modified flag
             }
         });
-        //Table View Row listener from Scan - Sort clear (+ properties update)
+        // Table View Row listener from Scan - Sort clear (+ properties update)
         tableView.getTableViewRowListeners().add(new TableViewRowListener.Adapter() {
             @Override public void rowInserted(TableView tableView, int index)
             {
@@ -724,7 +724,7 @@ public class SetFrame extends FillPane implements Bindable
                 nullProperties();//Properties update
             }
         });
-        //Table View Pack(s) Selection Event Listener (properties)
+        // Table View Pack(s) Selection Event Listener (properties)
         tableView.getTableViewSelectionListeners().add(new TableViewSelectionListener.Adapter() {
             @Override public void selectedRangesChanged(TableView tableView, Sequence<Span> previousSelectedRanges)
             {
@@ -758,7 +758,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Tree view drop target
+        // Tree view drop target
         treeView.setDropTarget(new DropTarget() {
             @Override public DropAction dragEnter(Component component, Manifest dragContent,
                     int supportedDropActions, DropAction userDropAction)
@@ -845,7 +845,7 @@ public class SetFrame extends FillPane implements Bindable
             
             @Override public void dragExit(Component component) {}
         });
-        //Tree View Group Selection listener (group add in hierarchy/pack selection)
+        // Tree View Group Selection listener (group add in hierarchy/pack selection)
         treeView.getTreeViewSelectionListeners().add(new TreeViewSelectionListener.Adapter() {
             @Override public void selectedNodeChanged(TreeView treeView, Object previousSelectedNode)
             {
@@ -877,7 +877,7 @@ public class SetFrame extends FillPane implements Bindable
                 ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
             }
         });
-        //New Group inserted (expand path of inserted node) - Modified Flag(*)
+        // New Group inserted (expand path of inserted node) - Modified Flag(*)
         treeView.getTreeViewNodeListeners().add(new TreeViewNodeListener.Adapter() {
             @Override public void nodeInserted(TreeView treeView, Path path, int index)
             {
@@ -900,7 +900,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Set silent setup install press event
+        // Set silent setup install press event
         cbSilent.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -917,7 +917,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Checkbox buttons press events
+        // Checkbox buttons press events
         cbOverride.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -960,7 +960,7 @@ public class SetFrame extends FillPane implements Bindable
                                 (getSelectedPack().getFileType() == FILE_TYPE.Archive && getSelectedPack().getInstallType() == INSTALL_TYPE.EXTRACT) ) );
             }
         });
-        //Shortcut advanced options dialog open
+        // Shortcut advanced options dialog open
         btShortcutAdvanced.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -1015,7 +1015,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Radio buttons press events
+        // Radio buttons press events
         rbOsAll.getButtonPressListeners().add(new ButtonPressListener() {// All OS
             @Override public void buttonPressed(Button bt)
             {
@@ -1095,7 +1095,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Pack install name
+        // Pack install name
         inName.getTextInputContentListeners().add(new TextInputContentListener.Adapter() {
             @Override public void textChanged(TextInput TI)
             {
@@ -1129,7 +1129,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Description text change save into pack data
+        // Description text change save into pack data
         inDescription.getTextAreaContentListeners().add(new TextAreaContentListener.Adapter() {
             @Override public void textChanged(TextArea TA)
             {
@@ -1147,7 +1147,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Pack's install path set
+        // Pack's install path set
         inPInstallPath.getComponentStateListeners().add(new ComponentStateListener.Adapter() {
             @Override public void enabledChanged(Component cp)
             {
@@ -1171,7 +1171,7 @@ public class SetFrame extends FillPane implements Bindable
                     }
                 }
             }
-            //Auto path suggestions
+            // Auto path suggestions
             @Override public void textInserted(TextInput textInput, int index, int count)
             {
                 String text = textInput.getText().toLowerCase();
@@ -1195,7 +1195,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Install Groups text input listener (save to Pack/Group)
+        // Install Groups text input listener (save to Pack/Group)
         inInstallGroups.getComponentStateListeners().add(new ComponentStateListener.Adapter() {
             @Override public void enabledChanged(Component cp)
             {
@@ -1242,7 +1242,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Dependency type change
+        // Dependency type change
         cbDepType.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -1259,7 +1259,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Dependency Group List Button Listener (set Pack dependency)
+        // Dependency Group List Button Listener (set Pack dependency)
         lbDependency.getComponentStateListeners().add(new ComponentStateListener.Adapter() {
             @Override public void enabledChanged(Component cp)
             {
@@ -1272,13 +1272,13 @@ public class SetFrame extends FillPane implements Bindable
                 Pack P = getSelectedPack();
                 if (P != null && lb.isEnabled()) {
                     btDepErase.setEnabled(lb.getSelectedIndex()>=0);
-                    if (!multi_selection) {//1 pack selected
+                    if (!multi_selection) {// 1 pack selected
                         if (isGroupDependency())
                             P.setGroupDependency((lb.getSelectedItem() != null)?(Group) lb.getSelectedItem():null);
                         else
                             P.setPackDependency((lb.getSelectedItem() != null)?(Pack) lb.getSelectedItem():null);
                     }
-                    else {//Multi packs selected
+                    else {//M ulti packs selected
                         Sequence<Pack> list = getSelectedPacks();
                         for (int i = 0; i < list.getLength(); i++)
                             if (isGroupDependency())
@@ -1290,13 +1290,13 @@ public class SetFrame extends FillPane implements Bindable
             }
         });
         
-        //Dependency clear button listener
+        // Dependency clear button listener
         btDepErase.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
                 if (lbDependency.getSelectedIndex() > -1)//If dependency affected
                     lbDependency.setSelectedIndex(-1);
-                else {//If different dependencies on multi packs selected
+                else {// If different dependencies on multi packs selected
                     if (multi_selection) {
                         Sequence<Pack> list = getSelectedPacks();
                         for (int i = 0; i < list.getLength(); i++) {
@@ -1308,14 +1308,14 @@ public class SetFrame extends FillPane implements Bindable
                 }
             }
         });
-        //Install Groups clear button listener
+        // Install Groups clear button listener
         btIGErase.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
                 inInstallGroups.setText("");
             }
         });
-        //Install Path clear button listener
+        // Install Path clear button listener
         btIPErase.getButtonPressListeners().add(new ButtonPressListener() {
             @Override public void buttonPressed(Button bt)
             {
@@ -1332,60 +1332,60 @@ public class SetFrame extends FillPane implements Bindable
     private void dependencyFill(boolean from_groups) {
         boolean enabled = lbDependency.isEnabled();
         if (enabled) lbDependency.setEnabled(false);
-        if (from_groups) {//From Groups
-            lbDependency.setListData(GroupFactory.getGroups());//Data binding
-            if (!multi_selection) {//one pack selected
+        if (from_groups) {// From Groups
+            lbDependency.setListData(GroupFactory.getGroups());// Data binding
+            if (!multi_selection) {// one pack selected
                 lbDependency.setDisabledItemFilter(new Filter<Group>() {
-                    @Override public boolean include(Group group)//Groups to filter (disable)
+                    @Override public boolean include(Group group)// Groups to filter (disable)
                     {
                         Pack P = getSelectedPack();
                         assert P!=null;
                         if (P.getGroup() != null && P.getGroup().hasParent(group))
-                                return true;//Disable parent Group
+                                return true;// Disable parent Group
                         return false;
                     }
                 });
             }
-            else {//multi packs selected
+            else {// multi packs selected
                 lbDependency.setDisabledItemFilter(new Filter<Group>() {
-                    @Override public boolean include(Group group)//Groups to filter (disable)
+                    @Override public boolean include(Group group)// Groups to filter (disable)
                     {
                         Pack P = null;
                         Sequence<Pack> list = getSelectedPacks();
                         for(int i = 0; i < list.getLength(); i++) {
                             P = list.get(i);
                             if (P.getGroup() != null && P.getGroup().hasParent(group))
-                                    return true;//Disable parent Group
+                                    return true;// Disable parent Group
                         }
                         return false;
                     }
                 });
             }
         }
-        else {//From Packs
-            lbDependency.setListData(PackFactory.getPacks());//Data binding
-            if (!multi_selection) {//one pack selected
+        else {// From Packs
+            lbDependency.setListData(PackFactory.getPacks());// Data binding
+            if (!multi_selection) {// one pack selected
                 lbDependency.setDisabledItemFilter(new Filter<Pack>() {
-                    @Override public boolean include(Pack pack)//Groups to filter (disable)
+                    @Override public boolean include(Pack pack)// Groups to filter (disable)
                     {
                         Pack P = getSelectedPack();
                         assert P!=null;
                         if (P.equals(pack))
-                            return true;//Disable Pack
+                            return true;// Disable Pack
                         return false;
                     }
                 });
             }
-            else {//multi packs selected
+            else {// multi packs selected
                 lbDependency.setDisabledItemFilter(new Filter<Pack>() {
-                    @Override public boolean include(Pack pack)//Groups to filter (disable)
+                    @Override public boolean include(Pack pack)// Groups to filter (disable)
                     {
                         Pack P = null;
                         Sequence<Pack> list = getSelectedPacks();
                         for(int i = 0; i < list.getLength(); i++) {
                             P = list.get(i);
                             if (P.equals(pack))
-                                return true;//Disable Pack
+                                return true;// Disable Pack
                         }
                         return false;
                     }
@@ -1398,7 +1398,7 @@ public class SetFrame extends FillPane implements Bindable
     /**
      * Properties Packs functions
      */
-    private void nullProperties() {//no pack selected properties
+    private void nullProperties() {// no pack selected properties
         tableView.clearSelection();
         
         rbOsAll.setEnabled(false);
@@ -1451,7 +1451,7 @@ public class SetFrame extends FillPane implements Bindable
         inDescription.setEnabled(false);
         inDescription.setText("");
     }
-    private void exeInstall(boolean SETUP) {//Executable/Setup properties (default:execute)
+    private void exeInstall(boolean SETUP) {// Executable/Setup properties (default:execute)
         rbExecute.setEnabled(true);
         rbExtract.setEnabled(false);
         rbCopy.setEnabled(true);
@@ -1459,42 +1459,42 @@ public class SetFrame extends FillPane implements Bindable
         if (SETUP) cbSilent.setEnabled(true);
         else cbSilent.setEnabled(false);
     }
-    private void archiveInstall() {//Archive properties (default:copy)
+    private void archiveInstall() {// Archive properties (default:copy)
         rbExecute.setEnabled(false);
         rbExtract.setEnabled(true);
         rbCopy.setEnabled(true);
         cbSilent.setEnabled(false);
     }
-    private void fileInstall() {//File properties (default:copy)
+    private void fileInstall() {// File properties (default:copy)
         rbExecute.setEnabled(false);
         rbExtract.setEnabled(false);
         rbCopy.setEnabled(true);
         cbSilent.setEnabled(false);
     }
-    private void packInstallModes(FILE_TYPE FT) {//Enable relevant install mode properties
-        if (FT == FILE_TYPE.Executable) {//Executable
+    private void packInstallModes(FILE_TYPE FT) {// Enable relevant install mode properties
+        if (FT == FILE_TYPE.Executable) {// Executable
             exeInstall(false);
-        } else if(FT == FILE_TYPE.Setup) {//Setup
+        } else if(FT == FILE_TYPE.Setup) {// Setup
             exeInstall(true);
-        }else if (FT == FILE_TYPE.Folder || FT == FILE_TYPE.Archive) {//Archive, Folder
+        }else if (FT == FILE_TYPE.Folder || FT == FILE_TYPE.Archive) {// Archive, Folder
             archiveInstall();
         } else {//File
             fileInstall();
         }
     }
-    private void enableProperties() {//Enable properties buttons/options for single pack selection
-        cbRequired.setTriState(false); cbRequired.setEnabled(true);//Set required
-        cbSelected.setTriState(false); cbSelected.setEnabled(true);//Set selected
-        cbHidden.setTriState(false); cbHidden.setEnabled(true);//Set hidden
-        cbOverride.setTriState(false); cbOverride.setEnabled(true);//Set override
-        cbShortcut.setTriState(false); cbShortcut.setEnabled(true);//Set Shortcut
-        inDescription.setEnabled(true);//Set Description
-        inPInstallPath.setEnabled(true);//Set Install Path
-        inName.setEnabled(true);//Set Pack Name
+    private void enableProperties() {// Enable properties buttons/options for single pack selection
+        cbRequired.setTriState(false); cbRequired.setEnabled(true);// Set required
+        cbSelected.setTriState(false); cbSelected.setEnabled(true);// Set selected
+        cbHidden.setTriState(false); cbHidden.setEnabled(true);// Set hidden
+        cbOverride.setTriState(false); cbOverride.setEnabled(true);// Set override
+        cbShortcut.setTriState(false); cbShortcut.setEnabled(true);// Set Shortcut
+        inDescription.setEnabled(true);// Set Description
+        inPInstallPath.setEnabled(true);// Set Install Path
+        inName.setEnabled(true);// Set Pack Name
         inVersion.setEnabled(true);// Set pack Version
-        inInstallGroups.setEnabled(true);//Set Install Groups
-        lbDependency.setEnabled(true);//Set Dependency
-        cbDepType.setEnabled(true);//Dependency Type
+        inInstallGroups.setEnabled(true);// Set Install Groups
+        lbDependency.setEnabled(true);// Set Dependency
+        cbDepType.setEnabled(true);// Dependency Type
         rbOsAll.setEnabled(true);
         rbOsWin.setEnabled(true);
         rbOsLin.setEnabled(true);
@@ -1508,7 +1508,7 @@ public class SetFrame extends FillPane implements Bindable
      * @param pack
      */
     private void setPackProperties(Pack pack) {
-        //Global: bind radio button to install type
+        // Global: bind radio button to install type
         assert pack != null;
         
         switch(pack.getInstallType()) {
@@ -1571,7 +1571,7 @@ public class SetFrame extends FillPane implements Bindable
         inInstallGroups.setText(pack.getInstallGroups());
         
         boolean GD = isGroupDependency();
-        dependencyFill(GD);//update dependency filter
+        dependencyFill(GD);// update dependency filter
         if (pack.getGroupDependency() != null) {
             if (!GD) cbDepType.press();
             lbDependency.setSelectedItem(pack.getGroupDependency());
@@ -1593,7 +1593,7 @@ public class SetFrame extends FillPane implements Bindable
      * @param list: selected packs
      */
     private void setMultiProperties(Sequence<Pack> list) {
-        //packs data equivalence check variables
+        // packs data equivalence check variables
         boolean req = list.get(0).isRequired();
         boolean sel = list.get(0).isSelected();
         boolean hid = list.get(0).isHidden();
@@ -1614,24 +1614,24 @@ public class SetFrame extends FillPane implements Bindable
         int ARCH = list.get(0).getArch();
         boolean isSameArch = true;
         
-        //Dependency
+        // Dependency
         Group sameGDep; Pack samePDep;
         sameGDep = list.get(0).getGroupDependency();
         samePDep = list.get(0).getPackDependency();
         boolean isSameDep = ((isGroupDependency() && sameGDep!=null) || (!isGroupDependency() && samePDep!=null))?true:false;
         boolean hasValueDep = (sameGDep != null);
-        //Install groups
+        // Install groups
         String sameIG = list.get(0).getInstallGroups();
         boolean isSameIG = true;
         boolean hasValueIG = (!sameIG.equals(""));
         String[] commonIG = list.get(0).getInstallGroups().split(",");
-        //Install path
+        // Install path
         String sameIP = list.get(0).getInstallPath();
         boolean isSameIP = true;
         boolean hasValueIP = (!sameIP.equals(""));
         
-        //data equivalence check
-        for(int i=1; i<list.getLength(); i++) {//loop on selected packs
+        // data equivalence check
+        for(int i=1; i<list.getLength(); i++) {// loop on selected packs
             if (list.get(i).isRequired() != req)
                 reqMix = true;
             if (list.get(i).isSelected() != sel)
@@ -1654,12 +1654,12 @@ public class SetFrame extends FillPane implements Bindable
                 isSameArch = false;
             
             if (isSameDep) {
-                if (isGroupDependency()) {//Group dependency
+                if (isGroupDependency()) {// Group dependency
                     if ( (list.get(i).getGroupDependency()!=null && !list.get(i).getGroupDependency().equals(sameGDep)) ||
                             list.get(i).getGroupDependency()==null)
                         isSameDep = false;
                 }
-                else {//Pack dependency
+                else {// Pack dependency
                     if ( (list.get(i).getPackDependency()!=null && !list.get(i).getPackDependency().equals(samePDep)) ||
                             list.get(i).getPackDependency()==null)
                         isSameDep = false;
@@ -1668,7 +1668,7 @@ public class SetFrame extends FillPane implements Bindable
             if (!hasValueDep && (list.get(i).getGroupDependency()!=null || list.get(i).getPackDependency()!=null))
                 hasValueDep = true;
             
-            //Get only common install groups from all packs
+            // Get only common install groups from all packs
             if (isSameIG && !list.get(i).getInstallGroups().equals(sameIG)) {
                 sameIG = "";
                 for(String S:commonIG) {
@@ -1687,7 +1687,7 @@ public class SetFrame extends FillPane implements Bindable
                 hasValueIP = true;
         }
         
-        //default value set from equivalence
+        // default value set from equivalence
         if (!reqMix) cbRequired.setSelected(req);
         else { cbRequired.setTriState(true); cbRequired.setState(State.MIXED); }
 
@@ -1706,12 +1706,12 @@ public class SetFrame extends FillPane implements Bindable
         if (!silMix) cbSilent.setSelected(silentinstall);
         else { cbSilent.setTriState(true); cbSilent.setState(State.MIXED); }
 
-        if (isSameFT) {//Packs of same file type selected
+        if (isSameFT) {// Packs of same file type selected
             packInstallModes(FT);
         }
         else rbCopy.setEnabled(true);
         
-        if (isSameIT) {//Packs of same install mode selected
+        if (isSameIT) {// Packs of same install mode selected
             switch(IT) {
             case EXECUTE:
                 rbExecute.setSelected(true);
@@ -1728,7 +1728,7 @@ public class SetFrame extends FillPane implements Bindable
             }
         }
         
-        if (isSameOS) {//Packs of same install OS selected
+        if (isSameOS) {// Packs of same install OS selected
             switch(OS) {
             case ALL:
                 rbOsAll.setSelected(true);
@@ -1764,7 +1764,7 @@ public class SetFrame extends FillPane implements Bindable
         else lbDependency.setSelectedIndex(-1);
         if (hasValueDep) btDepErase.setEnabled(true);
         
-        if (isSameIG) {//Display common install groups without edit
+        if (isSameIG) {// Display common install groups without edit
             inInstallGroups.setEnabled(false);
             inInstallGroups.setText(sameIG);
             inInstallGroups.setEnabled(true);
@@ -1774,24 +1774,24 @@ public class SetFrame extends FillPane implements Bindable
         if (isSameIP) inPInstallPath.setText(sameIP);
         if (hasValueIP) btIPErase.setEnabled(true);
         
-        dependencyFill(isGroupDependency());//update dependency filter
+        dependencyFill(isGroupDependency());// update dependency filter
         
-        //Enable components
-        cbOverride.setEnabled(true);//Set override
-        cbShortcut.setEnabled(true);//Set shortcut
-        cbRequired.setEnabled(true);//Set required
-        cbSelected.setEnabled(true);//Set selected
-        cbHidden.setEnabled(true);//Set hidden
-        rbOsAll.setEnabled(true);//Set OS platforms
+        // Enable components
+        cbOverride.setEnabled(true);// Set override
+        cbShortcut.setEnabled(true);// Set shortcut
+        cbRequired.setEnabled(true);// Set required
+        cbSelected.setEnabled(true);// Set selected
+        cbHidden.setEnabled(true);// Set hidden
+        rbOsAll.setEnabled(true);// Set OS platforms
         rbOsWin.setEnabled(true);
         rbOsLin.setEnabled(true);
         rbOsMac.setEnabled(true);
         rbArchAll.setEnabled(true);// Set Arch platforms
         rbArch32.setEnabled(true);
         rbArch64.setEnabled(true);
-        lbDependency.setEnabled(true);//Set dependency
-        inInstallGroups.setEnabled(true);//Set Install Groups
-        inPInstallPath.setEnabled(true);//Set Pack Install Paths
+        lbDependency.setEnabled(true);// Set dependency
+        inInstallGroups.setEnabled(true);// Set Install Groups
+        inPInstallPath.setEnabled(true);// Set Pack Install Paths
     }
 
     /**
@@ -1802,7 +1802,7 @@ public class SetFrame extends FillPane implements Bindable
     public void init(List<Group> groups, List<Pack> packs)
     {
         facade.importDataFrom(groups, packs, true, false);
-        treeView.expandAll();//Expand branches
+        treeView.expandAll();// Expand branches
         
         setModified(false);
     }
@@ -1813,7 +1813,7 @@ public class SetFrame extends FillPane implements Bindable
     public void update() {
         Out.print(LOG_LEVEL.DEBUG, "Set tab update");
         nullProperties(); // Initialize properties values
-        ngdialog.setHierarchy(false, "");//Initialize NewGroup Hierarchy
+        ngdialog.setHierarchy(false, "");// Initialize NewGroup Hierarchy
         
         // If Recursive Scan and enabled, import folders as groups
         facade.importDataFrom(scanFrame.getGroups(),
@@ -1821,7 +1821,7 @@ public class SetFrame extends FillPane implements Bindable
                 scanFrame.facade.getFolderScan() == SCAN_FOLDER.GROUP_FOLDER,
                 scanFrame.facade.getFolderTarget()
                 );
-        treeView.expandAll();//Expand branches
+        treeView.expandAll();// Expand branches
         
         setModified(true);
     }

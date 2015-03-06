@@ -9,6 +9,7 @@ Easy access for recent saved/loaded projects (up to 3)
 Scan child folders directly from file view context menu
 Copy/Paste pack data between packs (context menu)
 Folder target path set to packs from scan tab
+Text fields validators register error message on component tooltip text
 --
 - Enhancements:
 GUI update

@@ -261,7 +261,7 @@ public class ScanFrame extends FillPane implements Bindable
         final FadeTransition depthFadeTrans = new FadeTransition(depthPane, 100, 20);
         
         // Validators
-        inPath.setValidator(new PathValidator());
+        inPath.setValidator(new PathValidator(inPath, false));
         
         // Data Binding
         treeView.setMenuHandler(MHTreeView);
