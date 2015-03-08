@@ -18,6 +18,7 @@
 	<property name="releases" value="${basedir}/releases"/>
 	<property name="jar_name" value="DCP-SNAPSHOT.jar"/>
 	<property name="jar_file" value="${basedir}/${jar_name}"/>
+	<property name="exe_name" value="dcpsetupmaker.exe"/>
 	<property name="current_release" value="${releases}/DCP_${version}/"/>
 	<property name="doc_path" value="D:\cds\workspaces\packTrunk\devcompack.gh-pages\setupmaker\doc"/>
 	
@@ -125,6 +126,15 @@
 		<echo message="${jar_file} file created."/>
     </target>
 	
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
+		classpath="${lib}/launch4j/launch4j.jar:${lib}/launch4j/xstream.jar" />
+	<target name="exe" depends="dist" description="Generating exe file for jar" >
+		<echo message="Generating exe file for jar"/>
+		<launch4j configFile="${basedir}/dev/launch4j.xml" outfile="${basedir}/${exe_name}"
+					fileVersion="${version}.0" txtFileVersion="${version}.0"
+					productVersion="${version}.0" txtProductVersion="${version}.0" />
+	</target>
+	
 	<target name="test" depends="clean" description="jUnit tests" >
 		<echo message="jUnit testing.."/>
 	</target>
@@ -151,6 +161,7 @@
 			<fileset dir="${basedir}" includes="lib/dcp/"/>
 			<fileset dir="${basedir}" includes="res/bat/ res/langpacks/ res/utils/ res/ps/ res/xml/"/>
 			<zipfileset dir="${basedir}" includes="${jar_name}" fullpath="DCP-${version}.jar"/>
+			<zipfileset dir="${basedir}" includes="${exe_name}" fullpath="DCPSM.exe"/>
 			<zipfileset dir="${basedir}" includes="settings.json" fullpath="settings.json"/>
 			<zipfileset dir="${basedir}" includes="res/Readme.txt" fullpath="README"/>
 			<zipfileset dir="${basedir}" includes="LICENSE" fullpath="LICENSE"/>
