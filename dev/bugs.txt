@@ -1,3 +1,0 @@
-packs copy doesn't copy pack dependency and install groups
-set packs group data restore on new scan
-clear all groups doesn't work on project test
