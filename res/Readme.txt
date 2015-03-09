@@ -29,6 +29,13 @@ systems (e.g., creating desktop shortcuts or editing the Windows registry).
 /Licensing
 ==========
 
+Apache License
+
+Version 2.0, January 2004
+
+http://www.apache.org/licenses/
+
+
 DCP Setup Maker is published under the terms of the Apache License, Version 2.0, 
 meaning that you can adapt it to your needs with very minimal constraints.
 
@@ -44,10 +51,13 @@ under different terms.
 
 DCP Setup Maker is part of the Sourceforge.net <http://sourceforge.net/>
 
-* Web site: <http://sourceforge.net/projects/devcompack/>
-* Forum: <http://sourceforge.net/p/devcompack/discussion/>
-* Subversion repository: <http://svn.code.sf.net/p/devcompack/code/trunk>
+* Web site: <http://www.devcompack.com/setupmaker/>
+* Download: <http://sourceforge.net/projects/devcompack/>
+* Forum: <https://groups.google.com/forum/#!forum/dcp-setup-makers>
+* Git repository: <https://github.com/DevComPack/setupmaker>
 * Tickets <http://sourceforge.net/p/devcompack/tickets/>
+* Contact <mailto:contact@devcompack.com>
+
 
 IzPack is part of the Codehaus <http://codehaus.org/>
 

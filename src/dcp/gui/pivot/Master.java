@@ -45,7 +45,7 @@ public class Master extends Window implements Application, Bindable
 {
     // Constant Application Values
     public final static String AppName = "DCP Setup Maker";
-    public final static String AppVersion = "1.2.0";
+    public final static String AppVersion = "1.2.1";
     
     // Class Data
     private static Window window;// Main application window

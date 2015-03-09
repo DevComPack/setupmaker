@@ -140,7 +140,8 @@ public class TaskIzpackCompile extends Task<Boolean>
         
         // Setup config and Data analyze + corrections
         configAnalyze(setupConfig);
-        dataAnalyze();
+        if (!dataAnalyze())
+            return false;
         
         // Setting default install directory (res/default-dir.txt)
         TextWriter.writeInstallPath(setupConfig.getInstallPath());
@@ -246,7 +247,7 @@ public class TaskIzpackCompile extends Task<Boolean>
         }
     }
 
-    private void dataAnalyze() throws IOException
+    private boolean dataAnalyze() throws IOException
     {
         Out.print(LOG_LEVEL.INFO, "Data parsing...");
         Out.print(LOG_LEVEL.INFO, setupConfig.getAppName() + " " + setupConfig.getAppVersion());
@@ -308,8 +309,10 @@ public class TaskIzpackCompile extends Task<Boolean>
             }
             else if (P.getInstallType() == INSTALL_TYPE.EXTRACT) {
                 if (P.getName().toLowerCase().endsWith(".rar")) {// convert rar file to zip
-                    Out.print(LOG_LEVEL.INFO, "Converting rar file " + P.getName() + " to zip");
-                    P.updatePack(TrueZipCastFactory.rarToZip(new File(P.getPath())));
+                    Out.print(LOG_LEVEL.ERR, "Error reading RAR file. Please use ZIP archives instead.");
+                    return false;
+                    /*Out.print(LOG_LEVEL.INFO, "Converting rar file " + P.getName() + " to zip");
+                    P.updatePack(TrueZipCastFactory.rarToZip(new File(P.getPath())));*/
                 }
             }
             
@@ -323,7 +326,6 @@ public class TaskIzpackCompile extends Task<Boolean>
                     P.setInstallPath(P.getInstallPath().substring(0, P.getInstallPath().length()-1));
                 }
             }
-            
         }
         
         if (!notRequired) {// if all packs are required
@@ -343,6 +345,7 @@ public class TaskIzpackCompile extends Task<Boolean>
             Out.print(LOG_LEVEL.INFO, "Install Group panel enabled");
         
         Out.newLine();
+        return true;
     }
 
     private boolean writeInfo() throws XMLStreamException

@@ -1,1 +1,1 @@
-ant -file ../build.xml doc_copyright
+ant -file ../build.xml doc.clean
