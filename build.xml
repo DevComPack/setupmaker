@@ -74,8 +74,8 @@
 	
 	
 	<!-- task definitions -->
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
-		classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+	<!-- <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
+		classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" /> -->
 	
 	
 	<!-- build targets -->
@@ -215,9 +215,9 @@
 	
 	<target name="exe" depends="dist" description="Generating exe file for jar" >
 		<echo message="Generating exe file for jar"/>
-		<launch4j configFile="${basedir}/dev/launch4j.xml" outfile="${basedir}/${exe_name}"
+		<!-- <launch4j configFile="${basedir}/dev/launch4j.xml" outfile="${basedir}/${exe_name}"
 					fileVersion="${version}.0" txtFileVersion="${version}.0"
-					productVersion="${version}.0" txtProductVersion="${version}.0" />
+					productVersion="${version}.0" txtProductVersion="${version}.0" /> -->
 	</target>
 	
 	<target name="release" depends="clean,dist" description="prepare release archive">
@@ -238,7 +238,7 @@
 	
 	<target name="release.win" depends="clean,dist.win" description="prepare release archive for windows">
 		<echo message="Generating exe file for jar"/>
-		<launch4j>
+		<!-- <launch4j>
 			<config headerType="gui" outfile="${target}/${exe_name}"
 					dontWrapJar="true" jarPath="${jar_name.out}"
 					icon="${basedir}/res/dcpsm.ico" >
@@ -283,7 +283,7 @@
 					fileDescription="${name}" originalFilename="${exe_name.out}"
 					internalName="dcpsetupmaker" copyright="${username}" />
 			</config>
-		</launch4j>
+		</launch4j> -->
 		<echo message="Release Package start"/>
 		<mkdir dir="${releases}"/>
 		<mkdir dir="${current_release}"/>

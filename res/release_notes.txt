@@ -1,3 +1,17 @@
+1.2.1
+=====
+Windows special distribution with executable binary
+Mac OS/Linux distribution size reduced with Windows features disabled
+--
++New features:
+Scan mix mode
+Software Update notification
+--
+-Enhancements:
+--
+*Bug fixes:
+
+
 1.2.0
 =====
 + New features:

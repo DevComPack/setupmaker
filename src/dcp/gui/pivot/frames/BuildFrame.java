@@ -46,6 +46,7 @@ import org.apache.pivot.wtk.content.ButtonData;
 import org.apache.pivot.wtk.validation.Validator;
 
 import dcp.config.io.IOFactory;
+import dcp.config.io.OSValidator;
 import dcp.gui.pivot.Master;
 import dcp.gui.pivot.actions.BrowseAction;
 import dcp.gui.pivot.facades.BuildFacade;
@@ -564,6 +565,11 @@ public class BuildFrame extends FillPane implements Bindable
      */
     public void init(AppConfig appConfig, SetupConfig setupConfig) throws IOException
     {
+        if (OSValidator.isWindows()) // Windows builders
+            lbBuild.setListData("['IzPack', 'NuGet']");
+        else // Mac OS/Linux builders
+            lbBuild.setListData("['IzPack']");
+        
         lbBuild.setSelectedItem(appConfig.getBuildMode().toString());
         //setBuildMode(appConfig.getBuildMode());
         
