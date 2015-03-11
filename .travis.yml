@@ -1,8 +1,7 @@
 language: java
 #before_install: ant clean
 install: ant compile
-#install: ant dist
-#after_success: ant release
+#after_success: ant dist
 jdk:
   - openjdk7
   - oraclejdk7

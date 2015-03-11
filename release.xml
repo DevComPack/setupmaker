@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="DCP Setup Maker" default="dist" basedir=".">
+    <!-- ANT 1.7 is required -->
+	
+    <description>
+        DevComPack Setup Maker Ant build file.
+		Continous Integration online at https://travis-ci.org/DevComPack/setupmaker
+    </description>
+	
+	<!-- global properties for build -->
+	<property name="name" value="DCP Setup Maker"/>
+	<property name="version" value="1.2.1"/>
+	<property name="username" value="SAID EL IMAM, Said"/>
+	
+	<property name="target" location="${basedir}/target"/>
+	<property name="jar_name" value="DCP-SNAPSHOT.jar"/>
+	<property name="jar_name.out" value="dcpsetupmaker.jar"/>
+	<property name="jar_file" value="${basedir}/${jar_name}"/>
+	<property name="exe_name" value="dcpsetupmaker.exe"/>
+	<property name="exe_name.out" value="DCPSM-${version}.exe"/>
+	
+	<property name="releases" value="${basedir}/releases"/>
+	<property name="current_release" value="${releases}/DCP_${version}/"/>
+	
+	<property name="doc.dir" value="../devcompack.gh-pages/setupmaker/doc"/>
+	<property name="launch4j.dir" value="../launch4j"/>
+	
+	
+	<!-- task definitions -->
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
+		classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+	
+	
+	<!-- release targets -->
+	<target name="dcp.console" description="DCP console packaging" >
+		<echo message="Starting.."/>
+		<java jar="${basedir}/${jar_name}" fork="true" failonerror="true" maxmemory="256m">
+			<arg value="${basedir}/saves/dcp.dcp"/>
+		</java>
+		<echo message="Complete"/>
+	</target>
+	
+	<target name="exe" description="Generating exe file for jar" >
+		<echo message="Generating exe file for jar"/>
+		<launch4j configFile="${basedir}/dev/launch4j.xml" outfile="${basedir}/${exe_name}"
+					fileVersion="${version}.0" txtFileVersion="${version}.0"
+					productVersion="${version}.0" txtProductVersion="${version}.0" />
+	</target>
+	
+	<target name="release" description="prepare release archive">
+		<echo message="Release Package start"/>
+		<mkdir dir="${releases}"/>
+		<mkdir dir="${current_release}"/>
+		<zip destfile="${current_release}/DCP-${version}.zip">
+			<fileset dir="${basedir}" includes="lib/dcp/"/>
+			<fileset dir="${basedir}" includes="res/bat/ res/langpacks/ res/xml/"/>
+			<zipfileset dir="${basedir}" includes="${jar_name}" fullpath="DCPSM-${version}.jar"/>
+			<zipfileset dir="${basedir}" includes="settings.json" fullpath="settings.json"/>
+			<zipfileset dir="${basedir}" includes="README.md" fullpath="README"/>
+			<zipfileset dir="${basedir}" includes="LICENSE" fullpath="LICENSE"/>
+			<zipfileset dir="${basedir}" includes="res/release_notes.txt" fullpath="changelog.txt"/>
+		</zip>
+		<echo message="Release success"/>
+	</target>
+	
+	<target name="release.win" description="prepare release archive for windows">
+		<echo message="Generating exe file for jar"/>
+		<launch4j>
+			<config headerType="gui" outfile="${target}/${exe_name}"
+					dontWrapJar="true" jarPath="${jar_name.out}"
+					icon="${basedir}/res/dcpsm.ico" >
+				<classPath mainClass="dcp.gui.pivot.Main">
+					<cp>dcpsetupmaker.jar</cp>
+					<cp>lib/truezip-samples-7.7.1-jar-with-dependencies.jar</cp>
+					<cp>lib/ant.jar</cp>
+					<cp>lib/staxmate-2.2.0.jar</cp>
+					<cp>lib/stax2-api-3.1.1.jar</cp>
+					<cp>lib/woodstox-core-asl-4.1.5.jar</cp>
+					<cp>lib/compiler.jar</cp>
+					<cp>lib/installer.jar</cp>
+					<cp>lib/jakarta-regexp-1.3.jar</cp>
+					<cp>lib/ant-launcher.jar</cp>
+					<cp>lib/ant-apache-log4j.jar</cp>
+					<cp>lib/ant-apache-regexp.jar</cp>
+					<cp>lib/ant-contrib.jar</cp>
+					<cp>lib/izevent.jar</cp>
+					<cp>lib/standalone-compiler.jar</cp>
+					<cp>lib/uninstaller-ext.jar</cp>
+					<cp>lib/uninstaller.jar</cp>
+					<cp>lib/bsf.jar</cp>
+					<cp>lib/kunststoff.jar</cp>
+					<cp>lib/liquidlnf.jar</cp>
+					<cp>lib/looks.jar</cp>
+					<cp>lib/metouia.jar</cp>
+					<cp>lib/nimbus.jar</cp>
+					<cp>lib/substance.jar</cp>
+					<cp>lib/json-simple-1.1.1.jar</cp>
+					<cp>lib/jsch-0.1.50.jar</cp>
+					<cp>lib/pivot-charts-2.0.4.jar</cp>
+					<cp>lib/pivot-core-2.0.4.jar</cp>
+					<cp>lib/pivot-wtk-2.0.4.jar</cp>
+					<cp>lib/pivot-wtk-terra-2.0.4.jar</cp>
+					<cp>lib/commons-io-2.4.jar</cp>
+				</classPath>
+				<jre minVersion="1.7.0_02" maxVersion="1.7.0_72" />
+				<splash file="${basedir}/res/splash.bmp" waitForWindow="true" />
+				<versionInfo fileVersion="${version}.0" txtFileVersion="${version}.0"
+					productVersion="${version}.0" txtProductVersion="${version}.0"
+					productName="${name}" companyName="DevComPack"
+					fileDescription="${name}" originalFilename="${exe_name.out}"
+					internalName="dcpsetupmaker" copyright="${username}" />
+			</config>
+		</launch4j>
+		<echo message="Release Package start"/>
+		<mkdir dir="${releases}"/>
+		<mkdir dir="${current_release}"/>
+		<zip destfile="${current_release}/DCP-${version}-win.zip">
+			<fileset dir="${target}" includes="lib/ lib/dcp/"/>
+			<fileset dir="${basedir}" includes="res/bat/ res/langpacks/ res/utils/ res/ps/ res/xml/"/>
+			<zipfileset dir="${basedir}" includes="${jar_name}" fullpath="${jar_name.out}"/>
+			<zipfileset dir="${target}" includes="${exe_name}" fullpath="${exe_name.out}"/>
+			<zipfileset dir="${basedir}" includes="settings.json" fullpath="settings.json"/>
+			<zipfileset dir="${basedir}" includes="README.md" fullpath="README"/>
+			<zipfileset dir="${basedir}" includes="LICENSE" fullpath="LICENSE"/>
+			<zipfileset dir="${basedir}" includes="res/release_notes.txt" fullpath="changelog.txt"/>
+		</zip>
+		<echo message="Windows Release success"/>
+	</target>
+	
+	<target name="doc.clean" description="prepare documentation for publish">
+		<replaceregexp byline="true">
+			<regexp pattern="&lt;p class=&quot;rvps5&quot;&gt;&lt;span class=&quot;rvts17&quot;&gt;Created with.*&lt;/p&gt;"/>
+			<substitution expression=""/>
+			<fileset dir="${doc.dir}">
+				<include name="*.html" />
+				<exclude name="toc.html" />
+				<exclude name="index.html" />
+			</fileset>
+		</replaceregexp>
+	</target>
+
+</project>

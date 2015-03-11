@@ -1,1 +1,0 @@
-ant -file ../build.xml release.win

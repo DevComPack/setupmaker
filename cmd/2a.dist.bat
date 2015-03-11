@@ -1,0 +1,1 @@
+ant -file ../build.xml dist
