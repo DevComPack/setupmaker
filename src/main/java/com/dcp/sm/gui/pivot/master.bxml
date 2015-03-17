@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<app:Master bxml:id="master" title="DCP Setup Maker" maximized="true"
+	preferredWidth="500" preferredHeight="400"
+	icon="/com/dcp/sm/gui/icons/logo.png"
+    xmlns:app="com.dcp.sm.gui.pivot"
+    xmlns="org.apache.pivot.wtk"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+	xmlns:content="org.apache.pivot.wtk.content">
+	
+	<bxml:define>
+        <bxml:include bxml:id="helper" src="/com/dcp/sm/gui/pivot/helper/helper.bxml"/>
+        <FileBrowserSheet bxml:id="saveFileBrowserSheet"/>
+        <FileBrowserSheet bxml:id="loadFileBrowserSheet"/>
+	</bxml:define>
+    
+    <TablePane>
+    	<columns>
+			<TablePane.Column width="1*"/>
+		</columns>
+    	
+    	<TablePane.Row height="1*">
+	        <TabPane bxml:id="tabPane" collapsible="false"
+	        	styles="{tabOrientation:'horizontal', inactiveBorderColor:'WHITE', inactiveTabColor:'WHITE'}">
+			    <corner>
+			        <TablePane>
+			        	<columns>
+			        		<TablePane.Column width="1*"/><!-- blank -->
+			        		<TablePane.Column width="-1"/><!-- Previous Tab -->
+			        		<TablePane.Column width="-1"/><!-- Next Tab -->
+			        		<TablePane.Column width="1*"/><!-- blank -->
+			        		
+			        		<TablePane.Column width="-1"/><!-- Save As button -->
+			        		<TablePane.Column width="-1"/><!-- Save button -->
+			        		<TablePane.Column width="-1"/><!-- Load button -->
+			        		<TablePane.Column width="-1"/><!-- Undo button -->
+			        		<TablePane.Column width="-1"/><!-- Default button -->
+			        		<TablePane.Column width="-1"/><!-- Help button -->
+			        		<TablePane.Column width="-1"/><!-- Info button -->
+			        		<TablePane.Column width="-1"/><!-- Info -->
+			        	</columns>
+			        	<TablePane.Row>
+				            
+				            <TablePane.Filler />
+				            
+				            <PushButton bxml:id="btBack" enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+				            	<content:ButtonData icon="/com/dcp/sm/gui/icons/back.png" />
+				            </PushButton>
+				            <PushButton bxml:id="btNext" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+				            	<content:ButtonData text="Next" icon="/com/dcp/sm/gui/icons/next.png" />
+				            </PushButton>
+				            
+				            <TablePane.Filler />
+				            
+				            <MenuButton tooltipText="Menu" styles="{toolbar:'true'}">
+				            	<buttonData>
+							        <content:ButtonData icon="/com/dcp/sm/gui/icons/menu.png" />
+							    </buttonData>
+							    
+							    <Menu>
+        							<Menu.Section>
+										<Menu.Item bxml:id="btLoad" tooltipText="Load a project" enabled="true">
+							            	<buttonData><content:ButtonData text="Load.." icon="/com/dcp/sm/gui/icons/load.png" /></buttonData>
+							            </Menu.Item>
+							            <Menu.Item bxml:id="btSave" tooltipText="Save project to disk" enabled="false">
+							            	<buttonData><content:ButtonData text="Save" icon="/com/dcp/sm/gui/icons/save.png" /></buttonData>
+							            </Menu.Item>
+							            <Menu.Item bxml:id="btSaveAs" tooltipText="Save as a new project">
+							            	<buttonData><content:ButtonData text="Save as.." icon="/com/dcp/sm/gui/icons/saveas.png" /></buttonData>
+							            </Menu.Item>
+							            
+							            <Menu.Item bxml:id="btUndo" tooltipText="Undo all changes" enabled="false">
+							            	<buttonData><content:ButtonData text="Undo/New" icon="/com/dcp/sm/gui/icons/undo.png" /></buttonData>
+							            </Menu.Item>
+							            
+							            <Menu.Item bxml:id="btDefault" tooltipText="Save default settings" enabled="true">
+							            	<buttonData><content:ButtonData text="Save defaults" icon="/com/dcp/sm/gui/icons/default.png" /></buttonData>
+							            </Menu.Item>
+							            
+						            	<Menu.Item bxml:id="btHelp" tooltipText="Launch app helper">
+							            	<buttonData><content:ButtonData text="Get Help" icon="/com/dcp/sm/gui/icons/help.png" /></buttonData>
+							            </Menu.Item>
+					            	</Menu.Section>
+					            </Menu>
+					        </MenuButton>
+				            
+			            	<PushButton bxml:id="btInfo" tooltipText="About" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+				            	<content:ButtonData icon="/com/dcp/sm/gui/icons/info.png" />
+					            <buttonPressListeners>
+					                importPackage(org.apache.pivot.wtk);
+					                function buttonPressed(button) {
+					                    Alert.alert(MessageType.INFO, "DCP Setup Maker is developed by Said SAID EL IMAM, and powered by IzPack 4.3.5 and NuGet. www.devcompack.com/setupmaker ", master);
+					                }
+					            </buttonPressListeners>
+				            </PushButton>
+				            
+				        	<BoxPane styles="{horizontalAlignment:'right', verticalAlignment:'center'}">
+				            	<Label bxml:id="info" styles="{color:'#999999'}" />
+				            </BoxPane>
+			            </TablePane.Row>
+			        </TablePane>
+			    </corner>
+				
+				<!-- Scan Tab -->
+			    <FillPane enabled="true">
+			        <TabPane.tabData>
+			            <content:ButtonData text="1-Scan" icon="/com/dcp/sm/gui/icons/scan.png" />
+			        </TabPane.tabData>
+			
+			        <Border styles="{padding:2}">
+			            <bxml:include src="/com/dcp/sm/gui/pivot/bxml/tabScan.bxml"/>
+			        </Border>
+			    </FillPane>
+				
+				<!-- Setting Tab -->
+			    <FillPane enabled="false">
+			        <TabPane.tabData>
+			            <content:ButtonData text="2-Set" icon="/com/dcp/sm/gui/icons/set.png" />
+			        </TabPane.tabData>
+			
+			        <Border styles="{padding:2}">
+			            <bxml:include src="/com/dcp/sm/gui/pivot/bxml/tabSet.bxml"/>
+			        </Border>
+			    </FillPane>
+				
+				<!-- Tweak Tab -->
+			    <FillPane enabled="false">
+			        <TabPane.tabData>
+			            <content:ButtonData text="3-Tweak" icon="/com/dcp/sm/gui/icons/tweak.png" />
+			        </TabPane.tabData>
+			
+			        <Border styles="{padding:2}">
+			            <bxml:include src="/com/dcp/sm/gui/pivot/bxml/tabTweak.bxml"/>
+			        </Border>
+			    </FillPane>
+				
+				<!-- Build Tab -->
+			    <FillPane enabled="false">
+			        <TabPane.tabData>
+			            <content:ButtonData text="4-Build" icon="/com/dcp/sm/gui/icons/build.png" />
+			        </TabPane.tabData>
+			
+			        <Border styles="{padding:2}">
+			            <bxml:include src="/com/dcp/sm/gui/pivot/bxml/tabBuild.bxml"/>
+			        </Border>
+			    </FillPane>
+			</TabPane>
+		</TablePane.Row>
+		
+		<TablePane.Row height="-1">
+			<BoxPane orientation="HORIZONTAL" styles="{padding:4, horizontalAlignment:'right'}">
+				<Label text="step" styles="{color:7}" />
+				<Label bxml:id="statusBarStep" text="1/4" styles="{color:6}" />
+				
+				<Label bxml:id="statusBarNPacks" text="0" styles="{color:6}" />
+				<Label text="pack(s)," styles="{color:7}" />
+				<Label bxml:id="statusBarNGroups" text="0" styles="{color:6}" />
+				<Label text="group(s)" styles="{color:7}" />
+			</BoxPane>
+		</TablePane.Row>
+    </TablePane>
+	
+</app:Master>

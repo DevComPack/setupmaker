@@ -1,40 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/truezip-samples-7.7.1-jar-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="lib/ant/ant.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_02">
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/staxmate-2.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/stax2-api-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/woodstox-core-asl-4.1.5.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/compiler.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/installer.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/jakarta-regexp-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/ant/ant-launcher.jar"/>
-	<classpathentry kind="lib" path="lib/ant/ant-apache-log4j.jar"/>
-	<classpathentry kind="lib" path="lib/ant/ant-apache-regexp.jar"/>
-	<classpathentry kind="lib" path="lib/ant/ant-contrib.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/izevent.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/standalone-compiler.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/uninstaller-ext.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/uninstaller.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/bsf.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/kunststoff.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/liquidlnf.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/looks.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/metouia.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/nimbus.jar"/>
-	<classpathentry kind="lib" path="lib/izpack/substance.jar"/>
-	<classpathentry kind="lib" path="lib/json/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/web/jsch-0.1.50.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-charts-2.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-core-2.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-2.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/pivot/pivot-wtk-terra-2.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

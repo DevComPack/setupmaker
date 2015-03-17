@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frames:NGDialog title="Add New Group" modal="true"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns:frames="com.dcp.sm.gui.pivot.frames"
+    xmlns:effects="org.apache.pivot.wtk.effects"
+    xmlns="org.apache.pivot.wtk">
+    
+	<userData>
+	    <decorator>
+	        <effects:FadeDecorator opacity="0.33"/>
+	    </decorator>
+	</userData>
+    
+    <TablePane preferredWidth="-1" preferredHeight="-1">
+        <columns>
+            <TablePane.Column width="1*"/>
+        </columns>
+ 		
+ 		<!-- Info Label -->
+        <TablePane.Row height="1*">
+            <Label text="Enter name of group:"
+                styles="{horizontalAlignment:'center', verticalAlignment:'center'}"/>
+        </TablePane.Row>
+        
+        <!-- Group Name Input -->
+        <TablePane.Row height="1*">
+            <TextInput bxml:id="inGroupName">
+            	<componentKeyListeners>
+	                importClass(org.apache.pivot.wtk.Component);
+	                importClass(org.apache.pivot.wtk.Keyboard);
+	
+	                function keyPressed(component, keyCode, keyLocation) {
+	                    if (keyCode == Keyboard.KeyCode.ENTER) {
+	                        btGroupAdd.press();
+	                    }
+	                }
+                 </componentKeyListeners>
+            </TextInput>
+        </TablePane.Row>
+        
+        <!-- Hierarchy Group checkbox -->
+        <TablePane.Row>
+        	<BoxPane orientation="Horizontal" styles="{padding:4, horizontalAlignment:'center'}">
+        		<Checkbox bxml:id="cbHierarchy" buttonData="create under" selected="false" enabled="false" />
+        		<Label bxml:id="labParentGroup" text="" styles="{color:'#ff5500'}" />
+        	</BoxPane>
+        </TablePane.Row>
+ 		
+ 		<!-- Validate Button -->
+        <TablePane.Row height="1*">
+            <BoxPane styles="{padding:4, horizontalAlignment:'center'}">
+                <PushButton bxml:id="btGroupAdd" buttonData="create" />
+            </BoxPane>
+        </TablePane.Row>
+    </TablePane>
+    
+</frames:NGDialog>

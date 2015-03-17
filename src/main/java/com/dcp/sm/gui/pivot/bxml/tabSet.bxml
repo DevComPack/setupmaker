@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frames:SetFrame bxml:id="setFrame" orientation="vertical"
+	xmlns="org.apache.pivot.wtk" xmlns:bxml="http://pivot.apache.org/bxml"
+	xmlns:content="org.apache.pivot.wtk.content" xmlns:frames="com.dcp.sm.gui.pivot.frames"
+	xmlns:model="com.dcp.sm.logic.model">
+
+	<bxml:define>
+		<ButtonGroup bxml:id="installMode" />
+		<ButtonGroup bxml:id="installOS" />
+		<ButtonGroup bxml:id="arch" />
+		<bxml:include bxml:id="ngdialog" src="/com/dcp/sm/gui/pivot/bxml/ngDialog.bxml" />
+		<bxml:include bxml:id="rgdialog" src="/com/dcp/sm/gui/pivot/bxml/rgDialog.bxml" />
+		<bxml:include bxml:id="sortDialog"
+			src="/com/dcp/sm/gui/pivot/bxml/sortDialog.bxml" />
+		<bxml:include bxml:id="shortcutDialog"
+			src="/com/dcp/sm/gui/pivot/bxml/shortcutDialog.bxml" />
+	</bxml:define>
+
+	<TablePane>
+
+		<columns>
+			<TablePane.Column width="1*" />
+		</columns>
+
+		<TablePane.Row height="1*">
+
+			<SplitPane bxml:id="vSplitPane" orientation="vertical">
+				<!-- Packs Grouping -->
+				<top>
+					<FillPane>
+						<TablePane>
+							<columns>
+								<TablePane.Column width="1*" />
+							</columns>
+
+							<!-- Drag & Drop Area -->
+							<TablePane.Row height="1*">
+								<Border styles="{color:'#FFFFFF', titleColor:'#ff5500', padding:4}">
+									<!-- Packs/Groups area -->
+									<SplitPane bxml:id="hSplitPane" orientation="horizontal"
+										splitRatio="0.7">
+										<left>
+											<TablePane>
+												<columns>
+													<TablePane.Column width="-1" />
+													<TablePane.Column width="1*" />
+												</columns>
+
+												<TablePane.Row height="1*">
+
+													<!-- Packs buttons -->
+													<BoxPane orientation="Vertical"
+														styles="{padding:{left:0,right:4,top:10,bottom:5}, horizontalAlignment:'center'}">
+														<PushButton bxml:id="btSelectAll" tooltipText="Select all"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/selectall.png" />
+														</PushButton>
+														<PushButton bxml:id="btSelectNone" tooltipText="Clear selection"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/selectnone.png" />
+														</PushButton>
+														<PushButton bxml:id="btCheck"
+															tooltipText="Check and validate all packs data"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/debug.png" />
+														</PushButton>
+														<PushButton bxml:id="btSort" tooltipText="Sort packs priority"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/sort.png" />
+														</PushButton>
+														<!-- Context menu -->
+														<PushButton bxml:id="btAdd" tooltipText="Add selected pack(s) to selected group" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/right.png" />
+														</PushButton>
+														<PushButton bxml:id="btDelete" tooltipText="Delete selected pack(s)" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/delete.png" />
+														</PushButton>
+														<PushButton bxml:id="btCopy" tooltipText="Copy pack data" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/copy.png" />
+														</PushButton>
+														<PushButton bxml:id="btPaste" tooltipText="Paste pack data" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/paste.png" />
+														</PushButton>
+													</BoxPane>
+
+													<!-- Packs View -->
+													<FillPane>
+														<Border styles="{padding:0}">
+															<FillPane styles="{padding:1}">
+																<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
+																	verticalScrollBarPolicy="fill_to_capacity">
+																	<TableView bxml:id="tableView" selectMode="multi">
+																		<columns>
+																			<TableView.Column name="icon" width="-1">
+																				<cellRenderer>
+																					<content:TableViewImageCellRenderer />
+																				</cellRenderer>
+																			</TableView.Column>
+																			<TableView.Column name="name" width="3*"
+																				headerData="Name" />
+																			<TableView.Column name="size" width="-1"
+																				headerData="Size">
+																				<cellRenderer>
+																					<content:TableViewFileSizeCellRenderer />
+																				</cellRenderer>
+																			</TableView.Column>
+																			<TableView.Column name="groupName"
+																				width="50" headerData="Group" />
+																		</columns>
+																	</TableView>
+
+																	<columnHeader>
+																		<TableViewHeader tableView="$tableView"
+																			sortMode="single_column" />
+																	</columnHeader>
+																</ScrollPane>
+															</FillPane>
+														</Border>
+													</FillPane>
+												</TablePane.Row>
+											</TablePane>
+										</left>
+										<right>
+											<TablePane>
+												<columns>
+													<TablePane.Column width="1*" />
+													<TablePane.Column width="-1" />
+												</columns>
+
+												<TablePane.Row height="1*">
+
+													<!-- Groups View -->
+													<FillPane>
+														<Border title="Groups"
+															styles="{padding:4, titleColor:'#ff5500', backgroundColor:'#EEF0FF'}">
+															<FillPane styles="{padding:1}">
+																<ScrollPane horizontalScrollBarPolicy="fill_to_capacity"
+																	verticalScrollBarPolicy="fill_to_capacity">
+																	<TreeView bxml:id="treeView" selectMode="single"
+																		styles="{showGridLines:'true', showEmptyBranchControls:'true'}" />
+																</ScrollPane>
+															</FillPane>
+														</Border>
+													</FillPane>
+
+													<!-- Groups buttons -->
+													<BoxPane orientation="Vertical"
+														styles="{padding:{left:4,right:0,top:10,bottom:5}, horizontalAlignment:'center'}">
+														<PushButton bxml:id="btExpand" tooltipText="Expand all"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/expand.png" />
+														</PushButton>
+														<PushButton bxml:id="btCollapse" tooltipText="Collapse all"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/collapse.png" />
+														</PushButton>
+														<PushButton bxml:id="btNew" tooltipText="Create new group"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/add.png" />
+														</PushButton>
+														<PushButton bxml:id="btClear" tooltipText="Clear all groups"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/clear.png" />
+														</PushButton>
+														<!-- Context menu -->
+														<PushButton bxml:id="btRename" tooltipText="Rename selected group" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'#0E8C3A'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/edit.png" />
+														</PushButton>
+														<PushButton bxml:id="btRemove" tooltipText="Remove selected group/pack" visible="false"
+															styles="{toolbar:'true', backgroundColor:'WHITE', color:'RED'}">
+															<content:ButtonData icon="/com/dcp/sm/gui/icons/delete.png" />
+														</PushButton>
+													</BoxPane>
+												</TablePane.Row>
+											</TablePane>
+										</right>
+									</SplitPane>
+								</Border>
+							</TablePane.Row>
+
+						</TablePane>
+					</FillPane>
+				</top>
+
+				<!-- Pack properties Area -->
+				<bottom>
+					<FillPane>
+						<Accordion bxml:id="propertiesPane" styles="{buttonColor:'#ff5500', backgroundColor:'#FEFEFE'}">
+						
+							<TablePane Accordion.headerData="Properties"
+								styles="{showVerticalGridLines: true, horizontalSpacing:10, verticalGridColor:10}">
+								<columns>
+									<TablePane.Column width="1*" />
+									<TablePane.Column width="1*" />
+									<TablePane.Column width="1*" />
+								</columns>
+
+								<TablePane.Row height="1*">
+
+									<!-- Info properties -->
+									<TablePane>
+										<columns>
+											<TablePane.Column width="1*" />
+										</columns>
+										<TablePane.Row height="-1">
+											<Separator heading="Information"
+												styles="{headingColor:'#0198E1', color:10}" />
+										</TablePane.Row>
+
+										<TablePane.Row height="1*">
+											<FillPane>
+												<TablePane
+													styles="{showHorizontalGridLines: true,
+											        padding:4, horizontalSpacing:1, verticalSpacing:10, horizontalGridColor:10}">
+													<columns>
+														<TablePane.Column width="1*" />
+													</columns>
+													<!-- Name -->
+													<TablePane.Row height="-1">
+														<TablePane styles="{horizontalSpacing:5, verticalSpacing:4}">
+															<columns>
+																<TablePane.Column width="-1" />
+																<TablePane.Column width="1*" />
+															</columns>
+															<TablePane.Row>
+																<BoxPane styles="{verticalAlignment:'center'}">
+																	<Label text="Name " styles="{color:7}" />
+																</BoxPane>
+																<TextInput bxml:id="inName" enabled="false"
+																	tooltipText="Pack ID" textSize="17" />
+															</TablePane.Row>
+															<TablePane.Row>
+																<BoxPane styles="{verticalAlignment:'center'}">
+																	<Label text="Version " styles="{color:7}" />
+																</BoxPane>
+																<TextInput bxml:id="inVersion" enabled="false"
+																	tooltipText="Pack Version (x.x.x)" textSize="10" />
+															</TablePane.Row>
+														</TablePane>
+													</TablePane.Row>
+													<!-- Description -->
+													<TablePane.Row height="1*">
+														<Border title="Description" styles="{titleColor:7, padding:8}">
+															<ScrollPane verticalScrollBarPolicy="fill_to_capacity"
+																horizontalScrollBarPolicy="fill">
+																<TextArea bxml:id="inDescription" enabled="false"
+																	styles="{wrapText:'true', acceptsEnter:'false'}" />
+															</ScrollPane>
+														</Border>
+													</TablePane.Row>
+												</TablePane>
+											</FillPane>
+										</TablePane.Row>
+									</TablePane>
+
+									<!-- Options -->
+									<TablePane>
+										<columns>
+											<TablePane.Column width="1*" />
+										</columns>
+										<TablePane.Row height="-1">
+											<Separator heading="Options"
+												styles="{headingColor:'#0198E1', color:10}" />
+										</TablePane.Row>
+
+										<TablePane.Row height="1*">
+											<TablePane
+												styles="{showHorizontalGridLines: true,
+										        padding:4, horizontalSpacing:1, verticalSpacing:10, horizontalGridColor:10}">
+												<columns>
+													<TablePane.Column width="1*" />
+												</columns>
+												<!-- Selection -->
+												<TablePane.Row>
+													<FillPane orientation="horizontal">
+														<Checkbox bxml:id="cbRequired" buttonData="Required"
+															tooltipText="Pack can't be disabled on install" enabled="false" />
+														<Checkbox bxml:id="cbSelected" buttonData="Selected"
+															tooltipText="Pack preselected on install" enabled="false" />
+														<Checkbox bxml:id="cbHidden" buttonData="Hidden"
+															tooltipText="Pack not shown at packs list" enabled="false" />
+													</FillPane>
+												</TablePane.Row>
+
+												<!-- Dependency -->
+												<TablePane.Row height="-1">
+													<TablePane>
+														<columns>
+															<TablePane.Column width="-1" />
+															<TablePane.Column width="1*" />
+															<TablePane.Column width="-1" />
+														</columns>
+														<TablePane.Row>
+															<BoxPane styles="{verticalAlignment:'center', padding:'4'}">
+																<Label text="Depends on" styles="{color:7}" />
+																<!-- Dependency Type values ('Group', 'Pack') -->
+																<LinkButton bxml:id="cbDepType" buttonData="Pack"
+																	tooltipText="Change type of dependency" enabled="false" />
+															</BoxPane>
+															<ListButton bxml:id="lbDependency" enabled="false"
+																repeatable="false" listSize="10" />
+															<PushButton bxml:id="btDepErase" tooltipText="Clear dependency"
+																enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+																<content:ButtonData icon="/com/dcp/sm/gui/icons/erase.png" />
+															</PushButton>
+														</TablePane.Row>
+													</TablePane>
+												</TablePane.Row>
+
+												<!-- Install groups -->
+												<TablePane.Row height="-1">
+													<TablePane>
+														<columns>
+															<TablePane.Column width="-1" />
+															<TablePane.Column width="1*" />
+															<TablePane.Column width="-1" />
+														</columns>
+														<TablePane.Row>
+															<BoxPane styles="{verticalAlignment:'center'}">
+																<Label text="Install Groups " styles="{color:7}" />
+															</BoxPane>
+															<TextInput bxml:id="inInstallGroups" prompt="ig1,ig2"
+																enabled="false" />
+															<PushButton bxml:id="btIGErase" tooltipText="Clear install groups"
+																enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+																<content:ButtonData icon="/com/dcp/sm/gui/icons/erase.png" />
+															</PushButton>
+														</TablePane.Row>
+													</TablePane>
+												</TablePane.Row>
+
+												<!-- OS -->
+												<TablePane.Row height="-1">
+													<FillPane orientation="Vertical">
+														<FillPane orientation="Horizontal">
+															<RadioButton bxml:id="rbOsAll" buttonData="All platforms"
+																buttonGroup="$installOS" enabled="false" />
+															<RadioButton bxml:id="rbOsWin" buttonData="Windows"
+																buttonGroup="$installOS" enabled="false" />
+														</FillPane>
+														<FillPane orientation="Horizontal">
+															<RadioButton bxml:id="rbOsLin" buttonData="Linux"
+																buttonGroup="$installOS" enabled="false" />
+															<RadioButton bxml:id="rbOsMac" buttonData="MacOS X"
+																buttonGroup="$installOS" enabled="false" />
+														</FillPane>
+													</FillPane>
+												</TablePane.Row>
+
+												<!-- Architecture -->
+												<TablePane.Row height="-1">
+													<FillPane orientation="Vertical">
+														<FillPane orientation="Horizontal">
+															<RadioButton bxml:id="rbArchAll" buttonData="All arch"
+																buttonGroup="$arch" enabled="false" />
+															<RadioButton bxml:id="rbArch32" buttonData="32 bits"
+																buttonGroup="$arch" enabled="false" />
+															<RadioButton bxml:id="rbArch64" buttonData="64 bits"
+																buttonGroup="$arch" enabled="false" />
+														</FillPane>
+													</FillPane>
+												</TablePane.Row>
+
+											</TablePane>
+										</TablePane.Row>
+									</TablePane>
+
+									<!-- Deploy properties -->
+									<TablePane>
+										<columns>
+											<TablePane.Column width="1*" />
+										</columns>
+										<TablePane.Row height="-1">
+											<Separator heading="Deploy"
+												styles="{headingColor:'#0198E1', color:10}" />
+										</TablePane.Row>
+
+										<TablePane.Row height="1*">
+											<TablePane
+												styles="{showHorizontalGridLines: true,
+										        padding:4, horizontalSpacing:1, verticalSpacing:10, horizontalGridColor:10}">
+												<columns>
+													<TablePane.Column width="1*" />
+												</columns>
+
+												<!-- Install Mode -->
+												<TablePane.Row height="-1">
+													<FillPane orientation="Vertical">
+														<FillPane orientation="Horizontal">
+															<RadioButton bxml:id="rbExecute"
+																tooltipText="Execute pack during install" buttonData="Execute"
+																buttonGroup="$installMode" enabled="false" />
+															<Checkbox bxml:id="cbSilent"
+																tooltipText="Install setup without user interaction"
+																buttonData="Silent setup" selected="false" enabled="false" />
+														</FillPane>
+														<RadioButton bxml:id="rbExtract"
+															tooltipText="Extract pack content to install path"
+															buttonData="Extract" buttonGroup="$installMode" enabled="false" />
+														<RadioButton bxml:id="rbCopy"
+															tooltipText="Copy file to install path" buttonData="Copy"
+															buttonGroup="$installMode" enabled="false" />
+													</FillPane>
+												</TablePane.Row>
+
+												<!-- Install Path -->
+												<TablePane.Row height="-1">
+													<TablePane>
+														<columns>
+															<TablePane.Column width="-1" />
+															<TablePane.Column width="1*" />
+															<TablePane.Column width="-1" />
+														</columns>
+														<TablePane.Row>
+															<BoxPane styles="{verticalAlignment:'center'}">
+																<Label text="Install Path " styles="{color:7}" />
+															</BoxPane>
+															<TextInput bxml:id="inPInstallPath" enabled="false"
+																tooltipText="folder relative to install path" prompt="folder/" />
+															<PushButton bxml:id="btIPErase" tooltipText="Clear install path"
+																enabled="false" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+																<content:ButtonData icon="/com/dcp/sm/gui/icons/erase.png" />
+															</PushButton>
+														</TablePane.Row>
+													</TablePane>
+												</TablePane.Row>
+
+												<!-- Options -->
+												<TablePane.Row height="-1">
+													<FillPane orientation="Horizontal">
+														<Checkbox bxml:id="cbOverride" buttonData="Override"
+															tooltipText="Overrides files if pack already installed"
+															selected="false" enabled="false" />
+														<BoxPane orientation="Horizontal"
+															styles="{verticalAlignment:'center'}">
+															<Checkbox bxml:id="cbShortcut" buttonData="Shortcut"
+																tooltipText="A shortcut to this pack will be created"
+																selected="false" enabled="false" />
+															<PushButton bxml:id="btShortcutAdvanced"
+																tooltipText="Advanced shortcut options"
+																styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}"
+																enabled="false">
+																<content:ButtonData icon="/com/dcp/sm/gui/icons/set.png" />
+															</PushButton>
+														</BoxPane>
+													</FillPane>
+												</TablePane.Row>
+												
+											</TablePane>
+										</TablePane.Row>
+									</TablePane>
+
+								</TablePane.Row>
+							</TablePane>
+						</Accordion>
+					</FillPane>
+				</bottom>
+			</SplitPane>
+
+		</TablePane.Row>
+
+	</TablePane>
+
+</frames:SetFrame>

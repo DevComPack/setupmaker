@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tweak:TweakFrame bxml:id="tweakFrame" orientation="Vertical"
+	xmlns:tweak="com.dcp.sm.gui.pivot.frames"
+	xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns="org.apache.pivot.wtk"
+    xmlns:content="org.apache.pivot.wtk.content">
+    
+	<bxml:define>
+        <FileBrowserSheet bxml:id="fileBrowserSheet"/>
+        <FileBrowserSheet bxml:id="fBSReadme"/>
+        <FileBrowserSheet bxml:id="fBSLicense"/>
+        <FileBrowserSheet bxml:id="fBS1"/>
+        <FileBrowserSheet bxml:id="fBS2"/>
+        <FileBrowserSheet bxml:id="fBSLangpack"/>
+    </bxml:define>
+    
+    <ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+	    <TabPane styles="{tabOrientation:'vertical'}">
+	    	
+	    	<Border styles="{padding:2}">
+	    		<TabPane.tabData>
+		            <content:ButtonData text="Data"/>
+		        </TabPane.tabData>
+		        
+		        <Form styles="{fill:'false', showFlagHighlight:'false', showFlagIcons:'false', separatorColor:'#0198E1', separatorHeadingColor:'#ff5500'}">
+					
+				   	<!-- Information -->
+				  	<Form.Section heading="Information">
+				        <BoxPane Form.label="Application">
+				            <TextInput bxml:id="inAppName" textSize="31" prompt="Name" />
+				            <TextInput bxml:id="inAppVersion" textSize="8" prompt="Version" />
+							<PushButton bxml:id="btIncr" styles="{toolbar:'true', backgroundColor:'WHITE'}" tooltipText="Increment selected version part">
+								<content:ButtonData text="" icon="/com/dcp/sm/gui/icons/up.png" />
+							</PushButton>
+				        </BoxPane>
+				        <TextInput bxml:id="inAuthorName" Form.label="Author Name" textSize="40" prompt="Author Name" />
+				        <TextInput bxml:id="inAuthorEmail" Form.label="Email" textSize="40" prompt="Contact Email" />
+				        <TextInput bxml:id="inAppURL" Form.label="URL" textSize="40" prompt="Product URL" />
+				    </Form.Section>
+				    
+				    <!-- InstallPath -->
+				    <Form.Section heading="Install Path">
+				    	<BoxPane Form.label="Path">
+							<TextInput bxml:id="installPath" prompt="Install path" textSize="50" />
+							<PushButton bxml:id="btBrowse" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+								<content:ButtonData text="Browse" icon="/com/dcp/sm/gui/icons/browse.png" />
+							</PushButton>
+						</BoxPane>
+						<Checkbox bxml:id="cbForce" Form.label="Force" styles="{color:'#38ACEC'}"
+							Form.flag="{messageType:'info', message:'User can\'t change path during install'}" />
+				    </Form.Section>
+				    
+				    <!-- Resources -->
+				    <Form.Section heading="Resources">
+				        <BoxPane Form.label="Readme">
+				            <TextInput bxml:id="inReadme" prompt="Readme Path" textSize="50" />
+					    	<PushButton bxml:id="btBrowseReadme" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+					    		<content:ButtonData text="Browse" icon="/com/dcp/sm/gui/icons/browse.png" />
+					    	</PushButton>
+				        </BoxPane>
+				        <BoxPane Form.label="License">
+				            <TextInput bxml:id="inLicense" prompt="License Path" textSize="50" />
+					    	<PushButton bxml:id="btBrowseLicense" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+					    		<content:ButtonData text="Browse" icon="/com/dcp/sm/gui/icons/browse.png" />
+					    	</PushButton>
+				        </BoxPane>
+				        <BoxPane Form.label="Logo">
+				            <TextInput bxml:id="inLogo" prompt="Image Path" textSize="50" />
+					    	<PushButton bxml:id="btBrowseLogo" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+					    		<content:ButtonData text="Browse" icon="/com/dcp/sm/gui/icons/browse.png" />
+					    	</PushButton>
+				        </BoxPane>
+				        <BoxPane Form.label="Side Logo">
+				            <TextInput bxml:id="inSideLogo" prompt="Image Path" textSize="50" />
+					    	<PushButton bxml:id="btBrowseSideLogo" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+					    		<content:ButtonData text="Browse" icon="/com/dcp/sm/gui/icons/browse.png" />
+					    	</PushButton>
+				        </BoxPane>
+				    </Form.Section>
+				</Form>
+		    </Border>
+		    
+	    	<Border styles="{padding:2}">
+	    		<TabPane.tabData>
+		            <content:ButtonData text="System"/>
+		        </TabPane.tabData>
+		        
+		        
+		        <Form styles="{fill:'false', showFlagHighlight:'false', showFlagIcons:'false', separatorColor:'#0198E1', separatorHeadingColor:'#ff5500'}">
+				   	<!-- Window -->
+				  	<Form.Section heading="Window">
+				        <BoxPane Form.label="Window Size">
+				            <TextInput bxml:id="inAppWidth" textSize="20" prompt="Width" />
+				            <TextInput bxml:id="inAppHeight" textSize="19" prompt="Height" />
+				        </BoxPane>
+						<Checkbox bxml:id="cbResizable" Form.label="Resizable" styles="{color:'#38ACEC'}"
+							Form.flag="{messageType:'info', message:'If Window is resizable'}" />
+				    </Form.Section>
+		        </Form>
+		    </Border>
+		    
+	    	<Border styles="{padding:2}">
+	    		<TabPane.tabData>
+		            <content:ButtonData text="Advanced"/>
+		        </TabPane.tabData>
+		        
+		        
+		        <Form styles="{fill:'false', showFlagHighlight:'false', showFlagIcons:'false', separatorColor:'#0198E1', separatorHeadingColor:'#ff5500'}">
+		        	
+				    <!-- Shortcuts -->
+				    <Form.Section heading="Shortcuts">
+				        <BoxPane Form.label="Enable for" orientation="Horizontal">
+				   			<Checkbox bxml:id="cbShortcuts" buttonData="Packs" selected="false" enabled="true" styles="{color:'GRAY'}"
+				   				tooltipText="install shortcuts for shortcut enabled packs" />
+				   			<Checkbox bxml:id="cbFolderSh" buttonData="Install folder" styles="{color:'GRAY'}"
+				   				tooltipText="add folder shortcut to install path" />
+				  			</BoxPane>
+				        <BoxPane Form.label="Install to" orientation="Horizontal">
+				   			<Checkbox bxml:id="cbShToStartMenu" buttonData="Start menu" styles="{color:'GRAY'}"
+				   				tooltipText="add shortcuts to start menu" />
+				   			<Checkbox bxml:id="cbShToDesktop" buttonData="Desktop" styles="{color:'GRAY'}"
+				   				tooltipText="add shortcuts to desktop" />
+				  			</BoxPane>
+				    </Form.Section>
+				    
+				    <!-- Internationalisation -->
+				    <Form.Section heading="Internationalisation">
+			  			<!-- Langpacks -->
+			  			<BoxPane Form.label="Languages" orientation="Vertical">
+				   			<BoxPane orientation="Horizontal">
+					   			<Checkbox bxml:id="cbLpEnglish" buttonData="English" styles="{color:'GRAY'}"
+					   				tooltipText="use English langpack (default)" />
+					   			<Checkbox bxml:id="cbLpFrench" buttonData="French" styles="{color:'GRAY'}"
+					   				tooltipText="use French langpack" />
+					   			<Checkbox bxml:id="cbLpGerman" buttonData="German" styles="{color:'GRAY'}"
+					   				tooltipText="use German langpack" />
+					   			<Checkbox bxml:id="cbLpSpanish" buttonData="Spanish" styles="{color:'GRAY'}"
+					   				tooltipText="use Spanish langpack" />
+				   			</BoxPane>
+				   			<BoxPane orientation="Horizontal" styles="{verticalAlignment:'center'}">
+					   			<Checkbox bxml:id="cbLpCustom" buttonData="Custom" styles="{color:'GRAY'}"
+					   				tooltipText="user-defined langpack xml file" />
+				   				<BoxPane orientation="Horizontal" styles="{verticalAlignment:'center'}" bxml:id="boxCustomLP" enabled="false">
+					            	<TextInput bxml:id="inCustomISO3" prompt="ISO3 code" textSize="10" enabled="false"
+					            		tooltipText="ISO3 language pack code (ex:'eng' for English)" />
+					            	<TextInput bxml:id="inCustomLangpack" prompt="Langpack File Path" textSize="33" enabled="false"
+					            		tooltipText="path to user defined xml file for custom language" />
+							    	<PushButton bxml:id="btBrowseCustomLangpack" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+							    		<content:ButtonData text="Browse" icon="/com/dcp/sm/gui/icons/browse.png" />
+							    	</PushButton>
+							    </BoxPane>
+				   			</BoxPane>
+				   		</BoxPane>
+				   	</Form.Section>
+				    
+				    <!-- Features -->
+				  	<Form.Section heading="Features">
+				  		<!-- Script generation -->
+			  			<Checkbox bxml:id="cbScriptGen" Form.label="Script Generate"
+			  				Form.flag="{messageType:'info', message:'gives an option to generate automated script at end of Setup'}" />
+				  	</Form.Section>
+				   	
+				    <!-- Windows Registry -->
+				    <Form.Section heading="Windows Registry">
+				  			<!-- Version check -->
+				  			<Checkbox bxml:id="cbRegistryCheck" Form.label="Version check"
+				  				Form.flag="{messageType:'info', message:'checks for installed version of this package on Windows'}" />
+				  			
+				    </Form.Section>
+		        </Form>
+		    </Border>
+		    
+		</TabPane>
+	</ScrollPane>
+    
+</tweak:TweakFrame>

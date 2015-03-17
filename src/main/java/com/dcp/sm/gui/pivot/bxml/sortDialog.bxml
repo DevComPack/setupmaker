@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frames:SortDialog bxml:id="sortDialog" title="Packs priorities"
+	xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns="org.apache.pivot.wtk"
+    xmlns:content="org.apache.pivot.wtk.content"
+    xmlns:frames="com.dcp.sm.gui.pivot.frames"
+    xmlns:model="com.dcp.sm.logic.model">
+    
+    <bxml:define>
+        <ButtonGroup bxml:id="sortMode"/>
+    </bxml:define>
+    
+	<TablePane>
+		<columns>
+			<TablePane.Column width="1*" />
+		</columns>
+		
+		<!-- Packs View sorting -->
+		<TablePane.Row height="1*">
+			<TablePane>
+				<columns>
+					<TablePane.Column width="30"/>
+					<TablePane.Column width="1*"/>
+				</columns>
+				
+				<!-- Sort Drag & Drop Area -->
+				<TablePane.Row height="300">
+					<!-- Buttons to change priority -->
+					<BoxPane orientation="Vertical" styles="{horizontalAlignment:'center', verticalAlignment:'center'}">
+						<PushButton bxml:id="btTop" tooltipText="first" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+							<content:ButtonData icon="/com/dcp/sm/gui/icons/top.png" />
+						</PushButton>
+						<PushButton bxml:id="btUp" tooltipText="up" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+							<content:ButtonData icon="/com/dcp/sm/gui/icons/up.png" />
+						</PushButton>
+						<PushButton bxml:id="btDown" tooltipText="down" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+							<content:ButtonData icon="/com/dcp/sm/gui/icons/down.png" />
+						</PushButton>
+						<PushButton bxml:id="btBottom" tooltipText="last" styles="{toolbar:'true', backgroundColor:'WHITE'}">
+							<content:ButtonData icon="/com/dcp/sm/gui/icons/bottom.png" />
+						</PushButton>
+					</BoxPane>
+					
+					<!-- Table View of packs -->
+					<Border styles="{padding:4}">
+						<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+							<TableView bxml:id="tableView" selectMode="single">
+				                <columns>
+				                    <TableView.Column name="priority" width="-1" />
+				                    <TableView.Column name="icon" width="-1">
+				                        <cellRenderer>
+				                            <content:TableViewImageCellRenderer/>
+				                        </cellRenderer>
+				                    </TableView.Column>
+				                    <TableView.Column name="name" 			width="-1" headerData="Name" />
+									<TableView.Column name="groupName" 		width="-1" headerData="Group"/>
+				                    <TableView.Column name="size" 			width="-1" headerData="Size">
+				                    	<cellRenderer>
+				                    		<content:TableViewFileSizeCellRenderer/>
+				                    	</cellRenderer>
+				                    </TableView.Column>
+				                    <TableView.Column name="installType" 	width="2*" headerData="Install Type" />
+				                </columns>
+				 
+				                <tableViewSortListeners>
+				                    function sortChanged(tableView) {
+				                        var tableData = tableView.getTableData();
+				                        tableData.setComparator(new org.apache.pivot.wtk.content.TableViewRowComparator(tableView));
+				                    }
+				                </tableViewSortListeners>
+				            </TableView>
+							 			
+				            <columnHeader>
+				                <TableViewHeader tableView="$tableView" sortMode="none"/>
+				            </columnHeader>
+                        </ScrollPane>
+					</Border>
+					
+				</TablePane.Row>
+			</TablePane>
+		</TablePane.Row>
+		
+		<!-- Sort by menu -->
+		<TablePane.Row height="50">
+			<Border title="Sort by" styles="{padding:4}">
+				<BoxPane styles="{horizontalAlignment:'center', verticalAlignment:'center'}">
+					<RadioButton bxml:id="rbName" 			buttonData="Name" 			buttonGroup="$sortMode" />
+					<RadioButton bxml:id="rbSize" 			buttonData="Size" 			buttonGroup="$sortMode" />
+					<RadioButton bxml:id="rbFileType" 		buttonData="Pack Type" 		buttonGroup="$sortMode" />
+					<RadioButton bxml:id="rbInstallType" 	buttonData="Install Type" 	buttonGroup="$sortMode" />
+					<RadioButton bxml:id="rbGroup" 			buttonData="Group" 			buttonGroup="$sortMode" />
+					<RadioButton bxml:id="rbRequired" 		buttonData="Required" 		buttonGroup="$sortMode" />
+					<RadioButton bxml:id="rbCustom" 		buttonData="Custom" 		buttonGroup="$sortMode" selected="true" />
+				</BoxPane>
+			</Border>
+		</TablePane.Row>
+		
+	</TablePane>
+	    
+</frames:SortDialog>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frames:RGDialog title="Rename Group" bxml:id="rgdialog" modal="true"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns:frames="com.dcp.sm.gui.pivot.frames"
+    xmlns:effects="org.apache.pivot.wtk.effects"
+    xmlns="org.apache.pivot.wtk">
+    
+	<userData>
+	    <decorator>
+	        <effects:FadeDecorator opacity="0.33"/>
+	    </decorator>
+	</userData>
+    
+    <TablePane preferredWidth="-1" preferredHeight="-1">
+        <columns>
+            <TablePane.Column width="1*"/>
+        </columns>
+ 		
+ 		<!-- Info Label -->
+        <TablePane.Row height="1*">
+            <Label text="Enter new name:"
+                styles="{horizontalAlignment:'center', verticalAlignment:'center'}"/>
+        </TablePane.Row>
+        
+        <!-- Group Name Input -->
+        <TablePane.Row height="1*">
+            <TextInput bxml:id="inGroupName">
+            	<componentKeyListeners>
+	                importClass(org.apache.pivot.wtk.Component);
+	                importClass(org.apache.pivot.wtk.Keyboard);
+	
+	                function keyPressed(component, keyCode, keyLocation) {
+	                    if (keyCode == Keyboard.KeyCode.ENTER) {
+	                        rgdialog.close();
+	                    }
+	                }
+                 </componentKeyListeners>
+            </TextInput>
+        </TablePane.Row>
+        
+    </TablePane>
+    
+</frames:RGDialog>

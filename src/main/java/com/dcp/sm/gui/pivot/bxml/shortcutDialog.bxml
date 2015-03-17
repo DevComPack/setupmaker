@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frames:ShortcutDialog bxml:id="shortcutDialog" title="Pack shortcut advanced options"
+	xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns="org.apache.pivot.wtk"
+    xmlns:content="org.apache.pivot.wtk.content"
+    xmlns:frames="com.dcp.sm.gui.pivot.frames"
+    xmlns:model="com.dcp.sm.logic.model">
+    
+    <bxml:define>
+        <ButtonGroup bxml:id="shortcutType"/>
+    </bxml:define>
+    
+    <BoxPane orientation="Vertical">
+		<BoxPane styles="{verticalAlignment:'center'}">
+			<Label text="Enable shortcut for: " styles="{color:6}" />
+		</BoxPane>
+		
+		<TablePane>
+			<columns>
+				<TablePane.Column width="2*" />
+				<TablePane.Column width="10" />
+				<TablePane.Column width="3*" />
+			</columns>
+			
+			<TablePane.Row height="20">
+				<RadioButton bxml:id="rbFolder" buttonData="Root Folder" tooltipText="Shortcut to the whole folder" buttonGroup="$shortcutType" selected="true" />
+				<TablePane.Filler />
+			</TablePane.Row>
+			
+			<TablePane.Row height="20">
+				<RadioButton bxml:id="rbFile" buttonData="Inner File/Folder" tooltipText="Shortcut to a file inside the folder" buttonGroup="$shortcutType" />
+				<TablePane.Filler />
+			    <TextInput bxml:id="inFilePath" textSize="20" prompt="Relative file path (e.g. /bin/run.bat)" enabled="false" />
+			</TablePane.Row>
+		</TablePane>
+	</BoxPane>
+	
+</frames:ShortcutDialog>

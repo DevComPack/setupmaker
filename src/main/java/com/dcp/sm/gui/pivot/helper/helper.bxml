@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<helper:HelperFacade bxml:id="sheet" title="Helper"
+	xmlns:helper="com.dcp.sm.gui.pivot.helper"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns="org.apache.pivot.wtk"
+	xmlns:content="org.apache.pivot.wtk.content">
+    
+    <BoxPane styles="{verticalAlignment:'bottom'}">
+        <TablePane>
+            <columns>
+                <TablePane.Column width="1*"/>
+            </columns>
+			
+			<!-- Content -->
+            <TablePane.Row height="1*">
+            
+				<Border styles="{padding:6}">
+					<CardPane bxml:id="cardPane" styles="{selectionChangeEffect:'HORIZONTAL_SLIDE'}">
+						<!-- Step 1 -->
+						<TextPane editable="false">
+							<Document xmlns="org.apache.pivot.wtk.text">
+								<Paragraph font="Arial BOLD 16">DevComPack Setup Maker Assistant</Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph foregroundColor="#0198E1" font="Arial BOLD ITALIC 14">Step 1</Paragraph>
+								
+								<Paragraph></Paragraph>
+								<Paragraph>DCP Setup Maker is an open source application that generates java installers </Paragraph>
+								<Paragraph>It's all about 4 simple steps for your setup to be ready! </Paragraph>
+								<Paragraph></Paragraph>
+								
+								<BulletedList style="CIRCLE">
+								  <List.Item>
+									<Paragraph font="Arial ITALIC">Scan the directory containing the files you want to include in your package. </Paragraph>
+								  </List.Item>
+								</BulletedList>
+								
+								<Paragraph></Paragraph>
+								<Paragraph>- Press the 'Browse' button to choose a directory containing all of the files </Paragraph>
+								<Paragraph>  you need in your installer, then 'filter' some of them if you need so </Paragraph>
+								<Paragraph>- Press 'refresh' if the folder content was modified on the File System. </Paragraph>
+								<Paragraph>- A 'simple scan' treats a directory as a whole single pack of files, </Paragraph>
+								<Paragraph>- A 'recursive scan' gets packs from inside directories until </Paragraph>
+								<Paragraph>  'depth' is reached where folders are packs. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>Custom filters can be set in 'settings.json' file. </Paragraph>
+								<Paragraph>Regular Expressions can be used to filter a file group </Paragraph>
+								<Paragraph>Example: ".*\.(exe|msi)" will filter all files with 'exe' or 'msi' extension </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>- 'Folders as groups' option will convert folders to groups </Paragraph>
+								<Paragraph>- 'Folders as paths' option will fill packs install paths with folder paths </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>Press Next when list of files is ready.. </Paragraph>
+							</Document>
+						</TextPane>
+						<!-- Step 2 -->
+						<TextPane editable="false">
+							<Document xmlns="org.apache.pivot.wtk.text">
+								<Paragraph foregroundColor="#0198E1" font="Arial BOLD ITALIC 14">Step 2</Paragraph>
+								
+								<Paragraph></Paragraph>
+								<BulletedList style="CIRCLE">
+								  <List.Item>
+									<Paragraph font="Arial ITALIC">Set the parameters of your files </Paragraph>
+								  </List.Item>
+								</BulletedList>
+								
+								<Paragraph></Paragraph>
+								<Paragraph>The second step lets you set the properties for each of your packs (files) </Paragraph>
+								<Paragraph>and even organize them by Groups/Install groups. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>You add a new group using the green '+' button at right, and entering its name </Paragraph>
+								<Paragraph>then you may use the 'Add to group' from context menu on packs or Drag and Drop them to a group. </Paragraph>
+								<Paragraph>You may then sort packs for execution priority. However executable packs can't be processed before others </Paragraph>
+								<Paragraph>The 'debug' option for Packs will validate all of packs' data and stop on an incorrect one, you may </Paragraph>
+								<Paragraph>get error details from a 'red' field by hovering over it and reading tooltip text. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>- A Pack is either 'executed' during install, or 'copied' or 'extracted' to 'install path'. </Paragraph>
+								<Paragraph>- Packs can be part of many install groups. </Paragraph>
+								<Paragraph>- A Pack may depend on a Pack or a Group of packs on install </Paragraph>
+								<Paragraph>- A required pack will be installed and can't be disabled on install </Paragraph>
+								<Paragraph>- A hidden pack will be installed and won't display on install </Paragraph>
+								<Paragraph>- The arch (32/64) is checked at the running JVM arch (not the OS) </Paragraph>
+								<Paragraph>- A shortcut can be enabled for a pack or more to access it directly; </Paragraph>
+								<Paragraph>  advanced shortcut options are available to access a specific file inside a folder or extracted archive </Paragraph>
+								<Paragraph>- The 'Install path' of a pack is relative to the global install path of setup. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>Single item options for packs or groups are accessed from context menu (Mouse Right clic) </Paragraph>
+								<Paragraph>An executable script can access its dependencies from code using the 'DEP' environment variable as path </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>Once all your packs and groups set, you press Next.. </Paragraph>
+							</Document>
+						</TextPane>
+						<!-- Step 3 -->
+						<TextPane editable="false">
+							<Document xmlns="org.apache.pivot.wtk.text">
+								<Paragraph foregroundColor="#0198E1" font="Arial BOLD ITALIC 14">Step 3</Paragraph>
+								
+								<Paragraph></Paragraph>
+								<BulletedList style="CIRCLE">
+								  <List.Item>
+									<Paragraph font="Arial ITALIC">Tweak the final custom settings for your application to be ready. </Paragraph>
+								  </List.Item>
+								</BulletedList>
+								
+								<Paragraph></Paragraph>
+								<Paragraph>Finally, you add some informations for your package like the application name and version number. </Paragraph>
+								<Paragraph>You navigate between options types from the left tabs. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>You may select any part of the version and increment it as long as it is a number </Paragraph>
+								<Paragraph>By default, the increment button will add 1 to the last part. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>Additionally, you can add some resources like a Readme file, License, Images, </Paragraph>
+								<Paragraph>and set the desired target path for your packs and shortcuts, and even more... </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>- A 'forced' install path can't be modified on install. </Paragraph>
+								<Paragraph>  The package will suggest a platform-related path if install path field is empty. </Paragraph>
+								<Paragraph>- 'Langpacks' are different languages ready for installer's text. </Paragraph>
+								<Paragraph>- A 'version check' enabled installer check Windows' registry for installed version. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>When finished, push Next.. </Paragraph>
+							</Document>
+						</TextPane>
+						<!-- Step 4 -->
+						<TextPane editable="false">
+							<Document xmlns="org.apache.pivot.wtk.text">
+								<Paragraph foregroundColor="#0198E1" font="Arial BOLD ITALIC 14">Step 4</Paragraph>
+								
+								<Paragraph></Paragraph>
+								<Paragraph>Your package is ready to be packaged at the given export path. </Paragraph>
+								<Paragraph>You just have to choose a builder and set the target path, then 'Compile'. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>Once the build is successful, you may 'Launch' the resulting package or 'Debug' it for bug tracking. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph>Don't forget to 'save' your project to 'load' it later, and if you need, 'save default' settings </Paragraph>
+								<Paragraph>For developers who want more possibilities, they can edit the settings.json file to just generate </Paragraph>
+								<Paragraph>the IzPack specification files, edit them, then compile. </Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph foregroundColor="#ff5500" font="Arial BOLD 14">Enjoy packaging! ;) </Paragraph>
+								
+								<Paragraph></Paragraph>
+								<Paragraph></Paragraph>
+								<Paragraph font="Arial BOLD ITALIC 10">More help at the official website: http://www.devcompack.com/setupmaker </Paragraph>
+							</Document>
+						</TextPane>
+					</CardPane>
+				</Border>
+            </TablePane.Row>
+ 			<!-- Bottom panel -->
+            <TablePane.Row height="-1">
+            	<FillPane>
+            		<!-- Steps meter -->
+	                <BoxPane styles="{verticalAlignment:'center', horizontalAlignment:'left'}">
+		    			<Meter bxml:id="meter" percentage="0.25" styles="{gridFrequency:0.25, color:'#38ACEC'}" />
+		    		</BoxPane>
+					
+					<!-- Navigate buttons -->
+					<BoxPane styles="{padding:4, verticalAlignment:'center', horizontalAlignment:'center'}">
+						<LinkButton bxml:id="btPrevious" buttonData="Previous" enabled="false" />
+						<LinkButton bxml:id="btNext" buttonData="Next" />
+					</BoxPane>
+		    		
+		    		<!-- Close button -->
+	                <BoxPane styles="{verticalAlignment:'center', horizontalAlignment:'right'}">
+	                    <PushButton styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}"
+	                        ButtonPressListener.buttonPressed="sheet.close()">
+	                        <content:ButtonData text="Close" icon="/com/dcp/sm/gui/icons/delete.png" />
+	                    </PushButton>
+	                </BoxPane>
+	        	</FillPane>
+            </TablePane.Row>
+        </TablePane>
+    </BoxPane>
+    
+</helper:HelperFacade>

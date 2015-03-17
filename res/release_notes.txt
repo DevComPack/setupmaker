@@ -1,6 +1,7 @@
 1.2.1
 =====
-Windows special distribution with executable binary
+Project source code migrated to Maven project
+Windows special distribution with executable binary for Java version check
 Mac OS/Linux distribution size reduced with Windows features disabled
 --
 +New features:
@@ -10,6 +11,7 @@ Software Update notification
 -Enhancements:
 --
 *Bug fixes:
+Window close validation
 
 
 1.2.0

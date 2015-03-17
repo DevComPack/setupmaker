@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frames:SftpDialog title="SFTP configuration" modal="true"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns:frames="com.dcp.sm.gui.pivot.frames"
+    xmlns:effects="org.apache.pivot.wtk.effects"
+    xmlns="org.apache.pivot.wtk"
+    xmlns:content="org.apache.pivot.wtk.content">
+    
+	<userData>
+	    <decorator>
+	        <effects:FadeDecorator opacity="0.33"/>
+	    </decorator>
+	</userData>
+    
+    <TablePane>
+		<columns>
+            <TablePane.Column width="1*"/>
+        </columns>
+        
+		<TablePane.Row height="-1">
+			<Checkbox bxml:id="cbEnable" buttonData="Enable automatic transfer of packs to server" />
+	    </TablePane.Row>
+	    
+	    <TablePane.Row height="5">
+	    	<Separator styles="{color:'#0198E1'}" />
+	    </TablePane.Row>
+	    
+		<TablePane.Row height="-1">
+			<Border styles="{padding:4}" bxml:id="formArea" enabled="false" >
+			    <Form styles="{fill:'false', showFlagHighlight:'false', showFlagIcons:'false', separatorColor:'#0198E1', separatorHeadingColor:'#0198E1'}">
+			    	<Form.Section heading="SFTP Connection">
+				        <TextInput bxml:id="inHost" Form.label="Hostname" textSize="20" prompt="host" />
+				        <TextInput bxml:id="inUser" Form.label="Username" textSize="20" prompt="username" />
+				        <TextInput bxml:id="inPass" Form.label="Password" textSize="20" prompt="password" password="true" />
+				        <TextInput bxml:id="inRemDir" Form.label="Remote Directory" textSize="20" prompt="initial remote directory" />
+				        <TextInput bxml:id="inPath" Form.label="Copy Path" textSize="20" prompt="destination path" />
+				    </Form.Section>
+			  	</Form>
+		  	</Border>
+	 	</TablePane.Row>
+	 	
+		<TablePane.Row height="-1">
+			<BoxPane orientation="Horizontal" styles="{verticalAlignment:'center', horizontalAlignment:'right'}">
+				<PushButton bxml:id="btSave" tooltipText="Save data" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+					<content:ButtonData icon="/com/dcp/sm/gui/icons/save.png" />
+				</PushButton>
+				<PushButton bxml:id="btLoad" tooltipText="Load data" styles="{toolbar:'true', backgroundColor:'WHITE', color:'#ff5500'}">
+					<content:ButtonData icon="/com/dcp/sm/gui/icons/load.png" />
+				</PushButton>
+			</BoxPane>
+		</TablePane.Row>
+  	</TablePane>
+    
+</frames:SftpDialog>

@@ -1,6 +1,0 @@
-Orange: #ff5500
-Light Orange: #ff9900
-Green: #0E8C3A
-Blue: #0198E1
-Cyan: #38ACEC
-Light Blue: #EEF0FF

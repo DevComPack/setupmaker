@@ -1,4 +1,0 @@
--Global code structure rewrite (facade)
--Save path directory create on startup init
--Group rename and hierarchy bug fixes
--Packs remove on set tab

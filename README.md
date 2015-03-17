@@ -1,5 +1,5 @@
 DCP Setup Maker
-===============
+---
 [![Build Status](https://travis-ci.org/DevComPack/setupmaker.svg)](https://travis-ci.org/DevComPack/setupmaker)  
 [![Download DCP Setup Maker](https://img.shields.io/sourceforge/dt/devcompack.svg)](https://sourceforge.net/projects/devcompack/files/latest/download)
   
@@ -19,7 +19,7 @@ The whole process is done step by step through a wizard-like interface, filling 
 
 
 LICENSE
--------
+---
 Apache License
 
 Version 2.0, January 2004
@@ -27,8 +27,7 @@ Version 2.0, January 2004
 http://www.apache.org/licenses/
 
 CHANGELOG
----------
-
+---
 *1.2.0*
 + New features:  
 Open package target folder on Build  
@@ -57,10 +56,10 @@ Tweak pack shortcut option always enabled for setting
 * Bug fixes:  
 Empty Group creation was possible  
 Group treeview node delete button returned exception when none selected  
-Panels display flag wasn't initialized  
+Panels display flag wasn\'t initialized  
 Build Mode was set double times on app start  
 Faster application start  
-Tweak application version validator wasn't working  
+Tweak application version validator wasn\'t working  
 Tooltip on empty tableView field is now hidden  
 Multi selected packs validation was still active on deletion  
 Exceptions on some buttons when empty data  
@@ -68,64 +67,64 @@ Advanced shortcut button enable bug
 
 *1.1.1*
 + New features:  
-Nuget/Chocolatey process compiler;  
-Conditions support for IzPack;  
+Nuget/Chocolatey process compiler  
+Conditions support for IzPack  
 - Enhancements:  
-Code structure update;  
-Validators debugging warnings;  
-Multi lines clipboard copy of selected log lines;  
-Back to factory setup data on undo with no modifications;  
-Merge of dcp libs to one library;  
-Add scan horizontal split panel to Workspace auto-saved data;  
-Build mode and default build configurations added to workspace data;  
-Build logs copy to clipboard from context menu;  
-Apache Commons IO for file copy operations;  
-CommandLine build includes app name and version in package file;  
+Code structure update  
+Validators debugging warnings  
+Multi lines clipboard copy of selected log lines  
+Back to factory setup data on undo with no modifications  
+Merge of dcp libs to one library  
+Add scan horizontal split panel to Workspace auto-saved data  
+Build mode and default build configurations added to workspace data  
+Build logs copy to clipboard from context menu  
+Apache Commons IO for file copy operations  
+CommandLine build includes app name and version in package file  
 * Bug fixes:  
-Default empty target path was based on app data instead of setup data;  
-Workspace configuration was always saved even when not modified;  
-Save file extension correction on empty path;  
-Pack install name validation was displaying a wrong debug message;  
-SFTP data load generated exception on empty data;  
-Workspace data was saved with edit flag on;  
+Default empty target path was based on app data instead of setup data  
+Workspace configuration was always saved even when not modified  
+Save file extension correction on empty path  
+Pack install name validation was displaying a wrong debug message  
+SFTP data load generated exception on empty data  
+Workspace data was saved with edit flag on  
 Frames Singletons were not used as intended  
 
 *1.1.0*
 * Bug Fixes:  
-Set tab listbox circular mode disabled;  
-Packs tooltip text correction on empty area;  
-Scan Packs TableView selection enabled;  
-Expand/Collapse buttons fix for Java 8;  
-Fixed Data initialization and load at startup;  
-Tab Singletons initialize with instantiation;  
+Set tab listbox circular mode disabled  
+Packs tooltip text correction on empty area  
+Scan Packs TableView selection enabled  
+Expand/Collapse buttons fix for Java 8  
+Fixed Data initialization and load at startup  
+Tab Singletons initialize with instantiation  
 Scan on enabled selection didn't update packs list  
 + New features:  
-Pack version property;  
-New compilation system based on multiple compilers;  
+Pack version property  
+New compilation system based on multiple compilers  
 Command Line compilation of dcp files  
 - Enhancements:  
-Apache Pivot update to 2.0.4;  
-Split panel on Scan tab's side bar;  
-Resizable RegExp filter input size;  
+Apache Pivot update to 2.0.4  
+Split panel on Scan tab's side bar  
+Resizable RegExp filter input size  
 Version extract from pack file name  
 
 
 *1.0.3*
 * Bug Fixes:  
-Fixed for Java 8;  
-Code structure update;  
-Simple scan didn't update on changed selection;  
-Filters now are enabled when selected;  
+Fixed for Java 8  
+Code structure update  
+Simple scan didn't update on changed selection  
+Filters now are enabled when selected  
 Version increment format check + focus  
 + Enhancements:  
-GUI update;  
-Assistant update;  
-Recent scanned directories display with parent + full path on tooltip;  
-Improved filtering system;  
-Custom filters show up in UI;  
-Second custom filter replaced with regexp filtering;  
-Packs tooltip displays full path to pack on disk;  
-Automated version number parts selection;  
+GUI update  
+Assistant update  
+Recent scanned directories display with parent + full path on tooltip  
+Improved filtering system  
+Custom filters show up in UI  
+Second custom filter replaced with regexp filtering  
+Packs tooltip displays full path to pack on disk  
+Automated version number parts selection  
 Version Increment applies to selected part or last part by default  
 
 
