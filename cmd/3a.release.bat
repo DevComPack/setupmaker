@@ -1,1 +1,0 @@
-ant -file ../release.xml release
