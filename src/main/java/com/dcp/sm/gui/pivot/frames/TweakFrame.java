@@ -239,7 +239,7 @@ public class TweakFrame extends FillPane implements Bindable
             {
                 if (!TI.getText().contains("\\") && !TI.getText().contains("/")) {
                     String s = installPath.getText();
-                    if (s.contains(setupConfig.getAppName())) {
+                    if (s.length() > 0 && s.contains(setupConfig.getAppName())) {
                         s = s.substring(0, s.lastIndexOf(setupConfig.getAppName())) + TI.getText();
                         installPath.setText(s);
                     }

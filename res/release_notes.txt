@@ -9,7 +9,8 @@ Window close event validation
 Unix filenames without extensions couldn't be selected in filebrowser
 Author Email autofill include null value
 Load project with relative paths in Tweak tab
-Zip files content list for shortcut
+Zip files content list for shortcut (TFile > ZipFile)
+Tweak app name was filling in empty install path
 
 
 1.2.0
