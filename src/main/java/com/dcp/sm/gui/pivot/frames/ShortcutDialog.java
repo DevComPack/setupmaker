@@ -2,7 +2,10 @@ package com.dcp.sm.gui.pivot.frames;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.Stack;
 
 import org.apache.pivot.beans.BXML;
@@ -19,7 +22,10 @@ import org.apache.pivot.wtk.Button.State;
 
 import com.dcp.sm.logic.factory.TypeFactory.FILE_TYPE;
 import com.dcp.sm.logic.model.Pack;
+
 import de.schlichtherle.truezip.file.TFile;
+import de.schlichtherle.truezip.zip.ZipEntry;
+import de.schlichtherle.truezip.zip.ZipFile;
 
 
 public class ShortcutDialog extends Dialog implements Bindable
@@ -44,6 +50,14 @@ public class ShortcutDialog extends Dialog implements Bindable
         } else if (entry.isFile()) {
             files.push(entry);
         } // else is special file or non-existent
+    }
+    private void search(ZipFile zipFile, Stack<File> files) throws IOException, ClassNotFoundException {
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        
+        while(entries.hasMoreElements()){
+            ZipEntry entry = entries.nextElement();
+            files.push(new File(entry.getName()));
+        }
     }
     private void search(File entry, Stack<File> files) throws IOException {
         if (entry.isDirectory()) {
@@ -91,14 +105,19 @@ public class ShortcutDialog extends Dialog implements Bindable
                             if (pack.getFileType() == FILE_TYPE.Folder)
                                 search(new File(pack.getPath()), paths);
                             else if (pack.getFileType() == FILE_TYPE.Archive)
-                                search(new TFile(pack.getPath()), paths);
+                                search(new ZipFile(pack.getPath()), paths);
                             cache = pack.getName();
                         }
                         catch (IOException e) { e.printStackTrace(); }
+                        catch (ClassNotFoundException e) { e.printStackTrace(); }
                     }
                     
                     for(File f:paths) {// Suggestions from Group paths
-                        String path = f.getAbsolutePath().substring(pack.getPath().length()).replace('\\', '/');
+                        String path = f.getPath();
+                        if (path.startsWith(pack.getPath()))
+                            path = f.getAbsolutePath().substring(pack.getPath().length()).replace('\\', '/');
+                        else if (!path.startsWith("/"))
+                            path = "/" + path;
                         if (path.toLowerCase().startsWith(text)) {
                             found = true;
                             suggestion = path;
