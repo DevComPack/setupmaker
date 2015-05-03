@@ -11,7 +11,11 @@ import org.apache.pivot.wtk.content.TreeBranch;
 import com.dcp.sm.logic.factory.CastFactory;
 import com.dcp.sm.logic.factory.GroupFactory;
 
-
+/**
+ * Group Model
+ * @author Said
+ *
+ */
 public class Group implements Comparable<Group>, Serializable
 {
     /**

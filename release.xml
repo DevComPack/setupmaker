@@ -23,7 +23,7 @@
 	<property name="current_release" value="${releases}/DCP_${version}/"/>
 	
 	<property name="doc.dir" value="../devcompack.gh-pages/setupmaker/doc"/>
-	<property name="launch4j.dir" value="../launch4j"/>
+	<property name="launch4j.dir" value="../../launch4j"/>
 	
 	
 	<!-- task definitions -->

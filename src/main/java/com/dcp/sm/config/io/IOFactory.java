@@ -14,7 +14,6 @@ import com.dcp.sm.logic.factory.TypeFactory.FILE_TYPE;
 /**
  * Input/Output Factory
  * @author SSAIDELI
- *
  */
 public class IOFactory
 {
@@ -318,13 +317,9 @@ public class IOFactory
             
         } catch (TaskExecutionException e) {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }

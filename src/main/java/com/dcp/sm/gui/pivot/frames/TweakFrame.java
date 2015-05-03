@@ -367,7 +367,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setInstallPath(TI.getText());// Set the default install path
-                File f = new File(TI.getText());
+                File f = new File(TI.getText()).getAbsoluteFile();
                 if (f.exists())// Map the file browser with the path entered
                     fileBrowserSheet.setRootDirectory(f.isDirectory()?f:f.getParentFile());
                 setModified(true);// Modified flag*
@@ -396,7 +396,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setReadmePath(TI.getText());
-                File f = new File(TI.getText());
+                File f = new File(TI.getText()).getAbsoluteFile();
                 if (f.exists())// Map the file browser with the path entered
                     fBSReadme.setRootDirectory(f.isDirectory()?f:f.getParentFile());
                 setModified(true);// Modified flag*
@@ -406,7 +406,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setLicensePath(TI.getText());
-                File f = new File(TI.getText());
+                File f = new File(TI.getText()).getAbsoluteFile();
                 if (f.exists())// Map the file browser with the path entered
                     fBSLicense.setRootDirectory(f.isDirectory()?f:f.getParentFile());
                 setModified(true);// Modified flag*
@@ -416,7 +416,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setLogoPath(TI.getText());
-                File f = new File(TI.getText());
+                File f = new File(TI.getText()).getAbsoluteFile();
                 if (f.exists())// Map the file browser with the path entered
                     fBS1.setRootDirectory(f.isDirectory()?f:f.getParentFile());
                 setModified(true);// Modified flag*
@@ -426,7 +426,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setSideLogoPath(TI.getText());
-                File f = new File(TI.getText());
+                File f = new File(TI.getText()).getAbsoluteFile();
                 if (f.exists())// Map the file browser with the path entered
                     fBS2.setRootDirectory(f.isDirectory()?f:f.getParentFile());
                 setModified(true);// Modified flag*
@@ -565,7 +565,7 @@ public class TweakFrame extends FillPane implements Bindable
             @Override public void textChanged(TextInput TI)
             {
                 setupConfig.setCustomLangPath(TI.getText());
-                File f = new File(TI.getText());
+                File f = new File(TI.getText()).getAbsoluteFile();
                 if (f.exists())// Map the file browser with the path entered
                     fBSLangpack.setRootDirectory(f.isDirectory()?f:f.getParentFile());
                 setModified(true);// Modified flag*

@@ -1,19 +1,14 @@
 1.2.1
 =====
-Project source code migrated to Maven project
-Windows special distribution with executable binary for Java version check
+Windows special distribution with executable binary for Java version check (1.7+)
 Mac OS/Linux distribution size reduced with Windows features disabled
---
-+New features:
-Scan mix mode
-Software Update notification
---
--Enhancements:
+Project source code migrated to Maven structure
 --
 *Bug fixes:
 Window close event validation
 Unix filenames without extensions couldn't be selected in filebrowser
 Author Email autofill include null value
+Load project with relative paths in Tweak tab
 
 
 1.2.0

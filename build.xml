@@ -27,7 +27,6 @@
         <pathelement location="${lib}/truezip-samples-7.7.1-jar-with-dependencies.jar"/>
         <pathelement location="${lib}/ant/ant.jar"/>
         <pathelement location="${lib}/ant/ant-launcher.jar"/>
-        <pathelement location="${lib}/ant/ant-apache-regexp.jar"/>
         <pathelement location="${lib}/ant/ant-contrib.jar"/>
         <pathelement location="${lib}/stax2-api-3.1.1.jar"/>
         <pathelement location="${lib}/staxmate-2.2.0.jar"/>
@@ -100,7 +99,6 @@
             <zipfileset dir="${lib}" includes="truezip-samples-7.7.1-jar-with-dependencies.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant-launcher.jar"/>
-            <zipfileset dir="${lib}/ant" includes="ant-apache-regexp.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant-contrib.jar"/>
             <zipfileset dir="${lib}" includes="stax2-api-3.1.1.jar"/>
             <zipfileset dir="${lib}" includes="staxmate-2.2.0.jar"/>
@@ -131,7 +129,6 @@
         <copy file="${lib}/truezip-samples-7.7.1-jar-with-dependencies.jar" todir="${target}/lib"/>
         <copy file="${lib}/ant/ant.jar" todir="${target}/lib"/>
         <copy file="${lib}/ant/ant-launcher.jar" todir="${target}/lib"/>
-        <copy file="${lib}/ant/ant-apache-regexp.jar" todir="${target}/lib"/>
         <copy file="${lib}/ant/ant-contrib.jar" todir="${target}/lib"/>
         <copy file="${lib}/stax2-api-3.1.1.jar" todir="${target}/lib"/>
         <copy file="${lib}/staxmate-2.2.0.jar" todir="${target}/lib"/>

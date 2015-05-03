@@ -13,7 +13,11 @@ import com.dcp.sm.logic.factory.TypeFactory.FILE_TYPE;
 import com.dcp.sm.logic.factory.TypeFactory.INSTALL_TYPE;
 import com.dcp.sm.logic.factory.TypeFactory.PLATFORM;
 
-
+/**
+ * Pack Model
+ * @author Said
+ *
+ */
 public class Pack implements Serializable
 {
     /**
