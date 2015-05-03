@@ -8,9 +8,7 @@
     </description>
 	
 	<!-- global properties for build -->
-	<property name="name" value="DCP Setup Maker"/>
-	<property name="version" value="1.2.1"/>
-	<property name="username" value="SAID EL IMAM, Said"/>
+	<loadproperties srcfile="${basedir}/src/resources/app.properties" />
 	
 	<property name="target" location="${basedir}/target"/>
 	<property name="jar_name" value="DCP-SNAPSHOT.jar"/>

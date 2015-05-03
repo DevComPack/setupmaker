@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project name="DCP Setup Maker - build" default="dist" basedir=".">
+<project name="DCP Setup Maker - build" default="compile" basedir=".">
     <!-- ANT 1.7 is required -->
 	
     <description>
@@ -8,13 +8,16 @@
     </description>
 	
 	<!-- global properties for build -->
+	<property name="res" value="${basedir}/src/resources" />
+	<loadproperties srcfile="${res}/app.properties" />
+	
 	<property name="src" value="${basedir}/src/main/java"/>
 	<property name="build" value="${basedir}/bin"/>
 	<property name="lib" location="${basedir}/lib"/>
 	<property name="target" location="${basedir}/target"/>
 	
-    <property name="java.source" value="1.7"/>
-    <property name="java.target" value="1.7"/>
+    <property name="java.source" value="${jdk.version}"/>
+    <property name="java.target" value="${jdk.version}"/>
 	<property name="exe_name" value="dcpsetupmaker.exe"/>
 	<property name="jar_name" value="DCP-SNAPSHOT.jar"/>
 	<property name="jar_name.out" value="dcpsetupmaker.jar"/>
@@ -24,6 +27,7 @@
 	<!-- classpath elements -->
 	<path id="master.classpath">
         <pathelement location="${build}"/>
+        <pathelement location="${res}"/>
         <pathelement location="${lib}/truezip-samples-7.7.1-jar-with-dependencies.jar"/>
         <pathelement location="${lib}/ant/ant.jar"/>
         <pathelement location="${lib}/ant/ant-launcher.jar"/>
@@ -96,6 +100,7 @@
             </manifest>
             <zipfileset src="${lib}/jar-in-jar-loader.zip"/>
             <zipfileset dir="${build}"/>
+            <zipfileset dir="${res}"/>
             <zipfileset dir="${lib}" includes="truezip-samples-7.7.1-jar-with-dependencies.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant-launcher.jar"/>
@@ -124,6 +129,7 @@
             </manifest>
 			<fileset refid="reqdClasses"/>
             <zipfileset dir="${build}"/>
+            <zipfileset dir="${res}"/>
         </jar>
         <mkdir dir="${target}/lib"/>
         <copy file="${lib}/truezip-samples-7.7.1-jar-with-dependencies.jar" todir="${target}/lib"/>

@@ -34,6 +34,7 @@ import org.apache.pivot.wtk.Window;
 import org.apache.pivot.wtk.Keyboard.KeyLocation;
 
 import com.dcp.sm.config.io.IOFactory;
+import com.dcp.sm.config.io.PropertiesFactory;
 import com.dcp.sm.gui.pivot.helper.HelperFacade;
 import com.dcp.sm.logic.factory.GroupFactory;
 import com.dcp.sm.logic.factory.PackFactory;
@@ -48,7 +49,16 @@ public class Master extends Window implements Application, Bindable
 {
     // Constant Application Values
     public final static String AppName = "DCP Setup Maker";
-    public final static String AppVersion = "1.2.1";
+    public static String AppVersion;
+    static {
+        PropertiesFactory props;
+        try
+        {
+            props = new PropertiesFactory("app.properties");
+            AppVersion = props.getProperty("version");
+        }
+        catch (IOException e) { e.printStackTrace(); }
+    }
     
     // Class Data
     private static Window window;// Main application window
