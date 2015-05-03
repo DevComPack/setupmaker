@@ -54,6 +54,7 @@ public class Group implements Comparable<Group>, Serializable
      * @param group
      */
     public Group(dcp.logic.model.Group group) {
+        assert group != null;
         this.name = group.name;
         if (group.parent != null)
         	setParent(new Group(group.parent));

@@ -11,7 +11,8 @@ Software Update notification
 -Enhancements:
 --
 *Bug fixes:
-Window close validation
+Window close event validation
+Unix filenames without extensions couldn't be selected in filebrowser
 
 
 1.2.0

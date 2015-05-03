@@ -40,7 +40,10 @@ import com.dcp.sm.logic.factory.PackFactory;
 import com.dcp.sm.logic.factory.TypeFactory.LOG_LEVEL;
 import com.dcp.sm.main.log.Out;
 
-
+/**
+ * Main GUI Window Class
+ * @author Said El Imam Said
+ */
 public class Master extends Window implements Application, Bindable
 {
     // Constant Application Values

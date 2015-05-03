@@ -33,7 +33,7 @@ public class IOFactory
     
     /**
      * Returns file type of a file
-     * @param f
+     * @param f: file
      * @return FILE_TYPE
      */
     public static FILE_TYPE getFileType(File f) {
@@ -63,13 +63,17 @@ public class IOFactory
     }
     
     /**
-     * Tests if a file is of a type
-     * (doesn't work for folders)
+     * Tests if a file's extension is of a type
+     * (folders and files without extension are automatically valid)
      * @param file_name
      * @param file_type
      * @return boolean: success
      */
     public static boolean isFileType(String file_name, FILE_TYPE file_type) {
+        // Accept all (unix) files without extensions
+        if (!file_name.contains("."))
+            return true;
+        
         String[] exts = null;
         switch (file_type) {
         case Archive:

@@ -124,7 +124,7 @@ public class Pack implements Serializable
         installVersion = pack.installVersion; // 1.1
         size = pack.size;
         path = pack.path;
-        group = new Group(pack.group);
+        if (pack.group != null) group = new Group(pack.group);
         installType = pack.installType.cast();
         if (pack.installOs != null) installOs = pack.installOs.cast();
         arch = pack.arch; // 1.2
@@ -132,8 +132,8 @@ public class Pack implements Serializable
         shortcutPath = pack.shortcutPath;
         installGroups = pack.installGroups;
         description = pack.description;
-        if (pack.dependsOnGroup!=null) dependsOnGroup = GroupFactory.get(new Group(pack.dependsOnGroup).getPath());
-        if (pack.dependsOnPack!=null) dependsOnPack = new Pack(pack.dependsOnPack);
+        if (pack.dependsOnGroup != null) dependsOnGroup = GroupFactory.get(new Group(pack.dependsOnGroup).getPath());
+        if (pack.dependsOnPack != null) dependsOnPack = new Pack(pack.dependsOnPack);
         required = pack.required;
         selected = pack.selected;
         hidden = pack.hidden;
