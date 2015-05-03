@@ -62,7 +62,8 @@ public class SetupConfig implements Serializable
         Map<String, String> sysEnv = System.getenv();
         if (OSValidator.isWindows()) {// Windows
             authorName = sysEnv.get("USERNAME");// From env var 'USERNAME'
-            authorEmail = authorName+"@"+sysEnv.get("USERDNSDOMAIN");// From env var 'USERDNSDOMAIN'
+            String USERDNSDOMAIN = sysEnv.get("USERDNSDOMAIN");
+            authorEmail = authorName + (USERDNSDOMAIN != null?"@"+USERDNSDOMAIN:"");// From env var 'USERDNSDOMAIN'
             installPath = sysEnv.get("ProgramFiles") + "\\" + appName;// From env var 'ProgramFiles'
         }
         else if (OSValidator.isUnix() || OSValidator.isMac()) {// Unix & Mac

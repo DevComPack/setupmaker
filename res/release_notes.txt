@@ -13,6 +13,7 @@ Software Update notification
 *Bug fixes:
 Window close event validation
 Unix filenames without extensions couldn't be selected in filebrowser
+Author Email autofill include null value
 
 
 1.2.0
