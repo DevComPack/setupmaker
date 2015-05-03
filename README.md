@@ -28,6 +28,18 @@ http://www.apache.org/licenses/
 
 CHANGELOG
 ---
+*1.2.1*  
+- Windows special distribution with executable binary for Java version check (1.7+)  
+- Mac OS/Linux distribution size reduced with Windows features disabled  
+- Project source code migrated to Maven structure  
+* Bug fixes:  
+Window close event validation  
+Unix filenames without extensions couldn't be selected in filebrowser  
+Author Email autofill include null value  
+Load project with relative paths in Tweak tab  
+Zip files content list for shortcut (TFile > ZipFile)  
+Tweak app name was filling in empty install path  
+
 *1.2.0*
 + New features:  
 Open package target folder on Build  
