@@ -79,7 +79,7 @@ public class ShortcutDialog extends Dialog implements Bindable
             //Make inner files suggestions
             @Override public void textInserted(TextInput textInput, int index, int count)
             {
-                if (pack.getSize() < 50*1024*1024) {// only if file size less than 10MB
+                if (pack.getSize() < 50*1024*1024) {// only if file size less than 50MB
                     String text = textInput.getText().toLowerCase();
                     boolean found = false;
                     String suggestion = "";
@@ -97,7 +97,7 @@ public class ShortcutDialog extends Dialog implements Bindable
                         catch (IOException e) { e.printStackTrace(); }
                     }
                     
-                    for(File f:paths) {//Suggestions from Group paths
+                    for(File f:paths) {// Suggestions from Group paths
                         String path = f.getAbsolutePath().substring(pack.getPath().length()).replace('\\', '/');
                         if (path.toLowerCase().startsWith(text)) {
                             found = true;
