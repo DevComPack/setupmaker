@@ -162,7 +162,10 @@ a.button span {
 #view-on-github span {
   background: transparent url(../images/octocat-icon.png) 12px 50% no-repeat;
 }
-#view-on-github {
+#donate span {
+  background: transparent url(../images/donate-icon.png) 12px 50% no-repeat;
+}
+#donate {
   margin-right: 0;
 }
 
