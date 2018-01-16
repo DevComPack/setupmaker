@@ -1,6 +1,7 @@
 language: java
 #before_install: ant clean
-install: ant compile
+install: true
+script: ant compile
 #after_success: ant dist
 jdk:
   - openjdk7
