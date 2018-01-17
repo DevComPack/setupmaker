@@ -4,6 +4,5 @@ install: true
 script: mvn clean package -DskipTests=true
 #after_success: ant dist
 jdk:
-  - openjdk7
   - oraclejdk8
   - oraclejdk9
