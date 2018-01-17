@@ -41,6 +41,11 @@ The *clean* target can clean all of te generated files from your folder once you
 
 + release.xml:
 This ant build file contain tasks to create the final release packages.
+The two properties *doc.dir* and *launch4j.dir* should be updated according to your own local paths of [![gh-pages/doc]](https://github.com/DevComPack/setupmaker/tree/gh-pages/doc) and [![launch4j install]](https://sourceforge.net/projects/launch4j/) respectively.
+
+Dev on Windows
+-
+For Windows developers, you already have the *cmd/* folder which contains a batch script file for every step of the release process, going from 0-clean to 5-documentation.
 
 
 LICENSE
@@ -53,6 +58,11 @@ http://www.apache.org/licenses/
 
 CHANGELOG
 ---
+*1.3.0*
+- Java 8 incompatibilities for Apache Pivot fixed with the new 2.0.5 release
+see full changelog here (http://mirrors.ircam.fr/pub/apache//pivot/RELEASE-NOTES-2.0.5.html)
+- Source code / automated tasks / documentation updated for new contributors to get involved
+
 *1.2.1*  
 - Windows special distribution with executable binary for Java version check (1.7+)  
 - Mac OS/Linux distribution size reduced with Windows features disabled  
