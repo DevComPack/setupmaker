@@ -20,8 +20,9 @@
 	<property name="releases" value="${target}/dist"/>
 	<property name="current_release" value="${releases}/DCP_${version}/"/>
 	
-	<property name="doc.dir" value="../devcompack.gh-pages/setupmaker/doc"/>
-	<property name="launch4j.dir" value="../../launch4j"/>
+	<!-- must update these paths on first time before running a release! -->
+	<property name="doc.dir" value="../gh-pages/doc"/>
+	<property name="launch4j.dir" value="C:/bin/launch4j"/>
 	
 	
 	<!-- task definitions -->
@@ -74,19 +75,20 @@
 					<cp>lib/ant-launcher.jar</cp>
 					<cp>lib/ant-apache-regexp.jar</cp>
 					<cp>lib/ant-contrib.jar</cp>
+					<cp>lib/bcel-5.2.jar</cp>
 					<cp>lib/stax2-api-3.1.1.jar</cp>
 					<cp>lib/staxmate-2.2.0.jar</cp>
 					<cp>lib/woodstox-core-asl-4.1.5.jar</cp>
 					<cp>lib/standalone-compiler.jar</cp>
 					<cp>lib/json-simple-1.1.1.jar</cp>
 					<cp>lib/jsch-0.1.50.jar</cp>
-					<cp>lib/pivot-charts-2.0.4.jar</cp>
-					<cp>lib/pivot-core-2.0.4.jar</cp>
-					<cp>lib/pivot-wtk-2.0.4.jar</cp>
-					<cp>lib/pivot-wtk-terra-2.0.4.jar</cp>
+					<cp>lib/pivot-charts.jar</cp>
+					<cp>lib/pivot-core.jar</cp>
+					<cp>lib/pivot-wtk.jar</cp>
+					<cp>lib/pivot-wtk-terra.jar</cp>
 					<cp>lib/commons-io-2.4.jar</cp>
 				</classPath>
-				<jre minVersion="1.7.0_02" maxVersion="1.7.0_72" />
+				<jre minVersion="1.7.0_02" />
 				<splash file="${basedir}/res/splash.bmp" waitForWindow="true" />
 				<versionInfo fileVersion="${version}.0" txtFileVersion="${version}.0"
 					productVersion="${version}.0" txtProductVersion="${version}.0"
