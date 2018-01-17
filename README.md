@@ -14,8 +14,33 @@ The whole process is done step by step through a wizard-like interface, filling 
 
 [![Download DCP Setup Maker](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/devcompack/files/latest/download)
 
-*Required: Java 1.7 for DCP Setup Maker and Java 1.6+ for built packages*  
-*Powered by Java, IzPack, Nuget, Apache Pivot, Apache Ant and Stax.*  
+*Required: Java 1.6+ for built packages*  
+*Powered by Java, IzPack, Nuget, Launch4j, Apache Pivot, Apache Ant and Stax.*  
+
+
+GET INVOLVED
+---
+If you want to make a pull request, you just have to clone the master branch on your computer, create a branch for your modifications and push it with a pull request.
+
+What you will need on your machine
+-
+- Apache Maven
+- Apache Ant: *add bcel jar library to the lib folder*
+- Java JDK 8+
+
+Run the app
+-
+One you made modifications, you can run the DCP app from you IDE via the class *com.dcp.sm.App* as a Java application.
+
+Automated tasks
+-
++ build.xml:
+This ant build file contains tasks to compile and generate the DCP binary for you to test, the binary will be created on the code root path.
+You can launch *dist* for a Java distribution and *dist.win* for a special Windows binary.
+The *clean* target can clean all of te generated files from your folder once you finished testing.
+
++ release.xml:
+This ant build file contain tasks to create the final release packages.
 
 
 LICENSE

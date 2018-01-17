@@ -28,20 +28,21 @@
 	<path id="master.classpath">
         <pathelement location="${build}"/>
         <pathelement location="${res}"/>
-        <pathelement location="${lib}/truezip-samples-7.7.1-jar-with-dependencies.jar"/>
+        <pathelement location="${lib}/truezip-samples-${truezip.version}-jar-with-dependencies.jar"/>
         <pathelement location="${lib}/ant/ant.jar"/>
         <pathelement location="${lib}/ant/ant-launcher.jar"/>
         <pathelement location="${lib}/ant/ant-contrib.jar"/>
+        <pathelement location="${lib}/ant/bcel-5.2.jar"/>
         <pathelement location="${lib}/stax2-api-3.1.1.jar"/>
         <pathelement location="${lib}/staxmate-2.2.0.jar"/>
         <pathelement location="${lib}/woodstox-core-asl-4.1.5.jar"/>
         <pathelement location="${lib}/izpack/standalone-compiler.jar"/>
         <pathelement location="${lib}/json/json-simple-1.1.1.jar"/>
         <pathelement location="${lib}/web/jsch-0.1.50.jar"/>
-        <pathelement location="${lib}/pivot/pivot-charts-2.0.4.jar"/>
-        <pathelement location="${lib}/pivot/pivot-core-2.0.4.jar"/>
-        <pathelement location="${lib}/pivot/pivot-wtk-2.0.4.jar"/>
-        <pathelement location="${lib}/pivot/pivot-wtk-terra-2.0.4.jar"/>
+        <pathelement location="${lib}/pivot/${pivot.version}/pivot-charts.jar"/>
+        <pathelement location="${lib}/pivot/${pivot.version}/pivot-core.jar"/>
+        <pathelement location="${lib}/pivot/${pivot.version}/pivot-wtk.jar"/>
+        <pathelement location="${lib}/pivot/${pivot.version}/pivot-wtk-terra.jar"/>
         <pathelement location="${lib}/commons-io-2.4.jar"/>
 	</path>
 	
@@ -96,15 +97,16 @@
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="com.dcp.sm.App"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ truezip-samples-7.7.1-jar-with-dependencies.jar ant.jar staxmate-2.2.0.jar stax2-api-3.1.1.jar woodstox-core-asl-4.1.5.jar compiler.jar installer.jar jakarta-regexp-1.3.jar ant-launcher.jar ant-apache-log4j.jar ant-apache-regexp.jar ant-contrib.jar izevent.jar standalone-compiler.jar uninstaller-ext.jar uninstaller.jar bsf.jar kunststoff.jar liquidlnf.jar looks.jar metouia.jar nimbus.jar substance.jar json-simple-1.1.1.jar jsch-0.1.50.jar pivot-charts-2.0.4.jar pivot-core-2.0.4.jar pivot-wtk-2.0.4.jar pivot-wtk-terra-2.0.4.jar commons-io-2.4.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ truezip-samples-${truezip.version}-jar-with-dependencies.jar ant.jar staxmate-2.2.0.jar stax2-api-3.1.1.jar woodstox-core-asl-4.1.5.jar compiler.jar installer.jar jakarta-regexp-1.3.jar ant-launcher.jar ant-apache-log4j.jar ant-apache-regexp.jar ant-contrib.jar izevent.jar standalone-compiler.jar uninstaller-ext.jar uninstaller.jar bsf.jar kunststoff.jar liquidlnf.jar looks.jar metouia.jar nimbus.jar substance.jar json-simple-1.1.1.jar jsch-0.1.50.jar pivot-charts.jar pivot-core.jar pivot-wtk.jar pivot-wtk-terra.jar commons-io-2.4.jar bcel-5.2.jar"/>
             </manifest>
             <zipfileset src="${lib}/jar-in-jar-loader.zip"/>
             <zipfileset dir="${build}"/>
             <zipfileset dir="${res}"/>
-            <zipfileset dir="${lib}" includes="truezip-samples-7.7.1-jar-with-dependencies.jar"/>
+            <zipfileset dir="${lib}" includes="truezip-samples-${truezip.version}-jar-with-dependencies.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant-launcher.jar"/>
             <zipfileset dir="${lib}/ant" includes="ant-contrib.jar"/>
+            <zipfileset dir="${lib}/ant" includes="bcel-5.2.jar"/>
             <zipfileset dir="${lib}" includes="stax2-api-3.1.1.jar"/>
             <zipfileset dir="${lib}" includes="staxmate-2.2.0.jar"/>
             <zipfileset dir="${lib}" includes="woodstox-core-asl-4.1.5.jar"/>
@@ -112,10 +114,10 @@
             <zipfileset dir="${lib}/izpack" includes="standalone-compiler.jar"/>
             <zipfileset dir="${lib}/json" includes="json-simple-1.1.1.jar"/>
             <zipfileset dir="${lib}/web" includes="jsch-0.1.50.jar"/>
-            <zipfileset dir="${lib}/pivot" includes="pivot-charts-2.0.4.jar"/>
-            <zipfileset dir="${lib}/pivot" includes="pivot-core-2.0.4.jar"/>
-            <zipfileset dir="${lib}/pivot" includes="pivot-wtk-2.0.4.jar"/>
-            <zipfileset dir="${lib}/pivot" includes="pivot-wtk-terra-2.0.4.jar"/>
+            <zipfileset dir="${lib}/pivot/${pivot.version}" includes="pivot-charts.jar"/>
+            <zipfileset dir="${lib}/pivot/${pivot.version}" includes="pivot-core.jar"/>
+            <zipfileset dir="${lib}/pivot/${pivot.version}" includes="pivot-wtk.jar"/>
+            <zipfileset dir="${lib}/pivot/${pivot.version}" includes="pivot-wtk-terra.jar"/>
 			<zipfileset dir="${lib}" includes="commons-io-2.4.jar"/>
         </jar>
 		<echo message="${jar_file} file created."/>
@@ -125,34 +127,35 @@
 		<jar destfile="${jar_file}">
             <manifest>
                 <attribute name="Main-Class" value="com.dcp.sm.App"/>
-                <attribute name="Class-Path" value=". lib/truezip-samples-7.7.1-jar-with-dependencies.jar lib/ant.jar lib/staxmate-2.2.0.jar lib/stax2-api-3.1.1.jar lib/woodstox-core-asl-4.1.5.jar lib/compiler.jar lib/installer.jar lib/jakarta-regexp-1.3.jar lib/ant-launcher.jar lib/ant-apache-log4j.jar lib/ant-apache-regexp.jar lib/ant-contrib.jar lib/izevent.jar lib/standalone-compiler.jar lib/uninstaller-ext.jar lib/uninstaller.jar lib/bsf.jar lib/kunststoff.jar lib/liquidlnf.jar lib/looks.jar lib/metouia.jar lib/nimbus.jar lib/substance.jar lib/json-simple-1.1.1.jar lib/jsch-0.1.50.jar lib/pivot-charts-2.0.4.jar lib/pivot-core-2.0.4.jar lib/pivot-wtk-2.0.4.jar lib/pivot-wtk-terra-2.0.4.jar lib/commons-io-2.4.jar"/>
+                <attribute name="Class-Path" value=". lib/truezip-samples-${truezip.version}-jar-with-dependencies.jar lib/ant.jar lib/staxmate-2.2.0.jar lib/stax2-api-3.1.1.jar lib/woodstox-core-asl-4.1.5.jar lib/compiler.jar lib/installer.jar lib/jakarta-regexp-1.3.jar lib/ant-launcher.jar lib/ant-apache-log4j.jar lib/ant-apache-regexp.jar lib/ant-contrib.jar lib/izevent.jar lib/standalone-compiler.jar lib/uninstaller-ext.jar lib/uninstaller.jar lib/bsf.jar lib/kunststoff.jar lib/liquidlnf.jar lib/looks.jar lib/metouia.jar lib/nimbus.jar lib/substance.jar lib/json-simple-1.1.1.jar lib/jsch-0.1.50.jar lib/pivot-charts.jar lib/pivot-core.jar lib/pivot-wtk.jar lib/pivot-wtk-terra.jar lib/commons-io-2.4.jar lib/bcel-5.2.jar"/>
             </manifest>
 			<fileset refid="reqdClasses"/>
             <zipfileset dir="${build}"/>
             <zipfileset dir="${res}"/>
         </jar>
         <mkdir dir="${target}/lib"/>
-        <copy file="${lib}/truezip-samples-7.7.1-jar-with-dependencies.jar" todir="${target}/lib"/>
+        <copy file="${lib}/truezip-samples-${truezip.version}-jar-with-dependencies.jar" todir="${target}/lib"/>
         <copy file="${lib}/ant/ant.jar" todir="${target}/lib"/>
         <copy file="${lib}/ant/ant-launcher.jar" todir="${target}/lib"/>
         <copy file="${lib}/ant/ant-contrib.jar" todir="${target}/lib"/>
+        <copy file="${lib}/ant/bcel-5.2.jar" todir="${target}/lib"/>
         <copy file="${lib}/stax2-api-3.1.1.jar" todir="${target}/lib"/>
         <copy file="${lib}/staxmate-2.2.0.jar" todir="${target}/lib"/>
         <copy file="${lib}/woodstox-core-asl-4.1.5.jar" todir="${target}/lib"/>
         <copy file="${lib}/izpack/standalone-compiler.jar" todir="${target}/lib"/>
         <copy file="${lib}/json/json-simple-1.1.1.jar" todir="${target}/lib"/>
         <copy file="${lib}/web/jsch-0.1.50.jar" todir="${target}/lib"/>
-        <copy file="${lib}/pivot/pivot-charts-2.0.4.jar" todir="${target}/lib"/>
-        <copy file="${lib}/pivot/pivot-core-2.0.4.jar" todir="${target}/lib"/>
-        <copy file="${lib}/pivot/pivot-wtk-2.0.4.jar" todir="${target}/lib"/>
-        <copy file="${lib}/pivot/pivot-wtk-terra-2.0.4.jar" todir="${target}/lib"/>
+        <copy file="${lib}/pivot/${pivot.version}/pivot-charts.jar" todir="${target}/lib"/>
+        <copy file="${lib}/pivot/${pivot.version}/pivot-core.jar" todir="${target}/lib"/>
+        <copy file="${lib}/pivot/${pivot.version}/pivot-wtk.jar" todir="${target}/lib"/>
+        <copy file="${lib}/pivot/${pivot.version}/pivot-wtk-terra.jar" todir="${target}/lib"/>
         <copy file="${lib}/commons-io-2.4.jar" todir="${target}/lib"/>
         <mkdir dir="${target}/lib/dcp"/>
         <copy file="${lib}/dcp/dcp-resources.jar" todir="${target}/lib/dcp"/>
 	</target>
 	
 	<target name="test" depends="clean" description="Test" >
-		<echo message="Testing.."/>
+		<echo message="NOT IMPLEMENTED"/>
 	</target>
 
 </project>

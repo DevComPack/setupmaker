@@ -4,7 +4,7 @@
 
 	<groupId>com.dcp</groupId>
 	<artifactId>setupmaker</artifactId>
-	<version>1.2.2-SNAPSHOT</version>
+	<version>1.3.0-SNAPSHOT</version>
 	
 	<packaging>jar</packaging>
 	
@@ -13,7 +13,10 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
+		<pivot.version>2.0.5</pivot.version>
+		<ant.version>1.9.4</ant.version>
+		<izpack.version>4.3.5</izpack.version>
 	</properties>
 	
 	<dependencies>
@@ -27,22 +30,22 @@
 		<dependency>
 			<groupId>org.codehaus.izpack</groupId>
 			<artifactId>izpack-standalone-compiler</artifactId>
-			<version>4.3.5</version>
+			<version>${izpack.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.pivot</groupId>
 			<artifactId>pivot-core</artifactId>
-			<version>2.0.4</version>
+			<version>${pivot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.pivot</groupId>
 			<artifactId>pivot-wtk-terra</artifactId>
-			<version>2.0.4</version>
+			<version>${pivot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.pivot</groupId>
 			<artifactId>pivot-charts</artifactId>
-			<version>2.0.4</version>
+			<version>${pivot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -57,12 +60,12 @@
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
-			<version>1.9.4</version>
+			<version>${ant.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant-launcher</artifactId>
-			<version>1.9.4</version>
+			<version>${ant.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ant-contrib</groupId>
@@ -114,6 +117,24 @@
 					<downloadJavadocs>false</downloadJavadocs>
 				</configuration>
 			</plugin>
+
+<!-- 			<plugin> -->
+<!-- 				<artifactId>maven-antrun-plugin</artifactId> -->
+<!-- 				<version>1.8</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<phase>process-resources</phase> -->
+<!-- 						<configuration> -->
+<!-- 							<target name="compile"> -->
+<!-- 								<ant antfile="build.xml"/> -->
+<!-- 							</target> -->
+<!-- 						</configuration> -->
+<!-- 						<goals> -->
+<!-- 							<goal>run</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 			
 			<!-- Set a JDK compiler level -->
 			<plugin>
