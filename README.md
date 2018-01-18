@@ -20,6 +20,8 @@ The whole process is done step by step through a wizard-like interface, filling 
 
 GET INVOLVED
 ---
+All contributors are very welcome to help make this software a perfect open-source setup maker! All questions and requests to make some edits in the program will be replied to ASAP.
+
 If you want to make a pull request, you just have to clone the master branch on your computer, create a branch for your modifications and push it with a pull request.
 
 What you will need on your machine
