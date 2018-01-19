@@ -24,6 +24,9 @@ All contributors are very welcome to help make this software a perfect open-sour
 
 If you want to make a pull request, you just have to clone the master branch on your computer, create a branch for your modifications and push it with a pull request.
 
+Questions can be asked in the [Google Group](https://groups.google.com/forum/#!forum/dcp-setup-makers).
+
+
 What you will need on your machine
 -
 - Apache Maven
@@ -43,7 +46,7 @@ The *clean* target can clean all of te generated files from your folder once you
 
 + release.xml:
 This ant build file contain tasks to create the final release packages.
-The two properties *doc.dir* and *launch4j.dir* should be updated according to your own local paths of [![gh-pages/doc]](https://github.com/DevComPack/setupmaker/tree/gh-pages/doc) and [![launch4j install]](https://sourceforge.net/projects/launch4j/) respectively.
+The two properties *doc.dir* and *launch4j.dir* should be updated according to your own local paths of [gh-pages/doc](https://github.com/DevComPack/setupmaker/tree/gh-pages/doc) and [launch4j install](https://sourceforge.net/projects/launch4j/) respectively.
 
 Dev on Windows
 -
