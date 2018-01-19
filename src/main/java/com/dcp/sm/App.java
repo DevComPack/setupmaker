@@ -37,8 +37,11 @@ public class App
         }
         else // GUI Application
         {
-            String javaVersionFix = System.getProperty("java.vm.version").split("_")[0];
+            // Apache Pivot bugfix for Java VM versions containing '_'
+            String javaVersionFix = System.getProperty("java.runtime.version").split("_")[0];
             System.setProperty("java.vm.version", javaVersionFix);
+            Out.print(LOG_LEVEL.INFO, "Fixing Java version to v" + System.getProperty("java.vm.version"));
+
             DesktopApplicationContext.main(Master.class, args);
         }
     }
