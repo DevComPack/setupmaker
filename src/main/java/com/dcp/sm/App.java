@@ -36,6 +36,10 @@ public class App
             }
         }
         else // GUI Application
+        {
+            String javaVersionFix = System.getProperty("java.vm.version").split("_")[0];
+            System.setProperty("java.vm.version", javaVersionFix);
             DesktopApplicationContext.main(Master.class, args);
+        }
     }
 }
