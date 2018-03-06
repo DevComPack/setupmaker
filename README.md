@@ -24,7 +24,7 @@ All contributors are very welcome to help make this software a perfect open-sour
 
 If you want to make a pull request, you just have to clone the master branch on your computer, create a branch for your modifications and push it with a pull request.
 
-Questions can be asked in the [Google Group](https://groups.google.com/forum/#!forum/dcp-setup-makers).
+Questions can be asked in the [Issues](https://github.com/DevComPack/setupmaker/issues) or the [Google Group](https://groups.google.com/forum/#!forum/dcp-setup-makers).
 
 
 What you will need on your machine
