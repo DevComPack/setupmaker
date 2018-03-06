@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<!-- The English langpack -->
+
+<langpack xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:noNamespaceSchemaLocation="../schemas/izpack-langpack.xsd">
+
+    <!-- Heading messages START -->
+    <str id="CheckedHelloPanel.headline" txt="Добро Пожаловать"/>
+    <str id="CompilePanel.headline" txt="Компиляция Java исходников"/>
+    <str id="ConditionalUserInputPanel.headline" txt="Данные пользователя"/>
+    <str id="ExtendedInstallPanel.headline" txt="Установка и настройка"/>
+    <str id="FinishPanel.headline" txt="Установка завершена"/>
+    <str id="HelloPanel.headline" txt="Добро Пожаловать"/>
+    <str id="HTMLInfoPanel.headline" txt="Информация"/>
+    <str id="HTMLLicencePanel.headline" txt="Лицензионное соглашение"/>
+    <str id="ImgPacksPanel.headline" txt="Выбор установочных пакетов"/>
+    <str id="InfoPanel.headline" txt="Информация"/>
+    <str id="InstallPanel.headline" txt="Установка"/>
+    <str id="JDKPathPanel.headline" txt="JDK Путь"/>
+    <str id="LicencePanel.headline" txt="Лицензионное соглашение"/>
+    <str id="PacksPanel.headline" txt="Выбор установочных пакетов"/>
+    <str id="TreePacksPanel.headline" txt="Выбор установочных пакетов"/>
+    <str id="ProcessPanel.headline" txt="Выполнение внешних процессов"/>
+    <str id="ShortcutPanel.headline" txt="Настройки ярлыков"/>
+    <str id="SimpleFinishPanel.headline" txt="Установка завершена"/>
+    <str id="SummaryPanel.headline" txt="Общие данные конфигурации"/>
+    <str id="TargetPanel.headline" txt="Целевой путь"/>
+    <str id="UserInputPanel.headline" txt="Данные пользователя"/>
+    <str id="UserPathPanel.headline" txt="Выбор пути"/>
+    <str id="InstallationGroupPanel.headline" txt="Установки групп"/>
+    <str id="InstallationTypePanel.headline" txt="Установки типов"/>
+
+    <!-- General installer strings -->
+    <str id="installer.title" txt="Установка "/>
+    <str id="installer.reversetitle" txt="$APP_NAME $APP_VER - Мастер установки"/>
+    <str id="installer.next" txt="Вперед"/>
+    <str id="installer.prev" txt="Назад"/>
+    <str id="installer.quit" txt="Выход"/>
+    <str id="installer.madewith" txt="DCP Setup Maker/IzPack"/>
+    <str id="installer.quit.title" txt="$APP_NAME $APP_VER"/>
+    <str id="installer.quit.message" txt="Вы действительно хотите отменить установку?"/>
+    <str id="installer.warning" txt="Предупреждение!"/>
+    <str id="installer.yes" txt="Да"/>
+    <str id="installer.no" txt="Нет"/>
+    <str id="installer.cancel" txt="Отмена"/>
+    <str id="installer.error" txt="Ошибка"/>
+    <str id="installer.help" txt="Помощь"/>
+    <str id="installer.step" txt="Стадия"/>
+    <str id="installer.of" txt="из"/>
+    <str id="installer.Message" txt="Сообщение"/>
+
+    <!-- Uninstaller specific strings -->
+    <str id="uninstaller.warning" txt="Это приведет к удалению установленного приложения!"/>
+    <str id="uninstaller.destroytarget" txt=" Принудительное удаление"/>
+    <str id="uninstaller.uninstall" txt="Удаление"/>
+
+    <!-- The strings for the 'official' IzPack plugins -->
+    <!-- HelloPanel strings -->
+    <str id="HelloPanel.welcome1" txt="Добро пожаловать в установку"/>
+    <str id="HelloPanel.welcome2" txt="!"/>
+    <str id="HelloPanel.authors" txt="Программное обеспечение разработано:"/>
+    <str id="HelloPanel.url" txt="Домашняя страница: "/>
+
+    <!-- LicensePanel strings -->
+    <str id="LicencePanel.info" txt="Пожалуйста, внимательно прочитайте следующее лицензионное соглашение:"/>
+    <str id="LicencePanel.agree" txt="Я принимаю условия настоящего лицензионного соглашения."/>
+    <str id="LicencePanel.notagree" txt="Я не принимаю условия настоящего лицензионного соглашения."/>
+    <str id="LicencePanel.yes" txt="Да"/>
+    <str id="LicencePanel.no" txt="Нет"/>
+
+		<!-- PrinterSelect Panel -->
+		<str id="PrinterSelectPanel.select_printer" txt="Выберите принтер для первоначальной настройки и тестирования."/>
+
+		<!-- InfoPanel strings -->
+		<str id="InfoPanel.info" txt="Пожалуйста, прочитайте следующую информацию: "/>
+
+		<!-- PathInputPanel strings -->
+		<str id="PathInputPanel.required" txt="Выбранный каталог должен существовать."/>
+    <str id="PathInputPanel.required.forModificationInstallation" txt="Выбранный каталог должен существовать."/>
+    <str id="PathInputPanel.notValid" txt="Выбранный каталог не содержит требуемого продукта."/>
+
+		<!-- TargetPanel strings -->
+    <str id="TargetPanel.info" txt="Выберите путь установки: "/>
+    <str id="TargetPanel.browse" txt="Обзор..."/>
+    <str id="TargetPanel.warn" txt="Каталог уже существует! Вы действительно хотите установить сюда и, возможно, перезаписать существующие файлы?"/>
+    <str id="TargetPanel.empty_target" txt="Вы не указали целевое расположение! Все верно?"/>
+    <str id="TargetPanel.createdir" txt="Будет создан целевой каталог: "/>
+    <str id="TargetPanel.nodir" txt="Этот файл не является каталогом! Выберите каталог!"/>
+    <str id="TargetPanel.notwritable" txt="Этот каталог не может быть перезаписан! Выберите другой каталог!"/>
+
+    <!-- JDKPathPanel strings -->
+    <str id="JDKPathPanel.extendedIntro" txt="Установленному приложению требуется JDK версий между ${JDKPathPanel.minVersion} и ${JDKPathPanel.maxVersion}. Java runtime environment (JRE) не хватает."/>
+    <str id="JDKPathPanel.intro" txt="Для установленного приложения требуется JDK. Недостаточно среды выполнения Java (JRE)."/>
+    <str id="JDKPathPanel.info" txt="Выберите путь JDK:"/>
+    <str id="JDKPathPanel.badVersion1" txt="Выбранный JDK имеет неправильную версию (доступна: "/>
+    <str id="JDKPathPanel.badVersion2" txt=" требуется: "/>
+    <str id="JDKPathPanel.badVersion3" txt=") должен ли этот JDK использоваться в любом случае?"/>
+    <str id="JDKPathPanel.nonValidPathInReg" txt="Реестр Windows содержит недействительный путь для этого JDK. Должен ли этот JDK использоваться в любом случае?"/>
+
+		<!-- PacksPanel strings -->
+		<str id="PacksPanel.info" txt="Выберите пакеты, которые вы хотите установить:"/>
+    <str id="PacksPanel.tip" txt="Примечание: требуются недоступные пакеты."/>
+    <str id="PacksPanel.space" txt="Доступное дисковое пространство: "/>
+    <str id="PacksPanel.freespace" txt="Доступное пространство: "/>
+    <str id="PacksPanel.description" txt="Описание"/>
+    <str id="PacksPanel.dependencyList" txt="Выбранный пакет имеет следующие зависимости и / или исключает"/>
+    <str id="PacksPanel.dependencies" txt="Зависимости: "/>
+    <str id="PacksPanel.excludes" txt="Исключает: "/>
+    <str id="PacksPanel.notEnoughSpace" txt="Дисковое пространство, необходимое для установки, превышает доступное дисковое пространство."/>
+    <str id="PacksPanel.notAscertainable" txt="не установлено"/>
+		
+		<!-- InstallPanel strings -->
+		<str id="InstallPanel.info" txt="Нажмите «Установить!» для начала процесса установки"/>
+    <str id="InstallPanel.install" txt="Установить!"/>
+    <str id="InstallPanel.tip" txt="Процесс установки пакета:"/>
+    <str id="InstallPanel.begin" txt=" "/>
+    <str id="InstallPanel.finished" txt="[Закончено]"/>
+    <str id="InstallPanel.progress" txt="Общий ход установки:"/>
+    <str id="InstallPanel.overwrite.title" txt="Файл уже существует"/>
+    <str id="InstallPanel.overwrite.question" txt="Следующий файл уже существует. Перезаписать?"/>
+
+		<!-- InstallationGroupPanel strings -->
+		<str id="InstallationGroupPanel.colNameSelected" txt="Выбрано"/>
+    <str id="InstallationGroupPanel.colNameInstallType" txt="InstallType"/>
+    <str id="InstallationGroupPanel.colNameSize" txt="Размер"/>
+		
+		<!-- InstallationTypePanel strings -->
+    <str id="InstallationTypePanel.info" txt="Выберите тип установки:"/>
+    <str id="InstallationTypePanel.normal" txt="Новая установка"/>
+    <str id="InstallationTypePanel.modify" txt="Изменить установку"/>
+		
+		<!-- FinishPanel strings -->
+		<str id="FinishPanel.success" txt="Установка успешно завершена."/>
+    <str id="FinishPanel.done" txt="Готово"/>
+    <str id="FinishPanel.fail" txt="Не удалось выполнить установку!"/>
+    <str id="FinishPanel.uninst.info" txt="Мастер удаления был создан в: "/>
+    <str id="FinishPanel.auto" txt="Сгенерировать сценарий автоматической установки"/>
+    <str id="FinishPanel.auto.tip" txt="Используйте этот скрипт, чтобы повторить эту установку на других компьютерах."/>
+    <str id="FinishPanel.auto.dialog.filterdesc" txt="XML Файлы"/>
+
+		<!-- ImgPacksPanel strings -->
+	<str id="ImgPacksPanel.dependencyList" txt="Зависимости и / или исключения"/>
+    <str id="ImgPacksPanel.packs" txt="Доступны следующие пакеты:"/>
+    <str id="ImgPacksPanel.snap" txt="Снимок пакета:"/>
+    <str id="ImgPacksPanel.checkbox" txt=" Установить этот пакет"/>
+
+    <!-- ShortcutPanel strings -->
+    <str id="ShortcutPanel.regular.list" txt="Выберите группу программ для ярлыков:"/>
+    <str id="ShortcutPanel.regular.default" txt="По умолчанию"/>
+    <str id="ShortcutPanel.regular.desktop" txt="Создание дополнительных ярлыков на рабочем столе"/>
+    <str id="ShortcutPanel.regular.create" txt="Создание ярлыков в меню «Пуск»"/>
+    <str id="ShortcutPanel.regular.userIntro" txt="создать ярлык для:"/>
+    <str id="ShortcutPanel.regular.currentUser" txt="текущий пользователь"/>
+    <str id="ShortcutPanel.regular.allUsers" txt="все пользователи"/>
+    <str id="ShortcutPanel.alternate.apology" txt="Извините, но IzPack не поддерживает создание ярлыков в этой операционной системе. Чтобы создать ярлыки, обратитесь к руководству вашей операционной системы."/>
+    <str id="ShortcutPanel.alternate.targetsLabel" txt="Ниже приведен список целей, к которым производитель этого программного продукта хотел получить доступ."/>
+    <str id="ShortcutPanel.alternate.textFileExplanation" txt="Вы можете сохранить подробную информацию о целевых приложениях в текстовом файле для дальнейшего использования."/>
+    <str id="ShortcutPanel.alternate.saveButton" txt="Сохранить текстовый файл"/>
+    <str id="ShortcutPanel.textFile.header" txt="Информация о ярлыке\n====================\n\nНиже приведен список всех релевантных сведений о предполагаемых \nярлыках. Эта информация должна позволять вручную создавать ярлыки.\n"/>
+    <str id="ShortcutPanel.textFile.name" txt="Ярлык          : "/>
+    <str id="ShortcutPanel.textFile.location" txt="Предполагаемое расположение : "/>
+    <str id="ShortcutPanel.textFile.description" txt="Описание       : "/>
+    <str id="ShortcutPanel.textFile.target" txt="Целевой ярлык   : "/>
+    <str id="ShortcutPanel.textFile.command" txt="Командная строка      : "/>
+    <str id="ShortcutPanel.textFile.iconName" txt="Файл иконка         : "/>
+    <str id="ShortcutPanel.textFile.iconIndex" txt="Индекс иконки        : "/>
+    <str id="ShortcutPanel.textFile.work" txt="Рабочий каталог : "/>
+    <str id="ShortcutPanel.location.desktop" txt="Рабочий стол"/>
+    <str id="ShortcutPanel.location.applications" txt="Меню приложений"/>
+    <str id="ShortcutPanel.location.startMenu" txt="Меню Пуск"/>
+    <str id="ShortcutPanel.location.startup" txt="Группа автозагрузки"/>
+	<str id="ShortcutPanel.regular.StartMenu:Start-Menu" txt="Меню-Пуск"/>
+    <str id="ShortcutPanel.regular.StartMenu:K-Menu" txt="XDG-меню"/>
+    
+    <!-- UserInputPanel strings -->
+    <str id="UserInputPanel.error.caption" txt="Ошибка"/>
+    <str id="UserInputPanel.dir.nodirectory.message" txt="Вы должны выбрать действительный каталог."/>
+    <str id="UserInputPanel.dir.nodirectory.caption" txt="Не выбран каталог"/>
+    <str id="UserInputPanel.dir.notdirectory.message" txt="Выбранный вами каталог не существует или недействителен."/>
+    <str id="UserInputPanel.dir.notdirectory.caption" txt="Недействительным каталог"/>
+    <str id="UserInputPanel.file.nofile.message" txt="Вы должны выбрать действительный файл."/>
+    <str id="UserInputPanel.file.nofile.caption" txt="Файл не выбран"/>
+    <str id="UserInputPanel.file.notfile.message" txt="Выбранный файл не существует или недействителен."/>
+    <str id="UserInputPanel.file.notfile.caption" txt="Недопустимый файл"/>
+    <!-- more descriptive error message would be cool, like specifying what file we looked for -->
+    <str id="UserInputPanel.search.autodetect" txt="Автоматическое определение"/>
+    <str id="UserInputPanel.search.autodetect.failed.message" txt="Автоматическое определение не удалось."/>
+    <str id="UserInputPanel.search.autodetect.failed.caption" txt="Автоматическое определение не удалось"/>
+    <str id="UserInputPanel.search.autodetect.tooltip" txt="Проверьте файл или каталог по указанным выше путям."/>
+    <str id="UserInputPanel.search.location" txt="Укажите расположение {0}."/>
+    <str id="UserInputPanel.search.location.checkedfile" txt="Проверяется существование {0}."/>
+    <str id="UserInputPanel.search.browse" txt="Обзор..."/>
+    <str id="UserInputPanel.search.wrongselection.message" txt="Выбранный файл или каталог не существует или не подходит."/>
+    <str id="UserInputPanel.search.wrongselection.caption" txt="Недопустимый выбор"/>
+    
+    <!-- UserPathPanel strings -->
+    <str id="UserPathPanel.required" txt="Выбранный каталог должен существовать."/>
+    <str id="UserPathPanel.info" txt="Выберите путь: "/>
+    <str id="UserPathPanel.browse" txt="Обзор"/>
+    <str id="UserPathPanel.exists_warn" txt="Каталог уже существует! Вы действительно хотите установить сюда и, возможно, перезаписать существующие файлы?"/>
+    <str id="UserPathPanel.empty_target" txt="Вы не указали целевое расположение! Все верно?"/>
+    <str id="UserPathPanel.createdir" txt="Будет создан целевой каталог: "/>
+    <str id="UserPathPanel.nodir" txt="Этот файл не является каталогом! Выберите каталог!"/>
+    <str id="UserPathPanel.notwritable" txt="Этот каталог не может быть перезаписан! Выберите другой каталог!"/>
+    
+    <!-- CompilePanel strings -->
+    <str id="CompilePanel.heading" txt="Компиляция"/>
+    <str id="CompilePanel.tip" txt="Прогресс компиляции задания:"/>
+    <str id="CompilePanel.browse" txt="Обзор..."/>
+    <str id="CompilePanel.browse.approve" txt="Использовать в качестве компилятора"/>
+    <str id="CompilePanel.start" txt="Пуск"/>
+    <str id="CompilePanel.progress.initial" txt="[Нажмите кнопку «Пуск»]"/>
+    <str id="CompilePanel.progress.finished" txt="[Закончено]"/>
+    <str id="CompilePanel.progress.overall" txt="Общий прогресс компиляции:"/>
+    <str id="CompilePanel.error" txt="Ошибка компиляции"/>
+    <str id="CompilePanel.error.reconfigure" txt="Переконфигурирование"/>
+    <str id="CompilePanel.error.ignore" txt="Игнорировать"/>
+    <str id="CompilePanel.error.abort" txt="Отмена"/>
+    <str id="CompilePanel.error.seebelow" txt="Ниже приведена команда с ошибкой и ее вывод."/>
+    <str id="CompilePanel.error.nofiles" txt="Ошибка при сканировании файлов для компиляции."/>
+    <str id="CompilePanel.error.compilernotfound" txt="Не удалось запустить компилятор."/>
+    <str id="CompilePanel.error.invalidarguments" txt="Недопустимые аргументы, предоставленные компилятору."/>
+    <str id="CompilePanel.error.noclassfile" txt="Компилятор не создал файл класса для исходного файла "/>
+    <str id="CompilePanel.choose_compiler" txt="Компилятор для использования:"/>
+    <str id="CompilePanel.additional_arguments" txt="Дополнительные аргументы компилятора:"/>
+
+    <!-- ProcessPanel strings -->
+    <str id="ProcessPanel.heading" txt="Обработка"/>
+    
+    <!-- SummaryPanel strings -->
+    <str id="SummaryPanel.info" txt="При установке будут выполняться следующие настройки. Нажмите «Далее», чтобы продолжить."/>
+    <str id="TargetPanel.summaryCaption" txt="Путь установки"/>
+    <str id="JDKPathPanel.summaryCaption" txt="JDK путь"/>
+    <str id="PacksPanel.summaryCaption" txt="Выбранные пакеты установки"/>
+    <str id="ImgPacksPanel.summaryCaption" txt="Выбранные пакеты установки"/>
+    <str id="TreePacksPanel.summaryCaption" txt="Выбранные пакеты установки"/>
+    <str id="UserPathPanel.summaryCaption" txt="Выбранный путь"/>
+    <str id="DefaultTargetPanel.summaryCaption" txt="Путь установки"/>
+    
+    <!-- Strings for the Registry -->
+    <str id="functionFailed.RegOpenKeyEx" txt="Не удается открыть раздел реестра {0}\\{1}."/>
+
+		<!-- CheckedHelloPanel strings -->
+    <str id="CheckedHelloPanel.productAlreadyExist0" txt="Данный продукт уже установлен на компьютере по пути "/>
+    <str id="CheckedHelloPanel.productAlreadyExist1" txt=" . Вы действительно хотите установить другой объект?"/>
+    <str id="CheckedHelloPanel.infoOverUninstallKey" txt="Ключ удаления будет называться: "/>
+    
+    <!-- Next Media Strings -->
+    <str id="nextmedia.title" txt="Следующий установочный носитель"/>
+    <str id="nextmedia.msg" txt="Выберите следующий установочный носитель."/>
+    <str id="nextmedia.browsebtn" txt="Обзор"/>
+    <str id="nextmedia.okbtn" txt="Применить"/>
+    <str id="nextmedia.cancelbtn" txt="Отмена"/>
+    <str id="nextmedia.choosertitle" txt="Выберите установочный носитель"/>
+    <str id="nextmedia.filedesc" txt="установочные пакеты (.pak*)"/>
+
+		<!-- This string defines the time stamp format in the installation report.
+         The format details are documented in java.text.SimpleDateFormat -->
+    <str id="log.timeStamp" txt="ММ-дд-гггг [ЧЧ:мм:сс]  zzzz"/>
+    
+    <!-- Strings for various purposes in the logging/reporting system  -->
+    <str id="log.reportHeading" txt="                           IzPack ОТЧЕТ УСТАНОВКИ"/>
+    <str id="log.installFailed" txt="ПРЕДУПРЕЖДЕНИЕ!!! Установка не удалась!"/>
+    <str id="log.partialInstall" txt="ПРЕДУПРЕЖДЕНИЕ!!! Возможно, установка удалась не полностью!"/>
+    <str id="log.messageCount" txt="Этот отчет содержит {0} общее сообщения, {1} предупреждения и {2} ошибки"/>
+    <str id="log.application" txt="Отчет по установке для: {0} версии {1}"/>
+    <str id="log.timePrefix" txt="Время установки            : {0}"/>
+    <str id="log.pathPrefix" txt="Каталог установки       : {0}"/>
+    <str id="log.messageHeading" txt="                         --- Сообщения об установке ---"/>
+    <str id="log.warningHeading" txt="                               --- Предупреждения ---"/>
+    <str id="log.errorHeading" txt="                                --- Ошибки ---"/>
+    <str id="log.exceptionPrefix" txt="                 >> Исключение: {0}"/>
+    <str id="log.messagePrefix" txt="Сообщение  [{0}] - "/>
+    <str id="log.warningPrefix" txt="Предупреждение [{0}] - "/>
+    <str id="log.errorPrefix" txt="Ошибка [{0}] - "/>
+    <str id="log.reportWriteErrorTitle" txt="Ошибка записи отчета"/>
+    <str id="log.reportWriteError" txt="Не удалось записать отчет об установке ''{0}''"/>
+    <str id="log.informUserTitle" txt="Проблемы с установкой"/>
+    <str id="log.saveLogTitle" txt="Сохранить файл журнала"/>
+    <str id="log.LogFileName" txt="installLog.txt"/>
+    <str id="log.informUserFail" txt="&lt;html&gt;Установка не удалась!&lt;br&gt;Вы хотите записать файл журнала?&lt;/html&gt;"/>
+    <str id="log.informUserPartial" txt="&lt;html&gt;Возможно, установка удалась не полностью!&lt;br&gt;Вы хотите записать файл журнала?&lt;/html&gt;"/>
+
+    <!-- Strings for individual messages in the logging/reporting system.
+         Numbers for each category (message/warning/error) start at 0  -->
+    <str id="log.message_" txt=""/>
+    <str id="log.warning_" txt=""/>
+    <str id="log.error_0" txt="не удалось записать ''{0}''"/>
+    <str id="debug.changevariable" txt="изменить значение"/>
+		
+    <str id="data.validation.error.title" txt="Ошибка" />
+    <str id="data.validation.warning.title" txt="Предупреждение" />
+</langpack>
