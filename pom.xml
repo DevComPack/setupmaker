@@ -15,7 +15,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
 		<pivot.version>2.0.5</pivot.version>
-		<ant.version>1.9.4</ant.version>
+		<ant.version>1.10.10</ant.version>
 		<izpack.version>4.3.5</izpack.version>
 	</properties>
 	
