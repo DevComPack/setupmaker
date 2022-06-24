@@ -22,7 +22,7 @@
 	
 	<!-- must update these paths on first time before running a release! -->
 	<property name="doc.dir" value="../gh-pages/doc"/>
-	<property name="launch4j.dir" value="C:/bin/launch4j"/>
+	<property name="launch4j.dir" value="/Users/said.elimam/Documents/Resources/bin/launch4j"/>
 	
 	
 	<!-- task definitions -->

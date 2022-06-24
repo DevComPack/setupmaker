@@ -5,3 +5,6 @@ saves/
 
 /.classpath
 /conf.dcp
+
+.idea/
+.DS_Store
